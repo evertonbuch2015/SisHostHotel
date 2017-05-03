@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+	<f:facet name="first">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<meta name="viewport"
+			content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+		<meta name="apple-mobile-web-app-capable" content="yes" />
+	</f:facet>
+</h:head>
+
+<h:body>
+
+	<p:layout fullPage="true">
+		<p:layoutUnit position="center">
+
+			<p:menubar>
+				<p:submenu label="File" icon="ui-icon-home">
+					<p:submenu label="New" icon=".ui-icon-cancel">
+						<p:menuitem value="Project" url="#" icon=".ui-icon-circlesmall-close" />
+						<p:menuitem value="Other" url="#" />
+					</p:submenu>
+					<p:menuitem value="Open" url="#" />
+					<p:separator />
+					<p:menuitem value="Quit" url="#" />
+				</p:submenu>
+
+
+				<p:submenu label="Edit" icon="ui-icon-pencil">
+					<p:menuitem value="Undo" url="#"
+						icon="ui-icon-arrowreturnthick-1-w" />
+					<p:menuitem value="Redo" url="#"
+						icon="ui-icon-arrowreturnthick-1-e" />
+				</p:submenu>
+
+				<p:submenu label="Help" icon="ui-icon-help">
+					<p:menuitem value="Contents" url="#" />
+					<p:submenu label="Search" icon="ui-icon-search">
+						<p:submenu label="Text">
+							<p:menuitem value="Workspace" url="#" />
+						</p:submenu>
+						<p:menuitem value="File" url="#" />
+					</p:submenu>
+				</p:submenu>
+			</p:menubar>
+
+			
+			<p:breadCrumb>
+				<p:menuitem value="Home" url="#" />
+				<p:menuitem value="Cadastros" url="#" />
+    			<p:menuitem value="Empresa" url="#" />
+    			<p:menuitem value="Manutenção" url="#" />			
+			</p:breadCrumb>
+
+			<div style="height: 20px;"></div>
+
+			<p:tabView>
+
+				<p:tab title="Dados Gerais"
+					titleStyle="font-size: 10px;color: #455a64;">
+					<div class="ui-fluid">
+						<p:panelGrid styleClass="ui-panelgrid-blank" columns="4"
+							cellpadding="10"
+							columnClasses="ui-grid-col-1,ui-grid-col-4,ui-grid-col-1,ui-grid-col-4"
+							layout="grid">
+
+							<p:outputLabel value="Nome:" for="nome" />
+							<p:inputText value="" placeholder="Ex: Steve Jobs"
+								id="nome" />
+							
+							<p:outputLabel value="Email:" for="email" />
+							<p:inputText value=""
+								placeholder="Ex: email@dominio.com.br" id="email" />
+							
+							<p:outputLabel value="Telefone:" for="tel1" />
+							<p:inputMask mask="(99)9999-9999"
+								placeholder="Ex: (21) 2616-0000 " id="tel1" />
+							
+							<p:outputLabel value="Celular:" for="tel2" />
+							<p:inputMask mask="(99)9.9999-9999"
+								placeholder="Ex: (21) 9.8781-0000" id="tel2" />
+							
+							<p:outputLabel value="Data Nasc.:" for="dtNasc" />
+							<p:inputMask mask="99/99/9999"
+								placeholder="Ex: 01/01/2000" id="dtNasc" />
+							
+							<p:outputLabel value="Como nos conheceu?" for="info" />
+							<p:selectOneMenu filter="true" id="info">
+								<f:selectItem itemValue="" itemLabel="Selecione uma mídia" />
+								<f:selectItem itemValue="" itemLabel="Indicação de amigos" />
+								<f:selectItem itemValue="" itemLabel="Internet" />
+								<f:selectItem itemValue="" itemLabel="Televisão" />
+							</p:selectOneMenu>
+
+
+
+
+						</p:panelGrid>
+
+						<p:separator />
+
+						<p:panelGrid styleClass="ui-panelgrid-blank" columns="4"
+							cellpadding="10"
+							columnClasses="ui-grid-col-1,ui-grid-col-4,ui-grid-col-1,ui-grid-col-2"
+							layout="grid">
+
+							<p:outputLabel value="Endereço:" for="end" />
+							<p:inputText size="70" id="end" />
+							<p:outputLabel value="Nª" />
+							<p:inputText size="6" />
+							<p:outputLabel value="Complemento:" />
+							<p:inputText size="27" />
+						</p:panelGrid>
+					</div>
+				</p:tab>
+
+				<p:tab title="Endereço">
+					<h:panelGrid columns="1" cellpadding="1">
+						<p:editor />
+					</h:panelGrid>
+				</p:tab>
+
+				<p:tab title="Observações sobre a Empresa">
+					<h:panelGrid columns="1" cellpadding="1">
+						<p:editor/>
+					</h:panelGrid>
+				</p:tab>
+
+
+			</p:tabView>
+
+
+			<p:panelGrid columns="3" styleClass="ui-panelgrid-blank">
+
+				<p:commandButton value="Novo" action="#"
+					style="width:80px;height:30px;" />
+				<p:commandButton value="Filtrar" action="#"
+					style="width:80px;height:30px;" />
+				<p:commandButton value="Cancelar" action="#"
+					style="width:80px;height:30px;" />
+
+			</p:panelGrid>
+
+		</p:layoutUnit>
+
+	</p:layout>
+
+
+	<h:outputScript name="js/ripple-effect.js" library="adamantium-layout" />
+	<h:outputScript name="js/perfect-scrollbar.js"
+		library="adamantium-layout" />
+	<h:outputScript name="js/layout.js" library="adamantium-layout" />
+	<h:outputStylesheet name="css/core-layout.css"
+		library="adamantium-layout" />
+	<h:outputStylesheet name="css/animate.css" library="adamantium-layout" />
+	<h:outputStylesheet name="css/adamantium-font.css"
+		library="adamantium-layout" />
+	<h:outputStylesheet name="css/ripple-effect.css"
+		library="adamantium-layout" />
+	<h:outputStylesheet name="css/perfect-scrollbar.css"
+		library="adamantium-layout" />
+	<h:outputStylesheet name="css/font-awesome.css"
+		library="adamantium-layout" />
+	<h:outputStylesheet name="css/adamantium-layout.css"
+		library="adamantium-layout" />
+</h:body>
+
+</html>
