@@ -6,166 +6,80 @@
 
 <f:view contentType="text/html" locale="#{languageBean.localeCode}">
 
-	<h:head>
-		<f:facet name="first">
-			<meta http-equiv="X-UA-Compatible" content="IE=edge" />
-			<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-			<meta name="viewport"
-				content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
-			<meta name="apple-mobile-web-app-capable" content="yes" />
-		</f:facet>
+<h:head>
+	
+	<f:facet name="first">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<meta name="viewport"
+			content="width=device-width, initial-scale=1.0, maximum-scale=3.0, user-scalable=0" />
+		<meta name="apple-mobile-web-app-capable" content="yes" />
+	</f:facet>
 
-		<h:outputStylesheet library="style" name="default.css" />
-		<h:outputScript library="js" name="LocaleCalendario.js" />
-		<title><ui:insert name="tituloPagina" /></title>
+	<h:outputStylesheet library="style" name="layout.css" />
+	<h:outputStylesheet library="style" name="componentes.css" />
+	<h:outputScript library="js" name="LocaleCalendario.js" />
+	<h:outputScript library="js" name="app.js" />
+	
+	<title><ui:insert name="tituloPagina" /></title>
 
-		<ui:insert name="head"></ui:insert>
-	</h:head>
+	<ui:insert name="head"></ui:insert>
+</h:head>
 
-	<h:body>
-		<div class="inner-container">
-			<h:form>
-				<p:toolbar
-					style="padding: 0px !important; background-color: #37556b;">
+<h:body>
+	<div class="bu-inner-container">
 
-					<p:toolbarGroup align="left">
-						<p:menubar id="menuEsquerda">
-							<p:submenu label="#{label.menu_cadastro}">
-								<p:menuitem value="#{label.menu_empresa}"
-									url="/cadastros/empresa.xhtml?faces-redirect=true" />
-
-								<p:menuitem value="#{label.menu_usuario}"
-									url="/cadastros/usuario.xhtml?faces-redirect=true" />
-							</p:submenu>
-
-							<p:submenu label="#{label.menu_compras}">
-								<p:separator />
-							</p:submenu>
-
-							<p:submenu label="#{label.menu_contas_pagar}">
-								<p:menuitem value="#{label.menu_adiant_fornecedor}" url="#" />
-								<p:menuitem value="#{label.menu_dup_pagar}" url="#" />
-								<p:menuitem value="#{label.menu_prev_pagamento}" url="#" />
-								<p:separator />
-							</p:submenu>
-
-							<p:submenu label="#{label.menu_contas_receber}">
-								<p:menuitem value="#{label.menu_adiant_clientes}" url="#" />
-								<p:menuitem value="#{label.menu_dup_receber}" url="#" />
-								<p:menuitem value="#{label.menu_prev_recebimento}" url="#" />
-								<p:separator />
-							</p:submenu>
-
-						</p:menubar>
-					</p:toolbarGroup>
-
-
-					<p:toolbarGroup align="right">
-						<p:menubar id="menuDireita">
-							<p:submenu label="#{usuarioLogado.nomeColaborador}">
-								<p:menuitem value="#{label.menu_linguagem}"
-									url="/language.xhtml?faces-redirect=true" ajax="false"
-									icon="ui-icon-wrench" />
-
-								<p:separator />
-								<p:menuitem value="#{label.menu_sair}"
-									action="#{loginBean.deslogar()}" styleClass="menuItem"
-									icon="ui-icon-close" />
-							</p:submenu>
-						</p:menubar>
-					</p:toolbarGroup>
-
-				</p:toolbar>
-
-				<p:breadCrumb>
-					<p:menuitem value="Home" url="/index.xhtml" />
-					<p:menuitem value="Cadastros" url="#" />
-					<p:menuitem value="Empresa" url="#" />
-					<p:menuitem value="Manutenção" url="#" />
-				</p:breadCrumb>
-
-				<div class="ui-fluid" style="height: 20px;"></div>
-
-			</h:form>
-
-
-			<div class="main">
-				<h:form prependId="false">
-				
-					<ui:insert name="content" />
-
-					<p:confirmDialog global="true">
-						<p:commandButton 
-							value="#{label.txt_sim}" type="button"
-							icon="ui-icon-check" styleClass="ui-confirmdialog-yes" />
-						
-						<p:commandButton 
-							value="#{label.txt_nao}" type="button"
-							icon="ui-icon-close" styleClass="ui-confirmdialog-no" />
-							
-					</p:confirmDialog>
-				</h:form>
-
-				<div class="clearer"/>
-
-			</div>		<!--end  main -->
-
-
-			<div class="footer">
-				<span class="left">
-					<h:outputText value="#{empresa.codigo}"/>
-					<h:outputText value=" - "/> 
-					<h:outputText value="#{empresa.nomeFantasia}"/> 
-				</span> 
-				
-				<span class="right"> 
-					<p:ajaxStatus
-						onstart="PF('statusDialog').show()"
-						onsuccess="PF('statusDialog').hide()">
-						
-						<f:facet name="default">
-							<h:outputText value="Status: StandBy"/>
-						</f:facet>
-
-						<f:facet name="start">
-							<h:graphicImage library="images" name="ajax-loader.gif" />
-						</f:facet>
-
-						<f:facet name="complete">
-							<h:outputText value="Status: Completed" />
-						</f:facet>
-					</p:ajaxStatus>
-				</span>
-
-				<div class="clearer" />
-
-			</div>
-			<!--end  footer -->
-
-		</div>
-		<!--end  inner-container -->
-
-
-		<p:dialog widgetVar="statusDialog" 			
-			modal="false" draggable="false"
-			closable="false" resizable="false"
-			showHeader="false">
+		<header class="bu-topbar">
+			<h:graphicImage library="images" name="logo-sistema.png" />			
 			
-			<h:graphicImage library="images" name="ajax-loader.gif" />
-		</p:dialog>
+			<a href="#" class="bu-toggle js-toggle"><i class="fa  fa-bars"></i></a>
+		</header>
+		
+		
+		
+		<aside class="bu-sidebar js-sidebar">
+		
+		
+		</aside>
+		
+		
+		<section class="bu-content js-content">
+					
+			<p:breadCrumb >
+				<p:menuitem value="Home" url="/index.xhtml" />
+				<p:menuitem value="Cadastros" url="#" />
+				<p:menuitem value="Empresa" url="#" />
+				<p:menuitem value="Manutenção" url="#" />
+			</p:breadCrumb>
+			<p:outputLabel value="xasasd"></p:outputLabel>
+			<h1>Conteudo</h1>
+				
+		</section>
+
+	</div>
+	<!--end bu-inner-container -->
 
 
-		<h:outputScript 	name="js/ripple-effect.js" 		 library="adamantium-layout" />
-		<h:outputScript 	name="js/perfect-scrollbar.js" 	 library="adamantium-layout" />
-		<h:outputScript 	name="js/layout.js" 			 library="adamantium-layout" />
-		<h:outputStylesheet name="css/core-layout.css" 		 library="adamantium-layout" />
-		<h:outputStylesheet name="css/animate.css" 			 library="adamantium-layout" />
-		<h:outputStylesheet name="css/adamantium-font.css" 	 library="adamantium-layout" />
-		<h:outputStylesheet name="css/ripple-effect.css" 	 library="adamantium-layout" />
-		<h:outputStylesheet name="css/perfect-scrollbar.css" library="adamantium-layout" />
-		<h:outputStylesheet name="css/font-awesome.css" 	 library="adamantium-layout" />
-		<h:outputStylesheet name="css/adamantium-layout.css" library="adamantium-layout" />
-	</h:body>
+	<p:dialog widgetVar="statusDialog" 			
+		modal="false" draggable="false"
+		closable="false" resizable="false"
+		showHeader="false">
+		
+		<h:graphicImage library="images" name="ajax-loader.gif" />
+	</p:dialog>
+
+
+	<h:outputScript 	name="js/ripple-effect.js" 		 library="adamantium-layout" />
+	<h:outputScript 	name="js/perfect-scrollbar.js" 	 library="adamantium-layout" />
+	<h:outputScript 	name="js/layout.js" 			 library="adamantium-layout" />
+	<h:outputStylesheet name="css/core-layout.css" 		 library="adamantium-layout" />
+	<h:outputStylesheet name="css/animate.css" 			 library="adamantium-layout" />
+	<h:outputStylesheet name="css/adamantium-font.css" 	 library="adamantium-layout" />
+	<h:outputStylesheet name="css/ripple-effect.css" 	 library="adamantium-layout" />
+	<h:outputStylesheet name="css/perfect-scrollbar.css" library="adamantium-layout" />
+	<h:outputStylesheet name="css/font-awesome.css" 	 library="adamantium-layout" />
+	<h:outputStylesheet name="css/adamantium-layout.css" library="adamantium-layout" />
+</h:body>
 </f:view>
 
 </html>

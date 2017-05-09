@@ -1,0 +1,110 @@
+
+/******************* INICIO GENÉRICOS ***************/
+.clearer {clear: both; font-size: 0;}
+
+.bu-left {float: left;}
+
+.bu-right {float: right;}
+
+.bu-comBorda{
+	border-style: dotted solid;
+	border: 3px solid red;
+}
+
+
+
+/******************* INICIO ESTRUTURA ***************/
+.bu-inner-container {
+	border: 1px solid #D7D7D2;
+	margin: 0 auto;	
+	padding: 0px 2px
+}
+
+
+
+/******************* INICIO TOPO ***************/
+.bu-topbar{
+	height: 50px;	
+	position:fixed;
+	z-index:9999;
+	width:100%;
+	
+	border-bottom: 1px solid #D7D7D2;
+}
+
+.bu-topbar > img{
+	margin-left: 15px;
+	padding-bottom: 1px;
+}
+
+
+/******************* INICIO SIDEBAR ***************/
+.bu-sidebar{
+	position:fixed;
+	width:210px;
+	height:90%;
+	margin-left:-213px;
+	margin-top:50px;
+	z-index:9998;
+	
+	transition: margin-left 0.7s;
+	overflow-y:auto;
+	
+	opacity: 0.7;
+	background-color: #37556b;
+	border-right: 1px solid #eaeaea;
+}
+
+
+.bu-sidebar.is-toggled{
+	margin-left: 0px;
+}
+
+@media(min-width:980px){
+	.bu-sidebar.is-toggled{
+		margin-left: -213px;
+	}
+	
+}
+
+@media(min-width:980px){
+	.bu-sidebar{			
+		opacity: 1.0;	
+		margin-left:0px;
+	}
+}
+
+
+
+/******************* INICIO CONTEUDO ***************/
+.bu-content{
+	margin-top: 50px;
+	background-color:#fff;
+	transition: margin-left 0.7s;
+	overflow-y:auto;
+}
+
+
+
+@media(min-width:980px){
+	.bu-content.is-toggled{
+		margin-left: 0px;
+	}
+}
+
+
+@media(min-width:980px){
+	.bu-content{
+		margin-left: 211px;
+	}
+}
+
+/******************* INICIO RODAPE ***************/
+.bu-footer {
+	color: #F7F7F2;
+	padding: 6px 8px;
+	background-color:#37556b;
+	font-size: 14px !important;
+}
+
+.bu-footer a {text-decoration: none;}

@@ -771,7 +771,7 @@ label {
 /*Style For Breadcrumb ------------------------------------------------------------------------------------- */
 .ui-breadcrumb {
   background-image: initial !important;
-  padding: 10px 16px 8px 16px !important;
+  padding: 2px 3px 2px 15px !important;
   border-radius: 2px !important;
   background-color: #ffffff;
   border: solid 1px #e0e0e0;
