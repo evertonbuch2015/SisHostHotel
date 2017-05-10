@@ -3687,7 +3687,7 @@ hr.ui-widget-header {
 }
 .ui-panelmenu {
   border: solid 1px #e0e0e0;
-  background-color: #ffffff;
+  background-color: #34495D;
   color: #546e7a;
   border-radius: 2px;
   -webkit-border-radius: 2px;
@@ -3701,15 +3701,15 @@ hr.ui-widget-header {
   color: #ffffff;
   font-size: 16px;
   font-weight: normal;
-  margin-bottom: 1px !important;
-  background-color: #0288d1;
+  background-color: #34495D;
   font-family: 'latoregular';
+  border-bottom: solid 1px #cfcfcf ;
 }
 .ui-panelmenu .ui-panelmenu-panel h3.ui-state-hover {
-  background-color: #039be5;
+  background-color: #558ba8;
 }
 .ui-panelmenu .ui-panelmenu-panel h3.ui-state-active {
-  background-color: #1881bb;
+  background-color: #558ba8;
 }
 .ui-panelmenu .ui-panelmenu-panel .ui-panelmenu-header .ui-icon-triangle-1-e {
   background-image: url("#{resource['primefaces-adamantium:images/right-arrow-white.svg']}");
@@ -3734,13 +3734,13 @@ hr.ui-widget-header {
   padding: 0px;
 }
 .ui-panelmenu .ui-panelmenu-panel .ui-panelmenu-content .ui-menuitem:hover {
-  background-color: #f5f5f5;
+  background-color: #558ba8;
 }
 .ui-panelmenu .ui-panelmenu-panel .ui-panelmenu-content .ui-menuitem .ui-state-hover {
-  color: #03A9F4;
+  color: #fff;
 }
 .ui-panelmenu .ui-panelmenu-panel .ui-panelmenu-content .ui-menuitem a {
-  color: #546e7a;
+  color: #fff;
   font-size: 14px;
   font-family: 'latoregular';
   padding: 14px 5px 14px 32px;
