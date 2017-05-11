@@ -3687,7 +3687,7 @@ hr.ui-widget-header {
 }
 .ui-panelmenu {
   border: solid 1px #e0e0e0;
-  background-color: #34495D;
+  background-color: #537495;
   color: #546e7a;
   border-radius: 2px;
   -webkit-border-radius: 2px;
@@ -3703,7 +3703,7 @@ hr.ui-widget-header {
   font-weight: normal;
   background-color: #34495D;
   font-family: 'latoregular';
-  border-bottom: solid 1px #cfcfcf ;
+  border-top: solid 1px #cfcfcf ;
 }
 .ui-panelmenu .ui-panelmenu-panel h3.ui-state-hover {
   background-color: #558ba8;
@@ -3724,7 +3724,7 @@ hr.ui-widget-header {
   background-size: 110%;
 }
 .ui-panelmenu .ui-panelmenu-panel .ui-panelmenu-header a {
-  padding: 12px 5px 13px 30px;
+  padding: 7px 5px 10px 30px;
   font-size: 14px;
 }
 .ui-panelmenu .ui-menuitem {
@@ -3741,9 +3741,9 @@ hr.ui-widget-header {
 }
 .ui-panelmenu .ui-panelmenu-panel .ui-panelmenu-content .ui-menuitem a {
   color: #fff;
-  font-size: 14px;
+  font-size: 12px;
   font-family: 'latoregular';
-  padding: 14px 5px 14px 32px;
+  padding: 4px 5px 7px 30px;
   overflow: hidden;
   width: auto !important;
   float: none !important;

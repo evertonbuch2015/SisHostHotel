@@ -10,10 +10,10 @@
 	
 	<f:facet name="first">
 		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta http-equiv="pragma" content="no-cache" />
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 		<meta name="viewport"
-			content="width=device-width, initial-scale=1.0, maximum-scale=3.0, user-scalable=0" />
-		<meta name="apple-mobile-web-app-capable" content="yes" />
+			content="width=device-width, initial-scale=0.8, maximum-scale=1, user-scalable=yes" />
 	</f:facet>
 
 	<h:outputStylesheet library="style" name="layout.css" />
@@ -28,7 +28,7 @@
 
 <h:body>
 	<div class="bu-inner-container">
-
+	
 		<header class="bu-topbar">
 			<h:graphicImage library="images" name="logo-sistema.png" />			
 			
@@ -40,20 +40,23 @@
 		<aside class="bu-sidebar js-sidebar">
 			<h:form>
 			<p:panelMenu style="width:99%">
-		        <p:submenu label="Ajax Menuitems">
-		            <p:menuitem value="Save" icon="ui-icon-disk" />
-		            <p:menuitem value="Update"  icon="ui-icon-arrowrefresh-1-w" />
+		        <p:submenu label="Cadastros">
+		            <p:menuitem value="Hóspedes" icon="ui-icon-person" />
+		            <p:menuitem value="Empresas"  icon="ui-icon-home" />
+		            
+		            <p:menuitem value="Apartamentos"  icon="ui-icon-key" />
+		            <p:menuitem value="Categorias"  icon="ui-icon-wrench" />
 		        </p:submenu>
-		        <p:submenu label="Non-Ajax Menuitem">
-		            <p:menuitem value="Delete"  ajax="false" icon="ui-icon-close"/>
-		        </p:submenu>
-		        <p:separator />
-		        <p:submenu label="Navigations" >
-                    <p:menuitem value="Home" url="http://www.primefaces.org" icon="ui-icon-home" />
-                    <p:menuitem value="Docs" url="http://www.primefaces.org/documentation" icon="ui-icon-document" />
-                    <p:menuitem value="Download" url="http://www.primefaces.org/downloads" icon="ui-icon-arrowthick-1-s" />
-                    <p:menuitem value="Support" url="http://www.primefaces.org/support" icon="ui-icon-wrench" />        
-		            <p:menuitem value="Mobile"  icon="ui-icon-signal" />
+		        
+		        <p:submenu label="Caixa">
+		            <p:menuitem value="Duplicatas"  ajax="false" icon="ui-icon-calculator"/>
+		        </p:submenu>		      		       
+		        
+		        <p:submenu label="Recepção" >
+                    <p:menuitem value="Check-In" url="http://www.primefaces.org" icon="ui-icon-arrowreturnthick-1-e" />
+                    <p:menuitem value="Check-Out" url="http://www.primefaces.org/documentation" icon="ui-icon-arrowreturnthick-1-w" />
+                    <p:menuitem value="Walck-In" url="http://www.primefaces.org/downloads" icon="ui-icon-arrowreturnthick-1-e" />
+                    <p:menuitem value="Reservas" url="http://www.primefaces.org/support" icon="ui-icon-calendar" />        
 		        </p:submenu>
 		    </p:panelMenu>
 				
@@ -70,10 +73,98 @@
 				<p:menuitem value="Empresa" url="#" />
 				<p:menuitem value="Manutenção" url="#" />
 			</p:breadCrumb>
-			<h1>Conteudo</h1>
+			
+			<p:tabView>
+
+				<p:tab title="Dados Gerais"
+					titleStyle="font-size: 10px;color: #455a64;">
+					<div class="ui-fluid">
+						<p:panelGrid styleClass="ui-panelgrid-blank" columns="4"
+							cellpadding="10"
+							columnClasses="ui-grid-col-1,ui-grid-col-4,ui-grid-col-1,ui-grid-col-4"
+							layout="grid">
+
+							<p:outputLabel value="Nome:" for="nome" />
+							<p:inputText value="" placeholder="Ex: Steve Jobs"
+								id="nome" />
+							
+							<p:outputLabel value="Email:" for="email" />
+							<p:inputText value=""
+								placeholder="Ex: email@dominio.com.br" id="email" />
+							
+							<p:outputLabel value="Telefone:" for="tel1" />
+							<p:inputMask mask="(99)9999-9999"
+								placeholder="Ex: (21) 2616-0000 " id="tel1" />
+							
+							<p:outputLabel value="Celular:" for="tel2" />
+							<p:inputMask mask="(99)9.9999-9999"
+								placeholder="Ex: (21) 9.8781-0000" id="tel2" />
+							
+							<p:outputLabel value="Data Nasc.:" for="dtNasc" />
+							<p:inputMask mask="99/99/9999"
+								placeholder="Ex: 01/01/2000" id="dtNasc" />
+							
+							<p:outputLabel value="Como nos conheceu?" for="info" />
+							<p:selectOneMenu filter="true" id="info">
+								<f:selectItem itemValue="" itemLabel="Selecione uma mídia" />
+								<f:selectItem itemValue="" itemLabel="Indicação de amigos" />
+								<f:selectItem itemValue="" itemLabel="Internet" />
+								<f:selectItem itemValue="" itemLabel="Televisão" />
+							</p:selectOneMenu>
+
+
+
+
+						</p:panelGrid>
+
+						<p:separator />
+
+						<p:panelGrid styleClass="ui-panelgrid-blank" columns="4"
+							cellpadding="10"
+							columnClasses="ui-grid-col-1,ui-grid-col-4,ui-grid-col-1,ui-grid-col-2"
+							layout="grid">
+
+							<p:outputLabel value="Endereço:" for="end" />
+							<p:inputText size="70" id="end" />
+							<p:outputLabel value="Nª" />
+							<p:inputText size="6" />
+							<p:outputLabel value="Complemento:" />
+							<p:inputText size="27" />
+						</p:panelGrid>
+					</div>
+				</p:tab>
+
+				<p:tab title="Endereço">
+					<h:panelGrid columns="1" cellpadding="1">
+						<p:editor />
+					</h:panelGrid>
+				</p:tab>
+
+				<p:tab title="Observações sobre a Empresa">
+					<h:panelGrid columns="1" cellpadding="1">
+						<p:editor/>
+					</h:panelGrid>
+				</p:tab>
+
+
+			</p:tabView>
+
+
+			<p:panelGrid columns="3" styleClass="ui-panelgrid-blank">
+
+				<p:commandButton value="Novo" action="#"
+					style="width:80px;height:30px;" />
+				<p:commandButton value="Filtrar" action="#"
+					style="width:80px;height:30px;" />
+				<p:commandButton value="Cancelar" action="#"
+					style="width:90px;height:30px;" />
+
+			</p:panelGrid>
 				
 		</section>
-
+		
+	
+		
 	</div>
 	<!--end bu-inner-container -->
 
