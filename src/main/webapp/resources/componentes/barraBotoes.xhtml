@@ -1,0 +1,62 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:cc="http://java.sun.com/jsf/composite"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+
+<cc:interface>
+	<cc:attribute name="bean" shortDescription="Nome do ManagedBean." required="true"/>
+	<cc:attribute name="colunasPanel" default="5" shortDescription="Qtd colunas default do painel: 5"/>
+</cc:interface>
+
+<cc:implementation>
+	<p:panelGrid columns="#{cc.attrs.colunasPanel}" layout="grid" styleClass="ui-noborder" id="barraBotoes">
+		
+		<p:selectOneMenu value="#{cc.attrs.bean.filtro}" id="tipoFiltro" rendered="#{cc.attrs.bean.buscando}">						
+			<f:selectItem itemLabel="Selecione" style="width:150px !important"/>
+			<f:selectItems value="#{cc.attrs.bean.tipoFiltros()}" var="a"
+			itemValue="#{a}" itemLabel="#{a.label}"/>						
+		</p:selectOneMenu>
+		
+		<p:inputText style="width:200px !important" value="#{cc.attrs.bean.valorFiltro}" 
+			rendered="#{cc.attrs.bean.buscando}" id="valorfiltro"/>
+					
+		<p:commandButton value="Filtrar" update="tbl" style="width:80px"
+			styleClass="botaoAzul" rendered="#{cc.attrs.bean.buscando}"
+			actionListener="#{cc.attrs.bean.filtrar()}"/>
+		
+		<p:commandButton value="#{label.txt_novo}" update="@form" style="width:80px"
+			styleClass="botaoAzul"
+			rendered="#{cc.attrs.bean.visualizando or cc.attrs.bean.buscando}"
+			actionListener="#{cc.attrs.bean.novo()}" />
+
+		<p:commandButton value="#{label.txt_atualizar}" update="tabela" style="width:80px"
+			styleClass="botaoAzul"
+			rendered="#{cc.attrs.bean.buscando}"
+			actionListener="#{cc.attrs.bean.refresh()}" />
+
+		<p:commandButton value="#{label.txt_editar}" update="@form" style="width:80px"
+			styleClass="botaoAzul" rendered="#{cc.attrs.bean.visualizando}" immediate="true"
+			actionListener="#{cc.attrs.bean.editar()}" />
+
+		<p:commandButton value="#{label.txt_salvar}" update="@form" style="width:80px"
+			styleClass="botaoVerde"
+			rendered="#{cc.attrs.bean.alterando or cc.attrs.bean.inserindo}"
+			actionListener="#{cc.attrs.bean.gravar()}" />
+
+
+		<p:commandButton value="#{label.txt_excluir}" update="tabela" style="width:80px"
+			styleClass="botaoVermelho" rendered="#{cc.attrs.bean.visualizando}" />
+
+		<p:commandButton value="#{label.txt_cancelar}" update="@form" style="width:80px"
+			styleClass="botaoLaranja" immediate="true"
+			rendered="#{!cc.attrs.bean.buscando}"
+			actionListener="#{cc.attrs.bean.cancelar()}" />			
+
+	</p:panelGrid>
+</cc:implementation>
+
+</html>

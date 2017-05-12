@@ -1,0 +1,130 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+
+<f:view contentType="text/html" locale="#{languageBean.localeCode}">
+
+<h:head>
+	<f:facet name="first">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta http-equiv="pragma" content="no-cache" />
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=0.8, maximum-scale=1, user-scalable=yes" />
+	</f:facet>
+	
+	<h:outputScript  	name="LocaleCalendario.js" 		 library="js"/>
+	<h:outputScript  	name="app.js" 					 library="js"/>
+	<h:outputScript 	name="js/ripple-effect.js"		 library="adamantium-layout" />
+	<h:outputScript 	name="js/perfect-scrollbar.js" 	 library="adamantium-layout" />
+	<h:outputScript 	name="js/layout.js" 			 library="adamantium-layout" />
+	<h:outputStylesheet name="css/core-layout.css" 		 library="adamantium-layout" />
+	<h:outputStylesheet name="css/animate.css" 			 library="adamantium-layout" />
+	<h:outputStylesheet name="css/adamantium-font.css" 	 library="adamantium-layout" />
+	<h:outputStylesheet name="css/ripple-effect.css" 	 library="adamantium-layout" />
+	<h:outputStylesheet name="css/perfect-scrollbar.css" library="adamantium-layout" />
+	<h:outputStylesheet name="css/font-awesome.css" 	 library="adamantium-layout" />
+	<h:outputStylesheet name="css/adamantium-layout.css" library="adamantium-layout" />
+	<h:outputStylesheet name="layout.css" 				 library="style"/>
+	<h:outputStylesheet name="componentes.css" 			 library="style"/>	
+	
+	<title><ui:insert name="tituloPagina" /></title>
+
+	<ui:insert name="head"/>
+</h:head>
+
+
+<h:body>
+	<div class="bu-inner-container">
+	
+	
+		<header class="bu-topbar">
+			<h:graphicImage library="images" name="logo-sistema.png" />			
+			
+			<a href="#" class="bu-toggle js-toggle"><i class="fa  fa-bars"></i></a>
+		</header>
+				
+				
+				
+		<h:form>		
+			<aside class="bu-sidebar js-sidebar">				
+				<p:panelMenu style="width:99%">
+			        <p:submenu label="Cadastros">
+			            <p:menuitem value="Hóspedes" icon="fa fa-user" url="/cadHospede.xhtml?faces-redirect=true"/>
+			            <p:menuitem value="Empresas"  icon="fa fa-building-o" />
+			            
+			            <p:menuitem value="Apartamentos"  icon="fa fa-bed" />
+			            <p:menuitem value="Categorias Apart."  icon="ui-icon-wrench" />
+			            
+			            <p:menuitem value="Caixa/Bancos"  icon="fa fa-archive" />			            
+			            <p:menuitem value="Formas de Pagamento"  icon="fa fa-cc-visa" />
+			            <p:menuitem value="Tipos de Tarifa"  icon="fa fa-bar-chart-o" />
+			            
+			            <p:menuitem value="Produtos"  icon="fa fa-cubes" />
+			            <p:menuitem value="Grupos Produto"  icon="ui-icon-wrench" />			            
+			        </p:submenu>
+			        
+			        <p:submenu label="Caixa">
+			            <p:menuitem value="Duplicatas" ajax="false" icon="fa fa-money"/>
+			        </p:submenu>		      		       
+			        			        
+			        <p:submenu label="Hospedagem" >
+						<p:menuitem value="Recepção" url="http://www.primefaces.org" icon="fa fa-suitcase" />
+	                    <p:menuitem value="Check-In" url="http://www.primefaces.org" icon="ui-icon-arrowreturnthick-1-e" />
+	                    <p:menuitem value="Check-Out" url="http://www.primefaces.org/documentation" icon="ui-icon-arrowreturnthick-1-w" />
+	                    <p:menuitem value="Walck-In" url="http://www.primefaces.org/downloads" icon="ui-icon-arrowreturnthick-1-e" />
+	                    <p:menuitem value="Reservas" url="http://www.primefaces.org/support" icon="fa fa-calendar" />
+	                    <p:menuitem value="Mapa Estadias" url="http://www.primefaces.org" icon="fa fa-sitemap" />        
+			        </p:submenu>
+			        
+			        <p:submenu label="A pagar">
+			            <p:menuitem value="Adiant. Fornecedor" ajax="false" icon="fa fa-money"/>
+			            <p:menuitem value="Duplicatas" ajax="false" icon="fa fa-money"/>
+			            <p:menuitem value="Pagamentos" ajax="false" icon="fa fa-arrow-circle-up"/>
+			        </p:submenu>
+			        
+			        <p:submenu label="A Receber">
+			            <p:menuitem value="Adiant. Clientes" ajax="false" icon="fa fa-money"/>
+			            <p:menuitem value="Recebimentos" ajax="false" icon="fa fa-arrow-circle-down"/>
+			        </p:submenu>
+			        
+			        <p:submenu label="Configurações" >
+	                    <p:menuitem value="Cadastro Hotel" url="http://www.primefaces.org" icon="fa fa-university"/>
+	                    <p:menuitem value="Tarifário" url="http://www.primefaces.org/documentation" icon="fa fa-usd"/>
+	                    <p:menuitem value="Usuários" url="http://www.primefaces.org/downloads" icon="fa fa-lock"/>
+	                    <p:menuitem value="Idioma" url="http://www.primefaces.org/documentation" icon="fa fa-language"/>
+	                    <p:menuitem value="Sobre/Help" url="http://www.primefaces.org/documentation" icon="fa fa-info"/>	                    
+			        </p:submenu>
+			    </p:panelMenu>											
+			</aside>
+		</h:form>
+		
+		
+		
+		<h:form>
+			<section class="bu-content js-content">								
+				<ui:insert name="conteudo"/>						
+				
+				<p:confirmDialog global="true">
+					<p:commandButton value="#{label.txt_sim}" type="button" icon="ui-icon-check" styleClass="ui-confirmdialog-yes"/>
+					<p:commandButton value="#{label.txt_nao}" type="button" icon="ui-icon-close" styleClass="ui-confirmdialog-no"/>
+				</p:confirmDialog>
+					
+			</section>
+		</h:form>
+		
+		
+		<p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()"/>
+		<p:dialog 
+			widgetVar="statusDialog" modal="false" draggable="false" 
+			closable="false" resizable="false" showHeader="false">
+			<h:graphicImage library="images" name="ajax-loader.gif" />
+		</p:dialog>
+		
+	</div>
+	<!--end bu-inner-container -->	
+	
+</h:body>
+</f:view>
+</html>

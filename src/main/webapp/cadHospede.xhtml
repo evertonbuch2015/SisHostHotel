@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition 
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:p="http://primefaces.org/ui" 
+	template="/WEB-INF/template.xhtml"
+	xmlns:app="http://java.sun.com/jsf/composite/componentes">
+
+	<ui:define name="tituloPagina">#{label.tit_hospede}</ui:define>
+
+	<ui:define name="conteudo">
+		
+		<p:breadCrumb>
+			<p:menuitem value="Home" url="/index.xhtml" />
+			<p:menuitem value="Cadastros"/>
+    		<p:menuitem value="Hóspedes" url="#" />
+    		<p:menuitem value="Manutenção" url="#" />			
+		</p:breadCrumb>
+		
+		<p:growl id="msgs" autoUpdate="true" showDetail="True" life="4000"/>
+		<p:messages autoUpdate="true" closable="true">
+			<p:effect type="puff" event="load" delay="9000" />
+		</p:messages>
+		
+		
+		<!-- <app:barraBotoes bean="#{colaboradorBean}"/> -->
+		
+		
+		
+		<p:tabView>
+			<p:tab title="Consulta" rendered="true">
+				<h:panelGrid columns="1" cellpadding="1">
+					<h1>Consulta</h1>
+				</h:panelGrid>
+			</p:tab>
+			
+			<p:tab title="Dados Gerais" titleStyle="font-size: 10px;color: #455a64;">
+				<div class="ui-fluid">
+					<p:panelGrid 
+						styleClass="ui-panelgrid-blank" columns="4"
+						cellpadding="10" layout="grid"
+						columnClasses="ui-grid-col-1,ui-grid-col-4,ui-grid-col-1,ui-grid-col-4">
+
+						<p:outputLabel value="Nome:" for="nome" />
+						<p:inputText value="" placeholder="Ex: Steve Jobs"
+							id="nome" />
+						
+						<p:outputLabel value="Email:" for="email" />
+						<p:inputText value=""
+							placeholder="Ex: email@dominio.com.br" id="email" />
+						
+						<p:outputLabel value="Telefone:" for="tel1" />
+						<p:inputMask mask="(99)9999-9999"
+							placeholder="Ex: (21) 2616-0000 " id="tel1" />
+						
+						<p:outputLabel value="Celular:" for="tel2" />
+						<p:inputMask mask="(99)9.9999-9999"
+							placeholder="Ex: (21) 9.8781-0000" id="tel2" />
+						
+						<p:outputLabel value="Data Nasc.:" for="dtNasc" />
+						<p:inputMask mask="99/99/9999"
+							placeholder="Ex: 01/01/2000" id="dtNasc" />
+						
+						<p:outputLabel value="Como nos conheceu?" for="info" />
+						<p:selectOneMenu filter="true" id="info">
+							<f:selectItem itemValue="" itemLabel="Selecione uma mídia" />
+							<f:selectItem itemValue="" itemLabel="Indicação de amigos" />
+							<f:selectItem itemValue="" itemLabel="Internet" />
+							<f:selectItem itemValue="" itemLabel="Televisão" />
+						</p:selectOneMenu>
+
+					</p:panelGrid>
+
+					<p:separator />
+
+					<p:panelGrid
+						styleClass="ui-panelgrid-blank" columns="4"
+						cellpadding="10" layout="grid"
+						columnClasses="ui-grid-col-1,ui-grid-col-4,ui-grid-col-1,ui-grid-col-2">
+
+						<p:outputLabel value="Endereço:" for="end" />
+						<p:inputText size="70" id="end" />
+						<p:outputLabel value="Nª" />
+						<p:inputText size="6" />
+						<p:outputLabel value="Complemento:" />
+						<p:inputText size="27" />
+					</p:panelGrid>
+				</div>
+			</p:tab>
+
+			<p:tab title="Endereço">
+				<h:panelGrid columns="1" cellpadding="1">
+					<p:editor />
+				</h:panelGrid>
+			</p:tab>
+
+			<p:tab title="Observações">
+				<h:panelGrid columns="1" cellpadding="1">
+					<p:editor/>
+				</h:panelGrid>
+			</p:tab>
+
+		</p:tabView>
+		
+		<p:panelGrid columns="3" styleClass="ui-panelgrid-blank">
+
+				<p:commandButton value="Novo" action="#"
+					style="width:80px;height:30px;background-color: #4CAF50  !important;" />
+				<p:commandButton value="Filtrar" action="#"
+					style="width:80px;height:30px;background-color: #4CAF50  !important;" />
+				<p:commandButton value="Cancelar" action="#"
+					style="width:80px;height:30px;background-color: #4CAF50  !important;" />
+
+		</p:panelGrid>
+	</ui:define>
+</ui:composition>
