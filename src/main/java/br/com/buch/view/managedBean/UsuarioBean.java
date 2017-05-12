@@ -20,7 +20,7 @@ import br.com.buch.core.service.UsuarioService;
 public class UsuarioBean extends GenericBean<Usuario> {
 
 	public enum TipoFiltro{
-		CODIGO("C�digo"), NOME("Nome Usu�rio");
+		CODIGO("Código"), NOME("Nome Usuário");
 		
 		private String label;
 
@@ -95,7 +95,7 @@ public class UsuarioBean extends GenericBean<Usuario> {
 		if(!this.entidade.getEmpresas().contains(empresa)){
 			this.entidade.getEmpresas().add(empresa);
 		}else{
-			FacesMessage msg = new FacesMessage("Empresa j� cadastrada para este Usu�rio", "Empresa j� cadastrada para este Usu�rio");
+			FacesMessage msg = new FacesMessage("Empresa já cadastrada para este Usuário", "Empresa já cadastrada para este Usuário");
 			FacesContext.getCurrentInstance().addMessage(null, msg);
 		}
 	}	

@@ -6,11 +6,7 @@ import java.util.List;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.persistence.EntityManager;
-import javax.persistence.EntityNotFoundException;
 import javax.persistence.Query;
-
-import br.com.buch.view.util.UtilErros;
-import br.com.buch.view.util.UtilMensagens;
 
 
 /**
@@ -62,7 +58,6 @@ public abstract class GenericDao<T extends Serializable> {
             em.getTransaction().begin();
         }
         em.getTransaction().rollback();
-        em.close();
 	}
     
     
@@ -77,21 +72,22 @@ public abstract class GenericDao<T extends Serializable> {
     @SuppressWarnings("unchecked")
     @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
     public T findOne(String jpql , Object...params)throws Exception{
-        EntityManager em = getEntityManager();
+        
+    	EntityManager em = getEntityManager();
         em.getTransaction().begin();
         
         Query query = em.createQuery(jpql);
-        
         for(int i=0 ; i < params.length ; i++){
             query.setParameter(i+1, params[i]);
         }
         
         T entity = null;
-        
         try {
         	entity = (T) query.getSingleResult();
         	em.getTransaction().commit();
 		
+		}catch(Exception ex){
+			doRollback(em);
 		}finally {
 			em.close();
 		}		
@@ -137,28 +133,26 @@ public abstract class GenericDao<T extends Serializable> {
      */
     @SuppressWarnings("unchecked")
     @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
-	public List<T> find(String jpql , Object...params){
+	public List<T> find(String jpql , Object...params)throws Exception{
+    	
     	EntityManager em = getEntityManager();
     	em.getTransaction().begin();
         em.clear();
         
         Query query = em.createQuery(jpql).setHint("org.hibernate.readOnly", true);
-        
         for(int i=0 ; i < params.length ; i++){
             query.setParameter(i+1, params[i]);
         }
         
 		List<T> entities = null;
-        
         try {
         	entities = query.getResultList();
-            
             em.getTransaction().commit();
-            em.close();
             
 		} catch (Exception e) {
-			UtilMensagens.mensagemErro("Erro ao Carregar os dados da Entidade " + aClass.getName() +
-					" no m�todo find(String jpql , Object...params) \nErro: " +	UtilErros.getMensagemErro(e));
+			doRollback(em);
+		}finally{
+			em.close();
 		}
         return entities;
     }
@@ -200,20 +194,21 @@ public abstract class GenericDao<T extends Serializable> {
      * @param id
      * @return 
      */
-    public T findById(Integer id){        
-        EntityManager em = getEntityManager();
+    public T findById(Integer id)throws Exception{        
+        
+    	EntityManager em = getEntityManager();
         em.getTransaction().begin();
         
         T entity = null;
         try {           
             entity = (T) em.find(aClass, id);
             em.getTransaction().commit();
-            em.close();
             
         } catch (Exception e) {
-        	UtilMensagens.mensagemErro("Erro ao Carregar os dados da Entidade " + aClass.getName() + " no m�todo findById\nErro: " + 
-					UtilErros.getMensagemErro(e));
-        }                
+        	doRollback(em);
+        }finally{
+			em.close();
+		}            
         return entity;
     }
     
@@ -243,28 +238,21 @@ public abstract class GenericDao<T extends Serializable> {
      */
     @SuppressWarnings("unchecked")
     @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
-    public List<T> findAll(){
+    public List<T> findAll()throws Exception{
+    	
     	EntityManager em = getEntityManager();
-        em.getTransaction().begin();
-        
+        em.getTransaction().begin();        
         Query query = em.createQuery("From " + aClass.getSimpleName()).setHint("org.hibernate.readOnly", true);
         
         List<T> entities = null;
-        
         try {
-        	entities = query.getResultList();
-        	
+        	entities = query.getResultList();        	
         	em.getTransaction().commit();
-        	em.close();
         	
 		} catch (Exception e) {
-			if (em.getTransaction().isActive() == false) {
-                em.getTransaction().begin();
-            }
-            em.getTransaction().rollback();
-            em.close();
-			UtilMensagens.mensagemErro("Erro ao Carregar os dados da Entidade " + aClass.getName() + " no m�todo findAll \nErro: " + 
-					UtilErros.getMensagemErro(e));
+			doRollback(em);  			
+		}finally{
+			em.close();
 		}
 	            
         return entities; 
@@ -272,32 +260,23 @@ public abstract class GenericDao<T extends Serializable> {
 
     
     
-    
     /**
     *Metodo para realizar o save do Objeto Entidade
      * @param entity
     */
-    public boolean save(T entity){
+    public void save(T entity)throws Exception{
     	EntityManager em = getEntityManager();
     	
     	try {
             em.getTransaction().begin();
             em.persist(entity);
             em.getTransaction().commit();
-            em.close();
-            
-            return true;
+
         } catch (Exception e) {
-        	if (em.getTransaction().isActive() == false) {
-                em.getTransaction().begin();
-            }
-            em.getTransaction().rollback();
-            em.close();
-            
-            UtilMensagens.mensagemErro("Erro ao Salvar os dados da Entidade " + aClass.getName() + " \nErro: " + 
-            							UtilErros.getMensagemErro(e));            
-            return false;
-        }
+        	doRollback(em);
+        }finally{
+			em.close();
+		}
     }
     
     
@@ -306,27 +285,19 @@ public abstract class GenericDao<T extends Serializable> {
     *Metodo para realizar o update do Objeto Entidade
      * @param entity
     */
-    public boolean update(T entity){
+    public void update(T entity)throws Exception{
     	EntityManager em = getEntityManager();
     	
     	try{
             em.getTransaction().begin();            
             em.merge(entity);
             em.getTransaction().commit();
-            em.close();
             
-            return true;
         }catch(Exception e){
-            if (em.getTransaction().isActive() == false) {
-                em.getTransaction().begin();
-            }
-            em.getTransaction().rollback();
-            em.close();
-            
-            UtilMensagens.mensagemErro("Erro ao Atualizar os dados da Entidade " + aClass.getName() + " \nErro: " + 
-            							UtilErros.getMensagemErro(e));
-            return false;
-        }
+        	doRollback(em);
+        }finally{
+			em.close();
+		}
     }
     
     
@@ -335,26 +306,19 @@ public abstract class GenericDao<T extends Serializable> {
     *Remover um objeto do banco recebendo o id da entidade.
      * @param id
     */
-    public void delete(Long id){
+    public void delete(Long id)throws Exception{
     	EntityManager em = getEntityManager();
     	
     	try {
             em.getTransaction().begin();
             em.remove(em.find(aClass, id));
             em.getTransaction().commit();
-            em.close();
-            
-            UtilMensagens.mensagemInformacao("Exclus�o Realizada com Sucesso");            
-        } catch (EntityNotFoundException enfe) {            
-            if (em.getTransaction().isActive() == false) {
-                em.getTransaction().begin();
-            }
-            em.getTransaction().rollback();
-            em.close();
-            
-            UtilMensagens.mensagemErro("The Item with id " + id + " no longer exists." + " \nErro: " + 
-					UtilErros.getMensagemErro(enfe));
-        }
+                                    
+        } catch (Exception e) {            
+        	doRollback(em);
+        }finally{
+			em.close();
+		}
     }
     
 
@@ -363,27 +327,20 @@ public abstract class GenericDao<T extends Serializable> {
     *Remover um objeto do banco recebendo uma Entidade
      * @param entity
     */
-    public void delete(T entity){        
+    public void delete(T entity)throws Exception{        
     	EntityManager em = getEntityManager();
     	
     	try {
             em.getTransaction().begin();
-            T c = em.merge(entity);     //faz um merge por que entidade est� em datached.
+            T c = em.merge(entity);
             em.remove(c);
             em.getTransaction().commit();
-            em.close();
             
-            UtilMensagens.mensagemInformacao("Exclus�o Realizada com Sucesso");   
         } catch (Exception ex) {        	            
-            if (em.getTransaction().isActive() == false) {
-                em.getTransaction().begin();
-            }
-            em.getTransaction().rollback();
-            em.close();
-            
-            UtilMensagens.mensagemErro("Erro ao Excluir os dados da Entidade " + aClass.getName() + " \nErro: " + 
-            							UtilErros.getMensagemErro(ex));
-        }
+        	doRollback(em);
+        }finally{
+			em.close();
+		}
     }
     
     

@@ -6,10 +6,12 @@ import java.util.List;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
+import javax.persistence.EntityNotFoundException;
 
 import br.com.buch.core.dao.UsuarioDao;
 import br.com.buch.core.entity.Usuario;
 import br.com.buch.view.managedBean.UsuarioBean.TipoFiltro;
+import br.com.buch.view.util.UtilErros;
 import br.com.buch.view.util.UtilMensagens;
 
 public class UsuarioService implements GenericService<Usuario> {
@@ -25,28 +27,50 @@ public class UsuarioService implements GenericService<Usuario> {
 	@Override
 	public boolean salvar(Usuario entidate) {
 		if (entidate.getIdUsusario() == null) {
-			entidate.setSenha(entidate.getSenhaCriptografada());
-			if (usuarioDao.save(entidate)) {
-				UtilMensagens.mensagemInformacao("Usu�rio Inserido com Sucesso");
+			
+			try {
+				entidate.setSenha(entidate.getSenhaCriptografada());
+				usuarioDao.save(entidate);
+				UtilMensagens.mensagemInformacao("Usuário Inserido com Sucesso!");
 				return true;
-			}
-		} else {			
+			} catch (Exception e) {
+				UtilMensagens.mensagemErro("Erro ao Inserir o Usuário"
+						+ "\nErro: " + UtilErros.getMensagemErro(e));
+				return false;
+			}			
+		}else{			
+			
 			if(entidate.getSenha().length() <= 40){
 				entidate.setSenha(entidate.getSenhaCriptografada());
 			}
 			
-			if (usuarioDao.update(entidate)) {
-				UtilMensagens.mensagemInformacao("Usu�rio Alterado com Sucesso");
+			try {				
+				usuarioDao.update(entidate);
+				UtilMensagens.mensagemInformacao("Usuário Alterado com Sucesso!");
 				return true;
-			}
+			} catch (Exception e) {
+				UtilMensagens.mensagemErro("Erro ao Atualizar os dados do Usuário"
+						+ "\nErro: " + UtilErros.getMensagemErro(e));
+				return false;
+			}			
 		}
-		return false;
 	}
 
 	
 	@Override
 	public void excluir(Usuario entidade) {
-		usuarioDao.delete(entidade);
+		
+		try {
+			usuarioDao.delete(entidade);
+			UtilMensagens.mensagemInformacao("Exclusão Realizada com Sucesso");
+			
+		}catch (EntityNotFoundException enfe) {                        
+            UtilMensagens.mensagemErro("The Item with id " + entidade.getIdUsusario()+ " no longer exists." +
+            		" \nErro: " + UtilErros.getMensagemErro(enfe));
+        }catch (Exception ex) {
+            UtilMensagens.mensagemErro("Erro ao Excluir os dados do Usuário" + 
+            		" \nErro: " + UtilErros.getMensagemErro(ex));
+		}		
 	}
 
 	
@@ -58,44 +82,53 @@ public class UsuarioService implements GenericService<Usuario> {
 		}
 		catch(javax.persistence.NonUniqueResultException ex){
 			ex.printStackTrace();
-			UtilMensagens.mensagemAtencao("Existem mais de um Usu�rio para o c�digo "+id);
+			UtilMensagens.mensagemAtencao("Existem mais de um Usuário para o código "+id);
 			return null;
 		}
 		catch (Exception e) {
 			e.printStackTrace();
-			UtilMensagens.mensagemAtencao("Usu�rio n�o encontrado!");
+			UtilMensagens.mensagemAtencao("Usuário não encontrado!");
 			return null;
 		}
 	}
 
 	
 	public List<Usuario> buscarTodos(){
-		List<Usuario> lista = usuarioDao.findAll();
-		
-		Collections.sort(lista, new Comparator<Usuario>() {
+		List<Usuario> lista = null;
+		try {
+			
+			lista = usuarioDao.findAll();			
+			Collections.sort(lista, new Comparator<Usuario>() {
 
-			@Override
-			public int compare(Usuario o1, Usuario o2) {				
-				return o1.getCodigoEstrutural().compareTo(o2.getCodigoEstrutural());
-			}
-		});
-		
-		return lista;
+				@Override
+				public int compare(Usuario o1, Usuario o2) {				
+					return o1.getCodigoEstrutural().compareTo(o2.getCodigoEstrutural());
+				}
+			});
+			
+			return lista;
+		} catch (Exception e) {			
+			e.printStackTrace();
+			return null;
+		}
 	}
 	
 	
 	public List<Usuario> filtrarTabela(TipoFiltro tipoFiltro , String valorFiltro){
-		List<Usuario> lista= null;
-		
-		if(tipoFiltro.equals(TipoFiltro.CODIGO)){
-			String jpql = "Select u From Usuario u where u.idUsusario in (" + valorFiltro + ")";
-			lista = usuarioDao.find(jpql);
-		}
-		else if(tipoFiltro.equals(TipoFiltro.NOME)){
-			lista = usuarioDao.find("Select u From Usuario u where u.nomeUsuario like ?",valorFiltro);
-		}
-		
-		return lista;
+		List<Usuario> lista = null;
+		try {
+			if(tipoFiltro.equals(TipoFiltro.CODIGO)){
+				String jpql = "Select u From Usuario u where u.idUsusario in (" + valorFiltro + ")";
+				lista = usuarioDao.find(jpql);
+			}
+			else if(tipoFiltro.equals(TipoFiltro.NOME)){
+				lista = usuarioDao.find("Select u From Usuario u where u.nomeUsuario like ?",valorFiltro);
+			}
+			
+			return lista;
+		}catch (Exception e) {
+			return null;
+		}		
 	}
 
 	
@@ -116,25 +149,18 @@ public class UsuarioService implements GenericService<Usuario> {
 		}    
 	    
 	    context.getExternalContext().getFlash().setKeepMessages(true);
-	    context.addMessage(null, new FacesMessage("Usu�rio n�o encontrado"));
+	    context.addMessage(null, new FacesMessage("Usuário não encontrado"));
 	    
 		return false;
 	}
 
 
-	public Usuario buscarPeloNome(Usuario usuario) {
-		try{
+	public Usuario buscarPeloNome(Usuario usuario) {		
+		try {
 			String jpql = "select u from Usuario u where u.nomeUsuario = ?1";
 			return usuarioDao.findOne(jpql, usuario.getNomeUsuario().toUpperCase());
-		}
-		catch(javax.persistence.NonUniqueResultException ex){
-			ex.printStackTrace();
-			UtilMensagens.mensagemAtencao("Existem mais de um Usu�rio para o nome "+usuario.getNomeUsuario());
-			return null;
-		}
-		catch (Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
-			UtilMensagens.mensagemAtencao("Usu�rio n�o encontrado!");
 			return null;
 		}
 	}

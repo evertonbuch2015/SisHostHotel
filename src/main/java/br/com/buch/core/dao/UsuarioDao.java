@@ -36,15 +36,15 @@ public class UsuarioDao extends GenericDao<Usuario> implements Serializable {
 		query.setParameter("pUsuario", login.toUpperCase());
 		query.setParameter("pSenha", Criptografia.criptografarSha256(senha));
 
-		Usuario retorno;
+		Usuario retorno = null;
 		try {
 			retorno = (Usuario) query.getSingleResult();
 			em.getTransaction().commit();
-			em.close();
 			
 		} catch (NoResultException ex) {
+			doRollback(em);
+		}finally {
 			em.close();
-			return null;
 		}
 
 		return retorno;
