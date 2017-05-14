@@ -6,10 +6,10 @@ import java.util.List;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 
-import br.com.buch.core.dao.EmpresaDao;
-import br.com.buch.core.entity.Empresa;
+import br.com.buch.core.entity.Hotel;
 import br.com.buch.core.entity.Usuario;
-import br.com.buch.core.service.UsuarioService;
+import br.com.buch.core.service.ServiceHotel;
+import br.com.buch.core.service.ServiceUsuario;
 import br.com.buch.view.util.SessionContext;
 
 @ManagedBean
@@ -23,14 +23,14 @@ public class LoginBean implements Serializable{
 	private String senha;
 	private String login;
 	
-	private Empresa empresa;
-	private UsuarioService usuarioService;
+	private Hotel hotel;
+	private ServiceUsuario usuarioService;
 	
 	
 	public LoginBean() {
 		selecionandoEmpresa = false;
 		usuario = new Usuario();
-		usuarioService = new UsuarioService();
+		usuarioService = new ServiceUsuario();
 	}
 	
 	
@@ -49,7 +49,7 @@ public class LoginBean implements Serializable{
 
 	public String prosseguir(){
 		SessionContext.getInstance().setAttribute("usuarioLogado", this.usuario);
-		SessionContext.getInstance().setAttribute("empresa", this.empresa);
+		SessionContext.getInstance().setAttribute("hotel", this.hotel);
 		
 		return "index?faces-redirect=true";
 	}
@@ -57,7 +57,7 @@ public class LoginBean implements Serializable{
 		
 	public String deslogar() {
 		SessionContext.getInstance().deleteAttribute("usuarioLogado");
-		SessionContext.getInstance().deleteAttribute("empresa");
+		SessionContext.getInstance().deleteAttribute("hotel");
 	    SessionContext.getInstance().encerrarSessao();
 	    
 	    return "/Login?faces-redirect=true";
@@ -91,41 +91,35 @@ public class LoginBean implements Serializable{
 	}
 	
 	
-	public Empresa getEmpresa() {
-		return empresa;
+	
+	public Hotel getHotel() {
+		return hotel;
 	}
 	
-	public void setEmpresa(Empresa empresa) {
-		this.empresa = empresa;
+	public void setHotel(Hotel hotel) {
+		this.hotel = hotel;
 	}
 	
-	
-	public List<Empresa> getEmpresas(){
-		return new EmpresaDao().findAll();
+	public List<Hotel> getHoteis(){
+		return new ServiceHotel().buscarTodos();
 	}
 
+	
 
-	
-	
 	public String getSenha() {
 		return senha;
 	}
 	
-
-
 	public void setSenha(String senha) {
 		this.senha = senha;
 	}
 	
 	
-
-
+	
 	public String getLogin() {
 		return login;
 	}
 	
-
-
 	public void setLogin(String login) {
 		this.login = login;
 	}	

@@ -273,6 +273,7 @@ public abstract class GenericDao<T extends Serializable> {
             em.getTransaction().commit();
 
         } catch (Exception e) {
+        	e.printStackTrace();
         	doRollback(em);
         }finally{
 			em.close();

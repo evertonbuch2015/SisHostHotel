@@ -1,0 +1,297 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition 
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:p="http://primefaces.org/ui" 
+	template="/WEB-INF/template.xhtml"
+	xmlns:app="http://java.sun.com/jsf/composite/componentes">
+
+	<ui:define name="tituloPagina">
+		#{label.tit_hotel}
+	</ui:define>
+
+
+	<ui:define name="conteudo">
+		
+		<p:breadCrumb>
+			<p:menuitem value="Home" url="/index.xhtml" />
+			<p:menuitem value="Cadastros"/>
+    		<p:menuitem value="Hotel" url="#" />
+    		<p:menuitem value="Manutenção" url="#" />			
+		</p:breadCrumb>
+		
+		<p:messages autoUpdate="true" closable="true">
+			<p:effect type="pulsate" event="load" delay="500" />
+			<p:effect type="clip" event="load" delay="5000" />
+		</p:messages>
+		
+		
+		<p:tabView rendered="#{hotelBean.buscando}" prependId="false">						
+			<p:tab title="Consulta"> 	
+				<p:dataTable value="#{hotelBean.entidades}" var="hotel" id="tabela" 
+					selection="#{hotelBean.entidade}" selectionMode="single"
+					rowKey="#{hotel.idHotel}" reflow="true"									
+					widgetVar="carsTable" emptyMessage="#{label.msg_tabela_vazia}"
+					style="margin: 0px -11px;" rendered="#{hotelBean.buscando}">				
+					
+
+					<p:ajax event="rowDblselect" listener="#{hotelBean.onRowDblClckSelect}"
+						global="false" update="@form"/>
+
+					<p:ajax event="rowSelect" listener="#{hotelBean.onRowSelect}" />
+
+
+					<p:column headerText="#{label.txt_codigo}" >
+						<h:outputText value="#{hotel.codigo}" />
+					</p:column>
+					
+					<p:column headerText="#{label.txt_filial}" >
+						<h:outputText value="#{hotel.filial}" />
+					</p:column>
+					
+
+					<p:column headerText="#{label.txt_nome_razao}">
+						<h:outputText value="#{hotel.nomeRazao}" />
+					</p:column>
+
+
+					<p:column headerText="#{label.txt_documento}" >
+						<h:outputText value="#{hotel.documentoFormatado}" />
+					</p:column>
+					
+					
+					<p:column headerText="#{label.txt_email}" >
+						<h:outputText value="#{hotel.email}" />
+					</p:column>
+					
+					
+					<p:column headerText="#{label.txt_acoes}" exportable="false">						
+						<p:commandButton actionListener="#{hotelBean.editar(hotel)}" 
+							icon="ui-icon-pencil" update="@form"/>
+							
+						<p:commandButton actionListener="#{hotelBean.excluir(hotel)}" 
+							icon="ui-icon-trash" update="@form">
+							
+							<p:confirm header="Confirmação" message="Deseja Excluir este Hotel" icon="ui-icon-alert"/>
+						</p:commandButton>
+					</p:column>					
+
+				</p:dataTable>
+			</p:tab>
+		</p:tabView>
+		
+						
+		<p:tabView rendered="#{!hotelBean.buscando}">						
+			<p:tab title="Dados Gerais" 
+				titleStyle="font-size: 10px;color: #455a64;">
+				
+				<div class="ui-fluid">
+					
+					<p:panelGrid 
+						styleClass="ui-panelgrid-blank" columns="4"
+						cellpadding="10" layout="grid"
+						columnClasses="ui-grid-col-2,ui-grid-col-3,ui-grid-col-2,ui-grid-col-3">
+						
+						<p:outputLabel value="#{label.txt_codigo}" for="codigo" />
+						<p:inputText id="codigo"
+							value="#{hotelBean.entidade.codigo}" placeholder="Código do Hotel"
+							required="true" 
+							requiredMessage="Informe o código do Hotel!"/>
+						
+						<p:outputLabel value="#{label.txt_filial}" for="filial" />
+						<p:inputText id="filial"
+							value="#{hotelBean.entidade.filial}" placeholder="Código da Filial"
+							required="true" 
+							requiredMessage="Informe o código da filial do Hotel!"/>
+							
+							
+						<p:outputLabel value="#{label.txt_nome_razao}:" for="nome_razao" />
+						<p:inputText id="nome_razao" 
+							value="#{hotelBean.entidade.nomeRazao}" placeholder="máximo 60 caracteres"
+							required="true" 
+							requiredMessage="Informe o nome razão do Hotel!"/>
+						
+						<p:outputLabel value="#{label.txt_nome_fantasia}:" for="nome_fantasia" />
+						<p:inputText id="nome_fantasia" 
+							value="#{hotelBean.entidade.nomeFantasia}" 
+							placeholder="máximo 60 caracteres"
+							required="true" 
+							requiredMessage="Informe o nome fantasia do Hotel!"/>
+						
+						
+						<p:outputLabel value="#{label.txt_email}:" for="email" />
+						<p:inputText id="email"
+							value="#{hotelBean.entidade.email}" placeholder="Ex: email@dominio.com.br"
+							required="true" 
+							requiredMessage="Informe um e-mail de contato!"/>
+						
+						<p:outputLabel value="#{label.txt_site}:" for="site" />
+						<p:inputText id="site"
+							value="#{hotelBean.entidade.site}" placeholder="Ex: www.dominio.com.br"/>
+							
+							
+						<p:outputLabel value="#{label.txt_telefone}:" for="telefone1" />							
+						<p:inputMask id="telefone1"
+							value="#{hotelBean.entidade.telefone1}"
+							mask="(99)9999-9999" placeholder="Ex: (21) 2616-0000 "
+							readonly="#{hotelBean.visualizando}"
+							requiredMessage="Informe ao menos um telefone de contato!"/>
+						
+						<p:outputLabel value="#{label.txt_telefone}:" for="telefone2" />							
+						<p:inputMask id="telefone2"
+							value="#{hotelBean.entidade.telefone2}"
+							mask="(99)9999-9999" placeholder="Ex: (21) 2616-0000 "/>
+							
+							
+						<p:outputLabel value="#{label.txt_documento}:" for="documento" />
+						<p:inputMask id="documento"
+							mask="99.999.999/9999-99" required="true"
+							value="#{hotelBean.entidade.documento}"
+							readonly="#{hotelBean.visualizando}"
+							requiredMessage="Informe o Número do Documento!"/>
+						
+						
+						<p:outputLabel value="#{label.txt_insc_estadual}:" for="insc_estadual" />							
+						<p:inputMask id="insc_estadual"
+							value="#{hotelBean.entidade.inscEstadual}"/>
+						
+						<p:outputLabel value="#{label.txt_insc_municipal}:" for="insc_municipal" />							
+						<p:inputMask id="insc_municipal"
+							value="#{hotelBean.entidade.inscMunicipal}"
+							mask="999999999-9" placeholder="Ex: 999999999-9 "/>
+											
+						<p:outputLabel value="#{label.txt_regime_trib}" for="regTribut"/>
+						<p:selectOneMenu id="regTribut"
+							value="#{hotelBean.entidade.regimeTributario}">
+							
+							<f:selectItem itemLabel="Selecione"/>
+							<f:selectItems value="#{hotelBean.regimes}" var="a"
+								itemValue="#{a}" itemLabel="#{a.label}"/>
+						</p:selectOneMenu>
+											
+						<p:outputLabel value="#{label.txt_data_cadastro}:" for="dtCadastro"/>
+						<p:inputText id="dtCadastro" readonly="true"
+							value="#{hotelBean.entidade.dataCadastroFormatada}" mask="99/99/9999"/>
+												
+					</p:panelGrid>
+				</div>
+			</p:tab>
+
+
+			<p:tab title="Endereço">
+				
+				<div class="ui-fluid">
+					<p:panelGrid
+						styleClass="ui-panelgrid-blank" columns="4"
+						cellpadding="10" layout="grid"
+						columnClasses="ui-grid-col-1,ui-grid-col-4,ui-grid-col-1,ui-grid-col-2">
+	
+						<p:outputLabel value="#{label.txt_cep}" for="cep" />
+						<p:inputMask id="cep" 
+							value="#{hotelBean.entidade.endereco.cep}" mask="99.999-999"
+							required="true" 
+							requiredMessage="Informe no endereço o número do Cep!"/>
+						
+															
+						<p:outputLabel value="#{label.txt_lgr}" for="lgr"/>
+						<p:inputText id="lgr"
+							value="#{hotelBean.entidade.endereco.logradouro}"
+							placeholder="Ex: Avenida"/>
+						
+						<p:outputLabel value="#{label.txt_rua}" for="rua"/>
+						<p:inputText id="rua"
+							value="#{hotelBean.entidade.endereco.rua}"
+							placeholder="Ex: Assis Brasil"
+							required="true" 
+							requiredMessage="Informe no endereço o nome da rua!"/>
+							
+						<p:outputLabel value="#{label.txt_numero}" for="numero"/>
+						<p:inputNumber id="numero"
+							value="#{hotelBean.entidade.endereco.numero}"
+							required="true" 
+							requiredMessage="Informe no endereço o número!"/>
+						
+						<p:outputLabel value="#{label.txt_complemento}" for="complemento"/>
+						<p:inputText id="complemento"
+							value="#{hotelBean.entidade.endereco.complemento}"/>
+							
+						<p:outputLabel value="#{label.txt_bairro}" for="bairro"/>
+						<p:inputText id="bairro"
+							value="#{hotelBean.entidade.endereco.bairro}"
+							required="true" 
+							requiredMessage="Informe no endereço o bairro!"/>
+							
+						<p:outputLabel value="#{label.txt_cidade}" for="cidade"/>
+						<p:inputText id="cidade"
+							value="#{hotelBean.entidade.endereco.cidade}"
+							required="true" 
+							requiredMessage="Informe no endereço o nome da Cidade!"/>
+							
+						<p:outputLabel value="#{label.txt_estado}" for="estado"/>
+						<p:selectOneMenu id="estado"
+							value="#{hotelBean.entidade.endereco.estado}"
+							required="true" 
+							requiredMessage="Informe no endereço o estado!">
+							
+							<f:selectItem itemLabel="Selecione"/>
+							<f:selectItems value="#{hotelBean.estados}" var="a"
+								itemValue="#{a}" itemLabel="#{a}"/>
+						</p:selectOneMenu>
+						
+						<p:outputLabel value="#{label.txt_pais}" for="pais"/>
+						<p:inputText id="pais"
+							value="#{hotelBean.entidade.endereco.pais}"/>
+					</p:panelGrid>
+				</div>
+			</p:tab>
+
+
+			<p:tab title="Observações">
+				<h:panelGrid columns="1" cellpadding="1">
+					<p:inputTextarea id="observacao"
+						value="#{hotelBean.entidade.obs}"/>
+				</h:panelGrid>
+			</p:tab>
+
+		</p:tabView>
+		
+		
+		<app:barraBotoes bean="#{hotelBean}"/>
+		
+		
+		<p:dialog 
+			width="300" height="140"
+			header="Filtrar Tabela!"			
+			widgetVar="dialogFiltro" modal="true" draggable="true" 
+			closable="true" resizable="true" position="center center"
+			showEffect="explode" hideEffect="explode">
+		
+			<p:panelGrid columns="1" cellpadding="3" 
+				styleClass="ui-panelgrid-blank">
+														
+				<p:selectOneMenu id="tipoFiltro"
+					value="#{hotelBean.filtro}" style="width:75%">						
+					<f:selectItem itemLabel="Selecione" />
+					<f:selectItems value="#{hotelBean.tipoFiltros()}" var="a"
+						itemValue="#{a}" itemLabel="#{a.label}"/>						
+				</p:selectOneMenu>
+					
+				<p:inputText id="valorfiltro" placeholder="Valor do Filtro!" 
+						value="#{hotelBean.valorFiltro}"
+						size="30"/>
+								
+				<p:commandButton value="Filtrar" icon="ui-icon-folder-collapsed"
+					styleClass="bu-botao-azul" update="tabela"
+					style="margin-top:20px;"
+					actionListener="#{hotelBean.filtrar()}"
+					onclick="PF('dialogFiltro').hide();" />	
+					
+			</p:panelGrid>	
+		</p:dialog>
+				
+	</ui:define>
+</ui:composition>

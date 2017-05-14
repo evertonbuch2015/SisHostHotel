@@ -5,25 +5,25 @@ import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
 
-import br.com.buch.core.entity.Empresa;
+import br.com.buch.core.entity.Hotel;
 
-@FacesConverter(forClass = Empresa.class)
-public class EmpresaConverter  implements Converter {
+@FacesConverter(forClass = Hotel.class)
+public class HotelConverter  implements Converter {
     
     public Object getAsObject(FacesContext facesContext, UIComponent uiComponent, String value) {
         if (value != null && !value.isEmpty()) {
-            return (Empresa) uiComponent.getAttributes().get(value);
+            return (Hotel) uiComponent.getAttributes().get(value);
         }
         return null;
     }
 
     
     public String getAsString(FacesContext facesContext, UIComponent uiComponent, Object value) {
-        if (value instanceof Empresa) {
-        	Empresa empresa = (Empresa) value;
-            if (empresa != null && empresa instanceof Empresa && empresa.getIdEmpresa() != null) {
-                uiComponent.getAttributes().put( empresa.getIdEmpresa().toString(), empresa);
-                return empresa.getIdEmpresa().toString();
+        if (value instanceof Hotel) {
+        	Hotel empresa = (Hotel) value;
+            if (empresa != null && empresa instanceof Hotel && empresa.getIdHotel() != null) {
+                uiComponent.getAttributes().put( empresa.getIdHotel().toString(), empresa);
+                return empresa.getIdHotel().toString();
             }
         }
         return "";

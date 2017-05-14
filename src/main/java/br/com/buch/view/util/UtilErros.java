@@ -2,7 +2,7 @@ package br.com.buch.view.util;
 
 public class UtilErros {
 
-	//procura a exce��o de nivel mais baixo. 
+	//procura a excessão de nivel mais baixo. 
 	public static String getMensagemErro(Exception ex){
 		while(ex.getCause() != null){
 			ex = (Exception) ex.getCause();

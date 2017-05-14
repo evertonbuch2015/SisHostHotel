@@ -12,13 +12,11 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import org.hibernate.validator.constraints.NotEmpty;
-
-import br.com.buch.view.util.Criptografia;
 
 /**
  *
@@ -33,20 +31,16 @@ public class Usuario implements Serializable {
 	@Id
 	@SequenceGenerator(name = "G_SIS_USUARIO", sequenceName = "\"G_SIS_USUARIO\"", allocationSize = 1)
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "G_SIS_USUARIO")
-	@Column(name = "CODIGOSISUSUARIO")
+	@Column(name = "COD_SISUSUARIO")
 	private Integer idUsusario;
 
 	@Column(name = "NOME_COLABORADOR", nullable = false, length = 40)
 	private String nomeColaborador;
 
 	@NotEmpty(message = "O Usu�rio deve ser informado!")
-	@Column(name = "NOME", nullable = true, length = 20)
+	@Column(name = "NOME_USUARIO", nullable = true, length = 20)
 	private String nomeUsuario;
 
-
-	@NotEmpty(message = "O C�digo Estrutural deve ser informado!")
-	@Column(name = "CODIGO_ESTRUTURAL",length = 20)
-	private String codigoEstrutural;
 	
 	@Column(name = "PWD", nullable = true, length = 70)
 	private String senha;
@@ -55,6 +49,7 @@ public class Usuario implements Serializable {
 	@NotEmpty(message = "O Grupo deve ser informado!")
 	@Column(name = "GRUPO", nullable = false, length = 40)
 	private String grupo;
+	
 	
 	@NotEmpty(message = "O Setor deve ser informado!")
 	@Column(name = "SETOR", length = 50)
@@ -68,10 +63,10 @@ public class Usuario implements Serializable {
 
 		
 
-	@ManyToMany(fetch = FetchType.LAZY)
-	@JoinTable(name = "SIS_USUARIO_EMPRESA", joinColumns = {
-			@JoinColumn(name = "CODIGOSISUSUARIO") }, inverseJoinColumns = { @JoinColumn(name = "CODIGOEMPRESA") })
-	private List<Empresa> empresas;
+	@OneToMany(fetch = FetchType.EAGER)
+	@JoinTable(name = "SIS_USUARIO_HOTEL", joinColumns = {
+			@JoinColumn(name = "COD_SISUSUARIO") }, inverseJoinColumns = { @JoinColumn(name = "COD_CADHOTEL") })
+	private List<Hotel> hoteis;
 
 	// -------------------------------- GETs and SETs------------------------------//
 
@@ -115,26 +110,16 @@ public class Usuario implements Serializable {
 	}
 
 
-	public List<Empresa> getEmpresas() {
-		if (this.empresas == null) {
-			this.empresas = new ArrayList<Empresa>();
+	public List<Hotel> getHoteis() {
+		if (this.hoteis == null) {
+			this.hoteis = new ArrayList<Hotel>();
 		}
-		return empresas;
+		return hoteis;
 	}
 
-	public void setEmpresas(List<Empresa> empresas) {
-		this.empresas = empresas;
+	public void setHoteis(List<Hotel> hoteis) {
+		this.hoteis = hoteis;
 	}
-
-	
-	public String getCodigoEstrutural() {
-		return codigoEstrutural;
-	}
-
-	public void setCodigoEstrutural(String codigoEstrutural) {
-		this.codigoEstrutural = codigoEstrutural;
-	}
-
 
 	public String getSetor() {
 		return setor;
@@ -185,11 +170,21 @@ public class Usuario implements Serializable {
 	public void setSenha(String senha) {
 		this.senha = senha;
 	}
-
 	
-	public String getSenhaCriptografada() {
-		return Criptografia.criptografarSha256(this.senha);
+	
+	
+	public void excluirHotel(Hotel hotel){
+		if(this.getHoteis().contains(hotel)){
+			this.getHoteis().remove(hotel);
+		}
 	}
+		
+	
+	public void adicionarHotel(Hotel hotel){		
+		if(!this.getHoteis().contains(hotel)){
+			this.getHoteis().add(hotel);
+		}
+	}	
 	
 	// -------------------------------- M�todos Auxiliares------------------------------//
 

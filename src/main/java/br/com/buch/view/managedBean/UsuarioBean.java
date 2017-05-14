@@ -9,10 +9,10 @@ import javax.faces.context.FacesContext;
 
 import org.primefaces.event.SelectEvent;
 
-import br.com.buch.core.entity.Empresa;
+import br.com.buch.core.entity.Hotel;
 import br.com.buch.core.entity.Usuario;
 import br.com.buch.core.enumerated.GrupoUsuarios;
-import br.com.buch.core.service.UsuarioService;
+import br.com.buch.core.service.ServiceUsuario;
 
 
 @ManagedBean
@@ -34,12 +34,12 @@ public class UsuarioBean extends GenericBean<Usuario> {
 	}
 	
 	private TipoFiltro filtro;	
-	private UsuarioService usuarioService;
+	private ServiceUsuario usuarioService;
 	private Integer usuarioId;
 	
 	
 	public UsuarioBean() {
-		usuarioService = new UsuarioService();
+		usuarioService = new ServiceUsuario();
 	}
 		
 	// =======================METODOS DO USUARIO=================================================
@@ -84,25 +84,25 @@ public class UsuarioBean extends GenericBean<Usuario> {
 	}
 	
 	
-	public void excluirEmpresa(Empresa empresa){
-		if(this.entidade.getEmpresas().contains(empresa)){
-			this.entidade.getEmpresas().remove(empresa);
+	public void excluirEmpresa(Hotel empresa){
+		if(this.entidade.getHoteis().contains(empresa)){
+			this.entidade.getHoteis().remove(empresa);
 		}
 	}
 		
 	
-	public void adicionarEmpresa(Empresa empresa){		
-		if(!this.entidade.getEmpresas().contains(empresa)){
-			this.entidade.getEmpresas().add(empresa);
+	public void adicionarEmpresa(Hotel empresa){		
+		if(!this.entidade.getHoteis().contains(empresa)){
+			this.entidade.getHoteis().add(empresa);
 		}else{
-			FacesMessage msg = new FacesMessage("Empresa já cadastrada para este Usuário", "Empresa já cadastrada para este Usuário");
+			FacesMessage msg = new FacesMessage("Hotel já cadastrada para este Usuário", "Hotel já cadastrada para este Usuário");
 			FacesContext.getCurrentInstance().addMessage(null, msg);
 		}
 	}	
 		
 	
 	public void empresaSelecionada(SelectEvent event){
-		Empresa empresa = (Empresa) event.getObject();
+		Hotel empresa = (Hotel) event.getObject();
 		adicionarEmpresa(empresa);
 	}
 	

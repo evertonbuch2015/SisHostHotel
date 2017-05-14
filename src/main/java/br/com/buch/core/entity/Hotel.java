@@ -3,16 +3,18 @@ package br.com.buch.core.entity;
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToMany;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -20,42 +22,41 @@ import javax.persistence.Temporal;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotEmpty;
 
-import br.com.buch.core.enumerated.RamoAtividade;
 import br.com.buch.core.enumerated.RegimeTributario;
 
 @Entity
-@Table(name = "CAD_EMPRESA")
-public class Empresa implements Serializable {
+@Table(name="CAD_HOTEL")
+public class Hotel implements Serializable {
 
 	private static final long serialVersionUID = 2733530189950376803L;
 
 
 	@Id
-    @SequenceGenerator(name="G_CAD_EMPRESA", sequenceName="\"G_CAD_EMPRESA\"", allocationSize=1)  
-    @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="G_CAD_EMPRESA")
-    @Column(name = "COD_CADEMPRESA")
-    private Integer idEmpresa;
+    @SequenceGenerator(name="G_CAD_HOTEL", sequenceName="\"G_CAD_HOTEL\"", allocationSize=1)  
+    @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="G_CAD_HOTEL")
+    @Column(name = "COD_CADHOTEL")
+    private Integer idHotel;
 	
 	
-    @Column(name = "CEMP" ,nullable = true , length = 2)
+    @Column(name = "CODIGO" ,nullable = true , length = 2, unique = true)
 	private String codigo;
     
     
-    @Column(name = "CFIL" ,nullable = true , length = 2)
+    @Column(name = "FILIAL" ,nullable = true , length = 2, unique = true)
 	private String filial;
     
 	
 	@NotEmpty(message="O Nome deve ser informado!")
-    @Column(name = "NOME" ,nullable = true , length = 100)
+    @Column(name = "NOME_RAZAO" ,nullable = true , length = 70)
     private String nomeRazao;
 
   
-    @Column(name = "FANTASIA" ,nullable = true , length = 40)
+    @Column(name = "NOME_FANTASIA" ,nullable = true , length = 70)
     private String nomeFantasia;
     
     
-    @Column(name = "DOCUMENTO" ,nullable = true , length = 18)
-    private String cnpj;
+    @Column(name = "DOCUMENTO" ,nullable = true , length = 18, unique = true)
+    private String documento;
     
     
     @Column(name = "INSCRICAO_ESTADUAL", length = 15)
@@ -66,7 +67,7 @@ public class Empresa implements Serializable {
     private String inscMunicipal;  
     
   
-    @Column(name = "regime_tributario", length = 20)
+    @Column(name = "REGIME_TRIBUTARIO", length = 20)
     @Enumerated(EnumType.STRING)
 	private RegimeTributario regimeTributario;
         
@@ -76,15 +77,23 @@ public class Empresa implements Serializable {
     private Date dataCadastro;
     
     
-    @Column(name = "HOME_PAGE", length = 28)
+    @Email(message="Informe um e-mail v�lido")
+    @Column(name = "EMAIL" , length = 60)
+    private String email;
+    
+    
+    @Column(name = "HOME_PAGE", length = 50)
     private String site;
     
     
-    @Email(message="Informe um e-mail v�lido")
-    @Column(name = "EMAIL" , length = 150)
-    private String email;
+    @Column(name = "TELEFONE1", length = 20)
+    private String telefone1;
     
-        
+    
+    @Column(name = "TELEFONE2", length = 20)
+    private String telefone2;
+    
+            
     @Column(name = "OBS" , length = 255)
     private String obs;
     
@@ -92,24 +101,19 @@ public class Empresa implements Serializable {
     @Column(name = "LOGOTIPO")
     private Byte[] logo;
     
-    
-    @Column(name = "ramo_atividade" ,nullable = true, length = 15)
-    @Enumerated(EnumType.STRING)
-    private RamoAtividade ramoAtividade;
-
-    
-    @ManyToMany(mappedBy="empresas")
-    private List<Usuario> usuarios;
-    
+     
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinColumn(name ="COD_CADENDERECO")
+    private Endereco endereco;
     
 	//--------------------------------	GETs and SETs------------------------------//
     
-	public Integer getIdEmpresa() {
-		return idEmpresa;
+	public Integer getIdHotel() {
+		return idHotel;
 	}
-
-	public void setIdEmpresa(Integer idEmpresa) {
-		this.idEmpresa = idEmpresa;
+	
+	public void setIdHotel(Integer idHotel) {
+		this.idHotel = idHotel;
 	}
 	
 	
@@ -130,6 +134,7 @@ public class Empresa implements Serializable {
 		this.filial = filial;
 	}
 	
+	
 	public String getNomeRazao() {
 		return nomeRazao;
 	}
@@ -148,23 +153,23 @@ public class Empresa implements Serializable {
 	}
 
 
-	public String getCnpj() {
-		return cnpj;
+	public String getDocumento() {
+		return documento;
 	}
 
-	public String getCnpjFormatado(){
-		if(this.cnpj != null){
-			return 	cnpj.substring(0, 2) + "." + cnpj.substring(2, 5) + "." + cnpj.substring(5, 8)
-			+ "/" + cnpj.substring(8,12) +"-"+ cnpj.substring(12);
+	public String getDocumentoFormatado(){
+		if(this.documento != null){
+			return 	documento.substring(0, 2) + "." + documento.substring(2, 5) + "." + documento.substring(5, 8)
+			+ "/" + documento.substring(8,12) +"-"+ documento.substring(12);
 		}else{
 			return null;
 		}
 		
 	}
 
-	public void setCnpj(String cnpj) {
+	public void setDocumento(String cnpj) {
 		if(cnpj != null){
-			this.cnpj = cnpj.replace(".", "").replace("-", "").replace("/", "");
+			this.documento = cnpj.replace(".", "").replace("-", "").replace("/", "");
 		}
 	}
 
@@ -221,6 +226,24 @@ public class Empresa implements Serializable {
 		this.site = site;
 	}
 
+	
+	public String getTelefone1() {
+		return telefone1;
+	}
+	
+	public void setTelefone1(String telefone1) {
+		this.telefone1 = telefone1;
+	}
+	
+	
+	public String getTelefone2() {
+		return telefone2;
+	}
+	
+	public void setTelefone2(String telefone2) {
+		this.telefone2 = telefone2;
+	}
+	
 
 	public String getObs() {
 		return obs;
@@ -250,35 +273,33 @@ public class Empresa implements Serializable {
 	public void setLogo(Byte[] logo) {
 		this.logo = logo;
 	}
-
-
-	public RamoAtividade getRamoAtividade() {
-		return ramoAtividade;
-	}
-
-
-	public void setRamoAtividade(RamoAtividade ramoAtividade) {
-		this.ramoAtividade = ramoAtividade;
+	
+	
+	public Endereco getEndereco() {
+		if(this.endereco == null){
+			this.endereco = new Endereco();
+		}
+		return endereco;
 	}
 	
+	public void setEndereco(Endereco endereco) {
+		this.endereco = endereco;
+	}
+	
+	//--------------------------------	Métodos Auxiliares------------------------------//
+	
+	
+	@Override
+	public String toString() {
+		return nomeFantasia;
+	}
 
-	public List<Usuario> getUsuarios() {
-		return usuarios;
-	}
-	
-	
-	public void setUsuarios(List<Usuario> usuarios) {
-		this.usuarios = usuarios;
-	}
-	
-	
-	//--------------------------------	M�todos Auxiliares------------------------------//
 	
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((idEmpresa == null) ? 0 : idEmpresa.hashCode());
+		result = prime * result + ((idHotel == null) ? 0 : idHotel.hashCode());
 		return result;
 	}
 
@@ -290,17 +311,12 @@ public class Empresa implements Serializable {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Empresa other = (Empresa) obj;
-		if (idEmpresa == null) {
-			if (other.idEmpresa != null)
+		Hotel other = (Hotel) obj;
+		if (idHotel == null) {
+			if (other.idHotel != null)
 				return false;
-		} else if (!idEmpresa.equals(other.idEmpresa))
+		} else if (!idHotel.equals(other.idHotel))
 			return false;
 		return true;
-	}
-
-	@Override
-	public String toString() {
-		return nomeFantasia;
 	}
 }

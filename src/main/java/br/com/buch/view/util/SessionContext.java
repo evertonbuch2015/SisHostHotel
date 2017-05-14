@@ -4,7 +4,7 @@ import javax.faces.application.FacesMessage;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 
-import br.com.buch.core.entity.Empresa;
+import br.com.buch.core.entity.Hotel;
 import br.com.buch.core.entity.Usuario;
 //import br.com.rudar.core.entity.Empresa;
 
@@ -75,10 +75,10 @@ public class SessionContext {
     	 return usuarioLogado;
      }
      
-     public Empresa getEmpresaUsuarioLogado(){
-    	 Empresa empresa = 
-    			 (Empresa) currentExternalContext().getSessionMap().get("empresa");
+     public Hotel getHotelUsuarioLogado(){
+    	 Hotel hotel = 
+    			 (Hotel) currentExternalContext().getSessionMap().get("hotel");
     	 
-    	 return empresa;
+    	 return hotel;
      }
 }

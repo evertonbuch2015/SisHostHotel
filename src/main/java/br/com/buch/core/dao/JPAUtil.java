@@ -12,7 +12,7 @@ public class JPAUtil {
 	
 	
 	public JPAUtil() {
-        this.emf = Persistence.createEntityManagerFactory("Web");
+        this.emf = Persistence.createEntityManagerFactory("SisHostHotel");
     }
 
 	

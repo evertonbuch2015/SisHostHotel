@@ -9,17 +9,17 @@ import javax.faces.bean.SessionScoped;
 
 import org.primefaces.context.RequestContext;
 
-import br.com.buch.core.entity.Empresa;
-import br.com.buch.core.enumerated.RamoAtividade;
+import br.com.buch.core.entity.Hotel;
+import br.com.buch.core.enumerated.Estados;
 import br.com.buch.core.enumerated.RegimeTributario;
-import br.com.buch.core.service.EmpresaService;
+import br.com.buch.core.service.ServiceHotel;
 
 @ManagedBean
 @SessionScoped
-public class EmpresaBean extends GenericBean<Empresa> {
+public class HotelBean extends GenericBean<Hotel> {
 	
 	public enum TipoFiltro{
-		CODIGO("C�digo"), NOME("Nome");
+		CODIGO("Código"), NOME("Nome");
 		
 		private String label;
 
@@ -33,31 +33,31 @@ public class EmpresaBean extends GenericBean<Empresa> {
 	}
 	
 	private TipoFiltro filtro;	
-	private Integer empresaId;
-	private EmpresaService empresaService;
+	private Integer idHotel;
+	private ServiceHotel serviceHotel;
 
 	
-	public EmpresaBean() {
-		empresaService = new EmpresaService();
+	public HotelBean() {
+		serviceHotel = new ServiceHotel();
 	}
 	
 	
 	// =======================METODOS DO USUARIO=====================================
 	
 	public void filtrar(){
-		this.entidades = empresaService.filtrarTabela(filtro, valorFiltro);
+		this.entidades = serviceHotel.filtrarTabela(filtro, valorFiltro);
 	}
 	
 	
 	@Override
 	public void carregaEntidade() {
-		//empresaDao.fecharConexao();		
+	
 	}
 	
 	
 	@Override
-	public Empresa criarEntidade() {
-		this.entidade = new Empresa();
+	public Hotel criarEntidade() {
+		this.entidade = new Hotel();
 		entidade.setDataCadastro(new Date());
 		return entidade;
 	}
@@ -68,13 +68,13 @@ public class EmpresaBean extends GenericBean<Empresa> {
 		if(this.entidades != null){
 			this.entidades.clear();
 		}
-		this.entidades = empresaService.buscarTodos();
+		this.entidades = serviceHotel.buscarTodos();
 	}
 	
 	
 	@Override
 	public void gravar() {
-		if (empresaService.salvar(this.entidade)) {			
+		if (serviceHotel.salvar(this.entidade)) {			
 			refresh();
 			mudarBuscar();
 		}	
@@ -82,14 +82,14 @@ public class EmpresaBean extends GenericBean<Empresa> {
 
 	
 	@Override
-	public void excluir(Empresa entidade) {
-		empresaService.excluir(entidade);
+	public void excluir(Hotel entidade) {
+		serviceHotel.excluir(entidade);
 		refresh();
 		mudarBuscar();
 	}
 
 	
-	public void AbrirDialogEmpresas() {
+	public void AbrirDialogHotel() {
         Map<String,Object> options = new HashMap<String, Object>();
         options.put("resizable", false);
         options.put("draggable", true);
@@ -99,19 +99,19 @@ public class EmpresaBean extends GenericBean<Empresa> {
     }
 	
 	
-	public void retornoDialog(Empresa empresa){
+	public void retornoDialog(Hotel empresa){
 		RequestContext.getCurrentInstance().closeDialog(empresa);
 	}
 		
 	
 	// =============================GET AND SET=====================================
 
-	public Integer getEmpresaId() {
-		return empresaId;
+	public Integer getIdHotel() {
+		return idHotel;
 	}
 	
-	public void setEmpresaId(Integer empresaId) {
-		this.empresaId = empresaId;
+	public void setIdHotel(Integer idHotel) {
+		this.idHotel = idHotel;
 	}
 	
 	
@@ -119,8 +119,9 @@ public class EmpresaBean extends GenericBean<Empresa> {
 		return RegimeTributario.values();
 	}
 	
-	public RamoAtividade[] getRamoAtividades(){
-		return RamoAtividade.values();
+	
+	public Estados[] getEstados(){
+		return Estados.values();
 	}
 
 	

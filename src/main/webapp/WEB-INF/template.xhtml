@@ -47,7 +47,7 @@
 				
 				
 				
-		<h:form>		
+		<h:form prependId="false">		
 			<aside class="bu-sidebar js-sidebar">				
 				<p:panelMenu style="width:99%">
 			        <p:submenu label="Cadastros">
@@ -90,7 +90,7 @@
 			        </p:submenu>
 			        
 			        <p:submenu label="Configurações" >
-	                    <p:menuitem value="Cadastro Hotel" url="http://www.primefaces.org" icon="fa fa-university"/>
+	                    <p:menuitem value="Cadastro Hotel" url="/cadHotel.xhtml?faces-redirect=true" icon="fa fa-university"/>
 	                    <p:menuitem value="Tarifário" url="http://www.primefaces.org/documentation" icon="fa fa-usd"/>
 	                    <p:menuitem value="Usuários" url="http://www.primefaces.org/downloads" icon="fa fa-lock"/>
 	                    <p:menuitem value="Idioma" url="http://www.primefaces.org/documentation" icon="fa fa-language"/>
@@ -98,11 +98,11 @@
 			        </p:submenu>
 			    </p:panelMenu>											
 			</aside>
-		</h:form>
 		
 		
 		
-		<h:form>
+		
+		
 			<section class="bu-content js-content">								
 				<ui:insert name="conteudo"/>						
 				

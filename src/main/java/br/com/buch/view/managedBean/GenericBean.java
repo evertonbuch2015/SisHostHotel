@@ -17,7 +17,8 @@ public abstract class GenericBean<E> {
 	private EstadoTela estadoTela = EstadoTela.BUSCANDO;
 	
 	
-	// ================M�todos para controlar e consultar o estado da Tela.============
+	// ================Métodos para controlar e consultar o estado da Tela.===========
+	
 	public boolean isInserindo() {
 		return estadoTela.equals(EstadoTela.INSERINDO);
 	}
@@ -35,7 +36,6 @@ public abstract class GenericBean<E> {
 	}
 
 	
-	// ================M�todos para alterar o estado da Tela.==========================
 	public void mudarInserir() {
 		this.estadoTela = EstadoTela.INSERINDO;
 	}
@@ -69,7 +69,7 @@ public abstract class GenericBean<E> {
 	public abstract void carregaEntidade();
 
 	
-	// ================Metodos j� implementados (Prontos)=============================
+	// ================Metodos já implementados (Prontos)=============================
 	public void novo(){
 		this.entidade = criarEntidade();
 		mudarInserir();
@@ -107,12 +107,15 @@ public abstract class GenericBean<E> {
 	}
 	
 
-	// ================M�todos GET e SET=============================================
+	// ================Métodos GET e SET=============================================
 	public void setEntidade(E entidade) {
 		this.entidade = entidade;
 	}
 	
 	public E getEntidade() {
+		if(this.entidade == null){
+			this.entidade = criarEntidade();
+		}
 		return entidade;
 	}
 	
