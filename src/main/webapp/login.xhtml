@@ -58,26 +58,26 @@
 			
 					
 			<p:dialog 
-				width="300" height="140"
+				width="300" height="250"
 				header="#{label.txt_recuperar_senha}"			
 				widgetVar="dialogEsqueciSenha" modal="true" draggable="true" 
 				closable="true" resizable="true" position="center center"
 				showEffect="explode" hideEffect="explode">
 			
 				<p:panelGrid columns="1" cellpadding="3" 
-					styleClass="ui-panelgrid-blank">
+					styleClass="ui-panelgrid-blank" style="width:100%;">
 																			
 					<p:outputLabel value="#{label.txt_informe_email}:" for="email"/> 
-					<p:inputText id="email"
+					<p:inputText id="email" style="width:100%;"
 							value="#{loginBean.email}" placeholder="Ex: email@dominio.com.br"/>
 					
 					<p:outputLabel value="#{label.txt_informe_frase_secreta}:" for="frase"/>
-					<p:inputText id="frase"
+					<p:inputText id="frase" style="width:100%;"
 							value="#{loginBean.fraseSecreta}"/>	
 												
 													
 					<p:commandButton value="Confirmar"						
-						style="margin-top:20px;height: 28px;padding:2px;"
+						style="margin-top:10px;height: 28px;padding:2px;"
 						onclick="PF('dialogEsqueciSenha').hide();" />	
 						
 				</p:panelGrid>	

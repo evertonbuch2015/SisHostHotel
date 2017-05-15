@@ -163,7 +163,12 @@ public class ServiceUsuario implements GenericService<Usuario> {
 		return false;
 	}
 
+	
+	public void recuperarSenha(String email, String fraseSecreta){
+		
+	}
 
+	
 	public Usuario buscarPeloNome(Usuario usuario) {		
 		try {
 			String jpql = "select u from Usuario u where u.nomeUsuario = ?1";

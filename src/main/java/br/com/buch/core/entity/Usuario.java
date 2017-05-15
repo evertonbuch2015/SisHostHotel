@@ -36,12 +36,19 @@ public class Usuario implements Serializable {
 
 	@Column(name = "NOME_COLABORADOR", nullable = false, length = 40)
 	private String nomeColaborador;
-
+	
+	
+	@Column(name="EMAIL" , nullable = false, length = 60)
+	private String email;	
+	
+	@Column(name="FRASE_SECRETA" , nullable = false, length = 60)
+	private String fraseSecreta;
+	
+	
 	@NotEmpty(message = "O Usu�rio deve ser informado!")
 	@Column(name = "NOME_USUARIO", nullable = true, length = 20)
 	private String nomeUsuario;
 
-	
 	@Column(name = "PWD", nullable = true, length = 70)
 	private String senha;
 
@@ -49,7 +56,6 @@ public class Usuario implements Serializable {
 	@NotEmpty(message = "O Grupo deve ser informado!")
 	@Column(name = "GRUPO", nullable = false, length = 40)
 	private String grupo;
-	
 	
 	@NotEmpty(message = "O Setor deve ser informado!")
 	@Column(name = "SETOR", length = 50)
@@ -60,8 +66,7 @@ public class Usuario implements Serializable {
 
 	@Column(name = "EM_FERIAS")
 	private Character emFerias;
-
-		
+	
 
 	@OneToMany(fetch = FetchType.EAGER)
 	@JoinTable(name = "SIS_USUARIO_HOTEL", joinColumns = {
@@ -121,6 +126,7 @@ public class Usuario implements Serializable {
 		this.hoteis = hoteis;
 	}
 
+	
 	public String getSetor() {
 		return setor;
 	}
@@ -130,7 +136,7 @@ public class Usuario implements Serializable {
 	}
 
 
-	// M�todos Modificados
+	// Métodos Modificados
 	public Boolean getInativo() {
 		if (this.inativo == null)
 			return null;
@@ -172,7 +178,24 @@ public class Usuario implements Serializable {
 	}
 	
 	
-	
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+
+	public String getFraseSecreta() {
+		return fraseSecreta;
+	}
+
+	public void setFraseSecreta(String fraseSecreta) {
+		this.fraseSecreta = fraseSecreta;
+	}
+
+
 	public void excluirHotel(Hotel hotel){
 		if(this.getHoteis().contains(hotel)){
 			this.getHoteis().remove(hotel);
@@ -186,7 +209,7 @@ public class Usuario implements Serializable {
 		}
 	}	
 	
-	// -------------------------------- M�todos Auxiliares------------------------------//
+	// -------------------------------- Métodos Auxiliares------------------------------//
 
 	@Override
 	public int hashCode() {
