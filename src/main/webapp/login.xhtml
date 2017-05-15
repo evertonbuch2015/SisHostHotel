@@ -1,0 +1,95 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+
+
+
+<h:head>
+	<f:facet name="first">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta http-equiv="pragma" content="no-cache" />
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<meta name="viewport"
+			content="width=device-width, initial-scale=0.8, maximum-scale=1, user-scalable=yes" />
+	</f:facet>
+
+	<h:outputStylesheet name="login.css" library="style" />
+</h:head>
+
+<h:body>
+
+	<h:form prependId="false">
+		<div class="pen-title">
+			<h1>#{label.txt_nome_sistema}</h1>
+			<span>Pen
+				<i class='fa fa-paint-brush'/> +  
+				<i class='fa fa-code'/> by 
+				<a href='http://andytran.me'>Everton Buchkorn</a>
+			</span>
+		</div>
+	
+	
+		<div class="module form-module">		
+			<div class="form">
+				<h2>#{label.txt_fazer_login}</h2>
+						
+				<p:inputText value="#{loginBean.login}"
+					required="true"
+					requiredMessage="Informe o Login!" 
+					placeholder="#{label.txt_nome_usuario}"/>
+	
+				<p:inputText value="#{loginBean.senha}"
+					required="true"
+					requiredMessage="Informe a Senha!" 
+					placeholder="#{label.txt_senha}" type="password"/>
+					
+					
+				<p:commandButton value="#{label.txt_login}"
+					update="@form" 
+					actionListener="#{loginBean.efetuaLogin()}"/>
+				
+			</div>
+
+			<div class="cta">
+				<a href="#" onclick="PF('dialogEsqueciSenha').initPosition(); PF('dialogEsqueciSenha').show(); return false;">#{label.txt_esqueceu_senha}</a>
+			</div>
+			
+					
+			<p:dialog 
+				width="300" height="140"
+				header="#{label.txt_recuperar_senha}"			
+				widgetVar="dialogEsqueciSenha" modal="true" draggable="true" 
+				closable="true" resizable="true" position="center center"
+				showEffect="explode" hideEffect="explode">
+			
+				<p:panelGrid columns="1" cellpadding="3" 
+					styleClass="ui-panelgrid-blank">
+																			
+					<p:outputLabel value="#{label.txt_informe_email}:" for="email"/> 
+					<p:inputText id="email"
+							value="#{loginBean.email}" placeholder="Ex: email@dominio.com.br"/>
+					
+					<p:outputLabel value="#{label.txt_informe_frase_secreta}:" for="frase"/>
+					<p:inputText id="frase"
+							value="#{loginBean.fraseSecreta}"/>	
+												
+													
+					<p:commandButton value="Confirmar"						
+						style="margin-top:20px;height: 28px;padding:2px;"
+						onclick="PF('dialogEsqueciSenha').hide();" />	
+						
+				</p:panelGrid>	
+			</p:dialog>
+		
+		</div>
+		
+		<p:messages autoUpdate="true" closable="true" style="max-width:350px;width: 100%;margin: 0 auto;">
+			<p:effect type="pulsate" event="load" delay="500" />
+		</p:messages>
+		
+	</h:form>
+</h:body>
+
+</html>

@@ -20,6 +20,8 @@ public class LoginBean implements Serializable{
 	private boolean selecionandoEmpresa; 
 	private Usuario usuario;
 	
+	private String fraseSecreta;
+	private String email;
 	private String senha;
 	private String login;
 	
@@ -122,5 +124,31 @@ public class LoginBean implements Serializable{
 	
 	public void setLogin(String login) {
 		this.login = login;
+	}
+
+
+	
+	
+	public String getFraseSecreta() {
+		return fraseSecreta;
+	}
+
+
+	
+	public void setFraseSecreta(String fraseSecreta) {
+		this.fraseSecreta = fraseSecreta;
+	}
+
+
+	
+	
+	public String getEmail() {
+		return email;
+	}
+
+
+	
+	public void setEmail(String email) {
+		this.email = email;
 	}	
 }

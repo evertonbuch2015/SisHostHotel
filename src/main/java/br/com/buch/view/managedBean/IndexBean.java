@@ -11,12 +11,10 @@ import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.event.AjaxBehaviorEvent;
 
-import org.primefaces.component.selectonemenu.SelectOneMenu;
-
 
 @ManagedBean
 @SessionScoped
-public class LanguageBean implements Serializable {
+public class IndexBean implements Serializable {
 	
 	private static final long serialVersionUID = 201405150723L;
 	private String localeCode;
@@ -25,17 +23,17 @@ public class LanguageBean implements Serializable {
 	static {
 		countries = new LinkedHashMap<String, Locale>();
 		countries.put("English", new Locale("en"));
-		countries.put("Portugu�s", new Locale("pt"));
+		countries.put("Português", new Locale("pt"));
 	}
 
 	
 	// =======================METODOS DO USUARIO=====================================	
 	
 	public void localeCodeChanged(AjaxBehaviorEvent e) {
-		String newLocaleValue = ((SelectOneMenu)e.getSource()).getValue() + "";
+		//String newLocaleValue = ((SelectOneMenu)e.getSource()).getValue() + "";
 
 		for (Entry<String, Locale> entry : countries.entrySet()) {
-			if (entry.getValue().toString().equals(newLocaleValue)) {
+			if (entry.getValue().toString().equals(localeCode)) {
 				FacesContext.getCurrentInstance().getViewRoot().setLocale((Locale) entry.getValue());
 			}
 		}

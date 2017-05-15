@@ -210,10 +210,11 @@
 							requiredMessage="Informe no endereço o nome da rua!"/>
 							
 						<p:outputLabel value="#{label.txt_numero}" for="numero"/>
-						<p:inputNumber id="numero"
-							value="#{hotelBean.entidade.endereco.numero}"
+						<p:spinner id="numero" 
+							value="#{hotelBean.entidade.endereco.numero}" min="0"
 							required="true" 
 							requiredMessage="Informe no endereço o número!"/>
+						
 						
 						<p:outputLabel value="#{label.txt_complemento}" for="complemento"/>
 						<p:inputText id="complemento"
