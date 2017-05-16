@@ -80,15 +80,14 @@ public class ServiceUsuario implements GenericService<Usuario> {
 	}
 
 	
-	@Override
-	public Usuario carregarEntidade(Integer id) {		
+	public Usuario carregarEntidade(Usuario usuario) {		
 		try{
 			String jpql = "Select u From Usuario u left JOIN FETCH u.hoteis where u.idUsusario = ?1";
-			return usuarioDao.findOne(jpql, id);
+			return usuarioDao.findOne(jpql, usuario.getIdUsusario());
 			
 		}catch(javax.persistence.NonUniqueResultException ex){
 			ex.printStackTrace();
-			UtilMensagens.mensagemAtencao("Existem mais de um Usuário para o código "+id);
+			UtilMensagens.mensagemAtencao("Existem mais de um Usuário para o código "+usuario.getIdUsusario());
 			return null;
 		}catch (Exception e) {
 			e.printStackTrace();
@@ -179,7 +178,7 @@ public class ServiceUsuario implements GenericService<Usuario> {
 		}
 	}
 
-
+	
 	public List<String> buscarSetores(){
 		String jpql = "Select distinct u.setor From Usuario u";		
 		return usuarioDao.findSectors(jpql);

@@ -17,7 +17,7 @@ import br.com.buch.core.service.ServiceUsuario;
 
 @ManagedBean
 @SessionScoped
-public class UsuarioBean extends GenericBean<Usuario> {
+public class UsuarioBean extends GenericBean<Usuario, ServiceUsuario> {
 
 	public enum TipoFiltro{
 		CODIGO("Código"), NOME("Nome Usuário");
@@ -39,7 +39,7 @@ public class UsuarioBean extends GenericBean<Usuario> {
 	
 	
 	public UsuarioBean() {
-		usuarioService = new ServiceUsuario();
+		super(new ServiceUsuario());
 	}
 		
 	// =======================METODOS DO USUARIO=================================================
@@ -50,39 +50,11 @@ public class UsuarioBean extends GenericBean<Usuario> {
 	
 	
 	@Override
-	public void carregaEntidade() {
-		this.entidade = usuarioService.carregarEntidade(this.entidade.getIdUsusario());				
-	}
-	
-	
-	@Override
 	public Usuario criarEntidade() {		
 		return new Usuario();
 	}
 	
-	
-	@Override
-	public void refresh() {
-		this.entidades = usuarioService.buscarTodos();
-	}
-	
-	
-	@Override
-	public void gravar() {
-		if (usuarioService.salvar(this.entidade)) {			
-			refresh();
-			mudarBuscar();
-		}		
-	}
 
-	
-	@Override
-	public void excluir(Usuario entidade) {
-		usuarioService.excluir(entidade);
-		refresh();
-		mudarBuscar();
-	}
-	
 	
 	public void excluirEmpresa(Hotel empresa){
 		if(this.entidade.getHoteis().contains(empresa)){
@@ -117,6 +89,15 @@ public class UsuarioBean extends GenericBean<Usuario> {
 		this.usuarioId = usuarioId;
 	}
 
+	
+	public TipoFiltro getFiltro() {
+		return filtro;
+	}
+		
+	public void setFiltro(TipoFiltro filtro) {
+		this.filtro = filtro;
+	}
+
 		
 	public GrupoUsuarios[] getGrupoUsuarios(){
 		return GrupoUsuarios.values();
@@ -125,19 +106,13 @@ public class UsuarioBean extends GenericBean<Usuario> {
 	
 	//RETORNA LISTA DE SETORES PARA O COMBO
 	public List<String> getSetores(){
-		return usuarioService.buscarSetores();
+		return service.buscarSetores();
 	}
+	
 	
 	//RETORNA LISTA DE FILTROS PARA O COMBO
 	public TipoFiltro[] tipoFiltros(){
 		return TipoFiltro.values();
 	}
 		
-	public TipoFiltro getFiltro() {
-		return filtro;
-	}
-		
-	public void setFiltro(TipoFiltro filtro) {
-		this.filtro = filtro;
-	}
 }

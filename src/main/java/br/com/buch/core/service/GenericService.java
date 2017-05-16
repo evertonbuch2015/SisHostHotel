@@ -10,7 +10,7 @@ public interface GenericService<T extends Serializable>{
 		
 	public void excluir(T entidade);
 	
-	public T carregarEntidade(Integer id);
+	public T carregarEntidade(T entidade);
 	
 	public List<T> buscarTodos();
 }

@@ -1,11 +1,14 @@
 package br.com.buch.view.managedBean;
 
+import java.io.Serializable;
 import java.util.List;
 
 import org.primefaces.event.SelectEvent;
 
+import br.com.buch.core.service.GenericService;
 
-public abstract class GenericBean<E> {
+
+public abstract class GenericBean<E extends Serializable,T extends GenericService<E>> {
 	
 	public enum EstadoTela {
 		INSERINDO, ALTERANDO, BUSCANDO, VISUALIZANDO
@@ -16,6 +19,11 @@ public abstract class GenericBean<E> {
 	protected List<E> entidades;
 	private EstadoTela estadoTela = EstadoTela.BUSCANDO;
 	
+	protected T service;
+	
+	public GenericBean(T service) {
+		this.service = service;
+	}
 	
 	// ================Métodos para controlar e consultar o estado da Tela.===========
 	
@@ -58,18 +66,39 @@ public abstract class GenericBean<E> {
 	
 	public abstract void filtrar();
 	
+	
 	public abstract E criarEntidade();
 	
-	public abstract void gravar();
-	
-	public abstract void excluir(E entidade);
-	
-	public abstract void refresh();
-	
-	public abstract void carregaEntidade();
-
 	
 	// ================Metodos já implementados (Prontos)=============================
+	
+	public void gravar(){
+		if (service.salvar(this.entidade)) {			
+			refresh();
+			mudarBuscar();
+		}	
+	}
+	
+	public void excluir(){
+		service.excluir(entidade);
+		refresh();
+		mudarBuscar();
+	}
+	
+	
+	public  void refresh(){
+		if(this.entidades != null){
+			this.entidades.clear();
+		}
+		this.entidades = service.buscarTodos();
+	}
+	
+	
+	public void carregaEntidade(){
+		this.entidade = service.carregarEntidade(entidade);
+	}
+
+	
 	public void novo(){
 		this.entidade = criarEntidade();
 		mudarInserir();

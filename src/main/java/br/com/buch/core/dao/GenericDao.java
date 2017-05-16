@@ -26,17 +26,7 @@ public abstract class GenericDao<T extends Serializable> {
     protected GenericDao(Class<T> aClass){
         this.aClass = aClass;
     }
-    
-    
-    
-    /**
-     * Implementar este metodo nas classes especificas para trazer todos
-     * os atributos da Entity.
-     */
-    public abstract T findAllAttributesEntity(Integer id);
-      
-    
-    
+        
     
     /**
      * Retorna um novo Entity Manager.

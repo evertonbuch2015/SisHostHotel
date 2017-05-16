@@ -71,8 +71,14 @@ public class ServiceHotel implements GenericService<Hotel> {
 
 	
 	@Override
-	public Hotel carregarEntidade(Integer id) {
-		return empresaDao.findAllAttributesEntity(id);
+	public Hotel carregarEntidade(Hotel hotel) {
+		String jpql = "Select e From Hotel e where e.id = ?1";
+		try {
+			return empresaDao.findOne(jpql, hotel.getIdHotel());
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;			
+		}
 	}
 
 	
@@ -108,4 +114,5 @@ public class ServiceHotel implements GenericService<Hotel> {
 		
 		return lista;	
 	}
+
 }

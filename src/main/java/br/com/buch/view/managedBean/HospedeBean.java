@@ -3,9 +3,14 @@ package br.com.buch.view.managedBean;
 import java.util.Date;
 
 import br.com.buch.core.entity.Hospede;
+import br.com.buch.core.service.ServiceHospede;
 
-public class HospedeBean extends GenericBean<Hospede> {
+public class HospedeBean extends GenericBean<Hospede, ServiceHospede> {
 	
+	public HospedeBean() {
+		super(new ServiceHospede());
+	}
+
 	public enum TipoFiltro{
 		CODIGO("Código"), NOME("Nome");
 		
@@ -33,6 +38,7 @@ public class HospedeBean extends GenericBean<Hospede> {
 		
 	}
 
+	
 	@Override
 	public Hospede criarEntidade() {
 		Hospede hospede = new Hospede();
@@ -40,30 +46,7 @@ public class HospedeBean extends GenericBean<Hospede> {
 		return hospede;
 	}
 
-	@Override
-	public void gravar() {
-		// TODO Auto-generated method stub
-		
-	}
 
-	@Override
-	public void excluir(Hospede entidade) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void refresh() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void carregaEntidade() {
-		// TODO Auto-generated method stub
-		
-	}
-	
 	
 	// =============================GET AND SET=====================================
 

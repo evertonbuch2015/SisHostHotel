@@ -1,13 +1,9 @@
 package br.com.buch.view.managedBean;
 
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
-
-import org.primefaces.context.RequestContext;
 
 import br.com.buch.core.entity.Hotel;
 import br.com.buch.core.enumerated.Estados;
@@ -16,7 +12,7 @@ import br.com.buch.core.service.ServiceHotel;
 
 @ManagedBean
 @SessionScoped
-public class HotelBean extends GenericBean<Hotel> {
+public class HotelBean extends GenericBean<Hotel, ServiceHotel> {
 	
 	public enum TipoFiltro{
 		CODIGO("Código"), NOME("Nome");
@@ -34,25 +30,19 @@ public class HotelBean extends GenericBean<Hotel> {
 	
 	private TipoFiltro filtro;	
 	private Integer idHotel;
-	private ServiceHotel serviceHotel;
 
 	
 	public HotelBean() {
-		serviceHotel = new ServiceHotel();
+		super(new ServiceHotel());
 	}
 	
 	
 	// =======================METODOS DO USUARIO=====================================
 	
 	public void filtrar(){
-		this.entidades = serviceHotel.filtrarTabela(filtro, valorFiltro);
+		this.entidades = this.service.filtrarTabela(filtro, valorFiltro);
 	}
-	
-	
-	@Override
-	public void carregaEntidade() {
-	
-	}
+
 	
 	
 	@Override
@@ -60,49 +50,7 @@ public class HotelBean extends GenericBean<Hotel> {
 		this.entidade = new Hotel();
 		entidade.setDataCadastro(new Date());
 		return entidade;
-	}
-
-	
-	@Override
-	public void refresh() {
-		if(this.entidades != null){
-			this.entidades.clear();
-		}
-		this.entidades = serviceHotel.buscarTodos();
-	}
-	
-	
-	@Override
-	public void gravar() {
-		if (serviceHotel.salvar(this.entidade)) {			
-			refresh();
-			mudarBuscar();
-		}	
-	}
-
-	
-	@Override
-	public void excluir(Hotel entidade) {
-		serviceHotel.excluir(entidade);
-		refresh();
-		mudarBuscar();
-	}
-
-	
-	public void AbrirDialogHotel() {
-        Map<String,Object> options = new HashMap<String, Object>();
-        options.put("resizable", false);
-        options.put("draggable", true);
-        options.put("modal", true);
-        options.put("contentHeight", 450);				
-        RequestContext.getCurrentInstance().openDialog("/dialogosSelecao/SelecaoEmpresa", options, null);
-    }
-	
-	
-	public void retornoDialog(Hotel empresa){
-		RequestContext.getCurrentInstance().closeDialog(empresa);
-	}
-		
+	}	
 	
 	// =============================GET AND SET=====================================
 

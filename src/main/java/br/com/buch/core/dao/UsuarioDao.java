@@ -19,12 +19,6 @@ public class UsuarioDao extends GenericDao<Usuario> implements Serializable {
 	}
 	
 	
-	@Override
-	public Usuario findAllAttributesEntity(Integer id) {
-		return null;
-	}
-	
-	
 	public Usuario existe(String login, String senha) {
 		EntityManager em = getEntityManager();
 		
@@ -67,4 +61,5 @@ public class UsuarioDao extends GenericDao<Usuario> implements Serializable {
 		}
 		return lista;
 	}
+
 }
