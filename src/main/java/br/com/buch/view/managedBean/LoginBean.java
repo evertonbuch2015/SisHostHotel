@@ -17,7 +17,7 @@ import br.com.buch.view.util.SessionContext;
 public class LoginBean implements Serializable{
 
 	private static final long serialVersionUID = 1444783038549353503L;
-	private boolean selecionandoEmpresa; 
+	private boolean selecionandoHotel; 
 	private Usuario usuario;
 	
 	private String fraseSecreta;
@@ -30,18 +30,19 @@ public class LoginBean implements Serializable{
 	
 	
 	public LoginBean() {
-		selecionandoEmpresa = false;
+		selecionandoHotel = false;
 		usuario = new Usuario();
 		usuarioService = new ServiceUsuario();
 	}
 	
 	
-	// ================M�todos do Usu�rio============================================
+	// ================Métodos do Usuário============================================
+	
 	public void efetuaLogin() {		
 		if(usuarioService.logar(this.login, this.senha)){
 			this.usuario.setNomeUsuario(login);
 			this.usuario = usuarioService.buscarPeloNome(this.usuario);
-			selecionandoEmpresa = true;
+			selecionandoHotel = true;
 		}else{
 			this.usuario = new Usuario();
 		}
@@ -55,16 +56,7 @@ public class LoginBean implements Serializable{
 		
 		return "index?faces-redirect=true";
 	}
-	
 		
-	public String deslogar() {
-		SessionContext.getInstance().deleteAttribute("usuarioLogado");
-		SessionContext.getInstance().deleteAttribute("hotel");
-	    SessionContext.getInstance().encerrarSessao();
-	    
-	    return "/Login?faces-redirect=true";
-	}
-	
 	
 	public String abrirUsuario(){
 		
@@ -77,10 +69,10 @@ public class LoginBean implements Serializable{
 	}
 	
 	
-	// ================M�todos GET e SET=============================================
+	// ================Métodos GET e SET=============================================
 	
-	public boolean isSelecionandoEmpresa() {
-		return selecionandoEmpresa;
+	public boolean isSelecionandoHotel() {
+		return selecionandoHotel;
 	}
 		
 	
@@ -93,7 +85,6 @@ public class LoginBean implements Serializable{
 	}
 	
 	
-	
 	public Hotel getHotel() {
 		return hotel;
 	}
@@ -102,10 +93,10 @@ public class LoginBean implements Serializable{
 		this.hotel = hotel;
 	}
 	
+	
 	public List<Hotel> getHoteis(){
 		return new ServiceHotel().buscarTodos();
 	}
-
 	
 
 	public String getSenha() {
@@ -117,7 +108,6 @@ public class LoginBean implements Serializable{
 	}
 	
 	
-	
 	public String getLogin() {
 		return login;
 	}
@@ -126,27 +116,19 @@ public class LoginBean implements Serializable{
 		this.login = login;
 	}
 
-
-	
 	
 	public String getFraseSecreta() {
 		return fraseSecreta;
 	}
 
-
-	
 	public void setFraseSecreta(String fraseSecreta) {
 		this.fraseSecreta = fraseSecreta;
 	}
 
-
-	
 	
 	public String getEmail() {
 		return email;
 	}
-
-
 	
 	public void setEmail(String email) {
 		this.email = email;

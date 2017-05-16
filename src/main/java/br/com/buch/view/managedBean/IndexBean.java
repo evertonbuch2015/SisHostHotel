@@ -11,6 +11,8 @@ import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.event.AjaxBehaviorEvent;
 
+import br.com.buch.view.util.SessionContext;
+
 
 @ManagedBean
 @SessionScoped
@@ -37,6 +39,15 @@ public class IndexBean implements Serializable {
 				FacesContext.getCurrentInstance().getViewRoot().setLocale((Locale) entry.getValue());
 			}
 		}
+	}
+	
+	
+	public String deslogar() {
+		SessionContext.getInstance().deleteAttribute("usuarioLogado");
+		SessionContext.getInstance().deleteAttribute("hotel");
+	    SessionContext.getInstance().encerrarSessao();
+	    
+	    return "/login?faces-redirect=true";
 	}
 	
 	

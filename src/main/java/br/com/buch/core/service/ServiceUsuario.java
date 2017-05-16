@@ -152,7 +152,7 @@ public class ServiceUsuario implements GenericService<Usuario> {
 		
 		if(usuario != null){
 			context.getExternalContext().getFlash().setKeepMessages(true);
-	    	context.addMessage(null, new FacesMessage("Selecione uma Hotel"));
+	    	context.addMessage(null, new FacesMessage("Selecione um Hotel"));
 			
 	    	return true;
 		}    

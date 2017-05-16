@@ -4,6 +4,8 @@
 		<class>br.com.buch.core.entity.Hotel</class>
 		<class>br.com.buch.core.entity.Usuario</class>
 		<class>br.com.buch.core.entity.Endereco</class>
+		<class>br.com.buch.core.entity.Empresa</class>
+		<class>br.com.buch.core.entity.Hospede</class>
 		
 		<properties>
 			<property name="javax.persistence.jdbc.url" value="jdbc:firebirdsql:localhost/3050:D:\SISHOSTHOTEL.fdb"/>

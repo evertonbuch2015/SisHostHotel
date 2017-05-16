@@ -51,24 +51,25 @@
 			<aside class="bu-sidebar js-sidebar">				
 				<p:panelMenu style="width:99%">
 				
-			        <p:submenu label="Cadastros">
+			        <p:submenu label="#{label.menu_cadastro}">
 			            <p:menuitem value="#{label.menu_hospedes}" url="/cadHospede.xhtml?faces-redirect=true" icon="fa fa-user"/>			            
 			            <p:menuitem value="#{label.menu_empresa}" icon="fa fa-building-o" />			            
 			            <p:menuitem value="#{label.menu_apartamento}" icon="fa fa-bed" />			            
 			            <p:menuitem value="#{label.menu_cat_apartamento}" icon="ui-icon-wrench" />			            
 			            <p:menuitem value="#{label.menu_banco}" icon="fa fa-archive" />			 			            	           
 			            <p:menuitem value="#{label.menu_forma_pagamento}" icon="fa fa-cc-visa" />
-			            <p:menuitem value="#{label.menu_tipo_tarifa}" icon="fa fa-bar-chart-o" />			            
+			            <p:menuitem value="#{label.menu_tipo_tarifa}" icon="fa fa-bar-chart-o" />
+			            <p:menuitem value="#{label.menu_tarifas}" 	url="http://www.primefaces.org/documentation" icon="fa fa-usd"/>			            
 			            <p:menuitem value="#{label.menu_produtos}" icon="fa fa-cubes"/>			            
 			            <p:menuitem value="#{label.menu_grupos_produto}" icon="ui-icon-wrench" />			            
 			        </p:submenu>
 			        
-			        <p:submenu label="Caixa">
+			        <p:submenu label="#{label.menu_caixa}">
 			            <p:menuitem value="#{label.menu_pagamentos}" icon="fa fa-arrow-circle-up"/>			            	
 			            <p:menuitem value="#{label.menu_recebimentos}" icon="fa fa-arrow-circle-down"/>
 			        </p:submenu>		      		       
 			        			        
-			        <p:submenu label="Hospedagem" >
+			        <p:submenu label="#{label.menu_hospedagem}">
 						<p:menuitem value="#{label.menu_recepcao}" 		url="http://www.primefaces.org" icon="fa fa-suitcase" />	                    
 	                    <p:menuitem value="#{label.menu_checkin}" 		url="http://www.primefaces.org" icon="ui-icon-arrowreturnthick-1-e" />	                    
 	                    <p:menuitem value="#{label.menu_checkout}" 		url="http://www.primefaces.org/documentation" icon="ui-icon-arrowreturnthick-1-w" />	                    
@@ -77,21 +78,21 @@
 	                    <p:menuitem value="#{label.menu_mapa_estadias}" url="http://www.primefaces.org" icon="fa fa-sitemap" />        
 			        </p:submenu>
 			        
-			        <p:submenu label="A pagar">
+			        <p:submenu label="#{label.menu_contas_pagar}">
 			            <p:menuitem value="#{label.menu_adiant_fornecedor}" icon="fa fa-money"/>
 			            <p:menuitem value="#{label.menu_dup_pagar}" icon="fa fa-money"/>			            
 			        </p:submenu>
 			        
-			        <p:submenu label="A Receber">
+			        <p:submenu label="#{label.menu_contas_receber}">
 			            <p:menuitem value="#{label.menu_adiant_clientes}" icon="fa fa-money"/>			            
 			        </p:submenu>
 			        
-			        <p:submenu label="Configurações" >
-	                    <p:menuitem value="#{label.menu_hotel}"		url="/cadHotel.xhtml?faces-redirect=true" icon="fa fa-university"/>
-	                    <p:menuitem value="#{label.menu_tarifas}" 	url="http://www.primefaces.org/documentation" icon="fa fa-usd"/>
+			        <p:submenu label="#{label.menu_configuracoes}" >
+	                    <p:menuitem value="#{label.menu_hotel}"		url="/cadHotel.xhtml?faces-redirect=true" icon="fa fa-university"/>	                    
 	                    <p:menuitem value="#{label.menu_usuario}" 	url="http://www.primefaces.org/downloads" icon="fa fa-lock"/>
 	                    <p:menuitem value="#{label.menu_linguagem}" onclick="PF('dialogIdioma').initPosition(); PF('dialogIdioma').show(); return false;" icon="fa fa-language"/>
-	                    <p:menuitem value="#{label.menu_sobre}" 	url="http://www.primefaces.org/documentation" icon="fa fa-info"/>	                    
+	                    <p:menuitem value="#{label.menu_sobre}" 	url="http://www.primefaces.org/documentation" icon="fa fa-info"/>	
+	                    <p:menuitem value="#{label.menu_sair}"		action="#{indexBean.deslogar()}" icon="fa fa-power-off"/>                    
 			        </p:submenu>
 			    </p:panelMenu>											
 			</aside>
