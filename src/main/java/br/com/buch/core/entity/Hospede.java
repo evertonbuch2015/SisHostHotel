@@ -1,6 +1,7 @@
 package br.com.buch.core.entity;
 
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import javax.persistence.CascadeType;
@@ -36,7 +37,7 @@ public class Hospede implements Serializable {
 	private Integer codigo;
 
 	
-    @Column(name = "NOME" ,nullable = false , length = 50)
+    @Column(name = "NOME" ,nullable = false , length = 60)
     private String nome;
     
     
@@ -48,12 +49,8 @@ public class Hospede implements Serializable {
     private String rg;
     
     
-    @Column(name = "PASSAPORTE" ,nullable = true , length = 10)
+    @Column(name = "PASSAPORTE" ,nullable = true , length = 20)
     private String passaporte;
-    
-    
-    @Column(name = "NACIONALIDADE" ,nullable = true , length = 40)
-    private String nacionalidade;
     
     
     @Column(name = "PROFISSAO" ,nullable = true , length = 40)
@@ -81,6 +78,14 @@ public class Hospede implements Serializable {
     @Column(name = "EMAIL" ,nullable = false , length = 40)
     private String email;
        
+
+    @Column(name = "TELEFONE1", length = 20)
+    private String telefone1;
+    
+    
+    @Column(name = "TELEFONE2", length = 20)
+    private String telefone2;
+    
     
     @Column(name = "ATIVO")
     private Character ativo;
@@ -141,7 +146,16 @@ public class Hospede implements Serializable {
 		this.cpf = cpf;
 	}
 
-
+	public String getCpfFormatado(){
+		if(this.cpf != null){
+			return 	cpf.substring(0, 3) + "." + cpf.substring(3, 6) + "." + cpf.substring(6, 9)
+					+ "-" + cpf.substring(9);
+		}else{
+			return "";
+		} 
+	}
+	
+	
 	public String getRg() {
 		return rg;
 	}
@@ -157,15 +171,6 @@ public class Hospede implements Serializable {
 
 	public void setPassaporte(String passaporte) {
 		this.passaporte = passaporte;
-	}
-
-
-	public String getNacionalidade() {
-		return nacionalidade;
-	}
-
-	public void setNacionalidade(String nacionalidade) {
-		this.nacionalidade = nacionalidade;
 	}
 
 
@@ -186,6 +191,9 @@ public class Hospede implements Serializable {
 		this.dataCadastro = dataCadastro;
 	}
 
+	public String getDataCadastroFormatada(){
+		return (this.dataCadastro != null) ? new SimpleDateFormat("dd/MM/yyyy").format(this.dataCadastro): "";
+	}
 
 	public Date getDataNascimento() {
 		return dataNascimento;
@@ -195,6 +203,10 @@ public class Hospede implements Serializable {
 		this.dataNascimento = dataNascimento;
 	}
 
+	public String getDataNascimentoFormatada(){
+		return (this.dataNascimento != null) ? new SimpleDateFormat("dd/MM/yyyy").format(this.dataNascimento): "";
+	}
+	
 
 	public String getSexo() {
 		return sexo;
@@ -222,8 +234,26 @@ public class Hospede implements Serializable {
 		this.email = email;
 	}
 
-
-	public Boolean isAtivo() {
+	
+	public String getTelefone1() {
+		return telefone1;
+	}
+	
+	public void setTelefone1(String telefone1) {
+		this.telefone1 = telefone1;
+	}
+	
+	
+	public String getTelefone2() {
+		return telefone2;
+	}
+	
+	public void setTelefone2(String telefone2) {
+		this.telefone2 = telefone2;
+	}
+	
+	
+	/*public Boolean getAtivo() {
 		if (this.ativo == null)
 			return null;
 		
@@ -253,8 +283,24 @@ public class Hospede implements Serializable {
 			this.autorizaEmail = value == true ? 'S' : 'N';
 		}
 	}
-
-
+*/
+	
+	public Character getAtivo() {
+		return ativo;
+	}
+	
+	public void setAtivo(Character ativo) {
+		this.ativo = ativo;
+	}
+	
+	public Character getAutorizaEmail() {
+		return autorizaEmail;
+	}
+	
+	public void setAutorizaEmail(Character autorizaEmail) {
+		this.autorizaEmail = autorizaEmail;
+	}
+	
 	public String getObs() {
 		return obs;
 	}
@@ -265,6 +311,9 @@ public class Hospede implements Serializable {
 
 
 	public Endereco getEndereco() {
+		if(this.endereco == null){
+			this.endereco = new Endereco();
+		}
 		return endereco;
 	}
 
@@ -274,6 +323,9 @@ public class Hospede implements Serializable {
 
 
 	public Empresa getEmpresa() {
+		if(this.empresa == null){
+			this.empresa = new Empresa();
+		}
 		return empresa;
 	}
 
@@ -286,6 +338,11 @@ public class Hospede implements Serializable {
 	//--------------------------------	Métodos Auxiliares------------------------------//	
 	
 	@Override
+	public String toString() {
+		return codigo +" - "+ nome;
+	}
+	
+	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
@@ -293,7 +350,6 @@ public class Hospede implements Serializable {
 		return result;
 	}
 
-	
 	
 	@Override
 	public boolean equals(Object obj) {

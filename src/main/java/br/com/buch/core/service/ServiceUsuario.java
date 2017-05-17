@@ -33,7 +33,7 @@ public class ServiceUsuario implements GenericService<Usuario> {
 				entidate.setSenha(Criptografia.criptografarSha256(entidate.getSenha()));
 				usuarioDao.save(entidate);
 				
-				//UtilMensagens.mensagemInformacao("Usuário Inserido com Sucesso!");
+				UtilMensagens.mensagemInformacao("Usuário Cadastrado com Sucesso!");
 				return true;
 			} catch (Exception e) {
 				e.printStackTrace();

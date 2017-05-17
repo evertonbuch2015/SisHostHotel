@@ -4,7 +4,7 @@ import br.com.buch.core.entity.Hospede;
 
 public class HospedeDao extends GenericDao<Hospede> {
 
-	protected HospedeDao() {
+	public HospedeDao() {
 		super(Hospede.class);
 	}
 

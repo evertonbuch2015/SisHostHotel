@@ -11,7 +11,7 @@
 .ui-widget  .bu-botao-azul{
 	background-color: #286090  !important;
 	color: white;
-	max-width: 90px !important;
+	max-width: 90px !important;	
 }
 
 .ui-widget  .bu-botao-vermelho{background-color: #d9534f  !important;		color: white;}
@@ -20,6 +20,17 @@
 
 .ui-widget  .bu-botao-verde{background-color: #4CAF50  !important;			color: white;}
 
+
+.bu-selectOneButton .ui-button{
+	background-color: #f5f5f5!important;
+	color: black;
+	border: solid 1px #dbdbdb!important;
+}
+
+.bu-selectOneButton .ui-state-active{
+	background-color: #176ba0!important;
+	color: white;
+}
 
 
 /******************* INICIO MENSAGENS ***************/
@@ -34,4 +45,32 @@
     left: 50%;
     margin-top: -50px;
     margin-left: -100px;
+}
+
+
+
+/******************* INICIO PANEL GRID ***************/
+.ui-grid-row{
+	padding: 3px 0px;
+}
+
+
+
+.ui-grid-row > .ui-panelgrid-cell.ui-grid-col-1.bu-texto.bu-left{
+	margin-top: 5px!important;
+	padding-left: 40px!important;
+}
+
+.ui-grid-row > .ui-panelgrid-cell.ui-grid-col-1.bu-texto{
+	margin-top: 5px!important;
+}
+
+
+.ui-grid-row > .ui-panelgrid-cell.ui-grid-col-2.bu-texto.bu-left{
+	margin-top: 5px!important;
+	padding-left: 40px!important;
+}
+
+.ui-grid-row > .ui-panelgrid-cell.ui-grid-col-2.texto{
+	margin-top: 5px!important;
 }

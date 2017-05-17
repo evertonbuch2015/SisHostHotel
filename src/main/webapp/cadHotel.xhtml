@@ -19,9 +19,8 @@
 		
 		<p:breadCrumb>
 			<p:menuitem value="Home" url="/index.xhtml" />
-			<p:menuitem value="Cadastros"/>
-    		<p:menuitem value="Hotel" url="#" />
-    		<p:menuitem value="Manutenção" url="#" />			
+			<p:menuitem value="#{label.menu_cadastro}"/>
+    		<p:menuitem value="#{label.txt_hotel}" url="#" />			
 		</p:breadCrumb>
 		
 		<p:messages autoUpdate="true" closable="true">
@@ -31,12 +30,12 @@
 		
 		
 		<p:tabView rendered="#{hotelBean.buscando}" prependId="false">						
-			<p:tab title="Consulta"> 	
+			<p:tab title="#{label.txt_consulta}"> 	
 				<p:dataTable value="#{hotelBean.entidades}" var="hotel" id="tabela" 
 					selection="#{hotelBean.entidade}" selectionMode="single"
 					rowKey="#{hotel.idHotel}" reflow="true"									
 					widgetVar="carsTable" emptyMessage="#{label.msg_tabela_vazia}"
-					style="margin: 0px -11px;" rendered="#{hotelBean.buscando}">				
+					style="margin: 0px -11px;">				
 					
 
 					<p:ajax event="rowDblselect" listener="#{hotelBean.onRowDblClckSelect}"
@@ -86,7 +85,7 @@
 		
 						
 		<p:tabView rendered="#{!hotelBean.buscando}">						
-			<p:tab title="Dados Gerais" 
+			<p:tab title="#{label.txt_dados_gerais}"
 				titleStyle="font-size: 10px;color: #455a64;">
 				
 				<div class="ui-fluid">

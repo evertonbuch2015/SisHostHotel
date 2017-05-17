@@ -19,9 +19,8 @@
 		
 		<p:breadCrumb>
 			<p:menuitem value="Home" url="/index.xhtml" />
-			<p:menuitem value="Cadastros"/>
-    		<p:menuitem value="Hóspedes" url="#" />
-    		<p:menuitem value="Manutenção" url="#" />			
+			<p:menuitem value="#{label.menu_cadastro}"/>
+    		<p:menuitem value="#{label.menu_hospedes}" url="#" />			
 		</p:breadCrumb>
 		
 		<p:messages autoUpdate="true" closable="true">
@@ -30,53 +29,62 @@
 		</p:messages>
 		
 		
-		<p:tabView rendered="#{hotelBean.buscando}" prependId="false">						
-			<p:tab title="Consulta"> 	
-				<p:dataTable value="#{hotelBean.entidades}" var="hotel" id="tabela" 
-					selection="#{hotelBean.entidade}" selectionMode="single"
-					rowKey="#{hotel.idHotel}" reflow="true"									
+		<p:tabView rendered="#{hospedeBean.buscando}" prependId="false">						
+			<p:tab title="#{label.txt_consulta}"> 	
+				<p:dataTable value="#{hospedeBean.entidades}" var="entidade" id="tabela" 
+					selection="#{hospedeBean.entidade}" selectionMode="single"
+					rowKey="#{entidade.idHospede}" reflow="true"									
 					widgetVar="carsTable" emptyMessage="#{label.msg_tabela_vazia}"
-					style="margin: 0px -11px;" rendered="#{hotelBean.buscando}">				
+					style="margin: 0px -11px;">				
 					
 
-					<p:ajax event="rowDblselect" listener="#{hotelBean.onRowDblClckSelect}"
+					<p:ajax event="rowDblselect" listener="#{hospedeBean.onRowDblClckSelect}"
 						global="false" update="@form"/>
 
-					<p:ajax event="rowSelect" listener="#{hotelBean.onRowSelect}" />
+					<p:ajax event="rowSelect" listener="#{hospedeBean.onRowSelect}" />
 
 
+					<p:column headerText="#{label.txt_ativo}">
+						<p:graphicImage value="/resources/images/checked.png"
+										rendered="#{entidade.ativo}" />
+						<p:graphicImage value="/resources/images/unchecked.png"
+										rendered="#{not entidade.ativo}" />
+					</p:column>
+					
 					<p:column headerText="#{label.txt_codigo}" >
-						<h:outputText value="#{hotel.codigo}" />
+						<h:outputText value="#{entidade.codigo}" />
 					</p:column>
 					
-					<p:column headerText="#{label.txt_filial}" >
-						<h:outputText value="#{hotel.filial}" />
-					</p:column>
-					
-
-					<p:column headerText="#{label.txt_nome_razao}">
-						<h:outputText value="#{hotel.nomeRazao}" />
-					</p:column>
-
-
 					<p:column headerText="#{label.txt_documento}" >
-						<h:outputText value="#{hotel.documentoFormatado}" />
+						<h:outputText value="#{entidade.cpfFormatado}" />
 					</p:column>
 					
+
+					<p:column headerText="#{label.txt_nome}">
+						<h:outputText value="#{entidade.nome}" />
+					</p:column>					
 					
 					<p:column headerText="#{label.txt_email}" >
-						<h:outputText value="#{hotel.email}" />
+						<h:outputText value="#{entidade.email}" />
 					</p:column>
 					
+					<p:column headerText="#{label.txt_cidade}" >
+						<h:outputText value="#{entidade.endereco.cidade}" />
+					</p:column>
 					
+					<p:column headerText="#{label.txt_estado}" >
+						<h:outputText value="#{entidade.endereco.estado}" />
+					</p:column>
+					
+										
 					<p:column headerText="#{label.txt_acoes}" exportable="false">						
-						<p:commandButton actionListener="#{hotelBean.editar(hotel)}" 
+						<p:commandButton actionListener="#{hospedeBean.editar(entidade)}" 
 							icon="ui-icon-pencil" update="@form"/>
 							
-						<p:commandButton actionListener="#{hotelBean.excluir(hotel)}" 
+						<p:commandButton actionListener="#{hospedeBean.excluir(entidade)}" 
 							icon="ui-icon-trash" update="@form">
 							
-							<p:confirm header="Confirmação" message="Deseja Excluir este Hotel" icon="ui-icon-alert"/>
+							<p:confirm header="Confirmação" message="Deseja Excluir este Hóspede" icon="ui-icon-alert"/>
 						</p:commandButton>
 					</p:column>					
 
@@ -86,70 +94,232 @@
 		
 		
 		
-		<p:tabView>					
-			<p:tab title="Dados Gerais" titleStyle="font-size: 10px;color: #455a64;">
+		<p:tabView rendered="#{!hospedeBean.buscando}">					
+			<p:tab title="#{label.txt_dados_gerais}" titleStyle="font-size: 10px;color: #455a64;">
 				<div class="ui-fluid">
 					<p:panelGrid 
 						styleClass="ui-panelgrid-blank" columns="4"
 						cellpadding="10" layout="grid"
-						columnClasses="ui-grid-col-1,ui-grid-col-4,ui-grid-col-1,ui-grid-col-4">
+						columnClasses="ui-grid-col-1 bu-texto,ui-grid-col-4,ui-grid-col-1 bu-texto bu-left,ui-grid-col-4">
 
-						<p:outputLabel value="Nome:" for="nome" />
-						<p:inputText value="" placeholder="Ex: Steve Jobs"
-							id="nome" />
 						
-						<p:outputLabel value="Email:" for="email" />
-						<p:inputText value=""
-							placeholder="Ex: email@dominio.com.br" id="email" />
+						<p:outputLabel value="#{label.txt_nome}" for="nome" />
+						<p:inputText id="nome"
+							value="#{hospedeBean.entidade.nome}" 
+							placeholder="Ex: Steve Jobs"/>
+							
 						
-						<p:outputLabel value="Telefone:" for="tel1" />
-						<p:inputMask mask="(99)9999-9999"
-							placeholder="Ex: (21) 2616-0000 " id="tel1" />
+						<p:outputLabel value="#{label.txt_codigo}" for="codigo" />
+						<p:inputText id="codigo"
+							value="#{hospedeBean.entidade.codigo}"
+							readonly="true" 
+							placeholder="Código do Hóspede"/>
+
 						
-						<p:outputLabel value="Celular:" for="tel2" />
-						<p:inputMask mask="(99)9.9999-9999"
-							placeholder="Ex: (21) 9.8781-0000" id="tel2" />
 						
-						<p:outputLabel value="Data Nasc.:" for="dtNasc" />
-						<p:inputMask mask="99/99/9999"
-							placeholder="Ex: 01/01/2000" id="dtNasc" />
+						<p:outputLabel value="#{label.txt_cpf}:" for="cpf"/>
+						<p:inputMask id="cpf"
+							mask="999.999.999-99"	placeholder="Ex: 999.999.999.-99"
+							value="#{hospedeBean.entidade.cpf}"
+							readonly="#{hospedeBean.visualizando}"
+							required="true"
+							requiredMessage="Informe o Número do CPF!"/>
 						
-						<p:outputLabel value="Como nos conheceu?" for="info" />
-						<p:selectOneMenu filter="true" id="info">
-							<f:selectItem itemValue="" itemLabel="Selecione uma mídia" />
-							<f:selectItem itemValue="" itemLabel="Indicação de amigos" />
-							<f:selectItem itemValue="" itemLabel="Internet" />
-							<f:selectItem itemValue="" itemLabel="Televisão" />
+						
+						<p:outputLabel value="#{label.txt_rg}:" for="rg"/>
+						<p:inputMask id="rg"
+							mask="99.999.999-9"	placeholder="Ex: 99.999.999-9"
+							value="#{hospedeBean.entidade.rg}"
+							readonly="#{hospedeBean.visualizando}"
+							required="true"
+							requiredMessage="Informe o Número do RG!"/>
+						
+						
+						<p:outputLabel value="#{label.txt_passaporte}" for="passaporte" />
+						<p:inputText id="passaporte"
+							value="#{hospedeBean.entidade.passaporte}" 
+							placeholder="Ex: 99999999"/>
+						
+						<p:outputLabel value="#{label.txt_email}" for="email" />
+						<p:inputText id="email" 
+							value="#{hospedeBean.entidade.email}"
+							placeholder="Ex: email@dominio.com.br"
+							required="true"
+							requiredMessage="Informe um e-mail!"/>
+						
+						
+						<p:outputLabel value="#{label.txt_telefone}" for="tel1" />
+						<p:inputMask id="tel1" 
+							value="#{hospedeBean.entidade.telefone1}"
+							mask="(99)9.9999-9999"
+							placeholder="Ex: (21) 9.8781-0000"/>
+						
+						<p:outputLabel value="#{label.txt_telefone}" for="tel2" />
+						<p:inputMask id="tel2"
+							value="#{hospedeBean.entidade.telefone2}" 
+							mask="(99)9.9999-9999"
+							placeholder="Ex: (21) 9.8781-0000"/>
+						
+						
+						<p:outputLabel value="#{label.txt_data_nasc}" for="dtNasc" />
+						<p:inputMask id="dtNasc"
+							value="#{hospedeBean.entidade.dataNascimento}"
+							mask="99/99/9999" placeholder="Ex: 01/01/2000"/>
+						
+						<p:outputLabel value="Sexo" for="sexo"/>
+						<p:selectOneMenu id="sexo" 
+							value="#{hospedeBean.entidade.sexo}">
+							
+							<f:selectItem itemValue="M" itemLabel="Masculino/Male" />
+							<f:selectItem itemValue="F" itemLabel="Feminino/Female" />
 						</p:selectOneMenu>
+						
+						
+						<p:outputLabel value="#{label.txt_estado_civil}" for="est_civil"/>
+						<p:selectOneMenu id="est_civil" 
+							value="#{hospedeBean.entidade.estadoCivil}">
+							
+							<f:selectItem itemValue="SOLTEIRO" itemLabel="Solteiro"/>
+							<f:selectItem itemValue="CASADO" itemLabel="Casado"/>
+							<f:selectItem itemValue="DIVORSIADO" itemLabel="Divorsiado"/>
+							<f:selectItem itemValue="VIUVO" itemLabel="Viuvo"/>
+						</p:selectOneMenu>
+						
 
+						<p:outputLabel value="#{label.txt_profissao}" for="profissao" />
+						<p:inputText id="profissao" 
+							value="#{hospedeBean.entidade.profissao}"/>
+							
+							
+						<p:outputLabel value="#{label.txt_data_cadastro}" for="dtCadastro" />
+						<p:inputText id="dtCadastro"
+							value="#{hospedeBean.entidade.dataCadastroFormatada}" 
+							readonly="true"/>
+						
+					</p:panelGrid>
+						
+					<p:panelGrid 
+						styleClass="ui-panelgrid-blank" columns="4"
+						cellpadding="2" layout="grid"
+						columnClasses="ui-grid-col-1 bu-texto,ui-grid-col-2,ui-grid-col-2 bu-texto bu-left,ui-grid-col-2">
+							
+						<p:outputLabel value="#{label.txt_ativo}" for="ativo"/>	
+						<p:selectOneButton id="ativo"
+							value="#{hospedeBean.entidade.ativo}"
+							styleClass="bu-selectOneButton">
+            				<f:selectItem itemLabel="#{label.txt_sim}" itemValue="S"/>
+            				<f:selectItem itemLabel="#{label.txt_nao}" itemValue="N"/>
+        				</p:selectOneButton>
+        				
+        				<p:outputLabel value="#{label.txt_autoriza_email}" for="autoriza_email" />	
+						<p:selectOneButton id="autoriza_email" 
+							styleClass="bu-selectOneButton"
+							value="#{hospedeBean.entidade.autorizaEmail}">
+            				<f:selectItem itemLabel="#{label.txt_sim}" itemValue="S"/>
+            				<f:selectItem itemLabel="#{label.txt_nao}" itemValue="N"/>
+        				</p:selectOneButton>
+        				
 					</p:panelGrid>
 					
 				</div>
 			</p:tab>
 
 
-			<p:tab title="Endereço">
+			<p:tab title="#{label.txt_endereco}">
 				<div class="ui-fluid">
 					
-					<p:panelGrid columns="4"
-						styleClass="ui-panelgrid-blank"
+					<p:panelGrid
+						styleClass="ui-panelgrid-blank" columns="4"
 						cellpadding="10" layout="grid"
-						columnClasses="ui-grid-col-1,ui-grid-col-4,ui-grid-col-1,ui-grid-col-2">
+						columnClasses="ui-grid-col-1 texto,ui-grid-col-4,ui-grid-col-1 texto bu-left,ui-grid-col-3">
+	
+						<p:outputLabel value="#{label.txt_cep}" for="cep" />
+						<p:inputMask id="cep" 
+							value="#{hospedeBean.entidade.endereco.cep}" mask="99.999-999"
+							required="true" 
+							requiredMessage="Informe no endereço o número do Cep!"/>
 						
+															
+						<p:outputLabel value="#{label.txt_lgr}" for="lgr"/>
+						<p:inputText id="lgr"
+							value="#{hospedeBean.entidade.endereco.logradouro}"
+							placeholder="Ex: Avenida"/>
+						
+						
+						<p:outputLabel value="#{label.txt_rua}" for="rua"/>
+						<p:inputText id="rua"
+							value="#{hospedeBean.entidade.endereco.rua}"
+							placeholder="Ex: Assis Brasil"
+							required="true" 
+							requiredMessage="Informe no endereço o nome da rua!"/>
+							
+							
+						<p:outputLabel value="#{label.txt_numero}" for="numero"/>
+						<p:spinner id="numero" 
+							value="#{hospedeBean.entidade.endereco.numero}" min="0"
+							required="true" 
+							requiredMessage="Informe no endereço o número!"/>
+						
+						
+						<p:outputLabel value="#{label.txt_complemento}" for="complemento"/>
+						<p:inputText id="complemento"
+							value="#{hospedeBean.entidade.endereco.complemento}"/>
+							
+							
+						<p:outputLabel value="#{label.txt_bairro}" for="bairro"/>
+						<p:inputText id="bairro"
+							value="#{hospedeBean.entidade.endereco.bairro}"
+							required="true" 
+							requiredMessage="Informe no endereço o bairro!"/>
+							
+							
+						<p:outputLabel value="#{label.txt_cidade}" for="cidade"/>
+						<p:inputText id="cidade"
+							value="#{hospedeBean.entidade.endereco.cidade}"
+							required="true" 
+							requiredMessage="Informe no endereço o nome da Cidade!"/>
+							
+							
+						<p:outputLabel value="#{label.txt_estado}" for="estado"/>
+						<p:selectOneMenu id="estado"
+							value="#{hospedeBean.entidade.endereco.estado}"
+							required="true" 
+							requiredMessage="Informe no endereço o estado!">
+							
+							<f:selectItem itemLabel="Selecione"/>
+							<f:selectItems value="#{hospedeBean.estados}" var="a"
+								itemValue="#{a}" itemLabel="#{a}"/>
+						</p:selectOneMenu>
+						
+						
+						<p:outputLabel value="#{label.txt_pais}" for="pais"/>
+						<p:inputText id="pais"
+							value="#{hospedeBean.entidade.endereco.pais}"/>
+							
 					</p:panelGrid>
 					
 				</div>
 			</p:tab>
-
-
-			<p:tab title="Observações">
-
+			
+			
+			<p:tab title="#{label.txt_obs}">
+				<p:panelGrid columns="1"
+					styleClass="ui-panelgrid-blank"
+					layout="grid">
+						
+					<p:outputLabel value="#{label.txt_obs}" for="obs" />
+					<p:inputTextarea value="#{hospedeBean.entidade.obs}" id="obs"
+						style="width: 80%" rows="15" cols="30" counter="display"
+						maxlength="255" counterTemplate="{0} Caracteres Restantes"
+						autoResize="false" readonly="!#{empresaBean.visualizando}" />
+					<h:outputText id="display" />
+				</p:panelGrid>
 			</p:tab>
 
 		</p:tabView>
 		
 		
-		<app:barraBotoes bean="#{hotelBean}"/>
+		<app:barraBotoes bean="#{hospedeBean}"/>
 		
 		
 		<p:dialog 
@@ -163,20 +333,20 @@
 				styleClass="ui-panelgrid-blank">
 														
 				<p:selectOneMenu id="tipoFiltro"
-					value="#{hotelBean.filtro}" style="width:75%">						
+					value="#{hospedeBean.filtro}" style="width:75%">						
 					<f:selectItem itemLabel="Selecione" />
-					<f:selectItems value="#{hotelBean.tipoFiltros()}" var="a"
+					<f:selectItems value="#{hospedeBean.tipoFiltros()}" var="a"
 						itemValue="#{a}" itemLabel="#{a.label}"/>						
 				</p:selectOneMenu>
 					
 				<p:inputText id="valorfiltro" placeholder="Valor do Filtro!" 
-						value="#{hotelBean.valorFiltro}"
+						value="#{hospedeBean.valorFiltro}"
 						size="30"/>
 								
 				<p:commandButton value="Filtrar" icon="ui-icon-folder-collapsed"
 					styleClass="bu-botao-azul" update="tabela"
 					style="margin-top:20px;"
-					actionListener="#{hotelBean.filtrar()}"
+					actionListener="#{hospedeBean.filtrar()}"
 					onclick="PF('dialogFiltro').hide();" />	
 					
 			</p:panelGrid>	
