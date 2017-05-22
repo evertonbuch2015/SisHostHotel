@@ -30,34 +30,43 @@
 		</p:messages>
 		
 		
-		<p:tabView rendered="#{Trocar.buscando}" prependId="false">						
+		<p:tabView rendered="#{categoriaBean.buscando}" prependId="false">						
 			<p:tab title="Consulta"> 	
 				<p:dataTable id="tabela"
-					value="#{Trocar.entidades}" var="entidade" 
-					selection="#{Trocar.entidade}" selectionMode="single"
-					rowKey="#{entidade.}" reflow="true"									
+					value="#{categoriaBean.entidades}" var="entidade" 
+					selection="#{categoriaBean.entidade}" selectionMode="single"
+					rowKey="#{entidade.idCategoria}" reflow="true"									
 					widgetVar="carsTable" emptyMessage="#{label.msg_tabela_vazia}"
 					style="margin: 0px -11px;" 
-					rendered="#{Trocar.buscando}">				
+					rendered="#{categoriaBean.buscando}">				
 					
 
-					<p:ajax event="rowDblselect" listener="#{Trocar.onRowDblClckSelect}"
+					<p:ajax event="rowDblselect" listener="#{categoriaBean.onRowDblClckSelect}"
 						global="false" update="@form"/>
 
-					<p:ajax event="rowSelect" listener="#{Trocar.onRowSelect}" />
+					<p:ajax event="rowSelect" listener="#{categoriaBean.onRowSelect}" />
 
 
 					<p:column headerText="#{label.txt_codigo}" >
-						<h:outputText value="#{entidade.codigo}" />
+						<h:outputText value="#{entidade.idCategoria}" />
+					</p:column>
+					
+					<p:column headerText="#{label.txt_nome}" >
+						<h:outputText value="#{entidade.nome}" />
+					</p:column>
+					
+					
+					<p:column headerText="#{label.txt_descricao}" >
+						<h:outputText value="#{entidade.descricao}" />
 					</p:column>
 					
 										
 					
 					<p:column headerText="#{label.txt_acoes}" exportable="false">						
-						<p:commandButton actionListener="#{Trocar.editar(entidade)}" 
+						<p:commandButton actionListener="#{categoriaBean.editar(entidade)}" 
 							icon="ui-icon-pencil" update="@form"/>
 							
-						<p:commandButton actionListener="#{Trocar.excluir(entidade)}" 
+						<p:commandButton actionListener="#{categoriaBean.excluir(entidade)}" 
 							icon="ui-icon-trash" update="@form">
 							
 							<p:confirm header="Confirmação" message="Deseja Excluir este Registro" icon="ui-icon-alert"/>
@@ -133,7 +142,7 @@
 		</p:tabView>
 		
 		
-		<app:barraBotoes bean="#{Trocar}"/>
+		<app:barraBotoes bean="#{categoriaBean}"/>
 		
 		
 		<p:dialog 
@@ -149,18 +158,18 @@
 				<p:selectOneMenu id="tipoFiltro"
 					value="#{hotelBean.filtro}" style="width:75%">						
 					<f:selectItem itemLabel="Selecione" />
-					<f:selectItems value="#{Trocar.tipoFiltros()}" var="a"
+					<f:selectItems value="#{categoriaBean.tipoFiltros()}" var="a"
 						itemValue="#{a}" itemLabel="#{a.label}"/>						
 				</p:selectOneMenu>
 					
 				<p:inputText id="valorfiltro" placeholder="Valor do Filtro!" 
-						value="#{Trocar.valorFiltro}"
+						value="#{categoriaBean.valorFiltro}"
 						size="30"/>
 								
 				<p:commandButton value="Filtrar" icon="ui-icon-folder-collapsed"
 					styleClass="bu-botao-azul" update="tabela"
 					style="margin-top:20px;"
-					actionListener="#{Trocar.filtrar()}"
+					actionListener="#{categoriaBean.filtrar()}"
 					onclick="PF('dialogFiltro').hide();" />	
 					
 			</p:panelGrid>	

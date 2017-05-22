@@ -1,26 +1,22 @@
 package br.com.buch.view.managedBean;
 
-import java.util.Date;
+
 import java.util.List;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 
-import br.com.buch.core.entity.Hospede;
-import br.com.buch.core.enumerated.Estados;
-import br.com.buch.core.service.ServiceHospede;
-
+import br.com.buch.core.entity.Categoria;
+import br.com.buch.core.service.ServiceCategoria;
 
 @ManagedBean
 @SessionScoped
-public class HospedeBean extends GenericBean<Hospede, ServiceHospede> {
-	
-	public HospedeBean() {
-		super(new ServiceHospede());
-	}
+public class CategoriaBean extends GenericBean<Categoria, ServiceCategoria> {
 
+	
 	public enum TipoFiltro{
-		CODIGO("Código"), NOME("Nome");
+		NOME("Nome");
+		
 		
 		private String label;
 
@@ -34,9 +30,14 @@ public class HospedeBean extends GenericBean<Hospede, ServiceHospede> {
 	}
 	
 	private TipoFiltro filtro;	
-	private Integer idHospede;
+	private Integer idEntidade;
 	
-
+	
+	public CategoriaBean() {
+		super(new ServiceCategoria());
+	}
+	
+	
 	// =======================METODOS DO USUARIO=====================================
 	
 	
@@ -47,16 +48,14 @@ public class HospedeBean extends GenericBean<Hospede, ServiceHospede> {
 
 	
 	@Override
-	public Hospede criarEntidade() {
-		Hospede hospede = new Hospede();
-		hospede.setDataCadastro(new Date());
-		return hospede;
+	public Categoria criarEntidade() {
+		return new Categoria();
 	}
-
-
 	
-	// =============================GET AND SET=====================================
-
+	
+	// =============================GET AND SET=====================================	
+	
+	
 	public TipoFiltro getFiltro() {
 		return filtro;
 	}
@@ -68,24 +67,19 @@ public class HospedeBean extends GenericBean<Hospede, ServiceHospede> {
 	public TipoFiltro[] tipoFiltros(){
 		return TipoFiltro.values();
 	}
-
 	
-	public Estados[] getEstados(){
-		return Estados.values();
+	
+	public Integer getIdEntidade() {
+		return idEntidade;
+	}
+	
+	public void setIdEntidade(Integer idEntidade) {
+		this.idEntidade = idEntidade;
 	}
 
-		
-	public Integer getIdHospede() {
-		return idHospede;
-	}
-	
-	public void setIdHospede(Integer idHospede) {
-		this.idHospede = idHospede;
-	}
-	
 	
 	@Override
-	public List<Hospede> getEntidades() {
+	public List<Categoria> getEntidades() {
 		if (this.entidades == null) {
 			refresh();
 		}	

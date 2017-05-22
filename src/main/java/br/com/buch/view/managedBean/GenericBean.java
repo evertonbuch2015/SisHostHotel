@@ -79,12 +79,20 @@ public abstract class GenericBean<E extends Serializable,T extends GenericServic
 		}	
 	}
 	
+	
 	public void excluir(){
 		service.excluir(entidade);
 		refresh();
 		mudarBuscar();
 	}
 	
+	
+	public void excluir(E entity){
+		service.excluir(entity);
+		refresh();
+		mudarBuscar();
+	}
+		
 	
 	public  void refresh(){
 		if(this.entidades != null){

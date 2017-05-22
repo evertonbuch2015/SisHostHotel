@@ -60,14 +60,14 @@
 	margin-left: 0px;
 }
 
-@media(min-width:980px){
+@media(min-width:1080px){
 	.bu-sidebar.is-toggled{
 		margin-left: -213px;
 	}
 	
 }
 
-@media(min-width:980px){
+@media(min-width:1080px){
 	.bu-sidebar{			
 		opacity: 1.0;	
 		margin-left:0px;
@@ -85,14 +85,14 @@
 
 
 
-@media(min-width:980px){
+@media(min-width:1080px){
 	.bu-content.is-toggled{
 		margin-left: 0px;
 	}
 }
 
 
-@media(min-width:980px){
+@media(min-width:1080px){
 	.bu-content{
 		margin-left: 211px;
 	}

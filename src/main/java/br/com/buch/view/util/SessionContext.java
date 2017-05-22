@@ -6,7 +6,6 @@ import javax.faces.context.FacesContext;
 
 import br.com.buch.core.entity.Hotel;
 import br.com.buch.core.entity.Usuario;
-//import br.com.rudar.core.entity.Empresa;
 
 public class SessionContext {
 	 private static SessionContext instance;
@@ -18,6 +17,7 @@ public class SessionContext {
         
         return instance;
      }
+     
      
      private SessionContext(){
         

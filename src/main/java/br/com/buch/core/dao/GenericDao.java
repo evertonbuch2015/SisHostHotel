@@ -77,7 +77,9 @@ public abstract class GenericDao<T extends Serializable> {
         	em.getTransaction().commit();
 		
 		}catch(Exception ex){
+			ex.printStackTrace();
 			doRollback(em);
+			throw ex;
 		}finally {
 			em.close();
 		}		
@@ -140,7 +142,9 @@ public abstract class GenericDao<T extends Serializable> {
             em.getTransaction().commit();
             
 		} catch (Exception e) {
+			e.printStackTrace();
 			doRollback(em);
+			throw e;
 		}finally{
 			em.close();
 		}
@@ -195,7 +199,9 @@ public abstract class GenericDao<T extends Serializable> {
             em.getTransaction().commit();
             
         } catch (Exception e) {
+        	e.printStackTrace();
         	doRollback(em);
+        	throw e;
         }finally{
 			em.close();
 		}            
@@ -240,7 +246,9 @@ public abstract class GenericDao<T extends Serializable> {
         	em.getTransaction().commit();
         	
 		} catch (Exception e) {
-			doRollback(em);  			
+			e.printStackTrace();
+			doRollback(em);  
+			throw e;
 		}finally{
 			em.close();
 		}
@@ -265,6 +273,7 @@ public abstract class GenericDao<T extends Serializable> {
         } catch (Exception e) {
         	e.printStackTrace();
         	doRollback(em);
+        	throw e;
         }finally{
 			em.close();
 		}
@@ -285,7 +294,9 @@ public abstract class GenericDao<T extends Serializable> {
             em.getTransaction().commit();
             
         }catch(Exception e){
+        	e.printStackTrace();
         	doRollback(em);
+        	throw e;
         }finally{
 			em.close();
 		}
@@ -306,7 +317,9 @@ public abstract class GenericDao<T extends Serializable> {
             em.getTransaction().commit();
                                     
         } catch (Exception e) {            
+        	e.printStackTrace();
         	doRollback(em);
+        	throw e;
         }finally{
 			em.close();
 		}
@@ -328,7 +341,9 @@ public abstract class GenericDao<T extends Serializable> {
             em.getTransaction().commit();
             
         } catch (Exception ex) {        	            
+        	ex.printStackTrace();
         	doRollback(em);
+        	throw ex;
         }finally{
 			em.close();
 		}

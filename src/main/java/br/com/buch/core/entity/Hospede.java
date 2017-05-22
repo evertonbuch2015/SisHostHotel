@@ -148,8 +148,8 @@ public class Hospede implements Serializable {
 
 	public String getCpfFormatado(){
 		if(this.cpf != null){
-			return 	cpf.substring(0, 3) + "." + cpf.substring(3, 6) + "." + cpf.substring(6, 9)
-					+ "-" + cpf.substring(9);
+			return 	cpf.substring(0, 3) + "." + cpf.substring(4, 7) + "." + cpf.substring(8, 11)
+					+ "-" + cpf.substring(12);
 		}else{
 			return "";
 		} 
@@ -195,6 +195,7 @@ public class Hospede implements Serializable {
 		return (this.dataCadastro != null) ? new SimpleDateFormat("dd/MM/yyyy").format(this.dataCadastro): "";
 	}
 
+	
 	public Date getDataNascimento() {
 		return dataNascimento;
 	}
@@ -301,6 +302,7 @@ public class Hospede implements Serializable {
 		this.autorizaEmail = autorizaEmail;
 	}
 	
+	
 	public String getObs() {
 		return obs;
 	}
@@ -334,7 +336,12 @@ public class Hospede implements Serializable {
 	}
 
 	
-	
+	public Boolean isAtivo() {
+		if (this.ativo == null)
+			return null;
+		
+		return ativo.equals('S') ? true : false;
+	}
 	//--------------------------------	Métodos Auxiliares------------------------------//	
 	
 	@Override

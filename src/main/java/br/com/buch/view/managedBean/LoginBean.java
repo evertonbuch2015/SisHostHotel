@@ -11,6 +11,7 @@ import br.com.buch.core.entity.Usuario;
 import br.com.buch.core.service.ServiceHotel;
 import br.com.buch.core.service.ServiceUsuario;
 import br.com.buch.view.util.SessionContext;
+import br.com.buch.view.util.UtilMensagens;
 
 @ManagedBean
 @ViewScoped
@@ -43,8 +44,11 @@ public class LoginBean implements Serializable{
 			this.usuario.setNomeUsuario(login);
 			this.usuario = usuarioService.buscarPeloNome(this.usuario);
 			selecionandoHotel = true;
+			
+			UtilMensagens.mensagemInformacao("Selecione um Hotel");
 		}else{
 			this.usuario = new Usuario();
+			UtilMensagens.mensagemAtencao("Usuário não encontrado");
 		}
 		
 	}

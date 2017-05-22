@@ -20,7 +20,6 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 
 import org.hibernate.validator.constraints.Email;
-import org.hibernate.validator.constraints.NotEmpty;
 
 import br.com.buch.core.enumerated.RegimeTributario;
 
@@ -38,7 +37,7 @@ public class Hotel implements Serializable {
     private Integer idHotel;
 	
 	
-    @Column(name = "CODIGO" ,nullable = true , length = 2, unique = true)
+    @Column(name = "CODIGO" ,nullable = false , length = 2, unique = true)
 	private String codigo;
     
     
@@ -46,7 +45,7 @@ public class Hotel implements Serializable {
 	private String filial;
     
 	
-	@NotEmpty(message="O Nome deve ser informado!")
+	//@NotEmpty(message="O Nome deve ser informado!")
     @Column(name = "NOME_RAZAO" ,nullable = true , length = 70)
     private String nomeRazao;
 

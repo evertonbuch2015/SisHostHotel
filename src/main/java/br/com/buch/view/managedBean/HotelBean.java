@@ -1,6 +1,7 @@
 package br.com.buch.view.managedBean;
 
 import java.util.Date;
+import java.util.List;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
@@ -83,5 +84,14 @@ public class HotelBean extends GenericBean<Hotel, ServiceHotel> {
 	
 	public void setFiltro(TipoFiltro filtro) {
 		this.filtro = filtro;
+	}
+
+	
+	@Override
+	public List<Hotel> getEntidades() {
+		if (this.entidades == null) {
+			refresh();
+		}	
+		return entidades;
 	}
 }

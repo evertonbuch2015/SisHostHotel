@@ -31,7 +31,8 @@
 		
 		<p:tabView rendered="#{hospedeBean.buscando}" prependId="false">						
 			<p:tab title="#{label.txt_consulta}"> 	
-				<p:dataTable value="#{hospedeBean.entidades}" var="entidade" id="tabela" 
+				<p:dataTable id="tabela"
+					value="#{hospedeBean.entidades}" var="entidade" 
 					selection="#{hospedeBean.entidade}" selectionMode="single"
 					rowKey="#{entidade.idHospede}" reflow="true"									
 					widgetVar="carsTable" emptyMessage="#{label.msg_tabela_vazia}"
@@ -44,18 +45,18 @@
 					<p:ajax event="rowSelect" listener="#{hospedeBean.onRowSelect}" />
 
 
-					<p:column headerText="#{label.txt_ativo}">
+					<p:column headerText="#{label.txt_ativo}" width="70">
 						<p:graphicImage value="/resources/images/checked.png"
-										rendered="#{entidade.ativo}" />
+										rendered="#{entidade.isAtivo()}" />
 						<p:graphicImage value="/resources/images/unchecked.png"
-										rendered="#{not entidade.ativo}" />
+										rendered="#{!entidade.isAtivo()}" />
 					</p:column>
 					
-					<p:column headerText="#{label.txt_codigo}" >
+					<p:column headerText="#{label.txt_codigo}" width="90">
 						<h:outputText value="#{entidade.codigo}" />
 					</p:column>
 					
-					<p:column headerText="#{label.txt_documento}" >
+					<p:column headerText="#{label.txt_documento}" width="130">
 						<h:outputText value="#{entidade.cpfFormatado}" />
 					</p:column>
 					
@@ -64,20 +65,20 @@
 						<h:outputText value="#{entidade.nome}" />
 					</p:column>					
 					
-					<p:column headerText="#{label.txt_email}" >
+					<p:column headerText="#{label.txt_email}" priority="5" >
 						<h:outputText value="#{entidade.email}" />
 					</p:column>
 					
-					<p:column headerText="#{label.txt_cidade}" >
+					<p:column headerText="#{label.txt_cidade}" priority="4">
 						<h:outputText value="#{entidade.endereco.cidade}" />
 					</p:column>
 					
-					<p:column headerText="#{label.txt_estado}" >
+					<p:column headerText="#{label.txt_estado}" priority="6" width="90">
 						<h:outputText value="#{entidade.endereco.estado}" />
 					</p:column>
 					
 										
-					<p:column headerText="#{label.txt_acoes}" exportable="false">						
+					<p:column headerText="#{label.txt_acoes}" exportable="false" width="110">						
 						<p:commandButton actionListener="#{hospedeBean.editar(entidade)}" 
 							icon="ui-icon-pencil" update="@form"/>
 							
@@ -112,14 +113,13 @@
 						<p:outputLabel value="#{label.txt_codigo}" for="codigo" />
 						<p:inputText id="codigo"
 							value="#{hospedeBean.entidade.codigo}"
-							readonly="true" 
-							placeholder="Código do Hóspede"/>
+							readonly="true"/>
 
 						
 						
 						<p:outputLabel value="#{label.txt_cpf}:" for="cpf"/>
 						<p:inputMask id="cpf"
-							mask="999.999.999-99"	placeholder="Ex: 999.999.999.-99"
+							mask="999.999.999-99"	placeholder="999.999.999.-99"
 							value="#{hospedeBean.entidade.cpf}"
 							readonly="#{hospedeBean.visualizando}"
 							required="true"
@@ -128,7 +128,7 @@
 						
 						<p:outputLabel value="#{label.txt_rg}:" for="rg"/>
 						<p:inputMask id="rg"
-							mask="99.999.999-9"	placeholder="Ex: 99.999.999-9"
+							mask="99.999.999-9"	placeholder="99.999.999-99"
 							value="#{hospedeBean.entidade.rg}"
 							readonly="#{hospedeBean.visualizando}"
 							required="true"
@@ -137,8 +137,7 @@
 						
 						<p:outputLabel value="#{label.txt_passaporte}" for="passaporte" />
 						<p:inputText id="passaporte"
-							value="#{hospedeBean.entidade.passaporte}" 
-							placeholder="Ex: 99999999"/>
+							value="#{hospedeBean.entidade.passaporte}"/>
 						
 						<p:outputLabel value="#{label.txt_email}" for="email" />
 						<p:inputText id="email" 
@@ -152,20 +151,25 @@
 						<p:inputMask id="tel1" 
 							value="#{hospedeBean.entidade.telefone1}"
 							mask="(99)9.9999-9999"
-							placeholder="Ex: (21) 9.8781-0000"/>
+							placeholder="(21) 9.8781-0000"/>
 						
 						<p:outputLabel value="#{label.txt_telefone}" for="tel2" />
 						<p:inputMask id="tel2"
 							value="#{hospedeBean.entidade.telefone2}" 
 							mask="(99)9.9999-9999"
-							placeholder="Ex: (21) 9.8781-0000"/>
+							placeholder="(21) 9.8781-0000"/>
 						
 						
-						<p:outputLabel value="#{label.txt_data_nasc}" for="dtNasc" />
-						<p:inputMask id="dtNasc"
+						<p:outputLabel value="#{label.txt_data_nasc}" for="dtNasc" />						
+						<p:calendar id="dtNasc"
 							value="#{hospedeBean.entidade.dataNascimento}"
-							mask="99/99/9999" placeholder="Ex: 01/01/2000"/>
+							pattern="dd/MM/yyyy" mask="true"
+							showOn="button" locale="pt_BR"
+							required="true"
+							requiredMessage="Informe a Data de Nascimento!">
 						
+						</p:calendar>
+							
 						<p:outputLabel value="Sexo" for="sexo"/>
 						<p:selectOneMenu id="sexo" 
 							value="#{hospedeBean.entidade.sexo}">
@@ -188,7 +192,9 @@
 
 						<p:outputLabel value="#{label.txt_profissao}" for="profissao" />
 						<p:inputText id="profissao" 
-							value="#{hospedeBean.entidade.profissao}"/>
+							value="#{hospedeBean.entidade.profissao}"
+							required="true"
+							requiredMessage="Informe a Profissão!"/>
 							
 							
 						<p:outputLabel value="#{label.txt_data_cadastro}" for="dtCadastro" />
@@ -206,15 +212,17 @@
 						<p:outputLabel value="#{label.txt_ativo}" for="ativo"/>	
 						<p:selectOneButton id="ativo"
 							value="#{hospedeBean.entidade.ativo}"
-							styleClass="bu-selectOneButton">
+							styleClass="bu-selectOneButton"
+							style="	max-width: 65%;">
             				<f:selectItem itemLabel="#{label.txt_sim}" itemValue="S"/>
             				<f:selectItem itemLabel="#{label.txt_nao}" itemValue="N"/>
         				</p:selectOneButton>
         				
         				<p:outputLabel value="#{label.txt_autoriza_email}" for="autoriza_email" />	
 						<p:selectOneButton id="autoriza_email" 
+							value="#{hospedeBean.entidade.autorizaEmail}"
 							styleClass="bu-selectOneButton"
-							value="#{hospedeBean.entidade.autorizaEmail}">
+							style="	max-width: 65%;">
             				<f:selectItem itemLabel="#{label.txt_sim}" itemValue="S"/>
             				<f:selectItem itemLabel="#{label.txt_nao}" itemValue="N"/>
         				</p:selectOneButton>

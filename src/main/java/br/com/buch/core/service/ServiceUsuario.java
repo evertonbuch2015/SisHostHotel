@@ -4,8 +4,6 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import javax.faces.application.FacesMessage;
-import javax.faces.context.FacesContext;
 import javax.persistence.EntityNotFoundException;
 
 import br.com.buch.core.dao.UsuarioDao;
@@ -141,25 +139,13 @@ public class ServiceUsuario implements GenericService<Usuario> {
 
 	
 	public boolean logar(String login, String senha){
-		FacesContext context = FacesContext.getCurrentInstance();
-		
 		Usuario usuario = null;
 		
 		if(login != null && senha != null){
 			usuario = usuarioDao.existe(login, senha);
 		}	    
 		
-		if(usuario != null){
-			context.getExternalContext().getFlash().setKeepMessages(true);
-	    	context.addMessage(null, new FacesMessage("Selecione um Hotel"));
-			
-	    	return true;
-		}    
-	    
-	    context.getExternalContext().getFlash().setKeepMessages(true);
-	    context.addMessage(null, new FacesMessage("Usuário não encontrado"));
-	    
-		return false;
+		return usuario !=null;		
 	}
 
 	
