@@ -11,17 +11,16 @@
 	xmlns:app="http://java.sun.com/jsf/composite/componentes">
 
 	<ui:define name="tituloPagina">
-		#{label.tit_hospede}
+		#{label.tit_categoria_ap}
 	</ui:define>
 
 
 	<ui:define name="conteudo">
 		
 		<p:breadCrumb>
-			<p:menuitem value="Home" url="/erros.xhtml" />
+			<p:menuitem value="Home" url="/index.xhtml" />
 			<p:menuitem value="Cadastros"/>
-    		<p:menuitem value="Hóspedes" url="#" />
-    		<p:menuitem value="Manutenção" url="#" />			
+    		<p:menuitem value="#{label.tit_categoria_ap}" url="#" />
 		</p:breadCrumb>
 		
 		<p:messages autoUpdate="true" closable="true">
@@ -47,7 +46,7 @@
 					<p:ajax event="rowSelect" listener="#{categoriaBean.onRowSelect}" />
 
 
-					<p:column headerText="#{label.txt_codigo}" >
+					<p:column headerText="#{label.txt_codigo}" width="120">
 						<h:outputText value="#{entidade.idCategoria}" />
 					</p:column>
 					
@@ -62,7 +61,7 @@
 					
 										
 					
-					<p:column headerText="#{label.txt_acoes}" exportable="false">						
+					<p:column headerText="#{label.txt_acoes}" exportable="false" width="110">						
 						<p:commandButton actionListener="#{categoriaBean.editar(entidade)}" 
 							icon="ui-icon-pencil" update="@form"/>
 							
@@ -79,66 +78,33 @@
 		
 		
 		
-		<p:tabView>					
+		<p:tabView rendered="#{!categoriaBean.buscando}">					
 			<p:tab title="Dados Gerais" titleStyle="font-size: 10px;color: #455a64;">
 				<div class="ui-fluid">
 					<p:panelGrid 
-						styleClass="ui-panelgrid-blank" columns="4"
+						styleClass="ui-panelgrid-blank" columns="2"
 						cellpadding="10" layout="grid"
 						columnClasses="ui-grid-col-1,ui-grid-col-4,ui-grid-col-1,ui-grid-col-4">
 
-						<p:outputLabel value="Nome:" for="nome" />
-						<p:inputText value="" placeholder="Ex: Steve Jobs"
-							id="nome" />
+						<p:outputLabel value="#{label.txt_codigo}" for="codigo" />
+						<p:inputText id="codigo"
+							value="#{categoriaBean.entidade.idCategoria}" readonly="true"/>
 						
-						<p:outputLabel value="Email:" for="email" />
-						<p:inputText value=""
-							placeholder="Ex: email@dominio.com.br" id="email" />
+						<p:outputLabel value="#{label.txt_nome}" for="nome" />
+						<p:inputText id="nome"
+							value="#{categoriaBean.entidade.nome}"
+							placeholder="Ex: Single" />
 						
-						<p:outputLabel value="Telefone:" for="tel1" />
-						<p:inputMask mask="(99)9999-9999"
-							placeholder="Ex: (21) 2616-0000 " id="tel1" />
-						
-						<p:outputLabel value="Celular:" for="tel2" />
-						<p:inputMask mask="(99)9.9999-9999"
-							placeholder="Ex: (21) 9.8781-0000" id="tel2" />
-						
-						<p:outputLabel value="Data Nasc.:" for="dtNasc" />
-						<p:inputMask mask="99/99/9999"
-							placeholder="Ex: 01/01/2000" id="dtNasc" />
-						
-						<p:outputLabel value="Como nos conheceu?" for="info" />
-						<p:selectOneMenu filter="true" id="info">
-							<f:selectItem itemValue="" itemLabel="Selecione uma mídia" />
-							<f:selectItem itemValue="" itemLabel="Indicação de amigos" />
-							<f:selectItem itemValue="" itemLabel="Internet" />
-							<f:selectItem itemValue="" itemLabel="Televisão" />
-						</p:selectOneMenu>
-
-					</p:panelGrid>
-					
+						<p:outputLabel value="#{label.txt_descricao}" for="descricao" />
+						<p:inputTextarea id="descricao"
+							value="#{categoriaBean.entidade.descricao}"
+							style="width: 100%" rows="8" cols="40" counter="display"
+							maxlength="255" counterTemplate="{0} Caracteres Restantes"
+							autoResize="false" readonly="!#{categoriaBean.visualizando}" />
+						<h:outputText id="display" />
+					</p:panelGrid>					
 				</div>
 			</p:tab>
-
-
-			<p:tab title="Endereço">
-				<div class="ui-fluid">
-					
-					<p:panelGrid columns="4"
-						styleClass="ui-panelgrid-blank"
-						cellpadding="10" layout="grid"
-						columnClasses="ui-grid-col-1,ui-grid-col-4,ui-grid-col-1,ui-grid-col-2">
-						
-					</p:panelGrid>
-					
-				</div>
-			</p:tab>
-
-
-			<p:tab title="Observações">
-
-			</p:tab>
-
 		</p:tabView>
 		
 		
@@ -156,7 +122,7 @@
 				styleClass="ui-panelgrid-blank">
 														
 				<p:selectOneMenu id="tipoFiltro"
-					value="#{hotelBean.filtro}" style="width:75%">						
+					value="#{categoriaBean.filtro}" style="width:75%">						
 					<f:selectItem itemLabel="Selecione" />
 					<f:selectItems value="#{categoriaBean.tipoFiltros()}" var="a"
 						itemValue="#{a}" itemLabel="#{a.label}"/>						

@@ -15,7 +15,8 @@ public class CategoriaBean extends GenericBean<Categoria, ServiceCategoria> {
 
 	
 	public enum TipoFiltro{
-		NOME("Nome");
+		NOME("Nome"),
+		CODIGO("Codigo");
 		
 		
 		private String label;
