@@ -65,8 +65,7 @@ public class ServiceHospede implements GenericService<Hospede> {
 
 	
 	@Override
-	public Hospede carregarEntidade(Hospede entidade) {
-		
+	public Hospede carregarEntidade(Hospede entidade) {		
 		try{
 			//String jpql = "Select h From Hospede h LEFT JOIN FETCH h.endereco LEFT JOIN FETCH h.empresa where h.idHospede = ?1";
 			String jpql = "Select h From Hospede h LEFT JOIN FETCH h.endereco where h.idHospede = ?1";

@@ -11,7 +11,7 @@
 	xmlns:app="http://java.sun.com/jsf/composite/componentes">
 
 	<ui:define name="tituloPagina">
-		#{label.tit_hospede}
+		#{label.tit_apartamento}
 	</ui:define>
 
 
@@ -20,8 +20,7 @@
 		<p:breadCrumb>
 			<p:menuitem value="Home" url="/erros.xhtml" />
 			<p:menuitem value="Cadastros"/>
-    		<p:menuitem value="Hóspedes" url="#" />
-    		<p:menuitem value="Manutenção" url="#" />			
+    		<p:menuitem value="#{label.tit_apartamento}" url="#" />			
 		</p:breadCrumb>
 		
 		<p:messages autoUpdate="true" closable="true">
@@ -30,34 +29,59 @@
 		</p:messages>
 		
 		
-		<p:tabView rendered="#{Trocar.buscando}" prependId="false">						
+		<p:tabView rendered="#{apartamentoBean.buscando}" prependId="false">						
 			<p:tab title="Consulta"> 	
 				<p:dataTable id="tabela"
-					value="#{Trocar.entidades}" var="entidade" 
-					selection="#{Trocar.entidade}" selectionMode="single"
-					rowKey="#{entidade.}" reflow="true"									
+					value="#{apartamentoBean.entidades}" var="entidade" 
+					selection="#{apartamentoBean.entidade}" selectionMode="single"
+					rowKey="#{entidade.idApartamento}" reflow="true"									
 					widgetVar="carsTable" emptyMessage="#{label.msg_tabela_vazia}"
 					style="margin: 0px -11px;" 
-					rendered="#{Trocar.buscando}">				
+					rendered="#{apartamentoBean.buscando}">				
 					
 
-					<p:ajax event="rowDblselect" listener="#{Trocar.onRowDblClckSelect}"
+					<p:ajax event="rowDblselect" listener="#{apartamentoBean.onRowDblClckSelect}"
 						global="false" update="@form"/>
 
-					<p:ajax event="rowSelect" listener="#{Trocar.onRowSelect}" />
+					<p:ajax event="rowSelect" listener="#{apartamentoBean.onRowSelect}" />
 
 
-					<p:column headerText="#{label.txt_codigo}" >
-						<h:outputText value="#{entidade.codigo}" />
+					<p:column headerText="#{label.txt_codigo}" width="110">
+						<h:outputText value="#{entidade.numero}" />
 					</p:column>
 					
-										
 					
-					<p:column headerText="#{label.txt_acoes}" exportable="false">						
-						<p:commandButton actionListener="#{Trocar.editar(entidade)}" 
+					<p:column headerText="#{label.txt_situacao}" width="150">
+						<p:graphicImage value="/resources/images/checked.png"
+										rendered="#{entidade.situacao.ordinal() == 0}" />
+						<p:graphicImage value="/resources/images/unchecked.png"
+										rendered="#{entidade.situacao.ordinal() == 1}" />										
+						<p:graphicImage value="/resources/images/reservado.png"
+										rendered="#{entidade.situacao.ordinal() == 2}" />
+						<p:graphicImage value="/resources/images/em_manutencao.png"
+										rendered="#{entidade.situacao.ordinal() == 3}" />
+						
+						<h:outputText value="#{entidade.situacao.label}" style="margin-left:18px;" />
+					</p:column>
+					
+					<p:column headerText="#{label.txt_camas_casal}" >
+						<h:outputText value="#{entidade.camasCasal}" />
+					</p:column>
+					
+					<p:column headerText="#{label.txt_camas_solteiro}" >
+						<h:outputText value="#{entidade.camasSolteiro}" />
+					</p:column>
+					
+					<p:column headerText="#{label.txt_categoria}" >
+						<h:outputText value="#{entidade.categoria.nome}" />
+					</p:column>					
+					
+					
+					<p:column headerText="#{label.txt_acoes}" exportable="false" width="110">						
+						<p:commandButton actionListener="#{apartamentoBean.editar(entidade)}" 
 							icon="ui-icon-pencil" update="@form"/>
 							
-						<p:commandButton actionListener="#{Trocar.excluir(entidade)}" 
+						<p:commandButton actionListener="#{apartamentoBean.excluir(entidade)}" 
 							icon="ui-icon-trash" update="@form">
 							
 							<p:confirm header="Confirmação" message="Deseja Excluir este Registro" icon="ui-icon-alert"/>
@@ -70,7 +94,7 @@
 		
 		
 		
-		<p:tabView>					
+		<p:tabView rendered="#{!apartamentoBean.buscando}" prependId="false">					
 			<p:tab title="Dados Gerais" titleStyle="font-size: 10px;color: #455a64;">
 				<div class="ui-fluid">
 					<p:panelGrid 
@@ -78,62 +102,77 @@
 						cellpadding="10" layout="grid"
 						columnClasses="ui-grid-col-1,ui-grid-col-4,ui-grid-col-1,ui-grid-col-4">
 
-						<p:outputLabel value="Nome:" for="nome" />
-						<p:inputText value="" placeholder="Ex: Steve Jobs"
-							id="nome" />
+
+						<p:outputLabel value="#{label.txt_numero}" for="numero"/>
+						<p:inputText id="numero" 
+							value="#{apartamentoBean.entidade.numero}"/>
 						
-						<p:outputLabel value="Email:" for="email" />
-						<p:inputText value=""
-							placeholder="Ex: email@dominio.com.br" id="email" />
 						
-						<p:outputLabel value="Telefone:" for="tel1" />
-						<p:inputMask mask="(99)9999-9999"
-							placeholder="Ex: (21) 2616-0000 " id="tel1" />
-						
-						<p:outputLabel value="Celular:" for="tel2" />
-						<p:inputMask mask="(99)9.9999-9999"
-							placeholder="Ex: (21) 9.8781-0000" id="tel2" />
-						
-						<p:outputLabel value="Data Nasc.:" for="dtNasc" />
-						<p:inputMask mask="99/99/9999"
-							placeholder="Ex: 01/01/2000" id="dtNasc" />
-						
-						<p:outputLabel value="Como nos conheceu?" for="info" />
-						<p:selectOneMenu filter="true" id="info">
-							<f:selectItem itemValue="" itemLabel="Selecione uma mídia" />
-							<f:selectItem itemValue="" itemLabel="Indicação de amigos" />
-							<f:selectItem itemValue="" itemLabel="Internet" />
-							<f:selectItem itemValue="" itemLabel="Televisão" />
+						<p:outputLabel value="#{label.txt_situacao}" for="situacao" />
+						<p:selectOneMenu id="situacao" 
+							value="#{apartamentoBean.entidade.situacao}"
+							required="true"
+							requiredMessage="Informe a Situação!">
+							
+							<f:selectItem itemLabel="#{label.txt_selecione}"/>
+							<f:selectItems value="#{apartamentoBean.situacaoApartamentos()}"
+								var="a" itemValue="#{a}" itemLabel="#{a.label}"/>
 						</p:selectOneMenu>
-
-					</p:panelGrid>
-					
-				</div>
-			</p:tab>
-
-
-			<p:tab title="Endereço">
-				<div class="ui-fluid">
-					
-					<p:panelGrid columns="4"
-						styleClass="ui-panelgrid-blank"
-						cellpadding="10" layout="grid"
-						columnClasses="ui-grid-col-1,ui-grid-col-4,ui-grid-col-1,ui-grid-col-2">
 						
+						
+						<p:outputLabel value="#{label.txt_camas_casal}" for="casal"/>
+						<p:spinner id="casal" 
+							value="#{apartamentoBean.entidade.camasCasal}" min="0" max="2"
+							required="true"/>
+							
+						<p:outputLabel value="#{label.txt_camas_solteiro}" for="solteiro"/>
+						<p:spinner id="solteiro" 
+							value="#{apartamentoBean.entidade.camasSolteiro}" min="0" max="3"
+							required="true"/>
+						
+						
+						<p:outputLabel value="#{label.txt_ramal}" for="ramal" />						
+						<p:inputMask  id="ramal"						
+							value="#{apartamentoBean.entidade.ramal}"
+							mask="9999" placeholder="Ex: 9999 " />
+						
+						
+						<p:outputLabel value="#{label.txt_categoria}" for="categoria"/>
+						<p:selectOneMenu id="categoria"
+							value="#{apartamentoBean.entidade.categoria}"
+							required="true" autoWidth="false">
+															
+							<f:selectItem itemLabel="Selecione uma Categoria"/>
+							<f:selectItems value="#{apartamentoBean.categorias}" var="categoria"
+								 itemValue="#{categoria}"	itemLabel="#{categoria.nome}" />
+						</p:selectOneMenu>
 					</p:panelGrid>
 					
 				</div>
 			</p:tab>
 
 
-			<p:tab title="Observações">
-
+			<p:tab title="#{label.txt_descricao}">
+			
+				<p:panelGrid columns="1"
+					styleClass="ui-panelgrid-blank"
+					layout="grid">
+						
+					<p:outputLabel value="#{label.txt_descricao}" for="descricao"/>
+					<p:inputTextarea  id="descricao"
+						value="#{apartamentoBean.entidade.descricao}"
+						style="width: 80%" rows="15" cols="30" counter="display"
+						maxlength="255" counterTemplate="{0} Caracteres Restantes"
+						autoResize="false" readonly="#{apartamentoBean.visualizando}" />
+					<h:outputText id="display" />
+				</p:panelGrid>
+								
 			</p:tab>
 
 		</p:tabView>
 		
 		
-		<app:barraBotoes bean="#{Trocar}"/>
+		<app:barraBotoes bean="#{apartamentoBean}"/>
 		
 		
 		<p:dialog 
@@ -147,20 +186,20 @@
 				styleClass="ui-panelgrid-blank">
 														
 				<p:selectOneMenu id="tipoFiltro"
-					value="#{hotelBean.filtro}" style="width:75%">						
+					value="#{apartamentoBean.filtro}" style="width:75%">						
 					<f:selectItem itemLabel="Selecione" />
-					<f:selectItems value="#{Trocar.tipoFiltros()}" var="a"
+					<f:selectItems value="#{apartamentoBean.tipoFiltros()}" var="a"
 						itemValue="#{a}" itemLabel="#{a.label}"/>						
 				</p:selectOneMenu>
 					
 				<p:inputText id="valorfiltro" placeholder="Valor do Filtro!" 
-						value="#{Trocar.valorFiltro}"
+						value="#{apartamentoBean.valorFiltro}"
 						size="30"/>
 								
 				<p:commandButton value="Filtrar" icon="ui-icon-folder-collapsed"
 					styleClass="bu-botao-azul" update="tabela"
 					style="margin-top:20px;"
-					actionListener="#{Trocar.filtrar()}"
+					actionListener="#{apartamentoBean.filtrar()}"
 					onclick="PF('dialogFiltro').hide();" />	
 					
 			</p:panelGrid>	

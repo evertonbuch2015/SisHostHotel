@@ -13,6 +13,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
 import br.com.buch.core.enumerated.SituacaoApartamento;
 
@@ -29,11 +30,12 @@ public class Apartamento implements Serializable {
     @Column(name = "COD_CADAPARTAMENTO")
     private Integer idApartamento;
     
-    
+	
+	@NotNull(message="Informe o Numero do Apartamento!")
     @Column(name="NUMERO",nullable = true)
     private Integer numero;
     
-    
+	
     @Column(name="SITUACAO",nullable = true, length = 20)
     private SituacaoApartamento situacao;
     
@@ -42,10 +44,12 @@ public class Apartamento implements Serializable {
     private String ramal;
     
     
+    @NotNull(message="Informe a Qtd de camas de casal!")
     @Column(name="CAMAS_CASAL")
     private Integer camasCasal;
     
     
+    @NotNull(message="Informe a Qtd de camas de Solteiro!")
     @Column(name="CAMAS_SOLTEIRO")
     private Integer camasSolteiro;
     
@@ -54,6 +58,7 @@ public class Apartamento implements Serializable {
     private String descricao;
     
     
+    @NotNull(message="Informe a Categoria do Apartamento!")
     @OneToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
     @JoinColumn(name ="COD_CADCATEGORIA")
     private Categoria categoria;

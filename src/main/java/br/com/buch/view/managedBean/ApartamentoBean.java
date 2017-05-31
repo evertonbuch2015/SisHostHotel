@@ -1,8 +1,18 @@
 package br.com.buch.view.managedBean;
 
-import br.com.buch.core.entity.Apartamento;
-import br.com.buch.core.service.ServiceApartamento;
+import java.util.List;
 
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.SessionScoped;
+
+import br.com.buch.core.entity.Apartamento;
+import br.com.buch.core.entity.Categoria;
+import br.com.buch.core.enumerated.SituacaoApartamento;
+import br.com.buch.core.service.ServiceApartamento;
+import br.com.buch.core.service.ServiceCategoria;
+
+@ManagedBean
+@SessionScoped
 public class ApartamentoBean extends GenericBean<Apartamento, ServiceApartamento> {
 
 	
@@ -51,6 +61,7 @@ public class ApartamentoBean extends GenericBean<Apartamento, ServiceApartamento
 	
 	// =============================GET AND SET=====================================	
 
+	
 	public TipoFiltro getFiltro() {
 		return filtro;
 	}
@@ -72,4 +83,23 @@ public class ApartamentoBean extends GenericBean<Apartamento, ServiceApartamento
 		this.idEntidade = idEntidade;
 	}
 
+	
+
+	public SituacaoApartamento[] situacaoApartamentos(){
+		return SituacaoApartamento.values();
+	}
+	
+	
+	public List<Categoria> getCategorias(){
+		return new ServiceCategoria().buscarTodos();
+	}
+
+	
+	@Override
+	public List<Apartamento> getEntidades() {
+		if (this.entidades == null) {
+			refresh();
+		}	
+		return entidades;
+	}
 }
