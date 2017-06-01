@@ -51,10 +51,10 @@
 					</p:column>
 					
 					
-					<p:column headerText="#{label.txt_situacao}" width="150">
-						<p:graphicImage value="/resources/images/checked.png"
+					<p:column headerText="#{label.txt_situacao}" width="150" style="text-align:left">
+						<p:graphicImage value="/resources/images/livre.png"
 										rendered="#{entidade.situacao.ordinal() == 0}" />
-						<p:graphicImage value="/resources/images/unchecked.png"
+						<p:graphicImage value="/resources/images/ocupado.png"
 										rendered="#{entidade.situacao.ordinal() == 1}" />										
 						<p:graphicImage value="/resources/images/reservado.png"
 										rendered="#{entidade.situacao.ordinal() == 2}" />
