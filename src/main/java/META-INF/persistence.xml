@@ -8,6 +8,8 @@
 		<class>br.com.buch.core.entity.Hospede</class>
 		<class>br.com.buch.core.entity.Categoria</class>
 		<class>br.com.buch.core.entity.Apartamento</class>
+		<class>br.com.buch.core.entity.TipoTarifa</class>
+		<class>br.com.buch.core.entity.Tarifario</class>
 		
 		<properties>
 			<property name="javax.persistence.jdbc.url" value="jdbc:firebirdsql:localhost/3050:D:\SISHOSTHOTEL.fdb"/>

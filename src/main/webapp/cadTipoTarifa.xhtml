@@ -11,7 +11,7 @@
 	xmlns:app="http://java.sun.com/jsf/composite/componentes">
 
 	<ui:define name="tituloPagina">
-		#{label.tit_hospede}
+		#{label.tit_tipo_tarifas}
 	</ui:define>
 
 
@@ -20,7 +20,7 @@
 		<p:breadCrumb>
 			<p:menuitem value="Home" url="/index.xhtml" />
 			<p:menuitem value="#{label.menu_cadastro}"/>
-    		<p:menuitem value="#{label.txt_hotel}" url="#" />
+    		<p:menuitem value="#{label.txt_tipo_tarifas}" url="#" />
 		</p:breadCrumb>
 		
 		<p:messages autoUpdate="true" closable="true">
@@ -29,34 +29,42 @@
 		</p:messages>
 		
 		
-		<p:tabView rendered="#{Trocar.buscando}" prependId="false">						
+		<p:tabView rendered="#{tipoTarifaBean.buscando}" prependId="false">						
 			<p:tab title="Consulta"> 	
 				<p:dataTable id="tabela"
-					value="#{Trocar.entidades}" var="entidade" 
-					selection="#{Trocar.entidade}" selectionMode="single"
-					rowKey="#{entidade.}" reflow="true"									
+					value="#{tipoTarifaBean.entidades}" var="entidade" 
+					selection="#{tipoTarifaBean.entidade}" selectionMode="single"
+					rowKey="#{entidade.idTipoTarifa}" reflow="true"									
 					widgetVar="carsTable" emptyMessage="#{label.msg_tabela_vazia}"
 					style="margin: 0px -11px;" 
-					rendered="#{Trocar.buscando}">				
+					rendered="#{tipoTarifaBean.buscando}">				
 					
 
-					<p:ajax event="rowDblselect" listener="#{Trocar.onRowDblClckSelect}"
+					<p:ajax event="rowDblselect" listener="#{tipoTarifaBean.onRowDblClckSelect}"
 						global="false" update="@form"/>
 
-					<p:ajax event="rowSelect" listener="#{Trocar.onRowSelect}" />
+					<p:ajax event="rowSelect" listener="#{tipoTarifaBean.onRowSelect}" />
 
 
-					<p:column headerText="#{label.txt_codigo}" width="110">
-						<h:outputText value="#{entidade.codigo}" />
+					<p:column headerText="#{label.txt_codigo}" width="160">
+						<h:outputText value="#{entidade.idTipoTarifa}" />
 					</p:column>
 					
-										
+					
+					<p:column headerText="#{label.txt_nome}" >
+						<h:outputText value="#{entidade.nome}" />
+					</p:column>
+					
+					<p:column headerText="#{label.txt_tarifa_manual}" width="160" >
+						<h:selectBooleanCheckbox value="#{entidade.tarifaManual}" 
+							disabled="true"/>
+					</p:column>					
 					
 					<p:column headerText="#{label.txt_acoes}" exportable="false" width="110">						
-						<p:commandButton actionListener="#{Trocar.editar(entidade)}" 
+						<p:commandButton actionListener="#{tipoTarifaBean.editar(entidade)}" 
 							icon="ui-icon-pencil" update="@form"/>
 							
-						<p:commandButton actionListener="#{Trocar.excluir(entidade)}" 
+						<p:commandButton actionListener="#{tipoTarifaBean.excluir(entidade)}" 
 							icon="ui-icon-trash" update="@form">
 							
 							<p:confirm header="#{label.txt_confirmacao}" 
@@ -70,70 +78,42 @@
 		
 		
 		
-		<p:tabView rendered="#{Trocar.buscando}">					
+		<p:tabView rendered="#{!tipoTarifaBean.buscando}">					
 			<p:tab title="#{label.txt_dados_gerais}" titleStyle="font-size: 10px;color: #455a64;">
 				<div class="ui-fluid">
 					<p:panelGrid 
-						styleClass="ui-panelgrid-blank" columns="4"
+						styleClass="ui-panelgrid-blank" columns="2"
 						cellpadding="10" layout="grid"
-						columnClasses="ui-grid-col-1,ui-grid-col-4,ui-grid-col-1,ui-grid-col-4">
+						columnClasses="ui-grid-col-2,ui-grid-col-4">
 
-						<p:outputLabel value="Nome:" for="nome" />
-						<p:inputText value="" placeholder="Ex: Steve Jobs"
-							id="nome" />
+
+						<p:outputLabel value="#{label.txt_codigo}" for="codigo"/>
+						<p:inputText id="codigo" 
+							value="#{tipoTarifaBean.entidade.idTipoTarifa}" readonly="true"/>
+
+						<p:outputLabel value="#{label.txt_nome}" for="nome" />
+						<p:inputText id="nome"
+							value="#{tipoTarifaBean.entidade.nome}" 
+							placeholder="Ex: Fim de Semana"/>
 						
-						<p:outputLabel value="Email:" for="email" />
-						<p:inputText value=""
-							placeholder="Ex: email@dominio.com.br" id="email" />
-						
-						<p:outputLabel value="Telefone:" for="tel1" />
-						<p:inputMask mask="(99)9999-9999"
-							placeholder="Ex: (21) 2616-0000 " id="tel1" />
-						
-						<p:outputLabel value="Celular:" for="tel2" />
-						<p:inputMask mask="(99)9.9999-9999"
-							placeholder="Ex: (21) 9.8781-0000" id="tel2" />
-						
-						<p:outputLabel value="Data Nasc.:" for="dtNasc" />
-						<p:inputMask mask="99/99/9999"
-							placeholder="Ex: 01/01/2000" id="dtNasc" />
-						
-						<p:outputLabel value="Como nos conheceu?" for="info" />
-						<p:selectOneMenu filter="true" id="info">
-							<f:selectItem itemValue="" itemLabel="Selecione uma mídia" />
-							<f:selectItem itemValue="" itemLabel="Indicação de amigos" />
-							<f:selectItem itemValue="" itemLabel="Internet" />
-							<f:selectItem itemValue="" itemLabel="Televisão" />
-						</p:selectOneMenu>
+						<p:outputLabel value="#{label.txt_tarifa_manual}" for="tarifa_manual" />	
+						<p:selectOneButton id="tarifa_manual" 
+							value="#{tipoTarifaBean.entidade.tarifaManual}"
+							styleClass="bu-selectOneButton"
+							style="	max-width: 65%;">
+            				<f:selectItem itemLabel="#{label.txt_sim}" itemValue="true"/>
+            				<f:selectItem itemLabel="#{label.txt_nao}" itemValue="false"/>
+        				</p:selectOneButton>
 
 					</p:panelGrid>
 					
 				</div>
-			</p:tab>
-
-
-			<p:tab title="Endereço">
-				<div class="ui-fluid">
-					
-					<p:panelGrid columns="4"
-						styleClass="ui-panelgrid-blank"
-						cellpadding="10" layout="grid"
-						columnClasses="ui-grid-col-1,ui-grid-col-4,ui-grid-col-1,ui-grid-col-2">
-						
-					</p:panelGrid>
-					
-				</div>
-			</p:tab>
-
-
-			<p:tab title="Observações">
-
 			</p:tab>
 
 		</p:tabView>
 		
 		
-		<app:barraBotoes bean="#{Trocar}"/>
+		<app:barraBotoes bean="#{tipoTarifaBean}"/>
 		
 		
 		<p:dialog 
@@ -147,20 +127,20 @@
 				styleClass="ui-panelgrid-blank">
 														
 				<p:selectOneMenu id="tipoFiltro"
-					value="#{Trocar.filtro}" style="width:75%">						
+					value="#{tipoTarifaBean.filtro}" style="width:75%">						
 					<f:selectItem itemLabel="Selecione" />
-					<f:selectItems value="#{Trocar.tipoFiltros()}" var="a"
+					<f:selectItems value="#{tipoTarifaBean.tipoFiltros()}" var="a"
 						itemValue="#{a}" itemLabel="#{a.label}"/>						
 				</p:selectOneMenu>
 					
 				<p:inputText id="valorfiltro" placeholder="Valor do Filtro!" 
-						value="#{Trocar.valorFiltro}"
+						value="#{tipoTarifaBean.valorFiltro}"
 						size="30"/>
 								
 				<p:commandButton value="Filtrar" icon="ui-icon-folder-collapsed"
 					styleClass="bu-botao-azul" update="tabela"
 					style="margin-top:20px;"
-					actionListener="#{Trocar.filtrar()}"
+					actionListener="#{tipoTarifaBean.filtrar()}"
 					onclick="PF('dialogFiltro').hide();" />	
 					
 			</p:panelGrid>	

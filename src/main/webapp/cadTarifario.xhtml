@@ -1,0 +1,214 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition 
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:p="http://primefaces.org/ui" 
+	template="/WEB-INF/template.xhtml"
+	xmlns:app="http://java.sun.com/jsf/composite/componentes">
+
+	<ui:define name="tituloPagina">
+		#{label.tit_tarifario}
+	</ui:define>
+	
+	<ui:define name="head">
+		<h:outputScript library="js" name="Monetario.js"/>	
+	</ui:define> >
+	
+	
+
+	<ui:define name="conteudo">
+		
+		<p:breadCrumb>
+			<p:menuitem value="Home" url="/index.xhtml" />
+			<p:menuitem value="#{label.menu_cadastro}"/>
+    		<p:menuitem value="#{label.txt_cadastro_tarifario}" url="#" />
+		</p:breadCrumb>
+		
+		<p:messages autoUpdate="true" closable="true">
+			<p:effect type="pulsate" event="load" delay="500" />
+			<p:effect type="clip" event="load" delay="5000" />
+		</p:messages>
+		
+		
+		<p:tabView rendered="#{tarifarioBean.buscando}" prependId="false">						
+			<p:tab title="Consulta"> 	
+				<p:dataTable id="tabela"
+					value="#{tarifarioBean.entidades}" var="entidade" 
+					selection="#{tarifarioBean.entidade}" selectionMode="single"
+					rowKey="#{entidade.idTarifario}" reflow="true"									
+					widgetVar="tabela" emptyMessage="#{label.msg_tabela_vazia}"
+					style="margin: 0px -11px;" 
+					rendered="#{tarifarioBean.buscando}">				
+					
+
+					<p:ajax event="rowDblselect" listener="#{tarifarioBean.onRowDblClckSelect}"
+						global="false" update="@form"/>
+
+					<p:ajax event="rowSelect" listener="#{tarifarioBean.onRowSelect}" />
+				
+					
+					<p:column headerText="#{label.txt_categoria}" >
+						<h:outputText value="#{entidade.categoria.nome}" />
+					</p:column>	
+					
+					
+					<p:column headerText="#{label.txt_tipos_tarifa}" >
+						<h:outputText value="#{entidade.tipoTarifa.nome}" />
+					</p:column>	
+					
+					
+					<p:column headerText="#{label.txt_data_inicial}" width="150">
+						<h:outputText value="#{entidade.dataInicialFormatada}" />
+					</p:column>
+					
+					
+					<p:column headerText="#{label.txt_data_final}" width="150">
+						<h:outputText value="#{entidade.dataFinalFormatada}" />
+					</p:column>	
+					
+					
+					<p:column headerText="#{label.txt_valor}" width="130">
+						<h:outputText value="#{entidade.valor}">
+							<f:convertNumber pattern="#,##0.00"></f:convertNumber>
+						</h:outputText>
+					</p:column>
+															
+					
+					<p:column headerText="#{label.txt_acoes}" exportable="false" width="110">						
+						<p:commandButton actionListener="#{tarifarioBean.editar(entidade)}" 
+							icon="ui-icon-pencil" update="@form"/>
+							
+						<p:commandButton actionListener="#{tarifarioBean.excluir(entidade)}" 
+							icon="ui-icon-trash" update="@form">
+							
+							<p:confirm header="#{label.txt_confirmacao}" 
+								message="Deseja Excluir este Registro" icon="ui-icon-alert"/>
+						</p:commandButton>
+					</p:column>					
+
+				</p:dataTable>
+			</p:tab>
+		</p:tabView>	
+		
+		
+		
+		<p:tabView rendered="#{!tarifarioBean.buscando}">					
+			<p:tab title="#{label.txt_dados_gerais}" titleStyle="font-size: 10px;color: #455a64;">
+				<div class="ui-fluid">
+					<p:panelGrid 
+						styleClass="ui-panelgrid-blank" columns="2"
+						cellpadding="10" layout="grid"
+						columnClasses="ui-grid-col-2,ui-grid-col-4">
+
+
+						<p:outputLabel value="#{label.txt_codigo}" for="codigo"/>
+						<p:inputText id="codigo" 
+							value="#{tarifarioBean.entidade.idTarifario}" readonly="true"/>
+
+						<p:outputLabel value="" />
+						<p:outputLabel value="" />
+						
+						
+						<p:outputLabel value="#{label.txt_categoria}" for="categoria"/>
+						<p:selectOneMenu id="categoria"
+							value="#{tarifarioBean.entidade.categoria}"
+							required="true" autoWidth="false">
+															
+							<f:selectItem itemLabel="Selecione uma Categoria"/>
+							<f:selectItems value="#{tarifarioBean.categorias}" var="categoria"
+								 itemValue="#{categoria}"	itemLabel="#{categoria.nome}" />
+						</p:selectOneMenu>
+						
+						
+												
+						<p:outputLabel value="#{label.txt_tipos_tarifa}" for="tipoTarifa"/>
+						<p:selectOneMenu id="tipoTarifa"
+							value="#{tarifarioBean.entidade.tipoTarifa}"
+							required="true" autoWidth="false">
+															
+							<f:selectItem itemLabel="Selecione um Tipo de tarifa"/>
+							<f:selectItems value="#{tarifarioBean.tipoTarifas}" var="tipoTarifa"
+								 itemValue="#{tipoTarifa}"	itemLabel="#{tipoTarifa.nome}" />
+						</p:selectOneMenu>
+									
+						
+						
+						<p:outputLabel value="#{label.txt_data_inicial}" for="dtInicial" />						
+						<p:calendar id="dtInicial"
+							value="#{tarifarioBean.entidade.dataInicial}"
+							pattern="dd/MM/yyyy" mask="true"
+							showOn="button" locale="pt_BR"
+							required="true"
+							requiredMessage="Informe a Data Inicial!">
+						
+						</p:calendar>
+						
+						
+						<p:outputLabel value="#{label.txt_data_final}" for="dtFinal" />						
+						<p:calendar id="dtFinal"
+							value="#{tarifarioBean.entidade.dataFinal}"
+							pattern="dd/MM/yyyy" mask="true"
+							showOn="button" locale="pt_BR"
+							required="true"
+							requiredMessage="Informe a Data Final!">
+						
+						</p:calendar>
+						
+						
+						<p:outputLabel value="#{label.txt_valor}" for="valor"/>
+						<p:inputText id="valor" 
+							value="#{tarifarioBean.entidade.valor}"
+							onblur="mascara(this,moeda)"
+							required="true" maxlength="15"
+							requiredMessage="Preencha este campo com o valor da parcela" >
+							
+							<f:convertNumber pattern="#,##0.00" type="currency" currencySymbol="R$"/>
+						</p:inputText>
+																		
+					</p:panelGrid>
+					
+				</div>
+			</p:tab>
+
+		</p:tabView>
+		
+		
+		<app:barraBotoes bean="#{tarifarioBean}"/>
+		
+		
+		<p:dialog 
+			width="300" height="140"
+			header="Filtrar Tabela!"			
+			widgetVar="dialogFiltro" modal="true" draggable="true" 
+			closable="true" resizable="true" position="center center"
+			showEffect="explode" hideEffect="explode">
+		
+			<p:panelGrid columns="1" cellpadding="3" 
+				styleClass="ui-panelgrid-blank">
+														
+				<p:selectOneMenu id="tipoFiltro"
+					value="#{tarifarioBean.filtro}" style="width:75%">						
+					<f:selectItem itemLabel="Selecione" />
+					<f:selectItems value="#{tarifarioBean.tipoFiltros()}" var="a"
+						itemValue="#{a}" itemLabel="#{a.label}"/>						
+				</p:selectOneMenu>
+					
+				<p:inputText id="valorfiltro" placeholder="Valor do Filtro!" 
+						value="#{tarifarioBean.valorFiltro}"
+						size="30"/>
+								
+				<p:commandButton value="Filtrar" icon="ui-icon-folder-collapsed"
+					styleClass="bu-botao-azul" update="tabela"
+					style="margin-top:20px;"
+					actionListener="#{tarifarioBean.filtrar()}"
+					onclick="PF('dialogFiltro').hide();" />	
+					
+			</p:panelGrid>	
+		</p:dialog>
+		
+	</ui:define>
+</ui:composition>

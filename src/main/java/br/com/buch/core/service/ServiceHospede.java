@@ -73,7 +73,7 @@ public class ServiceHospede implements GenericService<Hospede> {
 			
 		}catch (Exception e) {
 			e.printStackTrace();
-			UtilMensagens.mensagemErro("Ocorreu algum excessão ao buscar os dados do Hóspede!");
+			UtilMensagens.mensagemErro("Ocorreu uma excessão ao buscar os dados do Hóspede!");
 			return null;
 		}
 	}

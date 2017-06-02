@@ -70,7 +70,7 @@ public class ServiceApartamento implements GenericService<Apartamento> {
 			
 		}catch (Exception e) {
 			e.printStackTrace();
-			UtilMensagens.mensagemErro("Ocorreu algum excessão ao buscar os dados do Apartamento!");
+			UtilMensagens.mensagemErro("Ocorreu uma excessão ao buscar os dados do Apartamento!");
 			return null;
 		}
 	}

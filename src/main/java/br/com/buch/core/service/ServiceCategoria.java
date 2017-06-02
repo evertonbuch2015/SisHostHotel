@@ -72,7 +72,7 @@ public class ServiceCategoria implements GenericService<Categoria> {
 			
 		}catch (Exception e) {
 			e.printStackTrace();
-			UtilMensagens.mensagemErro("Ocorreu algum excessão ao buscar os dados da Categoria!");
+			UtilMensagens.mensagemErro("Ocorreu uma excessão ao buscar os dados da Categoria!");
 			return null;
 		}
 	}
