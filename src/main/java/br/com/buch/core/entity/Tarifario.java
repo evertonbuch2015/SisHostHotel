@@ -26,6 +26,10 @@ import javax.persistence.TemporalType;
 @Table(name="CAD_TARIFARIO")
 public class Tarifario implements Serializable {
 	
+
+	private static final long serialVersionUID = 8783059718970947919L;
+
+
 	@Id
     @SequenceGenerator(name="G_CAD_TARIFARIO", sequenceName="\"G_CAD_TARIFARIO\"", allocationSize=1)  
     @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="G_CAD_TARIFARIO")

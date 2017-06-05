@@ -19,6 +19,9 @@ import javax.persistence.Table;
 @Table(name="CAD_TIPO_TARIFA")
 public class TipoTarifa implements Serializable {
 
+	
+	private static final long serialVersionUID = 5017928612389689016L;
+
 	@Id
     @SequenceGenerator(name="G_CAD_TIPO_TARIFA", sequenceName="\"G_CAD_TIPO_TARIFA\"", allocationSize=1)  
     @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="G_CAD_TIPO_TARIFA")

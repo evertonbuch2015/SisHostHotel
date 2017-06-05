@@ -21,9 +21,7 @@ import javax.persistence.Temporal;
 @Table(name = "CAD_HOSPEDE")
 public class Hospede implements Serializable {
 
-	/**
-	 * 
-	 */
+	
 	private static final long serialVersionUID = -7642812451427541465L;
 
 	@Id
@@ -342,6 +340,7 @@ public class Hospede implements Serializable {
 		
 		return ativo.equals('S') ? true : false;
 	}
+	
 	//--------------------------------	Métodos Auxiliares------------------------------//	
 	
 	@Override
