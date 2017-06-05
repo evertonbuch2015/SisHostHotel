@@ -11,6 +11,8 @@
 		<class>br.com.buch.core.entity.TipoTarifa</class>
 		<class>br.com.buch.core.entity.Tarifario</class>
 		<class>br.com.buch.core.entity.FormaPagamento</class>
+		<class>br.com.buch.core.entity.Hospedagem</class>
+		<class>br.com.buch.core.entity.HospedagemLancamento</class>
 		
 		<properties>
 			<property name="javax.persistence.jdbc.url" value="jdbc:firebirdsql:localhost/3050:D:\SISHOSTHOTEL.fdb"/>
