@@ -8,6 +8,7 @@ import javax.faces.bean.SessionScoped;
 
 import br.com.buch.core.entity.Hospede;
 import br.com.buch.core.enumerated.Estados;
+import br.com.buch.core.enumerated.TipoFiltroHospede;
 import br.com.buch.core.service.ServiceHospede;
 
 
@@ -15,27 +16,14 @@ import br.com.buch.core.service.ServiceHospede;
 @SessionScoped
 public class HospedeBean extends GenericBean<Hospede, ServiceHospede> {
 	
+		
+	private TipoFiltroHospede filtro;	
+	private Integer idHospede;
+	
+	
 	public HospedeBean() {
 		super(new ServiceHospede());
 	}
-
-	public enum TipoFiltro{
-		CODIGO("Código"), NOME("Nome");
-		
-		private String label;
-
-		TipoFiltro(String label) {
-			this.label = label;
-		}
-		
-		public String getLabel(){
-			return this.label;
-		}
-	}
-	
-	private TipoFiltro filtro;	
-	private Integer idHospede;
-	
 
 	// =======================METODOS DO USUARIO=====================================
 	
@@ -57,16 +45,16 @@ public class HospedeBean extends GenericBean<Hospede, ServiceHospede> {
 	
 	// =============================GET AND SET=====================================
 
-	public TipoFiltro getFiltro() {
+	public TipoFiltroHospede getFiltro() {
 		return filtro;
 	}
 
-	public void setFiltro(TipoFiltro filtro) {
+	public void setFiltro(TipoFiltroHospede filtro) {
 		this.filtro = filtro;
 	}
 
-	public TipoFiltro[] tipoFiltros(){
-		return TipoFiltro.values();
+	public TipoFiltroHospede[] tipoFiltros(){
+		return TipoFiltroHospede.values();
 	}
 
 	

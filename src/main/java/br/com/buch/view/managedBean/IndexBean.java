@@ -7,7 +7,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ViewScoped;
+import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.event.AjaxBehaviorEvent;
 
@@ -18,7 +18,7 @@ import br.com.buch.view.util.SessionContext;
 
 
 @ManagedBean
-@ViewScoped
+@SessionScoped
 public class IndexBean implements Serializable {
 	
 	

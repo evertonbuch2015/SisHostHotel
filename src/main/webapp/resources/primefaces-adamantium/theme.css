@@ -3182,7 +3182,7 @@ hr.ui-widget-header {
   color: #546e7a;
 }
 .ui-dialog .ui-dialog-content {
-  padding: 20px !important;
+  padding: 2px 5px !important;
   color: #546e7a;
   font-size: 14px;
 }

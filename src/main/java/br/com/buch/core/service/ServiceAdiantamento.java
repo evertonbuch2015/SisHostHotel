@@ -1,17 +1,18 @@
 package br.com.buch.core.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import br.com.buch.core.dao.CrpAdiantamentoDao;
-import br.com.buch.core.entity.CrpAdiantamento;
+import br.com.buch.core.entity.Adiantamento;
 import br.com.buch.view.util.UtilErros;
 import br.com.buch.view.util.UtilMensagens;
 
-public class ServiceCrpAdiantamento implements GenericService<CrpAdiantamento> {
+public class ServiceAdiantamento implements GenericService<Adiantamento> {
 
 	private CrpAdiantamentoDao adiantamentoDao;
 	
-	public ServiceCrpAdiantamento() {
+	public ServiceAdiantamento() {
 		adiantamentoDao = new CrpAdiantamentoDao();
 	}
 
@@ -19,7 +20,7 @@ public class ServiceCrpAdiantamento implements GenericService<CrpAdiantamento> {
 	
 	
 	@Override
-	public boolean salvar(CrpAdiantamento entidate) {
+	public boolean salvar(Adiantamento entidate) {
 		if(entidate.getIdAdiantamento() == null){
 			
 			try {
@@ -50,7 +51,7 @@ public class ServiceCrpAdiantamento implements GenericService<CrpAdiantamento> {
 	
 
 	@Override
-	public void excluir(CrpAdiantamento entidade) {
+	public void excluir(Adiantamento entidade) {
 		try {
 			adiantamentoDao.delete(entidade);
 			UtilMensagens.mensagemInformacao("Exclusão Realizada com Sucesso");
@@ -65,7 +66,7 @@ public class ServiceCrpAdiantamento implements GenericService<CrpAdiantamento> {
 	
 
 	@Override
-	public CrpAdiantamento carregarEntidade(CrpAdiantamento entidade) {
+	public Adiantamento carregarEntidade(Adiantamento entidade) {
 		try{
 			String jpql = "Select a From CprAdiantamento a LEFT JOIN FETCH a.hospede where a.idCrpAdiantamento = ?1";
 			return adiantamentoDao.findOne(jpql, entidade.getIdAdiantamento());
@@ -80,9 +81,8 @@ public class ServiceCrpAdiantamento implements GenericService<CrpAdiantamento> {
 	
 
 	@Override
-	public List<CrpAdiantamento> buscarTodos() {
-		// TODO Auto-generated method stub
-		return null;
+	public List<Adiantamento> buscarTodos() {
+		return new ArrayList<Adiantamento>();
 	}
 
 }

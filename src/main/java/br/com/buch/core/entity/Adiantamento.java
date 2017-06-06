@@ -19,16 +19,16 @@ import javax.persistence.Transient;
 
 
 @Entity
-@Table(name="CRP_ADIANTAMENTO")
-public class CrpAdiantamento implements Serializable {
+@Table(name="ADIANTAMENTO")
+public class Adiantamento implements Serializable {
 
 	private static final long serialVersionUID = 5010332039177303462L;
 
 	
 	@Id
-    @SequenceGenerator(name="G_CRP_ADIANTAMENTO", sequenceName="\"G_CRP_ADIANTAMENTO\"", allocationSize=1)  
-    @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="G_CRP_ADIANTAMENTO")
-    @Column(name = "COD_CRP_ADIANTAMENTO")
+    @SequenceGenerator(name="G_ADIANTAMENTO", sequenceName="\"G_ADIANTAMENTO\"", allocationSize=1)  
+    @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="G_ADIANTAMENTO")
+    @Column(name = "COD_ADIANTAMENTO")
     private Integer idAdiantamento;
 
     
@@ -188,7 +188,7 @@ public class CrpAdiantamento implements Serializable {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		CrpAdiantamento other = (CrpAdiantamento) obj;
+		Adiantamento other = (Adiantamento) obj;
 		if (idAdiantamento == null) {
 			if (other.idAdiantamento != null)
 				return false;

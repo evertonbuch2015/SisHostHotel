@@ -141,13 +141,13 @@ public class Hospede implements Serializable {
 	}
 
 	public void setCpf(String cpf) {
-		this.cpf = cpf;
+		this.cpf = cpf.replaceAll(".", "").replaceAll("-", "");
 	}
 
 	public String getCpfFormatado(){
 		if(this.cpf != null){
-			return 	cpf.substring(0, 3) + "." + cpf.substring(4, 7) + "." + cpf.substring(8, 11)
-					+ "-" + cpf.substring(12);
+			return 	cpf.substring(0, 3) + "." + cpf.substring(3, 6) + "." + cpf.substring(6, 9)
+					+ "-" + cpf.substring(9);
 		}else{
 			return "";
 		} 
@@ -159,7 +159,7 @@ public class Hospede implements Serializable {
 	}
 
 	public void setRg(String rg) {
-		this.rg = rg;
+		this.rg = rg.replaceAll(".", "").replaceAll("-", "");
 	}
 
 
@@ -291,6 +291,7 @@ public class Hospede implements Serializable {
 	public void setAtivo(Character ativo) {
 		this.ativo = ativo;
 	}
+	
 	
 	public Character getAutorizaEmail() {
 		return autorizaEmail;

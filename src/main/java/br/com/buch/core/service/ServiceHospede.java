@@ -4,7 +4,7 @@ import java.util.List;
 
 import br.com.buch.core.dao.HospedeDao;
 import br.com.buch.core.entity.Hospede;
-import br.com.buch.view.managedBean.HospedeBean.TipoFiltro;
+import br.com.buch.core.enumerated.TipoFiltroHospede;
 import br.com.buch.view.util.UtilErros;
 import br.com.buch.view.util.UtilMensagens;
 
@@ -90,18 +90,21 @@ public class ServiceHospede implements GenericService<Hospede> {
 	}
 
 	
-	public List<Hospede> filtrarTabela(TipoFiltro tipoFiltro , String valorFiltro){
+	public List<Hospede> filtrarTabela(TipoFiltroHospede tipoFiltro , String valorFiltro){
 		List<Hospede> lista = null;
 		
 		try {
 			
-			if(tipoFiltro.equals(TipoFiltro.CODIGO)){
+			if(tipoFiltro.equals(TipoFiltroHospede.CODIGO)){
 				String jpql = "Select h From Hospede h where h.codigo in (" + valorFiltro + ")";
 				lista = hospedeDao.find(jpql);
 			}
-			else if(tipoFiltro.equals(TipoFiltro.NOME)){
+			else if(tipoFiltro.equals(TipoFiltroHospede.NOME)){
 				lista = hospedeDao.find("Select h From Hospede h where h.nome like ?",valorFiltro);
-			}			
+			}	
+			else if(tipoFiltro.equals(TipoFiltroHospede.CPF)){
+				lista = hospedeDao.find("Select h From Hospede h where h.cpf like ?",valorFiltro);
+			}
 			
 			return lista;			
 		} catch (Exception e) {

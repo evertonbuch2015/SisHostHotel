@@ -1,11 +1,11 @@
 package br.com.buch.core.dao;
 
-import br.com.buch.core.entity.CrpAdiantamento;
+import br.com.buch.core.entity.Adiantamento;
 
-public class CrpAdiantamentoDao extends GenericDao<CrpAdiantamento> {
+public class CrpAdiantamentoDao extends GenericDao<Adiantamento> {
 
 	public CrpAdiantamentoDao() {
-		super(CrpAdiantamento.class);
+		super(Adiantamento.class);
 	}
 
 }

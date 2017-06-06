@@ -1,5 +1,6 @@
 package br.com.buch.core.service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -18,11 +19,12 @@ public class ServiceIndex {
 	public Map<String,Number> getGraficoApartamentos(){
 		
 		Map<String,Number> data = new HashedMap<String,Number>();
-		List<Apartamento> lista;
+		List<Apartamento> lista = new ArrayList<Apartamento>();
 		Integer livre = 0, ocupado = 0, reservado = 0, manutencao = 0, governaca = 0;
 		
-		lista = new ServiceApartamento().buscarTodos();
-		
+		if(lista.isEmpty()){
+			lista = new ServiceApartamento().buscarTodos();
+		}
 		
 		for (Apartamento apartamento : lista) {
 			

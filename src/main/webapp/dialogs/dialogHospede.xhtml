@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+<h:head>
+	<meta charset="UTF-8"/>
+	<link rel="stylesheet" type="text/css"
+			href="resources/style/default.css" media="screen" />
+
+</h:head>
+<h:body>
+
+	<h:form>
+    	<div id="customheader" style="display:none">
+    		<i  class="fa fa-users" ></i>	
+    		<p:outputLabel value="Consulta de Hóspedes" style="margin-left: 10px"/>
+    	</div>
+    	
+   		<p:panelGrid columns="2" 
+			styleClass="ui-panelgrid-blank">
+				
+												
+			<p:selectOneMenu id="tipoFiltro"
+				value="#{dialogHospedeBean.filtro}" style="width:80%" required="true">						
+				<f:selectItem itemLabel="Selecione o Filtro" />
+				<f:selectItems value="#{dialogHospedeBean.tipoFiltros()}"
+					var="a" itemValue="#{a}" itemLabel="#{a.label}"/>						
+			</p:selectOneMenu>
+			<p:outputLabel value=""/>
+			
+				
+			<p:inputText id="valorfiltro" placeholder="Valor do Filtro!" 
+					value="#{dialogHospedeBean.valorFiltro}"
+					size="35" required="true"/>
+							
+			<p:commandButton value="Filtrar" icon="ui-icon-folder-collapsed"
+				styleClass="bu-botao-azul" update="tabela"
+				actionListener="#{dialogHospedeBean.pesquisar()}"/>	
+				
+		</p:panelGrid>	
+   		  	
+    	<p:separator/>
+    	
+    	<p:dataTable id="tabela" 
+    		value="#{dialogHospedeBean.hospedes}" var="hospede" 
+    		style="font-size: 13px !important;" 
+    		emptyMessage="#{label.msg_tabela_vazia}" rows="10"
+    		paginator="true" paginatorAlwaysVisible="false" 
+    		paginatorPosition="bottom">
+    		
+				<p:column headerText="#{label.txt_codigo}" width="60">
+					<h:outputText value="#{hospede.codigo}" />
+				</p:column>
+	
+				<p:column headerText="#{label.txt_nome}">
+					<h:outputText value="#{hospede.nome}" />
+				</p:column>
+	
+				<p:column headerText="#{label.txt_cpf}" width="120">
+					<h:outputText value="#{hospede.cpfFormatado}" />
+				</p:column>
+	
+				<p:column style="text-align: center" width="50">
+					<p:commandButton icon="ui-icon-check" iconPos="center"  
+						title="#{label.txt_selecione}" process="@this"
+						action="#{dialogHospedeBean.retornoDialog(hospede)}"/>
+				</p:column>
+			</p:dataTable>
+	</h:form>
+
+</h:body>
+</html>
