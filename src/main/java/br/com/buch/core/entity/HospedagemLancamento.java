@@ -29,7 +29,8 @@ import br.com.buch.core.enumerated.TipoLancamento;
 @Table(name="HOSPEDAGEM_LANCAMENTOS")
 public class HospedagemLancamento implements Serializable {
 
-	
+	private static final long serialVersionUID = -2398248490404309696L;
+
 	
 	@Id
     @SequenceGenerator(name="G_HOSPEDAGEM_LANCAMENTOS", sequenceName="\"G_HOSPEDAGEM_LANCAMENTOS\"", allocationSize=1)  
@@ -64,13 +65,114 @@ public class HospedagemLancamento implements Serializable {
 	@Enumerated(EnumType.STRING)
 	private TipoLancamento tipoLancamento;
 	
-	
-	//DEBITO = D      CREDITO = C
-	@Column(name="OPERACAO")
-	private Character operacao;
-	
-	
+		
 	@ManyToOne
     @JoinColumn(name ="COD_HOSPEDAGEM")
     private Hospedagem hospedagem;
+
+
+
+    //--------------------------------	GETs and SETs------------------------------//
+	
+	
+	public Integer getIdHospedagemLancamento() {
+		return idHospedagemLancamento;
+	}
+
+	public void setIdHospedagemLancamento(Integer idHospedagemLancamento) {
+		this.idHospedagemLancamento = idHospedagemLancamento;
+	}
+
+
+	public String getDescricao() {
+		return descricao;
+	}
+
+	public void setDescricao(String descricao) {
+		this.descricao = descricao;
+	}
+
+
+	public Integer getQuantidade() {
+		return quantidade;
+	}
+
+	public void setQuantidade(Integer quantidade) {
+		this.quantidade = quantidade;
+	}
+
+
+	public BigDecimal getVlUnitario() {
+		return vlUnitario;
+	}
+
+	public void setVlUnitario(BigDecimal vlUnitario) {
+		this.vlUnitario = vlUnitario;
+	}
+
+
+	public BigDecimal getVlTotal() {
+		return vlTotal;
+	}
+
+	public void setVlTotal(BigDecimal vlTotal) {
+		this.vlTotal = vlTotal;
+	}
+
+
+	public Calendar getDataCadastro() {
+		return dataCadastro;
+	}
+
+	public void setDataCadastro(Calendar dataCadastro) {
+		this.dataCadastro = dataCadastro;
+	}
+
+
+	public TipoLancamento getTipoLancamento() {
+		return tipoLancamento;
+	}
+
+	public void setTipoLancamento(TipoLancamento tipoLancamento) {
+		this.tipoLancamento = tipoLancamento;
+	}
+
+
+	public Hospedagem getHospedagem() {
+		return hospedagem;
+	}
+
+	public void setHospedagem(Hospedagem hospedagem) {
+		this.hospedagem = hospedagem;
+	}
+
+	
+	//--------------------------------	Métodos Auxiliares------------------------------//
+	
+	
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((idHospedagemLancamento == null) ? 0 : idHospedagemLancamento.hashCode());
+		return result;
+	}
+
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		HospedagemLancamento other = (HospedagemLancamento) obj;
+		if (idHospedagemLancamento == null) {
+			if (other.idHospedagemLancamento != null)
+				return false;
+		} else if (!idHospedagemLancamento.equals(other.idHospedagemLancamento))
+			return false;
+		return true;
+	}
 }

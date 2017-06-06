@@ -26,10 +26,10 @@ public class FormaPagamento implements Serializable{
     
     
 	@Column(name = "CODIGO")
-    private String codigo;
+    private Integer codigo;
     
     
-    @Column(name = "DESCRICAO")
+    @Column(name = "DESCRICAO", length = 60)
     private String descricao;
     
     
@@ -48,11 +48,11 @@ public class FormaPagamento implements Serializable{
 	}
 
 
-	public String getCodigo() {
+	public Integer getCodigo() {
 		return codigo;
 	}
 
-	public void setCodigo(String codigo) {
+	public void setCodigo(Integer codigo) {
 		this.codigo = codigo;
 	}
 
