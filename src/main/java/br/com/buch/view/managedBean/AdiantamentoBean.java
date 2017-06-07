@@ -8,9 +8,11 @@ import javax.faces.bean.SessionScoped;
 import org.primefaces.event.SelectEvent;
 
 import br.com.buch.core.entity.Adiantamento;
+import br.com.buch.core.entity.CaixaBanco;
 import br.com.buch.core.entity.Hospede;
 import br.com.buch.core.enumerated.TipoFiltroAdiantamento;
 import br.com.buch.core.service.ServiceAdiantamento;
+import br.com.buch.core.service.ServiceCaixaBanco;
 
 @ManagedBean
 @SessionScoped
@@ -30,7 +32,7 @@ public class AdiantamentoBean extends GenericBean<Adiantamento, ServiceAdiantame
 	
 	@Override
 	public void filtrar() {
-		
+		service.filtrarTabela(filtro, valorFiltro);
 	}
 
 	@Override
@@ -60,6 +62,11 @@ public class AdiantamentoBean extends GenericBean<Adiantamento, ServiceAdiantame
 	
 	public void setFiltro(TipoFiltroAdiantamento filtro) {
 		this.filtro = filtro;
+	}
+	
+	
+	public List<CaixaBanco> getLocaisRecebimento(){
+		return new ServiceCaixaBanco().buscarTodos();
 	}
 	
 	

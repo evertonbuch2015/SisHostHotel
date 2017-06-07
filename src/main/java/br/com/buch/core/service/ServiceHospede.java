@@ -56,10 +56,15 @@ public class ServiceHospede implements GenericService<Hospede> {
 			hospedeDao.delete(entidade);
 			UtilMensagens.mensagemInformacao("Exclusão Realizada com Sucesso");
 			
-		}catch (Exception ex) {
+		}		
+		catch (Exception ex) {
         	ex.printStackTrace();
-            UtilMensagens.mensagemErro("Ocorreu algum excessão ao Excluir o Hóspede!" + 
-            		" \nErro: " + UtilErros.getMensagemErro(ex));
+        	if(ex.getCause().toString().contains("ConstraintViolationException")){
+        		UtilMensagens.mensagemAtencao("Hóspede não pode ser excluido pois existem registros vinculados a ele!");
+        	}else{
+        		UtilMensagens.mensagemErro("Ocorreu algum excessão ao Excluir o Hóspede!" + 
+                		" \nErro: " + UtilErros.getMensagemErro(ex));
+        	}
 		}
 	}
 
@@ -67,7 +72,6 @@ public class ServiceHospede implements GenericService<Hospede> {
 	@Override
 	public Hospede carregarEntidade(Hospede entidade) {		
 		try{
-			//String jpql = "Select h From Hospede h LEFT JOIN FETCH h.endereco LEFT JOIN FETCH h.empresa where h.idHospede = ?1";
 			String jpql = "Select h From Hospede h LEFT JOIN FETCH h.endereco where h.idHospede = ?1";
 			return hospedeDao.findOne(jpql, entidade.getIdHospede());
 			

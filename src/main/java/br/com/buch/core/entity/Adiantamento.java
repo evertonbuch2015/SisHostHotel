@@ -2,7 +2,7 @@ package br.com.buch.core.entity;
 
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
+import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -19,15 +19,15 @@ import javax.persistence.Transient;
 
 
 @Entity
-@Table(name="ADIANTAMENTO")
+@Table(name="ADIANTAMENTO_CLIENTE")
 public class Adiantamento implements Serializable {
 
 	private static final long serialVersionUID = 5010332039177303462L;
 
 	
 	@Id
-    @SequenceGenerator(name="G_ADIANTAMENTO", sequenceName="\"G_ADIANTAMENTO\"", allocationSize=1)  
-    @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="G_ADIANTAMENTO")
+	@SequenceGenerator(name="G_ADIANTAMENTO_CLIENTE", sequenceName="\"G_ADIANTAMENTO_CLIENTE\"", allocationSize=1)  
+    @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="G_ADIANTAMENTO_CLIENTE")
     @Column(name = "COD_ADIANTAMENTO")
     private Integer idAdiantamento;
 
@@ -36,18 +36,18 @@ public class Adiantamento implements Serializable {
     private String codigo;
     
     
-    @Column(name = "descricao", length = 100, nullable = true)
+    @Column(name = "DESCRICAO", length = 100, nullable = false)
     private String descricao;
     
     
     @Column(name = "DATA_EMISSAO")
     @Temporal(TemporalType.DATE)
-    private Calendar dtEmissao;
+    private Date dtEmissao;
     
     
     @Column(name = "DATA_BAIXA")
     @Temporal(TemporalType.DATE)
-    private Calendar dtBaixa;
+    private Date dtBaixa;
     
     
     @Column(name = "VALOR")
@@ -56,15 +56,16 @@ public class Adiantamento implements Serializable {
     
     @Column(name = "SALDO")
     private Double saldo;
-    
-    
-    @Column(name = "OBS" ,nullable = true , length = 255)
-    private String obs;
-    
+       
     
     @OneToOne
     @JoinColumn(name ="COD_CADHOSPEDE")
     private Hospede hospede;
+    
+    
+    @OneToOne
+    @JoinColumn(name="COD_CADCAIXABANCO")
+    private CaixaBanco localRecebimento;
     
     
     //--------------------------------	GETs and SETs------------------------------//
@@ -97,20 +98,20 @@ public class Adiantamento implements Serializable {
 	}
 
 	
-	public Calendar getDtEmissao() {
+	public Date getDtEmissao() {
 		return dtEmissao;
 	}
 
-	public void setDtEmissao(Calendar dtEmissao) {
+	public void setDtEmissao(Date dtEmissao) {
 		this.dtEmissao = dtEmissao;
 	}
 
 	
-	public Calendar getDtBaixa() {
+	public Date getDtBaixa() {
 		return dtBaixa;
 	}
 
-	public void setDtBaixa(Calendar dtBaixa) {
+	public void setDtBaixa(Date dtBaixa) {
 		this.dtBaixa = dtBaixa;
 	}
 
@@ -132,17 +133,11 @@ public class Adiantamento implements Serializable {
 		this.saldo = saldo;
 	}
 
-	
-	public String getObs() {
-		return obs;
-	}
 
-	public void setObs(String obs) {
-		this.obs = obs;
-	}
-
-	
 	public Hospede getHospede() {
+		if(this.hospede == null){
+			this.hospede = new Hospede();
+		}
 		return hospede;
 	}
 
@@ -150,6 +145,15 @@ public class Adiantamento implements Serializable {
 		this.hospede = hospede;
 	}
 
+	
+	public CaixaBanco getLocalRecebimento() {
+		return localRecebimento;
+	}
+	
+	public void setLocalRecebimento(CaixaBanco localRecebimento) {
+		this.localRecebimento = localRecebimento;
+	}
+	
 	
 	@Transient
     public String getDataEmissaoFormatada(){

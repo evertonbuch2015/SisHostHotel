@@ -54,6 +54,27 @@
 						<h:outputText value="#{entidade.codigo}" />
 					</p:column>
 					
+					
+					<p:column headerText="#{label.txt_hospede}" width="120">
+						<h:outputText value="#{entidade.hospede.nome}" />
+					</p:column>
+					
+					<p:column headerText="#{label.txt_data_emissao}" width="90">
+						<h:outputText value="#{entidade.dataEmissaoFormatada}" />
+					</p:column>
+					
+					<p:column headerText="#{label.txt_valor}" width="90">
+						<h:outputText value="#{entidade.valor}">
+							<f:convertNumber pattern="#,##0.00"/>
+						</h:outputText>
+					</p:column>
+					
+										
+					<p:column headerText="#{label.txt_saldo}" width="90" priority="4">
+						<h:outputText value="#{entidade.saldo}" >
+							<f:convertNumber pattern="#,##0.00"/>
+						</h:outputText>
+					</p:column>
 										
 					
 					<p:column headerText="#{label.txt_acoes}" exportable="false" width="110">						
@@ -91,7 +112,8 @@
 						<p:outputLabel value="#{label.txt_descricao}" for="descricao" />
 						<p:inputText id="descricao" 
 							value="#{adiantamentoBean.entidade.descricao}"
-							rendered="true"/>
+							required="true"
+							requiredMessage="Informe uma Descrição!"/>
 						
 					</p:panelGrid>
 					
@@ -109,7 +131,7 @@
 							showOn="button" locale="pt_BR"
 							required="true"
 							requiredMessage="Informe a Data de Emissão!">
-						
+					
 						</p:calendar>
 						
 						
@@ -125,6 +147,8 @@
 							onblur="mascara(this,moeda)"
 							required="true" maxlength="15"
 							requiredMessage="Preencha o Valor!">
+							
+							<f:convertNumber pattern="#,##0.00" type="currency" currencySymbol="R$"/>
 						</p:inputText>
 						
 						
@@ -132,6 +156,7 @@
 						<p:inputText id="saldo" 
 							value="#{adiantamentoBean.entidade.saldo}"
 							onblur="mascara(this,moeda)" readonly="true">
+							
 						</p:inputText>
 						
 						
@@ -139,7 +164,8 @@
 						<h:panelGrid columns="2">
    							<p:inputText id="hospede" size="40"
    								value="#{adiantamentoBean.entidade.hospede.nome}"
-								readonly="#{facesContext.currentPhaseId.name eq 'RENDER_RESPONSE'}"/>
+								readonly="#{facesContext.currentPhaseId.name eq 'RENDER_RESPONSE'}"
+								required="true"/>
 								
 							<p:commandButton 
 								icon="fa fa-search" process="@this" update="@none"
@@ -150,7 +176,18 @@
 									listener="#{adiantamentoBean.hospedeSelecionado}" 
 									process="@this" update="hospede" />
 							</p:commandButton>
-						</h:panelGrid>								
+						</h:panelGrid>
+						
+						
+						<p:outputLabel value="#{label.txt_local_recebimento}" for="localRecebimento"/>
+						<p:selectOneMenu id="localRecebimento"
+							value="#{adiantamentoBean.entidade.localRecebimento}"
+							required="true" autoWidth="false">
+															
+							<f:selectItem itemLabel="Selecione um Registro"/>
+							<f:selectItems value="#{adiantamentoBean.locaisRecebimento}" var="localRecebimento"
+								 itemValue="#{localRecebimento}" itemLabel="#{localRecebimento}" />
+						</p:selectOneMenu>								
 						
 
 					</p:panelGrid>

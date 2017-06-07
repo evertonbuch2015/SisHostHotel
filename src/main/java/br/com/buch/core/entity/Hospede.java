@@ -141,7 +141,7 @@ public class Hospede implements Serializable {
 	}
 
 	public void setCpf(String cpf) {
-		this.cpf = cpf.replaceAll(".", "").replaceAll("-", "");
+		this.cpf = cpf.replace(".", "").replace("-", "");
 	}
 
 	public String getCpfFormatado(){
@@ -159,7 +159,7 @@ public class Hospede implements Serializable {
 	}
 
 	public void setRg(String rg) {
-		this.rg = rg.replaceAll(".", "").replaceAll("-", "");
+		this.rg = rg.replace(".", "").replace("-", "");
 	}
 
 
