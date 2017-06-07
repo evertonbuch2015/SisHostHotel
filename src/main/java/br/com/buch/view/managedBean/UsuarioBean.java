@@ -11,7 +11,7 @@ import org.primefaces.event.SelectEvent;
 
 import br.com.buch.core.entity.Hotel;
 import br.com.buch.core.entity.Usuario;
-import br.com.buch.core.enumerated.GrupoUsuarios;
+import br.com.buch.core.enumerated.GrupoUsuario;
 import br.com.buch.core.service.ServiceUsuario;
 
 
@@ -20,7 +20,8 @@ import br.com.buch.core.service.ServiceUsuario;
 public class UsuarioBean extends GenericBean<Usuario, ServiceUsuario> {
 
 	public enum TipoFiltro{
-		CODIGO("Código"), NOME("Nome Usuário");
+		CODIGO("Código"), 
+		NOME("Nome Usuário");
 		
 		private String label;
 
@@ -34,7 +35,6 @@ public class UsuarioBean extends GenericBean<Usuario, ServiceUsuario> {
 	}
 	
 	private TipoFiltro filtro;	
-	private ServiceUsuario usuarioService;
 	private Integer usuarioId;
 	
 	
@@ -45,7 +45,7 @@ public class UsuarioBean extends GenericBean<Usuario, ServiceUsuario> {
 	// =======================METODOS DO USUARIO=================================================
 	
 	public void filtrar(){
-		this.entidades = usuarioService.filtrarTabela(filtro, valorFiltro);
+		this.entidades = service.filtrarTabela(filtro, valorFiltro);
 	}
 	
 	
@@ -99,8 +99,8 @@ public class UsuarioBean extends GenericBean<Usuario, ServiceUsuario> {
 	}
 
 		
-	public GrupoUsuarios[] getGrupoUsuarios(){
-		return GrupoUsuarios.values();
+	public GrupoUsuario[] getGrupoUsuarios(){
+		return GrupoUsuario.values();
 	}	
 		
 	

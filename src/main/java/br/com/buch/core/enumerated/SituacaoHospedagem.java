@@ -7,7 +7,7 @@ public enum SituacaoHospedagem {
 	CHECKIN("Check-In"),
 	CHECKOUT("Check-Out"),
 	CANCELADA("Cancelada");
-	
+
 	
 	private String label;
 	

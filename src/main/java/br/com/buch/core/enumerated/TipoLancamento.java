@@ -1,5 +1,11 @@
 package br.com.buch.core.enumerated;
 
+
+/**
+ * 
+ * @author Everton Buchkorn
+ * Enum Utilizado na classe de hospedagem Lancamento.
+ */
 public enum TipoLancamento {
 
 	

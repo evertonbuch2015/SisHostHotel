@@ -6,6 +6,8 @@ import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -18,6 +20,8 @@ import javax.persistence.Table;
 
 import org.hibernate.validator.constraints.NotEmpty;
 
+import br.com.buch.core.enumerated.GrupoUsuario;
+
 /**
  *
  * @author Everton
@@ -28,6 +32,7 @@ public class Usuario implements Serializable {
 
 	private static final long serialVersionUID = -2880609378828789038L;
 
+	
 	@Id
 	@SequenceGenerator(name = "G_SIS_USUARIO", sequenceName = "\"G_SIS_USUARIO\"", allocationSize = 1)
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "G_SIS_USUARIO")
@@ -54,8 +59,9 @@ public class Usuario implements Serializable {
 
 	
 	@NotEmpty(message = "O Grupo deve ser informado!")
-	@Column(name = "GRUPO", nullable = false, length = 40)
-	private String grupo;
+	@Column(name = "GRUPO_USUARIO", nullable = false, length = 20)
+	@Enumerated(EnumType.STRING)
+	private GrupoUsuario grupo;
 	
 	@NotEmpty(message = "O Setor deve ser informado!")
 	@Column(name = "SETOR", length = 50)
@@ -106,11 +112,11 @@ public class Usuario implements Serializable {
 	}
 
 	
-	public String getGrupo() {
+	public GrupoUsuario getGrupoUsuario() {
 		return grupo;
 	}
 
-	public void setGrupo(String grupo) {
+	public void setGrupoUsuario(GrupoUsuario grupo) {
 		this.grupo = grupo;
 	}
 

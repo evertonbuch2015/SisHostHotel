@@ -1,6 +1,6 @@
 package br.com.buch.core.enumerated;
 
-public enum GrupoUsuarios {
+public enum GrupoUsuario {
 	ADMINISTRADOR, PADRAO, RH,
 	FINANCEIRO, ESTAGIARIO,
 	GERENTE, PRESIDENTE, SUPERVISOR;
