@@ -35,7 +35,7 @@ public class Hospedagem implements Serializable {
 	
 	
 	@Column(name="CODIGO")
-    private String codigo;
+    private Integer codigo;
 	
 	
 	@Column(name = "DATA_ENTRADA")
@@ -48,15 +48,15 @@ public class Hospedagem implements Serializable {
     private Calendar dataSaida;
     
     
-    @Column(name="DIARIAS")
+    @Column(name="DIARIAS", insertable=false, updatable=false)
     private Integer diarias;
     
     
-    @Column(name = "OBS" , length = 150)
+    @Column(name = "OBS" , length = 255)
     private String obs;
       
     
-    @Column(name = "MOTIVO_VIAGEM" , length = 150)
+    @Column(name = "MOTIVO_VIAGEM" , length = 60)
     private String motivoViagem;
     
     
@@ -64,11 +64,11 @@ public class Hospedagem implements Serializable {
     private String meioTransporte;
     
     
-    @Column(name = "PROXIMO_DESTINO" , length = 150)
+    @Column(name = "PROXIMO_DESTINO" , length = 60)
     private String proximoDestino;
     
     
-    @Column(name = "DESTINO_ANTERIOR" , length = 20)
+    @Column(name = "DESTINO_ANTERIOR" , length = 60)
     private String destinoAnterior;
     
     
@@ -79,7 +79,7 @@ public class Hospedagem implements Serializable {
        
     
     @OneToOne
-    @JoinColumn(name ="hospede_id")
+    @JoinColumn(name ="COD_CADHOSPEDE")
     private Hospede hospede;
 
     
@@ -105,11 +105,11 @@ public class Hospedagem implements Serializable {
 	}
 
 
-	public String getCodigo() {
+	public Integer getCodigo() {
 		return codigo;
 	}
 
-	public void setCodigo(String codigo) {
+	public void setCodigo(Integer codigo) {
 		this.codigo = codigo;
 	}
 

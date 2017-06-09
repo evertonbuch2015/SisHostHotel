@@ -2,7 +2,7 @@ package br.com.buch.core.entity;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.util.Calendar;
+import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -26,21 +26,21 @@ import br.com.buch.core.enumerated.TipoLancamento;
 */
 
 @Entity
-@Table(name="HOSPEDAGEM_LANCAMENTOS")
+@Table(name="HOSPEDAGEM_LANCAMENTO")
 public class HospedagemLancamento implements Serializable {
 
 	private static final long serialVersionUID = -2398248490404309696L;
 
 	
 	@Id
-    @SequenceGenerator(name="G_HOSPEDAGEM_LANCAMENTOS", sequenceName="\"G_HOSPEDAGEM_LANCAMENTOS\"", allocationSize=1)  
-    @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="G_HOSPEDAGEM_LANCAMENTOS")
-    @Column(name = "COD_HOSPEDAGEM_LANCAMENTOS")
+    @SequenceGenerator(name="G_HOSPEDAGEM_LANCAMENTO", sequenceName="\"G_HOSPEDAGEM_LANCAMENTO\"", allocationSize=1)  
+    @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="G_HOSPEDAGEM_LANCAMENTO")
+    @Column(name = "COD_HOSPEDAGEM_LANCAMENTO")
     private Integer idHospedagemLancamento;
 	
 	
 	
-	@Column(name="DESCRICAO", length = 250)
+	@Column(name="DESCRICAO", length = 150)
 	private String descricao;
 	
 	
@@ -58,10 +58,10 @@ public class HospedagemLancamento implements Serializable {
 	
 	@Column(name = "DATA_CADASTRO")
     @Temporal(javax.persistence.TemporalType.TIMESTAMP)
-    private Calendar dataCadastro;
+    private Date dataCadastro;
 	
 	
-	@Column(name="TIPO_LANCAMENTO")
+	@Column(name="TIPO_LANCAMENTO", length=20)
 	@Enumerated(EnumType.STRING)
 	private TipoLancamento tipoLancamento;
 	
@@ -120,11 +120,11 @@ public class HospedagemLancamento implements Serializable {
 	}
 
 
-	public Calendar getDataCadastro() {
+	public Date getDataCadastro() {
 		return dataCadastro;
 	}
 
-	public void setDataCadastro(Calendar dataCadastro) {
+	public void setDataCadastro(Date dataCadastro) {
 		this.dataCadastro = dataCadastro;
 	}
 

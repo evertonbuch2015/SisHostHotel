@@ -60,27 +60,13 @@ public class Reserva implements Serializable {
     
     @Column(name="DIARIAS")
     private Integer diarias;
-    
-    
-    
-    @Column(name = "OBS" , length = 150)
-    private String obs;
-    
+        
     
     @Column(name = "SITUACAO" , length = 20)
     @Enumerated(EnumType.STRING)
     private SituacaoHospedagem situacao;
     
-    
-    
-    @Column(name = "DATA_CANCELAMENTO")
-    @Temporal(TemporalType.DATE)
-    private Calendar dataCancelamento;
-    
-    @Column(name="MOTIVO_CANCELAMENTO")
-    private String motivoCancelamento;
-    
-    
+
     
     @Column(name = "VALOR_DIARIA")
     private Double valorDiaria;
@@ -97,6 +83,18 @@ public class Reserva implements Serializable {
     @Transient
     private Double valorTotal;
         
+    
+    
+    @Column(name = "DATA_CANCELAMENTO")
+    @Temporal(TemporalType.DATE)
+    private Calendar dataCancelamento;
+    
+    @Column(name="MOTIVO_CANCELAMENTO",length=100)
+    private String motivoCancelamento;
+    
+    
+    @Column(name = "OBS" , length = 255)
+    private String obs;
     
     
     @OneToOne

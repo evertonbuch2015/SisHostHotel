@@ -23,7 +23,6 @@ public class Recebimento implements Serializable {
 	public enum OrigemRecebimento{
 		ADIANTAMENTO("Adiantamento"),
 		HOSPEDAGEM("Hospedagem"),
-		CAIXA("Caixa"),
 		ENTRADA_MANUAL("Entrada Manual");
 		
 		private String label;
@@ -54,12 +53,12 @@ public class Recebimento implements Serializable {
     private Integer documentoOrigem;
 	
 	
-	@Column(name="ORIGEM_RECEBIMENTO")
+	@Column(name="ORIGEM_RECEBIMENTO", length=20)
 	@Enumerated(EnumType.STRING)
     private OrigemRecebimento origemRecebimento;
 	
 	
-	@Column(name="DESCRICAO",nullable = false)
+	@Column(name="DESCRICAO",nullable = false, length=100)
     private String descricao;
 	
 	

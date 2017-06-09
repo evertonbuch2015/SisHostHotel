@@ -32,7 +32,7 @@ public class HospedeAdicional implements Serializable {
     private Integer idHospedeAdicional;
 
     
-    @Column(name = "NOME")
+    @Column(name = "NOME", length= 60)
     private String nome;
     
     
