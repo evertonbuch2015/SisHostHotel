@@ -11,6 +11,7 @@ import br.com.buch.core.entity.TipoTarifa;
 import br.com.buch.core.service.ServiceCategoria;
 import br.com.buch.core.service.ServiceTarifario;
 import br.com.buch.core.service.ServiceTipoTarifa;
+import br.com.buch.view.util.UtilMensagens;
 
 @ManagedBean
 @SessionScoped
@@ -46,7 +47,11 @@ public class TarifarioBean extends GenericBean<Tarifario, ServiceTarifario> {
 	
 	@Override
 	public void filtrar() {
-		this.entidades = service.filtrarTabela(filtro, valorFiltro);
+		try {
+			this.entidades = service.filtrarTabela(filtro, valorFiltro);
+		} catch (Exception e) {
+			UtilMensagens.mensagemErro(e.getMessage());
+		}
 	}
 
 	

@@ -13,6 +13,7 @@ import org.primefaces.context.RequestContext;
 import br.com.buch.core.entity.Hospede;
 import br.com.buch.core.enumerated.TipoFiltroHospede;
 import br.com.buch.core.service.ServiceHospede;
+import br.com.buch.view.util.UtilMensagens;
 
 @ManagedBean
 @ViewScoped
@@ -33,7 +34,11 @@ public class DialogHospedeBean {
 	
 	
 	public void pesquisar(){				
-		this.hospedes = serviceHospede.filtrarTabela(tipoFiltro, valorFiltro);
+		try {
+			this.hospedes = serviceHospede.filtrarTabela(tipoFiltro, valorFiltro);
+		} catch (Exception e) {
+			UtilMensagens.mensagemErro(e.getMessage());
+		}
 	}
 	
 	

@@ -5,8 +5,9 @@ import java.util.List;
 import br.com.buch.core.dao.HospedeDao;
 import br.com.buch.core.entity.Hospede;
 import br.com.buch.core.enumerated.TipoFiltroHospede;
-import br.com.buch.view.util.UtilErros;
-import br.com.buch.view.util.UtilMensagens;
+import br.com.buch.core.util.NegocioException;
+import br.com.buch.core.util.PersistenciaException;
+import br.com.buch.core.util.UtilErros;
 
 
 public class ServiceHospede implements GenericService<Hospede> {
@@ -21,48 +22,42 @@ public class ServiceHospede implements GenericService<Hospede> {
 	
 	
 	@Override
-	public boolean salvar(Hospede hospede) {
+	public String salvar(Hospede hospede) throws Exception{
 		if(hospede.getIdHospede() == null){
 			
 			try {
 				hospedeDao.save(hospede);
-				UtilMensagens.mensagemInformacao("Hóspede Cadastrado com Sucesso!");
-				return true;
+				return "Hóspede Cadastrado com Sucesso!";
 			} catch (Exception e) {
 				e.printStackTrace();
-				UtilMensagens.mensagemErro("Erro ao Inserir o Hóspede!"
-						+ "\nErro: " + UtilErros.getMensagemErro(e));
-				return false;
+				throw new PersistenciaException("Ocorreu uma exceção ao inserir o Hospede!" + 
+	            		" \nErro: " + UtilErros.getMensagemErro(e));
 			}				
 		}else{
 			
 			try {
 				hospedeDao.update(hospede);
-				UtilMensagens.mensagemInformacao("Hóspede Alterado com Sucesso!");
-				return true;
+				return "Hóspede Alterado com Sucesso!";
 			} catch (Exception e) {
 				e.printStackTrace();
-				UtilMensagens.mensagemErro("Erro ao Alterar o Hóspede!"
-						+ "\nErro: " + UtilErros.getMensagemErro(e));
-				return false;	
+				throw new PersistenciaException("Ocorreu uma exceção ao alterar o Hospede!" + 
+	            		" \nErro: " + UtilErros.getMensagemErro(e));
 			}
 		}			
 	}
 
 	
 	@Override
-	public void excluir(Hospede entidade) {
+	public void excluir(Hospede entidade) throws Exception{
 		try {
-			hospedeDao.delete(entidade);
-			UtilMensagens.mensagemInformacao("Exclusão Realizada com Sucesso");
-			
+			hospedeDao.delete(entidade);			
 		}		
 		catch (Exception ex) {
         	ex.printStackTrace();
         	if(ex.getCause().toString().contains("ConstraintViolationException")){
-        		UtilMensagens.mensagemAtencao("Hóspede não pode ser excluido pois existem registros vinculados a ele!");
+        		throw new PersistenciaException("Hóspede não pode ser excluido pois existem registros vinculados a ele!");
         	}else{
-        		UtilMensagens.mensagemErro("Ocorreu algum excessão ao Excluir o Hóspede!" + 
+        		throw new PersistenciaException("Ocorreu uma exceção ao Excluir o Hóspede!" + 
                 		" \nErro: " + UtilErros.getMensagemErro(ex));
         	}
 		}
@@ -70,15 +65,15 @@ public class ServiceHospede implements GenericService<Hospede> {
 
 	
 	@Override
-	public Hospede carregarEntidade(Hospede entidade) {		
+	public Hospede carregarEntidade(Hospede entidade)throws PersistenciaException {		
 		try{
 			String jpql = "Select h From Hospede h LEFT JOIN FETCH h.endereco where h.idHospede = ?1";
 			return hospedeDao.findOne(jpql, entidade.getIdHospede());
 			
 		}catch (Exception e) {
 			e.printStackTrace();
-			UtilMensagens.mensagemErro("Ocorreu uma excessão ao buscar os dados do Hóspede!");
-			return null;
+			throw new PersistenciaException("Ocorreu uma exceção ao buscar os dados do Hóspede!" + 
+            		" \nErro: " + UtilErros.getMensagemErro(e));
 		}
 	}
 
@@ -94,7 +89,7 @@ public class ServiceHospede implements GenericService<Hospede> {
 	}
 
 	
-	public List<Hospede> filtrarTabela(TipoFiltroHospede tipoFiltro , String valorFiltro){
+	public List<Hospede> filtrarTabela(TipoFiltroHospede tipoFiltro , String valorFiltro)throws Exception{
 		List<Hospede> lista = null;
 		
 		try {
@@ -113,8 +108,16 @@ public class ServiceHospede implements GenericService<Hospede> {
 			return lista;			
 		} catch (Exception e) {
 			e.printStackTrace();
-			UtilMensagens.mensagemAtencao("Ocorreu algum excessão ao Filtrar os dados do Hóspede!");
-			return null;
+			throw new PersistenciaException("Ocorreu uma exceção ao Filtrar os dados do Hóspede!" + 
+            		" \nErro: " + UtilErros.getMensagemErro(e));
 		}					
+	}
+
+
+
+	
+	
+	@Override
+	public void consisteAntesEditar(Hospede entidade)throws NegocioException {
 	}
 }

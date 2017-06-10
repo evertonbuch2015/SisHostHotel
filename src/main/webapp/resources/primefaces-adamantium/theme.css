@@ -1132,7 +1132,7 @@ label {
   -moz-border-radius: 0px !important;
   font-size: 16px;
   background-color: #0288d1;
-  padding: 15px 10px !important;
+  padding: 7px 10px !important;
   font-weight: normal;
   font-family: 'latobold';
 }
@@ -3810,7 +3810,6 @@ hr.ui-widget-header {
   font-size: 12px;
   font-weight: normal;
   padding: 2px !important;
-  font-family: 'latobold';
   margin: 3px 0 !important;
 }
 .ui-messages-info,
@@ -3821,7 +3820,6 @@ hr.ui-widget-header {
   font-size: 12px;
   font-weight: normal;
   padding: 2px !important;
-  font-family: 'latobold';
 }
 .ui-messages-info .ui-icon-close,
 .ui-messages-warn .ui-icon-close,
@@ -3830,16 +3828,17 @@ hr.ui-widget-header {
   background-image: url("#{resource['primefaces-adamantium:images/delete-gray.svg']}") !important;
   background-size: 110%;
   background-position: center;
+  margin-top: 4px;
+  margin-right: 3px;
 }
 .ui-messages-warn,
 .ui-message-warn {
-  color: #f9bf08 !important;
+  color: #ff7500 !important;
   background-color: #ffffff !important;
-  border-color: #f7e3a4 !important;
+  border-color: #ff7500 !important;
   font-size: 12px;
   font-weight: normal;
   padding: 2px !important;
-  font-family: 'latobold';
 }
 .ui-messages-fatal,
 .ui-message-fatal {
@@ -3880,32 +3879,28 @@ hr.ui-widget-header {
   background-size: 90% !important;
   width: 30px !important;
   height: 30px !important;
-  margin: 1px !important;
 }
 .ui-messages-info-icon {
   background-image: url("#{resource['primefaces-adamantium:images/warn-blue.svg']}") !important;
   background-size: 90% !important;
   width: 30px !important;
   height: 30px !important;
-  margin: 1px !important;
 }
 .ui-messages-warn-icon {
   background-image: url("#{resource['primefaces-adamantium:images/warn-hardal.svg']}") !important;
   background-size: 90% !important;
   width: 30px !important;
   height: 30px !important;
-  margin: 1px !important;
 }
 .ui-messages-fatal-icon {
   background-image: url("#{resource['primefaces-adamantium:images/warn-red.svg']}") !important;
   background-size: 90% !important;
   width: 30px !important;
   height: 30px !important;
-  margin: 1px !important;
 }
 .ui-messages ul {
   margin-left: 45px !important;
-  margin-top: 6px !important;
+  margin-top: 5px !important;
   margin-bottom: 2px !important;
 }
 .ui-dialog-message.ui-messages-info-icon,
@@ -3976,7 +3971,7 @@ hr.ui-widget-header {
 }
 .ui-panel .ui-panel-content.ui-widget-content {
   padding: 5px;
-  font-size: 15px;
+  font-size: 12px;
   color: #546e7a;
   font-family: 'latoregular';
 }

@@ -8,7 +8,7 @@ import javax.persistence.NoResultException;
 import javax.persistence.TypedQuery;
 
 import br.com.buch.core.entity.Usuario;
-import br.com.buch.view.util.Criptografia;
+import br.com.buch.core.util.Criptografia;
 
 public class UsuarioDao extends GenericDao<Usuario> implements Serializable {
 

@@ -4,9 +4,10 @@ import java.util.List;
 
 import br.com.buch.core.dao.ApartamentoDao;
 import br.com.buch.core.entity.Apartamento;
+import br.com.buch.core.util.NegocioException;
+import br.com.buch.core.util.PersistenciaException;
+import br.com.buch.core.util.UtilErros;
 import br.com.buch.view.managedBean.ApartamentoBean.TipoFiltro;
-import br.com.buch.view.util.UtilErros;
-import br.com.buch.view.util.UtilMensagens;
 
 public class ServiceApartamento implements GenericService<Apartamento> {
 
@@ -19,59 +20,53 @@ public class ServiceApartamento implements GenericService<Apartamento> {
 	
 	
 	@Override
-	public boolean salvar(Apartamento entidate) {
+	public String salvar(Apartamento entidate)throws Exception {
 		if(entidate.getIdApartamento() == null){
 			
 			try {
 				apartamentoDao.save(entidate);
-				UtilMensagens.mensagemInformacao("Apartamento Cadastrado com Sucesso!");
-				return true;
+				return "Apartamento Cadastrado com Sucesso!";
 			} catch (Exception e) {
 				e.printStackTrace();
-				UtilMensagens.mensagemErro("Erro ao Inserir o Apartamento!"
-						+ "\nErro: " + UtilErros.getMensagemErro(e));
-				return false;
+				throw new PersistenciaException("Ocorreu uma exceção ao inserir o Apartamento!" + 
+	            		" \nErro: " + UtilErros.getMensagemErro(e));
 			}				
 		}else{
 			
 			try {
 				apartamentoDao.update(entidate);
-				UtilMensagens.mensagemInformacao("Apartamento Alterado com Sucesso!");
-				return true;
+				return "Apartamento Alterado com Sucesso!";
 			} catch (Exception e) {
 				e.printStackTrace();
-				UtilMensagens.mensagemErro("Erro ao Alterar o Apartamento!"
-						+ "\nErro: " + UtilErros.getMensagemErro(e));
-				return false;	
+				throw new PersistenciaException("Ocorreu uma exceção ao Alterar o Apartamento!" + 
+	            		" \nErro: " + UtilErros.getMensagemErro(e));
 			}
 		}
 	}
 
 	
 	@Override
-	public void excluir(Apartamento entidade) {
+	public void excluir(Apartamento entidade)throws Exception {
 		try {
-			apartamentoDao.delete(entidade);
-			UtilMensagens.mensagemInformacao("Exclusão Realizada com Sucesso");
-			
+			apartamentoDao.delete(entidade);			
 		}catch (Exception ex) {
         	ex.printStackTrace();
-            UtilMensagens.mensagemErro("Ocorreu algum excessão ao Excluir o Apartamento!" + 
+            throw new PersistenciaException("Ocorreu uma exceção ao Excluir o Apartamento!" + 
             		" \nErro: " + UtilErros.getMensagemErro(ex));
 		}
 	}
 
 	
 	@Override
-	public Apartamento carregarEntidade(Apartamento entidade) {
+	public Apartamento carregarEntidade(Apartamento entidade)throws PersistenciaException {
 		try{
 			String jpql = "Select a From Apartamento a LEFT JOIN FETCH a.categoria where a.idApartamento = ?1";
 			return apartamentoDao.findOne(jpql, entidade.getIdApartamento());
 			
 		}catch (Exception e) {
 			e.printStackTrace();
-			UtilMensagens.mensagemErro("Ocorreu uma excessão ao buscar os dados do Apartamento!");
-			return null;
+			throw new PersistenciaException("Ocorreu uma exceção ao buscar os dados do Apartamento!" + 
+            		" \nErro: " + UtilErros.getMensagemErro(e));
 		}
 	}
 
@@ -87,7 +82,7 @@ public class ServiceApartamento implements GenericService<Apartamento> {
 	}
 
 	
-	public List<Apartamento> filtrarTabela(TipoFiltro tipoFiltro , String valorFiltro){
+	public List<Apartamento> filtrarTabela(TipoFiltro tipoFiltro , String valorFiltro)throws Exception{
 		List<Apartamento> lista = null;
 		
 		try {
@@ -107,9 +102,16 @@ public class ServiceApartamento implements GenericService<Apartamento> {
 			return lista;			
 		} catch (Exception e) {
 			e.printStackTrace();
-			UtilMensagens.mensagemAtencao("Ocorreu algum excessão ao Filtrar os dados do Apartamento!");
-			return null;
+			throw new PersistenciaException("Ocorreu uma exceção ao Filtrar os dados do Apartamento!" + 
+            		" \nErro: " + UtilErros.getMensagemErro(e));
 		}					
 	}
+
+
 	
+	
+	@Override
+	public void consisteAntesEditar(Apartamento entidade)throws NegocioException {
+		
+	}
 }

@@ -25,7 +25,7 @@
 		
 		<p:messages autoUpdate="true" closable="true">
 			<p:effect type="pulsate" event="load" delay="500" />
-			<p:effect type="clip" event="load" delay="5000" />
+			<p:effect type="clip" event="load" delay="10000" />
 		</p:messages>
 		
 		
@@ -36,8 +36,7 @@
 					selection="#{tipoTarifaBean.entidade}" selectionMode="single"
 					rowKey="#{entidade.idTipoTarifa}" reflow="true"									
 					widgetVar="carsTable" emptyMessage="#{label.msg_tabela_vazia}"
-					style="margin: 0px -11px;" 
-					rendered="#{tipoTarifaBean.buscando}">				
+					style="margin: 0px -11px;">				
 					
 
 					<p:ajax event="rowDblselect" listener="#{tipoTarifaBean.onRowDblClckSelect}"
@@ -94,13 +93,15 @@
 						<p:outputLabel value="#{label.txt_nome}" for="nome" />
 						<p:inputText id="nome"
 							value="#{tipoTarifaBean.entidade.nome}" 
-							placeholder="Ex: Fim de Semana"/>
+							placeholder="Ex: Fim de Semana"
+							readonly="#{tipoTarifaBean.visualizando}"/>
 						
 						<p:outputLabel value="#{label.txt_tarifa_manual}" for="tarifa_manual" />	
 						<p:selectOneButton id="tarifa_manual" 
 							value="#{tipoTarifaBean.entidade.tarifaManual}"
 							styleClass="bu-selectOneButton"
-							style="	max-width: 65%;">
+							style="	max-width: 65%;"
+							disabled="#{tipoTarifaBean.visualizando}">
             				<f:selectItem itemLabel="#{label.txt_sim}" itemValue="true"/>
             				<f:selectItem itemLabel="#{label.txt_nao}" itemValue="false"/>
         				</p:selectOneButton>

@@ -13,6 +13,7 @@ import br.com.buch.core.entity.Hotel;
 import br.com.buch.core.entity.Usuario;
 import br.com.buch.core.enumerated.GrupoUsuario;
 import br.com.buch.core.service.ServiceUsuario;
+import br.com.buch.view.util.UtilMensagens;
 
 
 @ManagedBean
@@ -45,7 +46,11 @@ public class UsuarioBean extends GenericBean<Usuario, ServiceUsuario> {
 	// =======================METODOS DO USUARIO=================================================
 	
 	public void filtrar(){
-		this.entidades = service.filtrarTabela(filtro, valorFiltro);
+		try {
+			this.entidades = service.filtrarTabela(filtro, valorFiltro);
+		} catch (Exception e) {
+			UtilMensagens.mensagemErro(e.getMessage());
+		}
 	}
 	
 	

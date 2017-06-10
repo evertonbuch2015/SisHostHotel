@@ -29,19 +29,18 @@
 		
 		<p:messages autoUpdate="true" closable="true">
 			<p:effect type="pulsate" event="load" delay="500" />
-			<p:effect type="clip" event="load" delay="5000" />
+			<p:effect type="clip" event="load" delay="10000" />
 		</p:messages>
 		
 		
 		<p:tabView rendered="#{adiantamentoBean.buscando}" prependId="false">						
-			<p:tab title="Consulta"> 	
+			<p:tab title="#{label.txt_consulta}"> 	
 				<p:dataTable id="tabela"
 					value="#{adiantamentoBean.entidades}" var="entidade" 
 					selection="#{adiantamentoBean.entidade}" selectionMode="single"
 					rowKey="#{entidade.idAdiantamento}" reflow="true"									
 					widgetVar="carsTable" emptyMessage="#{label.msg_tabela_vazia}"
-					style="margin: 0px -11px;" 
-					rendered="#{adiantamentoBean.buscando}">				
+					style="margin: 0px -11px;">				
 					
 
 					<p:ajax event="rowDblselect" listener="#{adiantamentoBean.onRowDblClckSelect}"
@@ -130,7 +129,8 @@
 							pattern="dd/MM/yyyy" mask="true"
 							showOn="button" locale="pt_BR"
 							required="true"
-							requiredMessage="Informe a Data de Emissão!">
+							requiredMessage="Informe a Data de Emissão!"
+							disabled="#{!adiantamentoBean.inserindo}">
 					
 						</p:calendar>
 						
@@ -157,6 +157,7 @@
 							value="#{adiantamentoBean.entidade.saldo}"
 							onblur="mascara(this,moeda)" readonly="true">
 							
+							<f:convertNumber pattern="#,##0.00" type="currency" currencySymbol="R$"/>
 						</p:inputText>
 						
 						
@@ -170,7 +171,8 @@
 							<p:commandButton 
 								icon="fa fa-search" process="@this" update="@none"
 								styleClass="botaoAzul" 
-								action="#{dialogHospedeBean.abrirDialog()}">
+								action="#{dialogHospedeBean.abrirDialog()}"
+								disabled="#{!adiantamentoBean.inserindo}">
 								
 								<p:ajax event="dialogReturn" 
 									listener="#{adiantamentoBean.hospedeSelecionado}" 
@@ -198,7 +200,16 @@
 		</p:tabView>
 		
 		
-		<app:barraBotoes bean="#{adiantamentoBean}"/>
+		<app:barraBotoes bean="#{adiantamentoBean}">
+			<p:commandButton id="baixa" 
+				value="Realizar Baixa"
+				styleClass="bu-botao-azul"
+				update="@form"
+				actionListener="#{adiantamentoBean.realizarBaixa()}"
+				rendered="#{adiantamentoBean.visualizando}">
+			
+			</p:commandButton>
+		</app:barraBotoes>
 		
 		
 		<p:dialog 

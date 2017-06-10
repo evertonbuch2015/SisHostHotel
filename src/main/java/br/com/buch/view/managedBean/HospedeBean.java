@@ -10,6 +10,7 @@ import br.com.buch.core.entity.Hospede;
 import br.com.buch.core.enumerated.Estados;
 import br.com.buch.core.enumerated.TipoFiltroHospede;
 import br.com.buch.core.service.ServiceHospede;
+import br.com.buch.view.util.UtilMensagens;
 
 
 @ManagedBean
@@ -30,7 +31,11 @@ public class HospedeBean extends GenericBean<Hospede, ServiceHospede> {
 	
 	@Override
 	public void filtrar() {
-		this.entidades = service.filtrarTabela(filtro, valorFiltro);
+		try {
+			this.entidades = service.filtrarTabela(filtro, valorFiltro);
+		} catch (Exception e) {
+			UtilMensagens.mensagemErro(e.getMessage());
+		}
 	}
 
 	

@@ -4,14 +4,13 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import javax.persistence.EntityNotFoundException;
-
 import br.com.buch.core.dao.UsuarioDao;
 import br.com.buch.core.entity.Usuario;
+import br.com.buch.core.util.Criptografia;
+import br.com.buch.core.util.NegocioException;
+import br.com.buch.core.util.PersistenciaException;
+import br.com.buch.core.util.UtilErros;
 import br.com.buch.view.managedBean.UsuarioBean.TipoFiltro;
-import br.com.buch.view.util.Criptografia;
-import br.com.buch.view.util.UtilErros;
-import br.com.buch.view.util.UtilMensagens;
 
 public class ServiceUsuario implements GenericService<Usuario> {
 
@@ -24,20 +23,17 @@ public class ServiceUsuario implements GenericService<Usuario> {
 	
 	
 	@Override
-	public boolean salvar(Usuario entidate) {
+	public String salvar(Usuario entidate) throws Exception{
 		if (entidate.getIdUsusario() == null) {
 			
 			try {
 				entidate.setSenha(Criptografia.criptografarSha256(entidate.getSenha()));
 				usuarioDao.save(entidate);
-				
-				UtilMensagens.mensagemInformacao("Usuário Cadastrado com Sucesso!");
-				return true;
+				return "Usuário Cadastrado com Sucesso!";
 			} catch (Exception e) {
 				e.printStackTrace();
-				UtilMensagens.mensagemErro("Erro ao Inserir o Usuário"
-						+ "\nErro: " + UtilErros.getMensagemErro(e));
-				return false;
+				throw new PersistenciaException("Ocorreu uma exceção ao Alterar o Usuário!" + 
+	            		" \nErro: " + UtilErros.getMensagemErro(e));
 			}			
 		}else{			
 			
@@ -47,50 +43,38 @@ public class ServiceUsuario implements GenericService<Usuario> {
 			
 			try {				
 				usuarioDao.update(entidate);
-				UtilMensagens.mensagemInformacao("Usuário Alterado com Sucesso!");
-				return true;
+				return "Usuário Alterado com Sucesso!";
 			} catch (Exception e) {
 				e.printStackTrace();
-				UtilMensagens.mensagemErro("Erro ao Atualizar os dados do Usuário"
-						+ "\nErro: " + UtilErros.getMensagemErro(e));
-				return false;
+				throw new PersistenciaException("Ocorreu uma exceção ao Alterar o Usuário!" + 
+	            		" \nErro: " + UtilErros.getMensagemErro(e));
 			}			
 		}
 	}
 
 	
 	@Override
-	public void excluir(Usuario entidade) {
+	public void excluir(Usuario entidade) throws Exception{
 		
 		try {
 			usuarioDao.delete(entidade);
-			UtilMensagens.mensagemInformacao("Exclusão Realizada com Sucesso");
-			
-		}catch (EntityNotFoundException enfe) { 
-			enfe.printStackTrace();
-            UtilMensagens.mensagemErro("The Item with id " + entidade.getIdUsusario()+ " no longer exists." +
-            		" \nErro: " + UtilErros.getMensagemErro(enfe));
-        }catch (Exception ex) {
+		}catch (Exception ex) {
         	ex.printStackTrace();
-            UtilMensagens.mensagemErro("Erro ao Excluir os dados do Usuário" + 
+        	throw new PersistenciaException("Ocorreu uma exceção ao excluir o Usuário!" + 
             		" \nErro: " + UtilErros.getMensagemErro(ex));
 		}		
 	}
 
 	
-	public Usuario carregarEntidade(Usuario usuario) {		
+	public Usuario carregarEntidade(Usuario usuario) throws PersistenciaException{		
 		try{
 			String jpql = "Select u From Usuario u left JOIN FETCH u.hoteis where u.idUsusario = ?1";
 			return usuarioDao.findOne(jpql, usuario.getIdUsusario());
 			
-		}catch(javax.persistence.NonUniqueResultException ex){
-			ex.printStackTrace();
-			UtilMensagens.mensagemAtencao("Existem mais de um Usuário para o código "+usuario.getIdUsusario());
-			return null;
 		}catch (Exception e) {
 			e.printStackTrace();
-			UtilMensagens.mensagemAtencao("Usuário não encontrado!");
-			return null;
+			throw new PersistenciaException("Ocorreu uma exceção ao buscar os dados do Usuário!" + 
+            		" \nErro: " + UtilErros.getMensagemErro(e));
 		}
 	}
 
@@ -116,26 +100,32 @@ public class ServiceUsuario implements GenericService<Usuario> {
 	}
 	
 	
-	public List<Usuario> filtrarTabela(TipoFiltro tipoFiltro , String valorFiltro){
+	public List<Usuario> filtrarTabela(TipoFiltro tipoFiltro , String valorFiltro)throws Exception{
 		List<Usuario> lista = null;
 		
-		if(tipoFiltro.equals(TipoFiltro.CODIGO)){			
-			try {
+		try {
+		
+			if(tipoFiltro.equals(TipoFiltro.CODIGO)){			
 				String jpql = "Select u From Usuario u where u.idUsusario in (" + valorFiltro + ")";
-				lista = usuarioDao.find(jpql);
-			}catch (Exception e) {
-				e.printStackTrace();
-			}			
+				lista = usuarioDao.find(jpql);				
+			}
+			else if(tipoFiltro.equals(TipoFiltro.NOME)){							
+				lista = usuarioDao.find("Select u From Usuario u where u.nomeUsuario like ?",valorFiltro);						
+			}		
+			return lista;
+			
+		}catch (Exception e) {
+			e.printStackTrace();
+			throw new PersistenciaException("Ocorreu uma exceção ao Filtrar os dados do Usuário!" + 
+            		" \nErro: " + UtilErros.getMensagemErro(e));
 		}
-		else if(tipoFiltro.equals(TipoFiltro.NOME)){			
-			try{
-				lista = usuarioDao.find("Select u From Usuario u where u.nomeUsuario like ?",valorFiltro);
-			}catch (Exception e) {
-				e.printStackTrace();
-			}			
-		}		
-		return lista;			
 	}
+
+	
+	@Override
+	public void consisteAntesEditar(Usuario entidade) throws NegocioException{	}
+	
+	
 
 	
 	public boolean logar(String login, String senha){

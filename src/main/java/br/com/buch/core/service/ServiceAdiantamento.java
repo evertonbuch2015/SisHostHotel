@@ -1,49 +1,46 @@
 package br.com.buch.core.service;
 
+import java.util.Date;
 import java.util.List;
 
-import br.com.buch.core.dao.CrpAdiantamentoDao;
+import br.com.buch.core.dao.AdiantamentoDao;
 import br.com.buch.core.entity.Adiantamento;
 import br.com.buch.core.enumerated.TipoFiltroAdiantamento;
-import br.com.buch.view.util.UtilErros;
-import br.com.buch.view.util.UtilMensagens;
+import br.com.buch.core.util.NegocioException;
+import br.com.buch.core.util.PersistenciaException;
+import br.com.buch.core.util.UtilErros;
 
 public class ServiceAdiantamento implements GenericService<Adiantamento> {
 
-	private CrpAdiantamentoDao adiantamentoDao;
+	private AdiantamentoDao adiantamentoDao;
 	
 	public ServiceAdiantamento() {
-		adiantamentoDao = new CrpAdiantamentoDao();
+		adiantamentoDao = new AdiantamentoDao();
 	}
 
 	
-	
-	
 	@Override
-	public boolean salvar(Adiantamento entidate) {
+	public String salvar(Adiantamento entidate)throws Exception {
 		if(entidate.getIdAdiantamento() == null){
 			
 			try {
-				adiantamentoDao.save(entidate);
-				UtilMensagens.mensagemInformacao("Adiantamento a Cliente Cadastrado com Sucesso!");
-				return true;
+				adiantamentoDao.save(entidate);				
+				return "Adiantamento de Cliente Cadastrado com Sucesso!";
 			} catch (Exception e) {
-				e.printStackTrace();
-				UtilMensagens.mensagemErro("Erro ao Inserir o Adiantamento a Cliente!"
-						+ "\nErro: " + UtilErros.getMensagemErro(e));
-				return false;
+				e.printStackTrace();				
+				throw new PersistenciaException("Ocorreu uma exceção ao inserir o Adiantamento de Cliente!" + 
+	            		" \nErro: " + UtilErros.getMensagemErro(e));
+				
 			}				
 		}else{
 			
 			try {
 				adiantamentoDao.update(entidate);
-				UtilMensagens.mensagemInformacao("Adiantamento a Cliente Alterado com Sucesso!");
-				return true;
+				return "Adiantamento a Cliente Alterado com Sucesso!";
 			} catch (Exception e) {
 				e.printStackTrace();
-				UtilMensagens.mensagemErro("Erro ao Alterar o Adiantamento a Cliente!"
-						+ "\nErro: " + UtilErros.getMensagemErro(e));
-				return false;	
+				throw new PersistenciaException("Ocorreu uma exceção ao Alterar o Adiantamento de Cliente!" + 
+	            		" \nErro: " + UtilErros.getMensagemErro(e));
 			}
 		}	
 	}
@@ -51,14 +48,18 @@ public class ServiceAdiantamento implements GenericService<Adiantamento> {
 	
 
 	@Override
-	public void excluir(Adiantamento entidade) {
+	public void excluir(Adiantamento entidade) throws Exception{
+		
+		if (entidade.getSaldo() == 0.00) {
+			throw new NegocioException("Adiantamento não pode ser excluido pois já foi utilizado!");
+		}
+		
 		try {
 			adiantamentoDao.delete(entidade);
-			UtilMensagens.mensagemInformacao("Exclusão Realizada com Sucesso");
 			
 		}catch (Exception ex) {
-        	ex.printStackTrace();
-            UtilMensagens.mensagemErro("Ocorreu uma excessão ao Excluir o Adiantamento a Cliente!" + 
+        	ex.printStackTrace();            
+        	throw new PersistenciaException("Ocorreu uma exceção ao excluir o Adiantamento de Cliente!" + 
             		" \nErro: " + UtilErros.getMensagemErro(ex));
 		}
 	}
@@ -66,15 +67,15 @@ public class ServiceAdiantamento implements GenericService<Adiantamento> {
 	
 
 	@Override
-	public Adiantamento carregarEntidade(Adiantamento entidade) {
+	public Adiantamento carregarEntidade(Adiantamento entidade)throws PersistenciaException {
 		try{
 			String jpql = "Select a From Adiantamento a LEFT JOIN FETCH a.hospede where a.idAdiantamento = ?1";
 			return adiantamentoDao.findOne(jpql, entidade.getIdAdiantamento());
 			
 		}catch (Exception e) {
 			e.printStackTrace();
-			UtilMensagens.mensagemErro("Ocorreu uma excessão ao buscar os dados do Adiantamento a Cliente!");
-			return null;
+			throw new PersistenciaException("Ocorreu uma exceção ao buscar os dados do Adiantamento a Cliente!" + 
+            		" \nErro: " + UtilErros.getMensagemErro(e));
 		}
 	}
 	
@@ -91,7 +92,7 @@ public class ServiceAdiantamento implements GenericService<Adiantamento> {
 	}
 	
 	
-	public List<Adiantamento> filtrarTabela(TipoFiltroAdiantamento tipoFiltro , String valorFiltro){
+	public List<Adiantamento> filtrarTabela(TipoFiltroAdiantamento tipoFiltro , String valorFiltro)throws Exception{
 		List<Adiantamento> lista = null;
 		
 		try {
@@ -131,9 +132,28 @@ public class ServiceAdiantamento implements GenericService<Adiantamento> {
 			return lista;			
 		} catch (Exception e) {
 			e.printStackTrace();
-			UtilMensagens.mensagemAtencao("Ocorreu algum excessão ao Filtrar os dados do Hóspede!");
-			return null;
+			throw new PersistenciaException("Ocorreu uma exceção ao Filtrar os dados do Adiantamento de Cliente!" + 
+            		" \nErro: " + UtilErros.getMensagemErro(e));
 		}					
+	}
+
+	
+	public void realizarBaixa(Adiantamento entidade)throws Exception{
+		if(entidade.getSaldo() == 0.00){
+			throw new NegocioException("Adiantamento está sem saldo, não pode ser utilizado novamente!");
+		}
+		
+		entidade.setDtBaixa(new Date());
+		entidade.setSaldo(0.00);
+		adiantamentoDao.update(entidade);
+	}
+
+
+	@Override
+	public void consisteAntesEditar(Adiantamento entidade)throws NegocioException{
+		if(entidade.getSaldo() == 0.0){
+			throw new NegocioException("Adiantamento não pode ser Alterado pois não possui saldo disponivel!");
+		}		
 	}
 
 }

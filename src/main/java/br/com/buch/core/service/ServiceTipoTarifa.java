@@ -4,9 +4,10 @@ import java.util.List;
 
 import br.com.buch.core.dao.TipoTarifaDao;
 import br.com.buch.core.entity.TipoTarifa;
+import br.com.buch.core.util.NegocioException;
+import br.com.buch.core.util.PersistenciaException;
+import br.com.buch.core.util.UtilErros;
 import br.com.buch.view.managedBean.TipoTarifaBean.TipoFiltro;
-import br.com.buch.view.util.UtilErros;
-import br.com.buch.view.util.UtilMensagens;
 
 public class ServiceTipoTarifa implements GenericService<TipoTarifa> {
 
@@ -20,60 +21,53 @@ public class ServiceTipoTarifa implements GenericService<TipoTarifa> {
 	
 	
 	@Override
-	public boolean salvar(TipoTarifa entidate) {
+	public String salvar(TipoTarifa entidate)throws Exception {
 		if (entidate.getIdTipoTarifa() == null) {
 			
 			try {
 				tipoTarifaDao.save(entidate);
-				
-				UtilMensagens.mensagemInformacao("Tipo de Tarifa Cadastrada com Sucesso!");
-				return true;
+				return "Tipo de Tarifa Cadastrada com Sucesso!";
 			} catch (Exception e) {
 				e.printStackTrace();
-				UtilMensagens.mensagemErro("Erro ao Inserir o Tipo de Tarifa"
-						+ "\nErro: " + UtilErros.getMensagemErro(e));
-				return false;
+				throw new PersistenciaException("Ocorreu uma exceção ao inserir o Tipo de Tarifa!" + 
+	            		" \nErro: " + UtilErros.getMensagemErro(e));
 			}			
 		}else{			
 			
 			try {				
 				tipoTarifaDao.update(entidate);
-				UtilMensagens.mensagemInformacao("Tipo de Tarifa Alterada com Sucesso!");
-				return true;
+				return "Tipo de Tarifa Alterada com Sucesso!";
 			} catch (Exception e) {
 				e.printStackTrace();
-				UtilMensagens.mensagemErro("Erro ao Atualizar o Tipo de Tarifa"
-						+ "\nErro: " + UtilErros.getMensagemErro(e));
-				return false;
+				throw new PersistenciaException("Ocorreu uma exceção ao alterar o Tipo de Tarifa!" + 
+	            		" \nErro: " + UtilErros.getMensagemErro(e));
 			}			
 		}
 	}
 
 	
 	@Override
-	public void excluir(TipoTarifa entidade) {
+	public void excluir(TipoTarifa entidade)throws Exception {
 		try {
 			tipoTarifaDao.delete(entidade);
-			UtilMensagens.mensagemInformacao("Exclusão Realizada com Sucesso");
-			
 		}catch (Exception ex) {
         	ex.printStackTrace();
-            UtilMensagens.mensagemErro("Erro ao Excluir o Tipo de Tarifa" + 
+        	throw new PersistenciaException("Ocorreu uma exceção ao Excluir o Tipo de Tarifa!" + 
             		" \nErro: " + UtilErros.getMensagemErro(ex));
 		}	
 	}
 
 	
 	@Override
-	public TipoTarifa carregarEntidade(TipoTarifa entidade) {
+	public TipoTarifa carregarEntidade(TipoTarifa entidade)throws PersistenciaException {
 		try{
 			String jpql = "Select t From TipoTarifa t where t.idTipoTarifa = ?1";
 			return tipoTarifaDao.findOne(jpql, entidade.getIdTipoTarifa());
 			
 		}catch (Exception e) {
 			e.printStackTrace();
-			UtilMensagens.mensagemAtencao("Tipo de Tarifa não encontrada!");
-			return null;
+			throw new PersistenciaException("Ocorreu uma exceção ao buscar os dados do Tipo de Tarifa!" + 
+            		" \nErro: " + UtilErros.getMensagemErro(e));
 		}
 	}
 
@@ -89,26 +83,31 @@ public class ServiceTipoTarifa implements GenericService<TipoTarifa> {
 	}
 
 	
-	public List<TipoTarifa> filtrarTabela(TipoFiltro tipoFiltro , String valorFiltro){
+	public List<TipoTarifa> filtrarTabela(TipoFiltro tipoFiltro , String valorFiltro)throws Exception{
 		List<TipoTarifa> lista = null;
 		
-		if(tipoFiltro.equals(TipoFiltro.CODIGO)){			
-			try {
+		try{
+			
+			if(tipoFiltro.equals(TipoFiltro.CODIGO)){							
 				String jpql = "Select t From TipoTarifa t where t.idTipoTarifa in (" + valorFiltro + ")";
-				lista = tipoTarifaDao.find(jpql);
-			}catch (Exception e) {
-				e.printStackTrace();
-			}			
+				lista = tipoTarifaDao.find(jpql);							
+			}
+			else if(tipoFiltro.equals(TipoFiltro.NOME)){							
+				lista = tipoTarifaDao.find("Select t From TipoTarifa t where t.nome like ?",valorFiltro);						
+			}		
+			
+			return lista;
+			
+		}catch (Exception e) {
+			e.printStackTrace();
+			throw new PersistenciaException("Ocorreu uma exceção ao Filtrar os dados do Tipo de Tarifa!" + 
+            		" \nErro: " + UtilErros.getMensagemErro(e));
 		}
-		else if(tipoFiltro.equals(TipoFiltro.NOME)){			
-			try{
-				lista = tipoTarifaDao.find("Select t From TipoTarifa t where t.nome like ?",valorFiltro);
-			}catch (Exception e) {
-				e.printStackTrace();
-			}			
-		}		
-		return lista;			
 	}
+
+	
+	@Override
+	public void consisteAntesEditar(TipoTarifa entidade)throws NegocioException {}
 
 	
 }

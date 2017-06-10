@@ -26,6 +26,7 @@ public class CaixaBancoBean extends GenericBean<CaixaBanco, ServiceCaixaBanco> {
 		
 	}
 
+	
 	@Override
 	public CaixaBanco criarEntidade() {
 		return new CaixaBanco();

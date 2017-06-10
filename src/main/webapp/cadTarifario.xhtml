@@ -30,7 +30,7 @@
 		
 		<p:messages autoUpdate="true" closable="true">
 			<p:effect type="pulsate" event="load" delay="500" />
-			<p:effect type="clip" event="load" delay="5000" />
+			<p:effect type="clip" event="load" delay="10000" />
 		</p:messages>
 		
 		
@@ -41,8 +41,7 @@
 					selection="#{tarifarioBean.entidade}" selectionMode="single"
 					rowKey="#{entidade.idTarifario}" reflow="true"									
 					widgetVar="tabela" emptyMessage="#{label.msg_tabela_vazia}"
-					style="margin: 0px -11px;" 
-					rendered="#{tarifarioBean.buscando}">				
+					style="margin: 0px -11px;">				
 					
 
 					<p:ajax event="rowDblselect" listener="#{tarifarioBean.onRowDblClckSelect}"

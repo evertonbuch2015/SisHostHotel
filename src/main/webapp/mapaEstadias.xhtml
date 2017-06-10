@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition 
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:p="http://primefaces.org/ui" 
+	template="/WEB-INF/template.xhtml"
+	xmlns:app="http://java.sun.com/jsf/composite/componentes">
+
+	<ui:define name="tituloPagina">
+		#{label.tit_mapa_estadias}
+	</ui:define>
+
+
+	<ui:define name="conteudo">
+		
+		<p:breadCrumb>
+			<p:menuitem value="Home" url="/index.xhtml" />
+			<p:menuitem value="#{label.menu_hospedagem}"/>
+    		<p:menuitem value="#{label.txt_mapa_estadias}" url="#" />
+		</p:breadCrumb>
+		
+		
+		<p:messages autoUpdate="true" closable="true">
+			<p:effect type="pulsate" event="load" delay="500" />
+			<p:effect type="clip" event="load" delay="10000" />
+		</p:messages>
+	
+			        
+		<p:dataGrid id="apartamentos" 
+			var="ap" value="#{mapaEstadiasBean.apartamentos}"
+	        columns="6" layout="grid" >
+	 
+	 
+	        <f:facet name="header">
+	            Mapa de Situação dos Apartamentos
+	        </f:facet>
+	 
+	 
+	        <p:panel header="N°: #{ap.numero}" 
+	        	style="text-align:center"
+	        	styleClass="ui-panelgrid-blank">
+	            
+	            	<p:commandLink>					                
+		                <p:graphicImage name="images2/#{ap.situacao}.jpg"/> 
+		            </p:commandLink>
+	            	
+	            	<h:panelGrid columns="1" style="width:100%">
+	 		 					
+	                	<h:outputText value="#{ap.situacao.label}" />		                		
+	 					<h:outputText value="#{label.txt_ramal}: #{ap.ramal}" />
+	                
+	            	</h:panelGrid>
+	        </p:panel>
+	 
+	    </p:dataGrid>
+					
+	</ui:define>
+</ui:composition>

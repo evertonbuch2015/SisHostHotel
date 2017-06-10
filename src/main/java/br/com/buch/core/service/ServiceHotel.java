@@ -2,13 +2,12 @@ package br.com.buch.core.service;
 
 import java.util.List;
 
-import javax.persistence.EntityNotFoundException;
-
 import br.com.buch.core.dao.HotelDao;
 import br.com.buch.core.entity.Hotel;
+import br.com.buch.core.util.NegocioException;
+import br.com.buch.core.util.PersistenciaException;
+import br.com.buch.core.util.UtilErros;
 import br.com.buch.view.managedBean.HotelBean.TipoFiltro;
-import br.com.buch.view.util.UtilErros;
-import br.com.buch.view.util.UtilMensagens;
 
 public class ServiceHotel implements GenericService<Hotel> {
 
@@ -21,31 +20,27 @@ public class ServiceHotel implements GenericService<Hotel> {
 	
 	
 	@Override
-	public boolean salvar(Hotel entidate) {
+	public String salvar(Hotel entidate)throws Exception {
 		if (entidate.getIdHotel() == null) {
 			
 			try {
 				empresaDao.save(entidate);
-				UtilMensagens.mensagemInformacao("Cadastro de Hotel Realizado com Sucesso");
-				return true;
+				return "Cadastro de Hotel Realizado com Sucesso";
 			} catch (Exception e) {
 				e.printStackTrace();
-				UtilMensagens.mensagemErro("Erro ao Inserir a Hotel"
-						+ "\nErro: " + UtilErros.getMensagemErro(e));
-				return false;
+				throw new PersistenciaException("Ocorreu uma exceção ao inserir o Hotel!" + 
+	            		" \nErro: " + UtilErros.getMensagemErro(e));
 			}
 			
 		} else {
 			
 			try {
 				empresaDao.update(entidate);
-				UtilMensagens.mensagemInformacao("Cadastro de Hotel Alterado com Sucesso");
-				return true;
+				return "Cadastro de Hotel Alterado com Sucesso";
 			} catch (Exception e) {
 				e.printStackTrace();
-				UtilMensagens.mensagemErro("Erro ao Atualizar a Hotel"
-						+ "\nErro: " + UtilErros.getMensagemErro(e));
-				return false;
+				throw new PersistenciaException("Ocorreu uma exceção ao alterar o Hotel!" + 
+	            		" \nErro: " + UtilErros.getMensagemErro(e));
 			}			
 		}
 		
@@ -53,17 +48,12 @@ public class ServiceHotel implements GenericService<Hotel> {
 
 	
 	@Override
-	public void excluir(Hotel entidade) {
+	public void excluir(Hotel entidade)throws Exception {
 		try {
 			empresaDao.delete(entidade);
-			
-		}catch (EntityNotFoundException enfe) { 
-			enfe.printStackTrace();
-            UtilMensagens.mensagemErro("The Item with id " + entidade.getIdHotel()+ " no longer exists." +
-            		" \nErro: " + UtilErros.getMensagemErro(enfe));
         }catch (Exception ex) {
-        	ex.printStackTrace();
-            UtilMensagens.mensagemErro("Erro ao excluir a Hotel!" + 
+        	ex.printStackTrace();            
+        	throw new PersistenciaException("Ocorreu uma exceção ao Excluir o Hotel!" + 
             		" \nErro: " + UtilErros.getMensagemErro(ex));
 		}
 		
@@ -71,13 +61,14 @@ public class ServiceHotel implements GenericService<Hotel> {
 
 	
 	@Override
-	public Hotel carregarEntidade(Hotel hotel) {
+	public Hotel carregarEntidade(Hotel hotel) throws PersistenciaException{
 		String jpql = "Select e From Hotel e where e.id = ?1";
 		try {
 			return empresaDao.findOne(jpql, hotel.getIdHotel());
 		} catch (Exception e) {
 			e.printStackTrace();
-			return null;			
+			throw new PersistenciaException("Ocorreu uma exceção ao buscar os dados do Hotel!" + 
+            		" \nErro: " + UtilErros.getMensagemErro(e));		
 		}
 	}
 
@@ -93,26 +84,36 @@ public class ServiceHotel implements GenericService<Hotel> {
 	}
 
 	
-	public List<Hotel> filtrarTabela(TipoFiltro tipoFiltro , String valorFiltro){
+	public List<Hotel> filtrarTabela(TipoFiltro tipoFiltro , String valorFiltro)throws Exception{
 		List<Hotel> lista = null;
 		
-		if(tipoFiltro.equals(TipoFiltro.CODIGO)){			
-			try {
+		try {
+
+			if(tipoFiltro.equals(TipoFiltro.CODIGO)){						
 				String jpql = "Select e From Hotel e where e.codigo in (" + valorFiltro + ")";
 				lista = empresaDao.find(jpql);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}			
-		}
-		else if(tipoFiltro.equals(TipoFiltro.NOME)){	
-			try {
-				lista = empresaDao.find("Select e From Hotel e where e.nomeRazao like ?",valorFiltro);
-			} catch (Exception e) {
-				e.printStackTrace();
+					
 			}
+			else if(tipoFiltro.equals(TipoFiltro.NOME)){	
+				
+					lista = empresaDao.find("Select e From Hotel e where e.nomeRazao like ?",valorFiltro);
+				
+			}
+			
+			return lista;
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new PersistenciaException("Ocorreu uma exceção ao Filtrar os dados do Hotel!" + 
+            		" \nErro: " + UtilErros.getMensagemErro(e));
 		}
-		
-		return lista;	
+	}
+
+
+	
+	
+	@Override
+	public void consisteAntesEditar(Hotel entidade) throws NegocioException{
+
 	}
 
 }

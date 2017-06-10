@@ -7,6 +7,7 @@ import javax.faces.bean.SessionScoped;
 
 import br.com.buch.core.entity.FormaPagamento;
 import br.com.buch.core.service.ServiceFormaPagamento;
+import br.com.buch.view.util.UtilMensagens;
 
 
 @ManagedBean
@@ -43,7 +44,11 @@ public class FormaPagamentoBean extends GenericBean<FormaPagamento, ServiceForma
 	
 	@Override
 	public void filtrar() {
-		this.entidades = service.filtrarTabela(filtro, valorFiltro);
+		try {
+			this.entidades = service.filtrarTabela(filtro, valorFiltro);
+		} catch (Exception e) {
+			UtilMensagens.mensagemErro(e.getMessage());
+		}
 	}
 
 	

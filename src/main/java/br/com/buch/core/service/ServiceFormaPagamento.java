@@ -4,9 +4,9 @@ import java.util.List;
 
 import br.com.buch.core.dao.FormaPagamentoDao;
 import br.com.buch.core.entity.FormaPagamento;
+import br.com.buch.core.util.PersistenciaException;
+import br.com.buch.core.util.UtilErros;
 import br.com.buch.view.managedBean.FormaPagamentoBean.TipoFiltro;
-import br.com.buch.view.util.UtilErros;
-import br.com.buch.view.util.UtilMensagens;
 
 public class ServiceFormaPagamento implements GenericService<FormaPagamento> {
 
@@ -19,59 +19,53 @@ public class ServiceFormaPagamento implements GenericService<FormaPagamento> {
 
 	
 	@Override
-	public boolean salvar(FormaPagamento entidate) {
+	public String salvar(FormaPagamento entidate)throws Exception {
 		if (entidate.getIdFormaPag() == null) {
 
 			try {
 				formaPagamentoDao.save(entidate);
-				UtilMensagens.mensagemInformacao("Forma de Pagamento Cadastrada com Sucesso!");
-				return true;
+				return "Forma de Pagamento Cadastrada com Sucesso!";
 			} catch (Exception e) {
 				e.printStackTrace();
-				UtilMensagens.mensagemErro(
-						"Erro ao Inserir a Forma de Pagamento!" + "\nErro: " + UtilErros.getMensagemErro(e));
-				return false;
+				throw new PersistenciaException("Ocorreu uma exceção ao inserir a Forma de Pagamento!" + 
+	            		" \nErro: " + UtilErros.getMensagemErro(e));
 			}
 		} else {
 
 			try {
 				formaPagamentoDao.update(entidate);
-				UtilMensagens.mensagemInformacao("Forma de Pagamento Alterado com Sucesso!");
-				return true;
+				return "Forma de Pagamento Alterado com Sucesso!";
 			} catch (Exception e) {
 				e.printStackTrace();
-				UtilMensagens.mensagemErro(
-						"Erro ao Alterar a Forma de Pagamento!" + "\nErro: " + UtilErros.getMensagemErro(e));
-				return false;
+				throw new PersistenciaException("Ocorreu uma exceção ao alterar a Forma de Pagamento!" + 
+	            		" \nErro: " + UtilErros.getMensagemErro(e));
 			}
 		}
 	}
 
 	
 	@Override
-	public void excluir(FormaPagamento entidade) {
+	public void excluir(FormaPagamento entidade) throws Exception{
 		try {
-			formaPagamentoDao.delete(entidade);
-			UtilMensagens.mensagemInformacao("Exclusão Realizada com Sucesso");
-			
+			formaPagamentoDao.delete(entidade);						
 		}catch (Exception ex) {
         	ex.printStackTrace();
-            UtilMensagens.mensagemErro("Ocorreu algum excessão ao Excluir a Forma de Pagamento!" + 
+        	throw new PersistenciaException("Ocorreu uma exceção ao excluir a Forma de Pagamento!" + 
             		" \nErro: " + UtilErros.getMensagemErro(ex));
 		}
 	}
 
 	
 	@Override
-	public FormaPagamento carregarEntidade(FormaPagamento entidade) {
+	public FormaPagamento carregarEntidade(FormaPagamento entidade) throws PersistenciaException {
 		try{
-			String jpql = "Select f From FormaPagamento f where c.idFormaCategoria = ?1";
+			String jpql = "Select f From FormaPagamento f where f.idFormaPag = ?1";
 			return formaPagamentoDao.findOne(jpql, entidade.getIdFormaPag());
 			
 		}catch (Exception e) {
 			e.printStackTrace();
-			UtilMensagens.mensagemErro("Ocorreu uma excessão ao buscar os dados da Forma de Pagamento!");
-			return null;
+			throw new PersistenciaException("Ocorreu uma exceção ao buscar os dados da Forma de Pagamento!" + 
+            		" \nErro: " + UtilErros.getMensagemErro(e));
 		}
 	}
 
@@ -87,7 +81,7 @@ public class ServiceFormaPagamento implements GenericService<FormaPagamento> {
 	}
 
 	
-	public List<FormaPagamento> filtrarTabela(TipoFiltro tipoFiltro , String valorFiltro){
+	public List<FormaPagamento> filtrarTabela(TipoFiltro tipoFiltro , String valorFiltro)throws Exception{
 		List<FormaPagamento> lista = null;
 		
 		try {			
@@ -102,8 +96,16 @@ public class ServiceFormaPagamento implements GenericService<FormaPagamento> {
 			
 		} catch (Exception e) {
 			e.printStackTrace();
-			UtilMensagens.mensagemAtencao("Ocorreu algum excessão ao Filtrar os dados da Forma de Pagamento!");
-			return null;
+			throw new PersistenciaException("Ocorreu uma exceção ao Filtrar os dados da Forma de Pagamento!" + 
+            		" \nErro: " + UtilErros.getMensagemErro(e));
 		}					
+	}
+
+
+	
+	
+	@Override
+	public void consisteAntesEditar(FormaPagamento entidade) {
+
 	}
 }

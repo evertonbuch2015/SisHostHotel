@@ -25,7 +25,7 @@
 		
 		<p:messages autoUpdate="true" closable="true">
 			<p:effect type="pulsate" event="load" delay="500" />
-			<p:effect type="clip" event="load" delay="5000" />
+			<p:effect type="clip" event="load" delay="10000" />
 		</p:messages>
 		
 		
@@ -36,8 +36,7 @@
 					selection="#{categoriaBean.entidade}" selectionMode="single"
 					rowKey="#{entidade.idCategoria}" reflow="true"									
 					widgetVar="carsTable" emptyMessage="#{label.msg_tabela_vazia}"
-					style="margin: 0px -11px;" 
-					rendered="#{categoriaBean.buscando}">				
+					style="margin: 0px -11px;">				
 					
 
 					<p:ajax event="rowDblselect" listener="#{categoriaBean.onRowDblClckSelect}"

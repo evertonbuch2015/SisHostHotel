@@ -10,6 +10,7 @@ import br.com.buch.core.entity.Hotel;
 import br.com.buch.core.enumerated.Estados;
 import br.com.buch.core.enumerated.RegimeTributario;
 import br.com.buch.core.service.ServiceHotel;
+import br.com.buch.view.util.UtilMensagens;
 
 @ManagedBean
 @SessionScoped
@@ -41,7 +42,11 @@ public class HotelBean extends GenericBean<Hotel, ServiceHotel> {
 	// =======================METODOS DO USUARIO=====================================
 	
 	public void filtrar(){
-		this.entidades = this.service.filtrarTabela(filtro, valorFiltro);
+		try {
+			this.entidades = this.service.filtrarTabela(filtro, valorFiltro);
+		} catch (Exception e) {
+			UtilMensagens.mensagemErro(e.getMessage());
+		}
 	}
 
 	

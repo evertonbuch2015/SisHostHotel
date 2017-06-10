@@ -13,6 +13,8 @@ import br.com.buch.core.entity.Hospede;
 import br.com.buch.core.enumerated.TipoFiltroAdiantamento;
 import br.com.buch.core.service.ServiceAdiantamento;
 import br.com.buch.core.service.ServiceCaixaBanco;
+import br.com.buch.core.util.NegocioException;
+import br.com.buch.view.util.UtilMensagens;
 
 @ManagedBean
 @SessionScoped
@@ -32,21 +34,40 @@ public class AdiantamentoBean extends GenericBean<Adiantamento, ServiceAdiantame
 	
 	@Override
 	public void filtrar() {
-		service.filtrarTabela(filtro, valorFiltro);
+		try {
+			service.filtrarTabela(filtro, valorFiltro);
+		} catch (Exception e) {
+			UtilMensagens.mensagemErro(e.getMessage());
+		}
 	}
 
+	
 	@Override
 	public Adiantamento criarEntidade() {
 		return new Adiantamento();
 	}
 
-	
-	
+		
 	public void hospedeSelecionado(SelectEvent event){
 		Hospede hospede = (Hospede) event.getObject();	
 		this.entidade.setHospede(hospede);;
 	}
 		
+	
+	public void realizarBaixa(){
+		
+		try {
+			service.realizarBaixa(entidade);
+			this.entidade = service.carregarEntidade(entidade);
+			UtilMensagens.mensagemAtencao("Baixa de Adiantamento de Cliente realizada com sucesso!");
+		}
+		catch (NegocioException e) {
+			UtilMensagens.mensagemAtencao(e.getMessage());
+		}
+		catch (Exception e) {
+			UtilMensagens.mensagemErro(e.getMessage());
+		}
+	}
 	
 	
 	// =============================GET AND SET=====================================

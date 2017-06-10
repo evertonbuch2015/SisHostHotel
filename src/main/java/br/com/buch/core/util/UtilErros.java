@@ -1,4 +1,4 @@
-package br.com.buch.view.util;
+package br.com.buch.core.util;
 
 public class UtilErros {
 

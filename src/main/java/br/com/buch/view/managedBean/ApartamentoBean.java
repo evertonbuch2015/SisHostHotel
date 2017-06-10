@@ -10,6 +10,7 @@ import br.com.buch.core.entity.Categoria;
 import br.com.buch.core.enumerated.SituacaoApartamento;
 import br.com.buch.core.service.ServiceApartamento;
 import br.com.buch.core.service.ServiceCategoria;
+import br.com.buch.view.util.UtilMensagens;
 
 @ManagedBean
 @SessionScoped
@@ -48,7 +49,11 @@ public class ApartamentoBean extends GenericBean<Apartamento, ServiceApartamento
 
 	@Override
 	public void filtrar() {
-		service.filtrarTabela(filtro, valorFiltro);
+		try {
+			service.filtrarTabela(filtro, valorFiltro);
+		} catch (Exception e) {
+			UtilMensagens.mensagemErro(e.getMessage());
+		}
 	}
 
 	

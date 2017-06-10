@@ -6,6 +6,8 @@ import java.util.List;
 import org.primefaces.event.SelectEvent;
 
 import br.com.buch.core.service.GenericService;
+import br.com.buch.core.util.NegocioException;
+import br.com.buch.view.util.UtilMensagens;
 
 
 public abstract class GenericBean<E extends Serializable,T extends GenericService<E>> {
@@ -72,38 +74,74 @@ public abstract class GenericBean<E extends Serializable,T extends GenericServic
 	
 	// ================Metodos já implementados (Prontos)=============================
 	
-	public void gravar(){
-		if (service.salvar(this.entidade)) {			
+	public void gravar(){		
+		try {
+			String mensagem = service.salvar(this.entidade);
 			refresh();
 			mudarBuscar();
-		}	
+			
+			UtilMensagens.mensagemInformacao(mensagem);
+		}
+		catch (NegocioException e) {
+			UtilMensagens.mensagemAtencao(e.getMessage());
+		}
+		catch (Exception e) {
+			UtilMensagens.mensagemErro(e.getMessage());
+		}
 	}
 	
 	
 	public void excluir(){
-		service.excluir(entidade);
-		refresh();
-		mudarBuscar();
+		try {
+			service.excluir(entidade);
+			refresh();
+			mudarBuscar();
+			
+			UtilMensagens.mensagemInformacao("Exclusão Realizada com Sucesso");
+		}
+		catch (NegocioException e) {
+			UtilMensagens.mensagemAtencao(e.getMessage());
+		}
+		catch (Exception e) {
+			UtilMensagens.mensagemErro(e.getMessage());
+		}
+		
 	}
 	
 	
 	public void excluir(E entity){
-		service.excluir(entity);
-		refresh();
-		mudarBuscar();
+		try {
+			service.excluir(entity);
+			refresh();
+			mudarBuscar();
+			
+			UtilMensagens.mensagemInformacao("Exclusão Realizada com Sucesso");
+		}
+		catch (NegocioException e) {
+			UtilMensagens.mensagemAtencao(e.getMessage());
+		}
+		catch (Exception e) {
+			UtilMensagens.mensagemErro(e.getMessage());
+		}
 	}
 		
 	
-	public  void refresh(){
-		if(this.entidades != null){
-			this.entidades.clear();
+	public  void refresh(){				
+		try {			
+			
+			if(this.entidades != null){
+				this.entidades.clear();
+			}
+			this.entidades = service.buscarTodos();
+			
+		} catch (Exception e) {
+			UtilMensagens.mensagemErro(e.getMessage());
 		}
-		this.entidades = service.buscarTodos();
 	}
 	
 	
-	public void carregaEntidade(){
-		this.entidade = service.carregarEntidade(entidade);
+	protected E carregaEntidade(E entidade)throws Exception{
+		return service.carregarEntidade(entidade);
 	}
 
 	
@@ -114,14 +152,34 @@ public abstract class GenericBean<E extends Serializable,T extends GenericServic
 	
 	
 	public void editar(){
-		mudarAlterar();
+		try {
+			service.consisteAntesEditar(entidade);
+			mudarAlterar();
+			
+		}
+		catch (NegocioException ex) {
+			UtilMensagens.mensagemAtencao(ex.getMessage());
+		}
+		catch (Exception e) {
+			UtilMensagens.mensagemErro(e.getMessage());
+		}
 	}
 	
 	
-	public void editar(E entidade){
-		this.entidade = entidade;
-		carregaEntidade();
-		mudarAlterar();
+	public void editar(E entidade){					
+		try {
+			service.consisteAntesEditar(entidade);
+			
+			this.entidade = carregaEntidade(entidade);			
+			mudarAlterar();
+			
+		}
+		catch (NegocioException ex) {
+			UtilMensagens.mensagemAtencao(ex.getMessage());
+		}
+		catch (Exception e) {
+			UtilMensagens.mensagemErro(e.getMessage());
+		}
 	}
 	
 
@@ -130,21 +188,28 @@ public abstract class GenericBean<E extends Serializable,T extends GenericServic
 		mudarBuscar();
 	}
 	
-		
+			
 	public void onRowSelect(SelectEvent event) {		
 		//this.entidade = (E) event.getObject();
 	}
 	
 	
 	public void onRowDblClckSelect(final SelectEvent event) {
-		carregaEntidade();
-		if(this.entidade != null){
-			mudarVisualizar();
-		}
+		try {
+			this.entidade = carregaEntidade(entidade);
+			
+			if(this.entidade != null){
+				mudarVisualizar();
+			}
+			
+		} catch (Exception e) {
+			UtilMensagens.mensagemErro(e.getMessage());
+		}		
 	}
 	
 
 	// ================Métodos GET e SET=============================================
+	
 	public void setEntidade(E entidade) {
 		this.entidade = entidade;
 	}

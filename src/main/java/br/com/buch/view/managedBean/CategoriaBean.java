@@ -8,6 +8,7 @@ import javax.faces.bean.SessionScoped;
 
 import br.com.buch.core.entity.Categoria;
 import br.com.buch.core.service.ServiceCategoria;
+import br.com.buch.view.util.UtilMensagens;
 
 @ManagedBean
 @SessionScoped
@@ -44,7 +45,11 @@ public class CategoriaBean extends GenericBean<Categoria, ServiceCategoria> {
 	
 	@Override
 	public void filtrar() {
-		this.entidades = service.filtrarTabela(filtro, valorFiltro);
+		try {
+			this.entidades = service.filtrarTabela(filtro, valorFiltro);
+		} catch (Exception e) {
+			UtilMensagens.mensagemErro(e.getMessage());
+		}
 	}
 
 	
