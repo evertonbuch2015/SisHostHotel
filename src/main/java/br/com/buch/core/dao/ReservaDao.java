@@ -7,5 +7,5 @@ public class ReservaDao extends GenericDao<Reserva> {
 	public ReservaDao() {
 		super(Reserva.class);
 	}
-
+	
 }

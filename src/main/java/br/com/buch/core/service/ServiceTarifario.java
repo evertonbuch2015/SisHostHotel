@@ -1,5 +1,6 @@
 package br.com.buch.core.service;
 
+import java.util.Date;
 import java.util.List;
 
 import br.com.buch.core.dao.TarifarioDao;
@@ -87,8 +88,7 @@ public class ServiceTarifario implements GenericService<Tarifario> {
 		}
 	}
 
-	
-	
+		
 	public List<Tarifario> filtrarTabela(TipoFiltro tipoFiltro , String valorFiltro)throws Exception{
 		List<Tarifario> lista = null;
 		
@@ -125,9 +125,6 @@ public class ServiceTarifario implements GenericService<Tarifario> {
             		" \nErro: " + UtilErros.getMensagemErro(e));
 		}	
 	}
-
-
-
 	
 	
 	@Override
@@ -135,8 +132,7 @@ public class ServiceTarifario implements GenericService<Tarifario> {
 		
 	}
 	
-	
-	
+		
 	private boolean validaAntesSalvar(Tarifario entidate) {
 		List<Tarifario> lista = null;
 		
@@ -151,5 +147,20 @@ public class ServiceTarifario implements GenericService<Tarifario> {
 				
 		
 		return (lista.size() == 0) ?true:false;
+	}
+
+
+	public Tarifario buscarPeloId(Integer id){
+		try {
+			return tarifarioDao.findById(id);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+	
+	
+	public Tarifario buscarPelaCategoriaTipoTarifa(Integer categoria, Integer tipoTarifa, Date data )throws Exception{
+		return tarifarioDao.findByCategoriaTipoTarifa(categoria, tipoTarifa, data);
 	}
 }

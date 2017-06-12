@@ -13,6 +13,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 
 import br.com.buch.core.enumerated.SituacaoApartamento;
@@ -63,7 +64,11 @@ public class Apartamento implements Serializable {
     @JoinColumn(name ="COD_CADCATEGORIA")
     private Categoria categoria;
 
-        
+    
+    @Transient
+    private String descricaoTela;
+    
+    
     //-------------------------------	GETs and SETs------------------------------//
     
     
@@ -139,8 +144,20 @@ public class Apartamento implements Serializable {
 	}
 	
 	
+	public String getDescricaoTela() {
+		return "Nº: " + numero + "  -  " + categoria.getNome();
+	}
+	
+	public void setDescricaoTela(String descricaoTela) {
+		this.descricaoTela = descricaoTela;
+	}
+	
 	//--------------------------------	Métodos Auxiliares------------------------------//
 
+	@Override
+	public String toString() {
+		return "Nº: " + numero + "  -  " + categoria.getNome();
+	}
 	
 	@Override
 	public int hashCode() {

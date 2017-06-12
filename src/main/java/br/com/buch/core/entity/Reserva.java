@@ -1,7 +1,9 @@
 package br.com.buch.core.entity;
 
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -45,12 +47,12 @@ public class Reserva implements Serializable {
     
     @Column(name = "DATA_ENTRADA")
     @Temporal(TemporalType.DATE)
-    private Calendar dataEntrada;
+    private Date dataEntrada;
     
     
     @Column(name = "DATA_SAIDA")
     @Temporal(TemporalType.DATE)
-    private Calendar dataSaida;
+    private Date dataSaida;
     
     
     @Column(name = "DATA_CONFIRMACAO")
@@ -58,7 +60,7 @@ public class Reserva implements Serializable {
     private Calendar dataConfirmacao;
     
     
-    @Column(name="DIARIAS")
+    @Transient
     private Integer diarias;
         
     
@@ -128,20 +130,28 @@ public class Reserva implements Serializable {
 	}
 
 
-	public Calendar getDataEntrada() {
+	public String getDataEntradaFormatada(){
+		return new SimpleDateFormat("dd/MM/yyyy").format(this.dataEntrada);
+	}
+	
+	public Date getDataEntrada() {
 		return dataEntrada;
 	}
 
-	public void setDataEntrada(Calendar dataEntrada) {
+	public void setDataEntrada(Date dataEntrada) {
 		this.dataEntrada = dataEntrada;
 	}
 
 
-	public Calendar getDataSaida() {
+	public String getDataSaidaFormatada(){
+		return new SimpleDateFormat("dd/MM/yyyy").format(this.dataSaida);
+	}
+	
+	public Date getDataSaida() {
 		return dataSaida;
 	}
 
-	public void setDataSaida(Calendar dataSaida) {
+	public void setDataSaida(Date dataSaida) {
 		this.dataSaida = dataSaida;
 	}
 
@@ -156,9 +166,21 @@ public class Reserva implements Serializable {
 
 
 	public Integer getDiarias() {
-		return diarias;
-	}
+		if(dataEntrada != null && dataSaida != null){
+			int MILLIS_IN_DAY = 86400000;
+			
+			Calendar c1 = Calendar.getInstance(), c2 = Calendar.getInstance(); 
+			
+			c1.setTime(dataEntrada);
+			c2.setTime(dataSaida);
 
+			return ((Long)((c2.getTimeInMillis() - c1.getTimeInMillis())/ MILLIS_IN_DAY)).intValue();
+		}else{
+			return 0;
+		}
+		
+	}
+	
 	public void setDiarias(Integer diarias) {
 		this.diarias = diarias;
 	}
@@ -239,7 +261,7 @@ public class Reserva implements Serializable {
 	public Double getValorTotal() {
 		Double valor = 0.0;
 		
-		valor += (this.valorDiaria != null) ? valorDiaria : 0.0;		
+		valor += (this.valorDiaria != null) ? valorDiaria * getDiarias() : 0.0;		
 		valor += (this.valorTaxaServico != null) ? valorTaxaServico : 0.0;
 		valor += (this.valorTaxaTurismo != null) ? valorTaxaTurismo : 0.0;
 		

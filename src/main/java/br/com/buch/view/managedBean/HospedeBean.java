@@ -6,6 +6,7 @@ import java.util.List;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 
+import br.com.buch.core.entity.Endereco;
 import br.com.buch.core.entity.Hospede;
 import br.com.buch.core.enumerated.Estados;
 import br.com.buch.core.enumerated.TipoFiltroHospede;
@@ -47,7 +48,13 @@ public class HospedeBean extends GenericBean<Hospede, ServiceHospede> {
 	}
 
 
-	
+	public void consultaCepWebService(){
+		Endereco endereco = service.consultaCepWebService(entidade.getEndereco().getCep());
+		
+		if(endereco != null){
+			this.entidade.setEndereco(endereco);
+		}
+	}
 	// =============================GET AND SET=====================================
 
 	public TipoFiltroHospede getFiltro() {

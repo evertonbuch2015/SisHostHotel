@@ -1,9 +1,11 @@
 package br.com.buch.core.service;
 
+import java.util.Date;
 import java.util.List;
 
 import br.com.buch.core.dao.ApartamentoDao;
 import br.com.buch.core.entity.Apartamento;
+import br.com.buch.core.enumerated.SituacaoApartamento;
 import br.com.buch.core.util.NegocioException;
 import br.com.buch.core.util.PersistenciaException;
 import br.com.buch.core.util.UtilErros;
@@ -107,11 +109,33 @@ public class ServiceApartamento implements GenericService<Apartamento> {
 		}					
 	}
 
-
-	
 	
 	@Override
 	public void consisteAntesEditar(Apartamento entidade)throws NegocioException {
 		
+	}
+
+	
+	public List<Apartamento> buscarTodosLivres() {
+		try {
+			return apartamentoDao.find("Select a From Apartamento a where a.situacao = ?1", SituacaoApartamento.LIVRE);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}		
+	}
+
+	
+	
+	/**
+	 * Verifica a Disponibilidade do Apartamento no intervalo de Data Fornecida.
+	 * @param Id do Apartamento
+	 * @param Data Entrada
+	 * @param Data Saida
+	 * @return Retorna 1 para Reservado e 0 para Disponivel.
+	 * 
+	 */
+	public Integer verificaDisponibilidade(Integer id, Date dataEntrada, Date dataSaida){
+		return apartamentoDao.verificaDisponibilidade(id, dataEntrada, dataSaida);
 	}
 }

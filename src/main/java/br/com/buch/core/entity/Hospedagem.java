@@ -8,6 +8,8 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -19,6 +21,8 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.Transient;
+
+import br.com.buch.core.enumerated.SituacaoHospedagem;
 
 @Entity
 @Table(name="HOSPEDAGEM")
@@ -50,6 +54,11 @@ public class Hospedagem implements Serializable {
     
     @Column(name="DIARIAS", insertable=false, updatable=false)
     private Integer diarias;
+    
+    
+    @Column(name = "SITUACAO" , length = 20)
+    @Enumerated(EnumType.STRING)
+    private SituacaoHospedagem situacao;
     
     
     @Column(name = "OBS" , length = 255)
@@ -141,6 +150,15 @@ public class Hospedagem implements Serializable {
 	}
 
 
+	public SituacaoHospedagem getSituacao() {
+		return situacao;
+	}
+	
+	public void setSituacao(SituacaoHospedagem situacao) {
+		this.situacao = situacao;
+	}
+	
+	
 	public String getObs() {
 		return obs;
 	}

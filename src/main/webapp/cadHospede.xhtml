@@ -238,14 +238,18 @@
 					
 					<p:panelGrid
 						styleClass="ui-panelgrid-blank" columns="4"
-						cellpadding="10" layout="grid"
+						cellpadding="10" layout="grid" 
 						columnClasses="ui-grid-col-1 texto,ui-grid-col-4,ui-grid-col-1 texto bu-left,ui-grid-col-3">
 	
 						<p:outputLabel value="#{label.txt_cep}" for="cep" />
 						<p:inputMask id="cep" 
 							value="#{hospedeBean.entidade.endereco.cep}" mask="99.999-999"
 							required="true" 
-							requiredMessage="Informe no endereço o número do Cep!"/>
+							requiredMessage="Informe no endereço o número do Cep!">
+							
+							<p:ajax event="blur" process="@this" update="lgr rua bairro cidade estado pais"
+								listener="#{hospedeBean.consultaCepWebService()}"/>
+						</p:inputMask>
 						
 															
 						<p:outputLabel value="#{label.txt_lgr}" for="lgr"/>
