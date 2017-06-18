@@ -50,9 +50,10 @@ public class ServiceHospede implements GenericService<Hospede> {
 
 	
 	@Override
-	public void excluir(Hospede entidade) throws Exception{
+	public String excluir(Hospede entidade) throws Exception{
 		try {
-			hospedeDao.delete(entidade);			
+			hospedeDao.delete(entidade);
+			return "";
 		}		
 		catch (Exception ex) {
         	ex.printStackTrace();

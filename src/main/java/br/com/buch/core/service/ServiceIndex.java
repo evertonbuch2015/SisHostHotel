@@ -7,6 +7,7 @@ import java.util.Map;
 import org.apache.commons.collections4.map.HashedMap;
 
 import br.com.buch.core.entity.Apartamento;
+import br.com.buch.core.util.PersistenciaException;
 
 public class ServiceIndex {
 	
@@ -23,7 +24,13 @@ public class ServiceIndex {
 		Integer livre = 0, ocupado = 0, reservado = 0, manutencao = 0, governaca = 0;
 		
 		if(lista.isEmpty()){
-			lista = new ServiceApartamento().buscarTodos();
+			
+			try {
+				lista = new ServiceApartamento().buscarTodos();
+			} catch (PersistenciaException e) {
+				e.printStackTrace();
+				lista = new ArrayList<Apartamento>(); 				
+			}
 		}
 		
 		for (Apartamento apartamento : lista) {

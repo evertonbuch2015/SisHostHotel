@@ -10,6 +10,7 @@ import br.com.buch.core.entity.Categoria;
 import br.com.buch.core.enumerated.SituacaoApartamento;
 import br.com.buch.core.service.ServiceApartamento;
 import br.com.buch.core.service.ServiceCategoria;
+import br.com.buch.core.util.PersistenciaException;
 import br.com.buch.view.util.UtilMensagens;
 
 @ManagedBean
@@ -96,7 +97,12 @@ public class ApartamentoBean extends GenericBean<Apartamento, ServiceApartamento
 	
 	
 	public List<Categoria> getCategorias(){
-		return new ServiceCategoria().buscarTodos();
+		try {
+			return new ServiceCategoria().buscarTodos();
+		} catch (PersistenciaException e) {
+			e.printStackTrace();
+			return null;
+		}
 	}
 
 	

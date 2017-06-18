@@ -45,10 +45,10 @@ public class ServiceCaixaBanco implements GenericService<CaixaBanco> {
 
 	
 	@Override
-	public void excluir(CaixaBanco entidade)throws Exception{
+	public String excluir(CaixaBanco entidade)throws Exception{
 		try {
 			caixaBancoDao.delete(entidade);
-
+			return "";
 		}catch (Exception ex) {
         	ex.printStackTrace();
         	throw new PersistenciaException("Ocorreu uma exceção ao Excluir o Local de Recebimento!" + 

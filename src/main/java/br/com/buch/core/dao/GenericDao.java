@@ -55,7 +55,7 @@ public abstract class GenericDao<T extends Serializable> {
     
     /**
      * Retornar apenas uma Entidade conforme os parametros recebidos.
-     * Entidades estar�o com o estado DATACHED.
+     * Entidade estará com o estado DATACHED.
      * @param jpql
      * @param params
     */
@@ -118,7 +118,7 @@ public abstract class GenericDao<T extends Serializable> {
    
     /**
      * Retornar uma Lista de Entidades conforme os parametros recebidos.
-     * Entidades estar�o com o estado DATACHED.
+     * Entidades estarão com o estado DATACHED.
      * @param jpql
      * @param params
      * @return 

@@ -14,6 +14,14 @@ import br.com.buch.view.managedBean.UsuarioBean.TipoFiltro;
 
 public class ServiceUsuario implements GenericService<Usuario> {
 
+	private static final String BUSCAR_PELO_NOME = "select u from Usuario u where u.nomeUsuario = ?1";
+	private static final String BUSCAR_SETORES = "Select distinct u.setor From Usuario u";
+	private static final String CARREGAR_USUARIO = "Select u From Usuario u left JOIN FETCH u.hoteis where u.idUsusario = ?1";
+	
+	
+	
+	
+	
 	private UsuarioDao usuarioDao;
 	
 	
@@ -54,10 +62,11 @@ public class ServiceUsuario implements GenericService<Usuario> {
 
 	
 	@Override
-	public void excluir(Usuario entidade) throws Exception{
+	public String excluir(Usuario entidade) throws Exception{
 		
 		try {
 			usuarioDao.delete(entidade);
+			return "";
 		}catch (Exception ex) {
         	ex.printStackTrace();
         	throw new PersistenciaException("Ocorreu uma exceção ao excluir o Usuário!" + 
@@ -68,8 +77,7 @@ public class ServiceUsuario implements GenericService<Usuario> {
 	
 	public Usuario carregarEntidade(Usuario usuario) throws PersistenciaException{		
 		try{
-			String jpql = "Select u From Usuario u left JOIN FETCH u.hoteis where u.idUsusario = ?1";
-			return usuarioDao.findOne(jpql, usuario.getIdUsusario());
+			return usuarioDao.findOne(CARREGAR_USUARIO, usuario.getIdUsusario());
 			
 		}catch (Exception e) {
 			e.printStackTrace();
@@ -79,7 +87,7 @@ public class ServiceUsuario implements GenericService<Usuario> {
 	}
 
 	
-	public List<Usuario> buscarTodos(){
+	public List<Usuario> buscarTodos()throws PersistenciaException{
 		List<Usuario> lista = null;
 		try {
 			
@@ -128,16 +136,27 @@ public class ServiceUsuario implements GenericService<Usuario> {
 	
 
 	
-	public boolean logar(String login, String senha){
+	public boolean fazerLogin(String login, String senha){
 		Usuario usuario = null;
 		
 		if(login != null && senha != null){
-			usuario = usuarioDao.existe(login, senha);
+			usuario = usuarioDao.findByUserNamePassword(login, senha);
 		}	    
 		
 		return usuario !=null;		
 	}
 
+	
+	public Usuario fazerLoginWS(String login, String senha){
+		Usuario usuario = null;
+		
+		if(login != null && senha != null){
+			usuario = usuarioDao.findByUserNamePassword(login, senha);
+		}	     
+		
+		return usuario;		
+	}
+	
 	
 	public void recuperarSenha(String email, String fraseSecreta){
 		
@@ -146,8 +165,7 @@ public class ServiceUsuario implements GenericService<Usuario> {
 	
 	public Usuario buscarPeloNome(Usuario usuario) {		
 		try {
-			String jpql = "select u from Usuario u where u.nomeUsuario = ?1";
-			return usuarioDao.findOne(jpql, usuario.getNomeUsuario().toUpperCase());
+			return usuarioDao.findOne(BUSCAR_PELO_NOME, usuario.getNomeUsuario().toUpperCase());
 		} catch (Exception e) {
 			e.printStackTrace();
 			return null;
@@ -155,8 +173,17 @@ public class ServiceUsuario implements GenericService<Usuario> {
 	}
 
 	
-	public List<String> buscarSetores(){
-		String jpql = "Select distinct u.setor From Usuario u";		
-		return usuarioDao.findSectors(jpql);
+	public List<String> buscarSetores(){		
+		return usuarioDao.findSectors(BUSCAR_SETORES);
+	}
+
+
+	public Usuario buscarPorId(Integer id) {
+		try {
+			return usuarioDao.findById(id);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}		
 	}
 }

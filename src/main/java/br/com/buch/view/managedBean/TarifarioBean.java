@@ -11,6 +11,7 @@ import br.com.buch.core.entity.TipoTarifa;
 import br.com.buch.core.service.ServiceCategoria;
 import br.com.buch.core.service.ServiceTarifario;
 import br.com.buch.core.service.ServiceTipoTarifa;
+import br.com.buch.core.util.PersistenciaException;
 import br.com.buch.view.util.UtilMensagens;
 
 @ManagedBean
@@ -96,7 +97,12 @@ public class TarifarioBean extends GenericBean<Tarifario, ServiceTarifario> {
 	
 	
 	public List<Categoria> getCategorias(){
-		return new ServiceCategoria().buscarTodos();
+		try {
+			return new ServiceCategoria().buscarTodos();
+		} catch (PersistenciaException e) {
+			e.printStackTrace();
+			return null;
+		}
 	}
 	
 	

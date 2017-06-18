@@ -153,6 +153,7 @@ public class Reserva implements Serializable {
 
 	public void setDataSaida(Date dataSaida) {
 		this.dataSaida = dataSaida;
+		
 	}
 
 

@@ -1,12 +1,12 @@
 package br.com.buch.view.managedBean;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 
-import org.primefaces.event.FlowEvent;
 import org.primefaces.event.SelectEvent;
 
 import br.com.buch.core.entity.Apartamento;
@@ -20,6 +20,8 @@ import br.com.buch.core.service.ServiceApartamento;
 import br.com.buch.core.service.ServiceReserva;
 import br.com.buch.core.service.ServiceTarifario;
 import br.com.buch.core.service.ServiceTipoTarifa;
+import br.com.buch.core.util.NegocioException;
+import br.com.buch.core.util.PersistenciaException;
 import br.com.buch.view.util.UtilMensagens;
 
 
@@ -41,6 +43,8 @@ public class ReservaBean extends GenericBean<Reserva, ServiceReserva> implements
 		this.serviceApartamento = new ServiceApartamento();
 	}
 
+	
+	
 	
 	// =======================METODOS DO USUARIO=====================================
 	
@@ -98,13 +102,10 @@ public class ReservaBean extends GenericBean<Reserva, ServiceReserva> implements
 			return;
 		}		
 		
-		if(entidade.getApartamento() == null) 
-			return;
+		if(entidade.getApartamento() == null) return;
 		
-		if(entidade.getDataEntrada() == null) 
-			return;
-		
-		
+		if(entidade.getDataEntrada() == null) return;
+				
 		try {
 			Tarifario tarifario = 
 					getServiceTarifario().buscarPelaCategoriaTipoTarifa(
@@ -114,11 +115,13 @@ public class ReservaBean extends GenericBean<Reserva, ServiceReserva> implements
 						
 			this.entidade.setValorDiaria(tarifario.getValor());			
 			
-		} catch (Exception e) {			
-			if(e.toString().contains("NoResultException")){
-				UtilMensagens.mensagemInformacao("Não existe Tarifário cadastrado para esta Categoria e Tipo de Tarifa!");
-				entidade.setValorDiaria(null);
-			}			
+		}
+		catch (NegocioException e) {
+			UtilMensagens.mensagemInformacao(e.getMessage());
+			entidade.setValorDiaria(null);
+		} 
+		catch (Exception e) {			
+			entidade.setValorDiaria(null);
 		}
 	}
 	
@@ -131,26 +134,21 @@ public class ReservaBean extends GenericBean<Reserva, ServiceReserva> implements
 			return;
 		}
 		
-		Integer disponivel = serviceApartamento.verificaDisponibilidade(
-								entidade.getApartamento().getIdApartamento(),
-								entidade.getDataEntrada(),
-								entidade.getDataSaida());
 		
-		if(disponivel == 1){
-			UtilMensagens.mensagemAtencao("Apartamento não está disponivel para esta Data!");
+		try {
+			serviceApartamento.verificaDisponibilidade(
+									entidade.getApartamento().getIdApartamento(),
+									entidade.getDataEntrada(),
+									entidade.getDataSaida());
+			
+		} catch (NegocioException e) {
+			UtilMensagens.mensagemAtencao(e.getMessage());
 			entidade.setDataEntrada(null);
 			entidade.setDataSaida(null);
 		}
+		
+		
 	}
-	
-	
-	public String onFlowProcess(FlowEvent event) {
-        
-        
-            return event.getNewStep();
-        
-    }
-	
 	
 	// =============================GET AND SET=====================================
 
@@ -178,7 +176,12 @@ public class ReservaBean extends GenericBean<Reserva, ServiceReserva> implements
 	
 	
 	public List<Apartamento> apartamentos(){
-		return serviceApartamento.buscarTodos();
+		try {
+			return serviceApartamento.buscarTodos();
+		} catch (PersistenciaException e) {
+			e.printStackTrace();
+			return new ArrayList<Apartamento>();
+		}
 	}
 	
 	

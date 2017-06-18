@@ -46,9 +46,10 @@ public class ServiceReserva implements GenericService<Reserva> {
 
 	
 	@Override
-	public void excluir(Reserva entidade) throws Exception {
+	public String excluir(Reserva entidade) throws Exception {
 		try {
-			reservaDao.delete(entidade);			
+			reservaDao.delete(entidade);	
+			return "Reserva Excluida com Sucesso!";
 		}		
 		catch (Exception ex) {
         	ex.printStackTrace();
@@ -101,5 +102,12 @@ public class ServiceReserva implements GenericService<Reserva> {
 	public void consisteAntesEditar(Reserva entidade) throws NegocioException {	}
 
 	
-
+	public Reserva buscarPorId(Integer id)throws Exception{
+		try {
+			return reservaDao.findById(id);
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		}
+	}
 }

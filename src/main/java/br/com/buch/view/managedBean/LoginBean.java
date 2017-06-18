@@ -40,7 +40,7 @@ public class LoginBean implements Serializable{
 	// ================Métodos do Usuário============================================
 	
 	public void efetuaLogin() {		
-		if(usuarioService.logar(this.login, this.senha)){
+		if(usuarioService.fazerLogin(this.login, this.senha)){
 			this.usuario.setNomeUsuario(login);
 			this.usuario = usuarioService.buscarPeloNome(this.usuario);
 			selecionandoHotel = true;

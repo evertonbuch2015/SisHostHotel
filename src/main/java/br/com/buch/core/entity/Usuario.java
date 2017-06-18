@@ -39,26 +39,24 @@ public class Usuario implements Serializable {
 	@Column(name = "COD_SISUSUARIO")
 	private Integer idUsusario;
 
+	
+	@NotEmpty(message = "O Usuário deve ser informado!")
+	@Column(name = "NOME_USUARIO", nullable = true, length = 20)
+	private String nomeUsuario;
+
+	@Column(name = "SENHA", nullable = true, length = 70)
+	private String senha;
+	
+	
 	@Column(name = "NOME_COLABORADOR", nullable = false, length = 40)
 	private String nomeColaborador;
-	
-	
+		
 	@Column(name="EMAIL" , nullable = false, length = 60)
 	private String email;	
 	
 	@Column(name="FRASE_SECRETA" , nullable = false, length = 60)
 	private String fraseSecreta;
-	
-	
-	@NotEmpty(message = "O Usu�rio deve ser informado!")
-	@Column(name = "NOME_USUARIO", nullable = true, length = 20)
-	private String nomeUsuario;
 
-	@Column(name = "PWD", nullable = true, length = 70)
-	private String senha;
-
-	
-	@NotEmpty(message = "O Grupo deve ser informado!")
 	@Column(name = "GRUPO_USUARIO", nullable = false, length = 20)
 	@Enumerated(EnumType.STRING)
 	private GrupoUsuario grupo;
@@ -67,8 +65,8 @@ public class Usuario implements Serializable {
 	@Column(name = "SETOR", length = 50)
 	private String setor;
 
-	@Column(name = "INATIVO")
-	private Character inativo;
+	@Column(name = "ATIVO")
+	private Character ativo;
 
 	@Column(name = "EM_FERIAS")
 	private Character emFerias;
@@ -141,37 +139,22 @@ public class Usuario implements Serializable {
 		this.setor = setor;
 	}
 
-
-	// Métodos Modificados
-	public Boolean getInativo() {
-		if (this.inativo == null)
-			return null;
-
-		return inativo.equals('S') ? true : false;
-	}
-
-	public void setInativo(Boolean value) {
-		if (value == null) {
-			this.inativo = null;
-		} else {
-			this.inativo = value == true ? 'S' : 'N';
-		}
-	}
-
 	
-	public Boolean getEmFerias() {
-		if (this.emFerias == null)
-			return null;
-
-		return emFerias.equals('S') ? true : false;
+	public Character getAtivo() {
+		return ativo;
+	}
+	
+	public void setAtivo(Character ativo) {
+		this.ativo = ativo;
+	}
+	
+	
+	public Character getEmFerias() {
+		return emFerias;
 	}
 
-	public void setEmFerias(Boolean value) {
-		if (value == null) {
-			this.emFerias = null;
-		} else {
-			this.emFerias = value == true ? 'S' : 'N';
-		}
+	public void setEmFerias(Character emFerias) {
+		this.emFerias = emFerias;
 	}
 
 	

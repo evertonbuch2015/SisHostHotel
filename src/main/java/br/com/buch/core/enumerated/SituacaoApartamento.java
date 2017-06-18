@@ -18,4 +18,11 @@ public enum SituacaoApartamento {
 	public String getLabel(){
 		return label;
 	}
+	
+	public static SituacaoApartamento getSituacaoApartamento(Integer ordinal){
+		for (SituacaoApartamento situacaoApartamento : SituacaoApartamento.values()) {
+			if(ordinal == situacaoApartamento.ordinal()){return situacaoApartamento;}
+		}
+		return null;
+	}
 }

@@ -48,9 +48,10 @@ public class ServiceApartamento implements GenericService<Apartamento> {
 
 	
 	@Override
-	public void excluir(Apartamento entidade)throws Exception {
+	public String excluir(Apartamento entidade)throws Exception {
 		try {
-			apartamentoDao.delete(entidade);			
+			apartamentoDao.delete(entidade);
+			return "";
 		}catch (Exception ex) {
         	ex.printStackTrace();
             throw new PersistenciaException("Ocorreu uma exceção ao Excluir o Apartamento!" + 
@@ -74,7 +75,7 @@ public class ServiceApartamento implements GenericService<Apartamento> {
 
 	
 	@Override
-	public List<Apartamento> buscarTodos() {
+	public List<Apartamento> buscarTodos()throws PersistenciaException {
 		try {
 			return apartamentoDao.findAll();
 		} catch (Exception e) {
@@ -116,6 +117,16 @@ public class ServiceApartamento implements GenericService<Apartamento> {
 	}
 
 	
+	public Apartamento buscarPorId(Integer id)throws Exception{
+		try {
+			return apartamentoDao.findById(id);
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		}
+	}
+	
+	
 	public List<Apartamento> buscarTodosLivres() {
 		try {
 			return apartamentoDao.find("Select a From Apartamento a where a.situacao = ?1", SituacaoApartamento.LIVRE);
@@ -132,10 +143,19 @@ public class ServiceApartamento implements GenericService<Apartamento> {
 	 * @param Id do Apartamento
 	 * @param Data Entrada
 	 * @param Data Saida
-	 * @return Retorna 1 para Reservado e 0 para Disponivel.
 	 * 
 	 */
-	public Integer verificaDisponibilidade(Integer id, Date dataEntrada, Date dataSaida){
-		return apartamentoDao.verificaDisponibilidade(id, dataEntrada, dataSaida);
+	public void verificaDisponibilidade(Integer id, Date dataEntrada, Date dataSaida)throws NegocioException{
+		
+		SituacaoApartamento situacaoApartamento = apartamentoDao.verificaDisponibilidade(id, dataEntrada, dataSaida);
+		
+		switch (situacaoApartamento) {
+		case OCUPADO:
+			throw new NegocioException("Apartamento não está disponivel para esta Data!");
+			
+		default:
+			break;
+		}
 	}
+	
 }

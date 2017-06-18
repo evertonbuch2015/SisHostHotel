@@ -48,7 +48,7 @@ public class ServiceAdiantamento implements GenericService<Adiantamento> {
 	
 
 	@Override
-	public void excluir(Adiantamento entidade) throws Exception{
+	public String excluir(Adiantamento entidade) throws Exception{
 		
 		if (entidade.getSaldo() == 0.00) {
 			throw new NegocioException("Adiantamento não pode ser excluido pois já foi utilizado!");
@@ -56,7 +56,7 @@ public class ServiceAdiantamento implements GenericService<Adiantamento> {
 		
 		try {
 			adiantamentoDao.delete(entidade);
-			
+			return "";
 		}catch (Exception ex) {
         	ex.printStackTrace();            
         	throw new PersistenciaException("Ocorreu uma exceção ao excluir o Adiantamento de Cliente!" + 
@@ -154,6 +154,16 @@ public class ServiceAdiantamento implements GenericService<Adiantamento> {
 		if(entidade.getSaldo() == 0.0){
 			throw new NegocioException("Adiantamento não pode ser Alterado pois não possui saldo disponivel!");
 		}		
+	}
+	
+	
+	public Adiantamento buscarPorId(Integer id)throws Exception{
+		try {
+			return adiantamentoDao.findById(id);
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		}
 	}
 
 }

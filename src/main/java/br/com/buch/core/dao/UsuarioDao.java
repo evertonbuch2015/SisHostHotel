@@ -19,7 +19,7 @@ public class UsuarioDao extends GenericDao<Usuario> implements Serializable {
 	}
 	
 	
-	public Usuario existe(String login, String senha) {
+	public Usuario findByUserNamePassword(String login, String senha) {
 		EntityManager em = getEntityManager();
 		
 		em.getTransaction().begin();

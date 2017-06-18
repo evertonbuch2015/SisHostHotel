@@ -11,7 +11,7 @@ public interface GenericService<T extends Serializable>{
 	
 	public String salvar(T entidate)throws Exception;
 		
-	public void excluir(T entidade)throws Exception;
+	public String excluir(T entidade)throws Exception;
 	
 	public T carregarEntidade(T entidade)throws PersistenciaException;
 	

@@ -11,7 +11,7 @@ public class JPAUtil {
 	private EntityManagerFactory emf = null;
 	
 	
-	public JPAUtil() {
+	private JPAUtil() {
         this.emf = Persistence.createEntityManagerFactory("SisHostHotel");
     }
 

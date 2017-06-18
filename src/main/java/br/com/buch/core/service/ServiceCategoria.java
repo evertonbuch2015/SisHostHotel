@@ -22,7 +22,6 @@ public class ServiceCategoria implements GenericService<Categoria> {
 	public String salvar(Categoria entidate)throws Exception {
 		
 		if(entidate.getIdCategoria() == null){
-			
 			try {
 				categoriaDao.save(entidate);
 				return "Categoria de Apartamento Cadastrada com Sucesso!";
@@ -46,9 +45,10 @@ public class ServiceCategoria implements GenericService<Categoria> {
 
 	
 	@Override
-	public void excluir(Categoria entidade) throws Exception{
+	public String excluir(Categoria entidade) throws Exception{
 		try {
 			categoriaDao.delete(entidade);
+			return "";
 		}catch (Exception ex) {
         	ex.printStackTrace();
         	throw new PersistenciaException("Ocorreu uma exceção ao Excluir a Categoria!" + 
@@ -73,7 +73,7 @@ public class ServiceCategoria implements GenericService<Categoria> {
 
 	
 	@Override
-	public List<Categoria> buscarTodos() {
+	public List<Categoria> buscarTodos()throws PersistenciaException {
 		try {
 			return categoriaDao.findAll();
 		} catch (Exception e) {
@@ -103,5 +103,15 @@ public class ServiceCategoria implements GenericService<Categoria> {
 	@Override
 	public void consisteAntesEditar(Categoria entidade) {
 
+	}
+	
+	
+	public Categoria buscarPorId(Integer id)throws Exception{
+		try {
+			return categoriaDao.findById(id);
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		}
 	}
 }

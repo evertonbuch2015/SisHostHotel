@@ -45,9 +45,10 @@ public class ServiceFormaPagamento implements GenericService<FormaPagamento> {
 
 	
 	@Override
-	public void excluir(FormaPagamento entidade) throws Exception{
+	public String excluir(FormaPagamento entidade) throws Exception{
 		try {
-			formaPagamentoDao.delete(entidade);						
+			formaPagamentoDao.delete(entidade);
+			return "";
 		}catch (Exception ex) {
         	ex.printStackTrace();
         	throw new PersistenciaException("Ocorreu uma exceção ao excluir a Forma de Pagamento!" + 

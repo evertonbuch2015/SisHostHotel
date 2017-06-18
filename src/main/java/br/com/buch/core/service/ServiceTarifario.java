@@ -52,9 +52,10 @@ public class ServiceTarifario implements GenericService<Tarifario> {
 
 
 	@Override
-	public void excluir(Tarifario entidade) throws Exception{
+	public String excluir(Tarifario entidade) throws Exception{
 		try {
-			tarifarioDao.delete(entidade);			
+			tarifarioDao.delete(entidade);
+			return "";
 		}catch (Exception ex) {
         	ex.printStackTrace();
         	throw new PersistenciaException("Ocorreu uma exceção ao Excluir o Tarifário!" + 
@@ -161,6 +162,15 @@ public class ServiceTarifario implements GenericService<Tarifario> {
 	
 	
 	public Tarifario buscarPelaCategoriaTipoTarifa(Integer categoria, Integer tipoTarifa, Date data )throws Exception{
-		return tarifarioDao.findByCategoriaTipoTarifa(categoria, tipoTarifa, data);
+		try {
+			return tarifarioDao.findByCategoriaTipoTarifa(categoria, tipoTarifa, data);
+		} catch (Exception e) {
+			if(e.toString().contains("NoResultException")){
+				throw new NegocioException("Não existe Tarifário cadastrado para esta Categoria e Tipo de Tarifa!");
+			}
+			else{
+				throw e;
+			}
+		}		
 	}
 }

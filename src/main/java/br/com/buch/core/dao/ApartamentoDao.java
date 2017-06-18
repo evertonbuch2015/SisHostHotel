@@ -5,6 +5,7 @@ import java.util.Date;
 import javax.persistence.Query;
 
 import br.com.buch.core.entity.Apartamento;
+import br.com.buch.core.enumerated.SituacaoApartamento;
 
 public class ApartamentoDao extends GenericDao<Apartamento> {
 
@@ -21,19 +22,16 @@ public class ApartamentoDao extends GenericDao<Apartamento> {
 	 * @return Retorna 1 para Reservado e 0 para Disponivel.
 	 * 
 	 */
-	public Integer verificaDisponibilidade(Integer id, Date dataEntrada,Date dataSaida){
+	public SituacaoApartamento verificaDisponibilidade(Integer id, Date dataEntrada,Date dataSaida){
         try{
             Query query2 = getEntityManager().createNativeQuery("select * from SP_DISPONIBILIDADE_AP(:id_apartamento, 0, :data_entrada, :data_saida)");
             query2.setParameter("id_apartamento", id);
             query2.setParameter("data_entrada",dataEntrada);
             query2.setParameter("data_saida", dataSaida);
-
-            
-            Integer i = (Integer) query2.getSingleResult();
-            return i;
+           
+            return SituacaoApartamento.getSituacaoApartamento((Integer) query2.getSingleResult());
         }catch(Exception ex){
-            
-            return 0;        
+            return null;
         }
     }
 }
