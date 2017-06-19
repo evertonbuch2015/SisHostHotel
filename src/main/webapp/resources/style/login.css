@@ -9,7 +9,8 @@ body {
 
 /* Pen Title */
 .pen-title {
-  padding: 40px 0;
+  margin-top:60px;
+  margin-bottom:30px;
   text-align: center;
   letter-spacing: 2px;
 }
@@ -19,17 +20,7 @@ body {
   font-size: 38px;
   font-weight: 300;
 }
-.pen-title span {
-  font-size: 12px;
-}
-.pen-title span .fa {
-  color: #33b5e5;
-}
-.pen-title span a {
-  color: #33b5e5;
-  font-weight: 600;
-  text-decoration: none;
-}
+
 
 /* Form Module */
 .form-module {

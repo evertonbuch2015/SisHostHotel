@@ -19,6 +19,7 @@ public class UsuarioDao extends GenericDao<Usuario> implements Serializable {
 	}
 	
 	
+
 	public Usuario findByUserNamePassword(String login, String senha) {
 		EntityManager em = getEntityManager();
 		
@@ -29,6 +30,32 @@ public class UsuarioDao extends GenericDao<Usuario> implements Serializable {
 
 		query.setParameter("pUsuario", login.toUpperCase());
 		query.setParameter("pSenha", Criptografia.criptografarSha256(senha));
+
+		Usuario retorno = null;
+		try {
+			retorno = (Usuario) query.getSingleResult();
+			em.getTransaction().commit();
+			
+		} catch (NoResultException ex) {
+			doRollback(em);
+		}finally {
+			em.close();
+		}
+
+		return retorno;
+	}
+	
+	
+	public Usuario findByUserEmailOrFraseSecreta(String email, String fraseSecreta) {
+		EntityManager em = getEntityManager();
+		
+		em.getTransaction().begin();
+		TypedQuery<Usuario> query = em.createQuery(
+						"select u from Usuario u where u.fraseSecreta = :pFraseSecreta or u.email = :pEmail",
+						Usuario.class);
+
+		query.setParameter("pFraseSecreta", fraseSecreta);
+		query.setParameter("pEmail", email);
 
 		Usuario retorno = null;
 		try {

@@ -23,11 +23,6 @@
 	<h:form prependId="false">
 		<div class="pen-title">
 			<h1>#{label.txt_nome_sistema}</h1>
-			<span>Pen
-				<i class='fa fa-paint-brush'/> +  
-				<i class='fa fa-code'/> by 
-				<a href='http://andytran.me'>Everton Buchkorn</a>
-			</span>
 		</div>
 	
 	
@@ -52,7 +47,8 @@
 				
 					
 				<p:selectOneMenu value="#{loginBean.hotel}"  id="hotel"
-					required="true" requiredMessage="Informe a Empresa!"
+					required="true" 
+					requiredMessage="Informe a Empresa!"
 					rendered="#{loginBean.selecionandoHotel}"
 					style="margin-bottom: 15px !important; width: 80%"  
 					autoWidth="false">
@@ -79,25 +75,36 @@
 				closable="true" resizable="true" position="center center"
 				showEffect="explode" hideEffect="explode">
 			
+				<p:messages autoUpdate="true" closable="true">
+					<p:effect type="pulsate" event="load" delay="500" />
+					<p:effect type="clip" event="load" delay="10000" />
+				</p:messages>
+				
 				<p:panelGrid columns="1" cellpadding="3" 
 					styleClass="ui-panelgrid-blank" style="width:100%;">
 																			
 					<p:outputLabel value="#{label.txt_informe_email}:" for="email"/> 
 					<p:inputText id="email" style="width:100%;"
-							value="#{loginBean.email}" placeholder="Ex: email@dominio.com.br"/>
+							value="#{loginBean.email}" 
+							placeholder="Ex: email@dominio.com.br"/>
 					
 					<p:outputLabel value="#{label.txt_informe_frase_secreta}:" for="frase"/>
 					<p:inputText id="frase" style="width:100%;"
 							value="#{loginBean.fraseSecreta}"/>	
 												
 													
-					<p:commandButton value="#{label.txt_confirmar}"						
+					<p:commandButton 
+						value="#{label.txt_confirmar}"						
 						style="margin-top:10px;height: 28px;padding:2px;"
-						onclick="PF('dialogEsqueciSenha').hide();" />	
+						onclick="PF('dialogEsqueciSenha').hide();" 
+						actionListener="#{loginBean.recuperarSenha()}"
+						process="@this email frase" update="email frase">
 						
+							
+					</p:commandButton>				
 				</p:panelGrid>	
 			</p:dialog>
-		
+			
 		</div>
 		
 		<p:messages autoUpdate="true" closable="true" style="max-width:350px;width: 100%;margin: 0 auto;">

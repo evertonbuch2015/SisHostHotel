@@ -3132,14 +3132,13 @@ hr.ui-widget-header {
   border-radius: 2px;
 }
 .ui-dialog .ui-dialog-titlebar {
-  padding: 10px 20px !important;
+  padding: 5px 15px !important;
   border-bottom: solid 1px #e0e0e0 !important;
   background-color: #ffffff;
   color: #546e7a;
-  font-size: 16px;
+  font-size: 15px;
   border-top-left-radius: 1px;
   border-top-right-radius: 1px;
-  font-family: 'latobold';
 }
 .ui-dialog .ui-dialog-title {
   margin: 5px 16px 5px 0px !important;

@@ -9,6 +9,8 @@ import br.com.buch.core.entity.Usuario;
 import br.com.buch.core.util.Criptografia;
 import br.com.buch.core.util.NegocioException;
 import br.com.buch.core.util.PersistenciaException;
+import br.com.buch.core.util.SendEmail;
+import br.com.buch.core.util.SendEmailException;
 import br.com.buch.core.util.UtilErros;
 import br.com.buch.view.managedBean.UsuarioBean.TipoFiltro;
 
@@ -17,9 +19,6 @@ public class ServiceUsuario implements GenericService<Usuario> {
 	private static final String BUSCAR_PELO_NOME = "select u from Usuario u where u.nomeUsuario = ?1";
 	private static final String BUSCAR_SETORES = "Select distinct u.setor From Usuario u";
 	private static final String CARREGAR_USUARIO = "Select u From Usuario u left JOIN FETCH u.hoteis where u.idUsusario = ?1";
-	
-	
-	
 	
 	
 	private UsuarioDao usuarioDao;
@@ -158,8 +157,37 @@ public class ServiceUsuario implements GenericService<Usuario> {
 	}
 	
 	
-	public void recuperarSenha(String email, String fraseSecreta){
+	public void recuperarSenha(String email, String fraseSecreta)throws NegocioException{
+		Usuario usuario = usuarioDao.findByUserEmailOrFraseSecreta(email, fraseSecreta);
 		
+		if(usuario == null){
+			throw new NegocioException("Nenhum Usuário que corresponda às suas informações foi encontrado!");
+		}
+		
+		
+		try {
+			usuario.setSenha("123");
+			salvar(usuario);
+			
+			
+			SendEmail sendEmail = new SendEmail("smtp.gmail.com", true, "everton.buch@gmail.com", "ev019966");
+			sendEmail.setAssunto("Recuperacão de Senha");
+			sendEmail.setDestinatarios(email);
+			sendEmail.setRemetente("everton.buch@gmail.com");
+			
+			StringBuilder builder = new StringBuilder();
+			builder.append("Atenção, não responder este e-mail.<br/>");
+			builder.append("Recebemos uma solicitação sua de recuperação de senha.<br/>");
+			builder.append("Portanto estamos lhe enviando uma nova senha para acesso ao sistema.<br/>");
+			builder.append("Nova Senha: 000<br/>");
+			
+			sendEmail.enviaEmailHtml(builder);
+			
+		} catch (SendEmailException e) {
+			e.printStackTrace();
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	

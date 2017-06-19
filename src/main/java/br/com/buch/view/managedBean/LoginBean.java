@@ -10,6 +10,7 @@ import br.com.buch.core.entity.Hotel;
 import br.com.buch.core.entity.Usuario;
 import br.com.buch.core.service.ServiceHotel;
 import br.com.buch.core.service.ServiceUsuario;
+import br.com.buch.core.util.NegocioException;
 import br.com.buch.view.util.SessionContext;
 import br.com.buch.view.util.UtilMensagens;
 
@@ -70,6 +71,23 @@ public class LoginBean implements Serializable{
 			return "editarUsuario?faces-redirect=true&usuarioId=" + usuarioLogado.getIdUsusario();
 		}
 		return "#";
+	}
+	
+	
+	public void recuperarSenha(){
+		
+		try {
+			usuarioService.recuperarSenha(email, fraseSecreta);
+			UtilMensagens.mensagemInformacao("Enviamos um email de redefinição de senha para a conta: " + email);
+			
+		} 
+		catch (NegocioException e) {			
+			UtilMensagens.mensagemAtencao(e.getMessage());			
+		}
+		finally {
+			email = "";
+			senha = "";
+		}
 	}
 	
 	
