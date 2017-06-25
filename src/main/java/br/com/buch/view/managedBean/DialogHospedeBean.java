@@ -1,5 +1,6 @@
 package br.com.buch.view.managedBean;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -17,7 +18,9 @@ import br.com.buch.view.util.UtilMensagens;
 
 @ManagedBean
 @ViewScoped
-public class DialogHospedeBean {
+public class DialogHospedeBean implements Serializable{
+	
+	private static final long serialVersionUID = -754880717006615790L;
 	
 	private TipoFiltroHospede tipoFiltro;
 	private String valorFiltro;

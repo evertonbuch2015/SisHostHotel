@@ -1,5 +1,6 @@
 package br.com.buch.view.managedBean;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -15,8 +16,10 @@ import br.com.buch.view.util.UtilMensagens;
 
 @ManagedBean
 @ViewScoped
-public class DialogApartamentoBean {
+public class DialogApartamentoBean implements Serializable{
 		
+	private static final long serialVersionUID = -3871976865283686929L;
+	
 	private List<Apartamento> apartamentos;
 	private ServiceApartamento serviceApartamento;
 	

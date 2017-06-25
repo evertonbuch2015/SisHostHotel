@@ -147,7 +147,23 @@ public class ReservaBean extends GenericBean<Reserva, ServiceReserva> implements
 			entidade.setDataSaida(null);
 		}
 		
-		
+	}
+	
+	
+	public void cancelarReserva(Reserva reserva){
+		try {
+			service.cancelarReserva(reserva);
+			refresh();
+			mudarBuscar();
+			
+			UtilMensagens.mensagemInformacao("Cancelamento de Reserva Realizado com Sucesso!");
+		}
+		catch (NegocioException e) {
+			UtilMensagens.mensagemAtencao(e.getMessage());
+		}
+		catch (Exception e) {
+			UtilMensagens.mensagemErro(e.getMessage());
+		}
 	}
 	
 	// =============================GET AND SET=====================================

@@ -165,7 +165,7 @@ public abstract class GenericBean<E extends Serializable,T extends GenericServic
 		}
 	}
 	
-	
+		
 	public void editar(E entidade){					
 		try {
 			service.consisteAntesEditar(entidade);

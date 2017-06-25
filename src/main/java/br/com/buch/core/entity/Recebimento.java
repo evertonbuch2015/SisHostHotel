@@ -20,6 +20,8 @@ import javax.persistence.Temporal;
 @Table(name="RECEBIMENTO")
 public class Recebimento implements Serializable {
 	
+	private static final long serialVersionUID = 2394833593975015801L;
+
 	public enum OrigemRecebimento{
 		ADIANTAMENTO("Adiantamento"),
 		HOSPEDAGEM("Hospedagem"),

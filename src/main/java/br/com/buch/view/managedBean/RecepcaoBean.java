@@ -1,5 +1,6 @@
 package br.com.buch.view.managedBean;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,9 +15,15 @@ import br.com.buch.core.util.PersistenciaException;
 
 @ManagedBean
 @ViewScoped
-public class RecepcaoBean {
+public class RecepcaoBean implements Serializable{
 
+	private static final long serialVersionUID = -3069042223172297429L;
 	private List<Apartamento> apartamentos;
+	
+	
+	public RecepcaoBean() {	
+	}
+	
 	
 	@PostConstruct
     public void init() {

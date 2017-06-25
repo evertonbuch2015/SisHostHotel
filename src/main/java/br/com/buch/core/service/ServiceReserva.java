@@ -6,6 +6,7 @@ import java.util.List;
 
 import br.com.buch.core.dao.ReservaDao;
 import br.com.buch.core.entity.Reserva;
+import br.com.buch.core.enumerated.SituacaoHospedagem;
 import br.com.buch.core.util.NegocioException;
 import br.com.buch.core.util.PersistenciaException;
 import br.com.buch.core.util.UtilErros;
@@ -47,6 +48,14 @@ public class ServiceReserva implements GenericService<Reserva> {
 	
 	@Override
 	public String excluir(Reserva entidade) throws Exception {
+		if(entidade.getSituacao() == SituacaoHospedagem.CANCELADA){
+			throw new NegocioException("Reserva já está Cancelada no Sistema, não pode ser Excluida!");
+		}
+		
+		if(entidade.getSituacao() == SituacaoHospedagem.CONFIRMADA){
+			throw new NegocioException("Reserva já está Confirmada no Sistema, não pode ser Excluida.Você deve Cancelar a mesma.");
+		}
+		
 		try {
 			reservaDao.delete(entidade);	
 			return "Reserva Excluida com Sucesso!";
@@ -99,7 +108,11 @@ public class ServiceReserva implements GenericService<Reserva> {
 
 	
 	@Override
-	public void consisteAntesEditar(Reserva entidade) throws NegocioException {	}
+	public void consisteAntesEditar(Reserva entidade) throws NegocioException {		
+		if(entidade.getSituacao() == SituacaoHospedagem.CANCELADA ){
+			throw new NegocioException("Reserva já está Cancelada no Sistema, não pode ser Alterada!");
+		}
+	}
 
 	
 	public Reserva buscarPorId(Integer id)throws Exception{
@@ -109,5 +122,19 @@ public class ServiceReserva implements GenericService<Reserva> {
 			e.printStackTrace();
 			throw e;
 		}
+	}
+
+
+	
+	
+	public void cancelarReserva(Reserva reserva) throws Exception{
+		
+		if(reserva.getSituacao() == SituacaoHospedagem.CANCELADA ){
+			throw new NegocioException("Reserva já esta Cancelada no Sistema!");
+		}
+				
+		reserva.setSituacao(SituacaoHospedagem.CANCELADA);
+		
+		reservaDao.update(reserva);
 	}
 }

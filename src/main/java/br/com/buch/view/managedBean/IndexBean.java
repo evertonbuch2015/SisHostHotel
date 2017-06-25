@@ -6,6 +6,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
@@ -35,7 +36,12 @@ public class IndexBean implements Serializable {
 	}
 
 	
-	public IndexBean() {
+	public IndexBean() {		
+	}
+	
+	@PostConstruct
+	public void init(){
+		
 		serviceIndex = new ServiceIndex();
 		createPieModel();
 	}

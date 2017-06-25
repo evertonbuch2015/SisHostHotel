@@ -1,5 +1,6 @@
 package br.com.buch.view.managedBean;
 
+import java.io.Serializable;
 import java.util.List;
 
 import javax.faces.bean.ManagedBean;
@@ -12,7 +13,9 @@ import br.com.buch.view.util.UtilMensagens;
 
 @ManagedBean
 @SessionScoped
-public class FormaPagamentoBean extends GenericBean<FormaPagamento, ServiceFormaPagamento> {
+public class FormaPagamentoBean extends GenericBean<FormaPagamento, ServiceFormaPagamento> implements Serializable{
+
+	private static final long serialVersionUID = 8656047049480224440L;
 
 	public enum TipoFiltro{
 		NOME("Nome"),

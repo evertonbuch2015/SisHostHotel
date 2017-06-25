@@ -1,5 +1,6 @@
 package br.com.buch.view.managedBean;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
@@ -16,9 +17,10 @@ import br.com.buch.view.util.UtilMensagens;
 
 @ManagedBean
 @SessionScoped
-public class HospedeBean extends GenericBean<Hospede, ServiceHospede> {
+public class HospedeBean extends GenericBean<Hospede, ServiceHospede> implements Serializable{
 	
-		
+	private static final long serialVersionUID = -6802914921786106522L;
+	
 	private TipoFiltroHospede filtro;	
 	private Integer idHospede;
 	

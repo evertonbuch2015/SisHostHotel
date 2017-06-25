@@ -6,8 +6,6 @@ import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -16,8 +14,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
-
-import br.com.buch.core.enumerated.TipoLancamento;
 
 
 /**
@@ -37,8 +33,7 @@ public class HospedagemLancamento implements Serializable {
     @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="G_HOSPEDAGEM_LANCAMENTO")
     @Column(name = "COD_HOSPEDAGEM_LANCAMENTO")
     private Integer idHospedagemLancamento;
-	
-	
+		
 	
 	@Column(name="DESCRICAO", length = 150)
 	private String descricao;
@@ -49,7 +44,7 @@ public class HospedagemLancamento implements Serializable {
 	
 	
 	@Column(name="VL_UNITARIO")
-	private BigDecimal vlUnitario;
+	private Double vlUnitario;
 	
 	
 	@Column(name = "VL_TOTAL", insertable=false, updatable=false)
@@ -60,21 +55,28 @@ public class HospedagemLancamento implements Serializable {
     @Temporal(javax.persistence.TemporalType.TIMESTAMP)
     private Date dataCadastro;
 	
-	
-	@Column(name="TIPO_LANCAMENTO", length=20)
-	@Enumerated(EnumType.STRING)
-	private TipoLancamento tipoLancamento;
-	
-		
+
 	@ManyToOne
     @JoinColumn(name ="COD_HOSPEDAGEM")
     private Hospedagem hospedagem;
 
 
-
+	public HospedagemLancamento() {
+	
+	}
+	
+	
+	public HospedagemLancamento(String descricao, Integer quantidade, Double vlUnitario) {
+		super();
+		this.descricao = descricao;
+		this.quantidade = quantidade;
+		this.vlUnitario = vlUnitario;
+	}
+	
+	
     //--------------------------------	GETs and SETs------------------------------//
-	
-	
+
+
 	public Integer getIdHospedagemLancamento() {
 		return idHospedagemLancamento;
 	}
@@ -102,11 +104,11 @@ public class HospedagemLancamento implements Serializable {
 	}
 
 
-	public BigDecimal getVlUnitario() {
+	public Double getVlUnitario() {
 		return vlUnitario;
 	}
 
-	public void setVlUnitario(BigDecimal vlUnitario) {
+	public void setVlUnitario(Double vlUnitario) {
 		this.vlUnitario = vlUnitario;
 	}
 
@@ -126,15 +128,6 @@ public class HospedagemLancamento implements Serializable {
 
 	public void setDataCadastro(Date dataCadastro) {
 		this.dataCadastro = dataCadastro;
-	}
-
-
-	public TipoLancamento getTipoLancamento() {
-		return tipoLancamento;
-	}
-
-	public void setTipoLancamento(TipoLancamento tipoLancamento) {
-		this.tipoLancamento = tipoLancamento;
 	}
 
 

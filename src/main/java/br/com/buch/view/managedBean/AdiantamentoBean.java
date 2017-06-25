@@ -1,5 +1,6 @@
 package br.com.buch.view.managedBean;
 
+import java.io.Serializable;
 import java.util.List;
 
 import javax.faces.bean.ManagedBean;
@@ -18,9 +19,10 @@ import br.com.buch.view.util.UtilMensagens;
 
 @ManagedBean
 @SessionScoped
-public class AdiantamentoBean extends GenericBean<Adiantamento, ServiceAdiantamento> {
+public class AdiantamentoBean extends GenericBean<Adiantamento, ServiceAdiantamento> implements Serializable{
 
-	
+	private static final long serialVersionUID = -8165871784161603162L;
+
 	private TipoFiltroAdiantamento filtro;	
 	
 	

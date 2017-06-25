@@ -1,5 +1,7 @@
 package br.com.buch.view.managedBean;
 
+import java.io.Serializable;
+
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 
@@ -9,9 +11,10 @@ import br.com.buch.core.service.ServiceCaixaBanco;
 
 @ManagedBean
 @SessionScoped
-public class CaixaBancoBean extends GenericBean<CaixaBanco, ServiceCaixaBanco> {
+public class CaixaBancoBean extends GenericBean<CaixaBanco, ServiceCaixaBanco> implements Serializable{
 
-	
+	private static final long serialVersionUID = 4996140944326181060L;
+
 	private TipoFiltroCaixaBanco filtro;
 	
 	public CaixaBancoBean() {

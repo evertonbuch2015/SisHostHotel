@@ -1,5 +1,6 @@
 package br.com.buch.view.managedBean;
 
+import java.io.Serializable;
 import java.util.List;
 
 import javax.faces.bean.ManagedBean;
@@ -15,9 +16,10 @@ import br.com.buch.view.util.UtilMensagens;
 
 @ManagedBean
 @SessionScoped
-public class ApartamentoBean extends GenericBean<Apartamento, ServiceApartamento> {
+public class ApartamentoBean extends GenericBean<Apartamento, ServiceApartamento> implements Serializable{
 
-	
+	private static final long serialVersionUID = 6409242364742848848L;
+
 	public enum TipoFiltro{
 		CODIGO("Código"), 
 		SITUACAO("Situação"),

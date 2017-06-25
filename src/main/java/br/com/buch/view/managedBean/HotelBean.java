@@ -1,5 +1,6 @@
 package br.com.buch.view.managedBean;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
@@ -14,8 +15,10 @@ import br.com.buch.view.util.UtilMensagens;
 
 @ManagedBean
 @SessionScoped
-public class HotelBean extends GenericBean<Hotel, ServiceHotel> {
+public class HotelBean extends GenericBean<Hotel, ServiceHotel> implements Serializable{
 	
+	private static final long serialVersionUID = -7531048359021089980L;
+
 	public enum TipoFiltro{
 		CODIGO("Código"), NOME("Nome");
 		

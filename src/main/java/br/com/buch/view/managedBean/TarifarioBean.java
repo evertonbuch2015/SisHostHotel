@@ -1,5 +1,6 @@
 package br.com.buch.view.managedBean;
 
+import java.io.Serializable;
 import java.util.List;
 
 import javax.faces.bean.ManagedBean;
@@ -16,9 +17,11 @@ import br.com.buch.view.util.UtilMensagens;
 
 @ManagedBean
 @SessionScoped
-public class TarifarioBean extends GenericBean<Tarifario, ServiceTarifario> {
+public class TarifarioBean extends GenericBean<Tarifario, ServiceTarifario> implements Serializable{
 
-	
+	private static final long serialVersionUID = 7612562993588960200L;
+
+
 	public enum TipoFiltro{
 		CATEGORIA("Categoria"),
 		TIPO_TARIFA("Tipo de Tarifa"),

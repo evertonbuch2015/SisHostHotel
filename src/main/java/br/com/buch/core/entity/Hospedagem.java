@@ -2,7 +2,8 @@ package br.com.buch.core.entity;
 
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -44,12 +45,12 @@ public class Hospedagem implements Serializable {
 	
 	@Column(name = "DATA_ENTRADA")
     @Temporal(javax.persistence.TemporalType.DATE)
-    private Calendar dataEntrada;
+    private Date dataEntrada;
     
 	
     @Column(name = "DATA_SAIDA")
     @Temporal(javax.persistence.TemporalType.DATE)
-    private Calendar dataSaida;
+    private Date dataSaida;
     
     
     @Column(name="DIARIAS", insertable=false, updatable=false)
@@ -59,6 +60,24 @@ public class Hospedagem implements Serializable {
     @Column(name = "SITUACAO" , length = 20)
     @Enumerated(EnumType.STRING)
     private SituacaoHospedagem situacao;
+    
+    
+    
+    @Column(name = "VALOR_DIARIA")
+    private Double valorDiaria;
+       
+    @Column(name = "VALOR_DESCONTO")
+    private Double valorDesconto;
+        
+    @Column(name = "VALOR_TAXA_TURISMO")
+    private Double valorTaxaTurismo;
+        
+    @Column(name = "VALOR_TAXA_SERVICO")
+    private Double valorTaxaServico;
+        
+    @Transient
+    private Double valorTotal;
+            
     
     
     @Column(name = "OBS" , length = 255)
@@ -123,20 +142,20 @@ public class Hospedagem implements Serializable {
 	}
 
 
-	public Calendar getDataEntrada() {
+	public Date getDataEntrada() {
 		return dataEntrada;
 	}
 
-	public void setDataEntrada(Calendar dataEntrada) {
+	public void setDataEntrada(Date dataEntrada) {
 		this.dataEntrada = dataEntrada;
 	}
 
 
-	public Calendar getDataSaida() {
+	public Date getDataSaida() {
 		return dataSaida;
 	}
 
-	public void setDataSaida(Calendar dataSaida) {
+	public void setDataSaida(Date dataSaida) {
 		this.dataSaida = dataSaida;
 	}
 
@@ -157,6 +176,64 @@ public class Hospedagem implements Serializable {
 	public void setSituacao(SituacaoHospedagem situacao) {
 		this.situacao = situacao;
 	}
+	
+	
+	
+
+	public Double getValorDiaria() {
+		return valorDiaria;
+	}
+
+	public void setValorDiaria(Double valorDiaria) {
+		this.valorDiaria = valorDiaria;
+	}
+
+
+	public Double getValorDesconto() {
+		return valorDesconto;
+	}
+
+	public void setValorDesconto(Double valorDesconto) {
+		this.valorDesconto = valorDesconto;
+	}
+
+
+	public Double getValorTaxaTurismo() {
+		return valorTaxaTurismo;
+	}
+
+	public void setValorTaxaTurismo(Double valorTaxaTurismo) {
+		this.valorTaxaTurismo = valorTaxaTurismo;
+	}
+
+
+	public Double getValorTaxaServico() {
+		return valorTaxaServico;
+	}
+
+	public void setValorTaxaServico(Double valorTaxaServico) {
+		this.valorTaxaServico = valorTaxaServico;
+	}
+
+
+	public Double getValorTotal() {
+		Double valor = 0.0;
+		
+		valor += (this.valorDiaria != null) ? valorDiaria * getDiarias() : 0.0;		
+		valor += (this.valorTaxaServico != null) ? valorTaxaServico : 0.0;
+		valor += (this.valorTaxaTurismo != null) ? valorTaxaTurismo : 0.0;
+		
+		valor -= (this.valorDesconto != null) ? valorDesconto : 0.0;
+		
+		this.valorTotal = valor;
+		
+		return valorTotal;
+	}
+
+	public void setValorTotal(Double valorTotal) {
+		this.valorTotal = valorTotal;
+	}
+	
 	
 	
 	public String getObs() {
@@ -232,6 +309,9 @@ public class Hospedagem implements Serializable {
 
 
 	public List<HospedagemLancamento> getLancamentos() {
+		if(this.lancamentos == null){
+			this.lancamentos = new ArrayList<HospedagemLancamento>();
+		}	
 		return lancamentos;
 	}
 
@@ -239,17 +319,16 @@ public class Hospedagem implements Serializable {
 		this.lancamentos = lancamentos;
 	}
 
-	
-	
+		
 	
 	@Transient
-    public String getData_EntradaFormatada(){
+    public String getDataEntradaFormatada(){
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
         return sdf.format(this.dataEntrada.getTime());                
     }
     
     @Transient
-    public String getData_SaidaFormatada(){
+    public String getDataSaidaFormatada(){
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
         return sdf.format(this.dataSaida.getTime());                
     }
@@ -257,6 +336,13 @@ public class Hospedagem implements Serializable {
     
 	//--------------------------------	Métodos Auxiliares------------------------------//	
 
+    
+    public void addLancamento(HospedagemLancamento lancamento){
+    	lancamento.setHospedagem(this);
+    	getLancamentos().add(lancamento);    	
+    }
+    
+    
 	@Override
 	public int hashCode() {
 		final int prime = 31;

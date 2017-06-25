@@ -1,5 +1,6 @@
 package br.com.buch.view.managedBean;
 
+import java.io.Serializable;
 import java.util.List;
 
 import javax.faces.application.FacesMessage;
@@ -18,7 +19,9 @@ import br.com.buch.view.util.UtilMensagens;
 
 @ManagedBean
 @SessionScoped
-public class UsuarioBean extends GenericBean<Usuario, ServiceUsuario> {
+public class UsuarioBean extends GenericBean<Usuario, ServiceUsuario> implements Serializable{
+
+	private static final long serialVersionUID = 7007370320624874450L;
 
 	public enum TipoFiltro{
 		CODIGO("Código"), 
