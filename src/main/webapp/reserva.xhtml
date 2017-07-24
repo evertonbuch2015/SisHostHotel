@@ -39,8 +39,11 @@
 					value="#{reservaBean.entidades}" var="entidade" 
 					selection="#{reservaBean.entidade}" selectionMode="single"
 					rowKey="#{entidade.idReserva}" reflow="true"									
-					widgetVar="carsTable" emptyMessage="#{label.msg_tabela_vazia}"
-					style="margin: 0px -11px;">				
+					emptyMessage="#{label.msg_tabela_vazia}"
+					style="margin: 0px -11px;"
+					rows="13"
+    				paginator="true" paginatorAlwaysVisible="false"
+    				paginatorPosition="bottom">				
 					
 
 					<p:ajax event="rowDblselect" listener="#{reservaBean.onRowDblClckSelect}"
@@ -49,31 +52,36 @@
 					<p:ajax event="rowSelect" listener="#{reservaBean.onRowSelect}" />
 
 
-					<p:column headerText="#{label.txt_codigo}" width="60">
+					<p:column headerText="#{label.txt_codigo}" width="60" sortBy="#{entidade.codigo}">
 						<h:outputText value="#{entidade.codigo}" />
 					</p:column>
 					
 					
-					<p:column headerText="#{label.txt_hospede}" width="110">
+					<p:column headerText="#{label.txt_hospede}" width="110" sortBy="#{entidade.hospede.nome}">
 						<h:outputText value="#{entidade.hospede.nome}" />
 					</p:column>
 					
 					
-					<p:column headerText="#{label.txt_apartamento}" width="110">
+					<p:column headerText="#{label.txt_apartamento}" width="110" 
+						sortBy="#{entidade.apartamento.numero}">
 						<h:outputText value="#{entidade.apartamento.numero}" />
 					</p:column>
 					
 					
-					<p:column headerText="#{label.txt_situacao}" width="80" priority="3">
+					<p:column headerText="#{label.txt_situacao}" width="80"
+						sortBy="#{entidade.situacao.label}" priority="3">
 						<h:outputText value="#{entidade.situacao.label}" />
 					</p:column>
 					
 					
-					<p:column headerText="#{label.txt_data_entrada}" width="70" priority="4">
+					<p:column headerText="#{label.txt_data_entrada}" width="70" 
+						sortBy="#{entidade.dataEntrada}" priority="4">
+						
 						<h:outputText value="#{entidade.dataEntradaFormatada}" />
 					</p:column>
 					
-					<p:column headerText="#{label.txt_data_saida}" width="70" priority="5">
+					<p:column headerText="#{label.txt_data_saida}" width="70" 
+						sortBy="#{entidade.dataSaida}" priority="5">
 						<h:outputText value="#{entidade.dataSaidaFormatada}" />
 					</p:column>					
 					

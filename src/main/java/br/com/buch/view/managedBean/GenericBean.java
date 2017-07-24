@@ -188,6 +188,21 @@ public abstract class GenericBean<E extends Serializable,T extends GenericServic
 		mudarBuscar();
 	}
 	
+	
+	public void visualizar(){
+		try {			
+			if(this.entidade != null){
+				this.entidade = carregaEntidade(entidade);
+				mudarVisualizar();
+			}else{
+				UtilMensagens.mensagemInformacao("Selecione um registro da lista!");
+			}
+			
+		} catch (Exception e) {
+			UtilMensagens.mensagemErro(e.getMessage());
+		}		
+	}
+	
 			
 	public void onRowSelect(SelectEvent event) {		
 		//this.entidade = (E) event.getObject();
@@ -195,16 +210,7 @@ public abstract class GenericBean<E extends Serializable,T extends GenericServic
 	
 	
 	public void onRowDblClckSelect(final SelectEvent event) {
-		try {
-			this.entidade = carregaEntidade(entidade);
-			
-			if(this.entidade != null){
-				mudarVisualizar();
-			}
-			
-		} catch (Exception e) {
-			UtilMensagens.mensagemErro(e.getMessage());
-		}		
+		visualizar();	
 	}
 	
 

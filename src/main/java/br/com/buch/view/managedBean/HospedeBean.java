@@ -5,7 +5,7 @@ import java.util.Date;
 import java.util.List;
 
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.SessionScoped;
+import javax.faces.bean.ViewScoped;
 
 import br.com.buch.core.entity.Endereco;
 import br.com.buch.core.entity.Hospede;
@@ -16,7 +16,7 @@ import br.com.buch.view.util.UtilMensagens;
 
 
 @ManagedBean
-@SessionScoped
+@ViewScoped
 public class HospedeBean extends GenericBean<Hospede, ServiceHospede> implements Serializable{
 	
 	private static final long serialVersionUID = -6802914921786106522L;
@@ -51,11 +51,13 @@ public class HospedeBean extends GenericBean<Hospede, ServiceHospede> implements
 
 
 	public void consultaCepWebService(){
-		Endereco endereco = service.consultaCepWebService(entidade.getEndereco().getCep());
-		
-		if(endereco != null){
-			this.entidade.setEndereco(endereco);
-		}
+		if (!isVisualizando()) {
+			Endereco endereco = service.consultaCepWebService(entidade.getEndereco().getCep());
+			
+			if(endereco != null){
+				this.entidade.setEndereco(endereco);
+			}
+		}		
 	}
 	// =============================GET AND SET=====================================
 

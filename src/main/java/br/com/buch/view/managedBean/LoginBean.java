@@ -8,8 +8,8 @@ import javax.faces.bean.ViewScoped;
 
 import br.com.buch.core.entity.Hotel;
 import br.com.buch.core.entity.Usuario;
-import br.com.buch.core.service.ServiceHotel;
 import br.com.buch.core.service.ServiceUsuario;
+import br.com.buch.core.util.Constantes;
 import br.com.buch.core.util.NegocioException;
 import br.com.buch.view.util.SessionContext;
 import br.com.buch.view.util.UtilMensagens;
@@ -46,6 +46,9 @@ public class LoginBean implements Serializable{
 			this.usuario = usuarioService.buscarPeloNome(this.usuario);
 			selecionandoHotel = true;
 			
+			 Constantes.getInstance().addUsuarioLogado(usuario);
+			 SessionContext.getInstance().setAttribute("usuarioLogado", usuario);
+			 
 			UtilMensagens.mensagemInformacao("Selecione um Hotel");
 		}else{
 			this.usuario = new Usuario();
@@ -55,24 +58,12 @@ public class LoginBean implements Serializable{
 	}
 	
 
-	public String prosseguir(){
-		SessionContext.getInstance().setAttribute("usuarioLogado", this.usuario);
-		SessionContext.getInstance().setAttribute("hotel", this.hotel);
+	public String prosseguir(){		
+		SessionContext.getInstance().setAttribute("hotel", hotel);
 		
 		return "index?faces-redirect=true";
 	}
-		
-	
-	public String abrirUsuario(){
-		
-		Usuario usuarioLogado = SessionContext.getInstance().getUsuarioLogado();
-		
-		if(usuarioLogado != null) {
-			return "editarUsuario?faces-redirect=true&usuarioId=" + usuarioLogado.getIdUsusario();
-		}
-		return "#";
-	}
-	
+
 	
 	public void recuperarSenha(){
 		
@@ -117,7 +108,7 @@ public class LoginBean implements Serializable{
 	
 	
 	public List<Hotel> getHoteis(){
-		return new ServiceHotel().buscarTodos();
+		return usuario.getHoteis();
 	}
 	
 

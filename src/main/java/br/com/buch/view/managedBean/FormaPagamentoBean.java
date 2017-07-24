@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.List;
 
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.SessionScoped;
+import javax.faces.bean.ViewScoped;
 
 import br.com.buch.core.entity.FormaPagamento;
 import br.com.buch.core.service.ServiceFormaPagamento;
@@ -12,7 +12,7 @@ import br.com.buch.view.util.UtilMensagens;
 
 
 @ManagedBean
-@SessionScoped
+@ViewScoped
 public class FormaPagamentoBean extends GenericBean<FormaPagamento, ServiceFormaPagamento> implements Serializable{
 
 	private static final long serialVersionUID = 8656047049480224440L;

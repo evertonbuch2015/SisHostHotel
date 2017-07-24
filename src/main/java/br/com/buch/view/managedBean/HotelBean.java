@@ -5,7 +5,7 @@ import java.util.Date;
 import java.util.List;
 
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.SessionScoped;
+import javax.faces.bean.ViewScoped;
 
 import br.com.buch.core.entity.Hotel;
 import br.com.buch.core.enumerated.Estados;
@@ -14,7 +14,7 @@ import br.com.buch.core.service.ServiceHotel;
 import br.com.buch.view.util.UtilMensagens;
 
 @ManagedBean
-@SessionScoped
+@ViewScoped
 public class HotelBean extends GenericBean<Hotel, ServiceHotel> implements Serializable{
 	
 	private static final long serialVersionUID = -7531048359021089980L;

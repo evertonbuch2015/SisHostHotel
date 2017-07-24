@@ -20,7 +20,7 @@
 		<p:breadCrumb>
 			<p:menuitem value="Home" url="/index.xhtml" />
 			<p:menuitem value="#{label.menu_cadastro}"/>
-    		<p:menuitem value="#{label.txt_tipos_tarifa}" url="#" />
+    		<p:menuitem value="#{label.txt_tipo_tarifa}" url="#" />
 		</p:breadCrumb>
 		
 		<p:messages autoUpdate="true" closable="true">
@@ -35,8 +35,11 @@
 					value="#{tipoTarifaBean.entidades}" var="entidade" 
 					selection="#{tipoTarifaBean.entidade}" selectionMode="single"
 					rowKey="#{entidade.idTipoTarifa}" reflow="true"									
-					widgetVar="carsTable" emptyMessage="#{label.msg_tabela_vazia}"
-					style="margin: 0px -11px;">				
+					emptyMessage="#{label.msg_tabela_vazia}"
+					style="margin: 0px -11px;"
+					rows="13"
+    				paginator="true" paginatorAlwaysVisible="false" 
+    				paginatorPosition="bottom">				
 					
 
 					<p:ajax event="rowDblselect" listener="#{tipoTarifaBean.onRowDblClckSelect}"
@@ -45,19 +48,21 @@
 					<p:ajax event="rowSelect" listener="#{tipoTarifaBean.onRowSelect}" />
 
 
-					<p:column headerText="#{label.txt_codigo}" width="160">
+					<p:column headerText="#{label.txt_codigo}" width="160" sortBy="#{entidade.idTipoTarifa}">
 						<h:outputText value="#{entidade.idTipoTarifa}" />
 					</p:column>
 					
 					
-					<p:column headerText="#{label.txt_nome}" >
+					<p:column headerText="#{label.txt_nome}" sortBy="#{entidade.nome}">
 						<h:outputText value="#{entidade.nome}" />
 					</p:column>
+					
 					
 					<p:column headerText="#{label.txt_tarifa_manual}" width="160" >
 						<h:selectBooleanCheckbox value="#{entidade.tarifaManual}" 
 							disabled="true"/>
 					</p:column>					
+					
 					
 					<p:column headerText="#{label.txt_acoes}" exportable="false" width="110">						
 						<p:commandButton actionListener="#{tipoTarifaBean.editar(entidade)}" 

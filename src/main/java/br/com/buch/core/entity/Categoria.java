@@ -33,31 +33,16 @@ public class Categoria implements Serializable{
     
     //-------------------------------	GETs and SETs------------------------------//
     
-    public Integer getIdCategoria() {
-		return idCategoria;
-	}
-    
-    public void setIdCategoria(Integer idCategoria) {
-		this.idCategoria = idCategoria;
-	}
+    public Integer getIdCategoria() {return idCategoria;}
+    public void setIdCategoria(Integer idCategoria) {this.idCategoria = idCategoria;}
     
     
-	public String getNome() {
-		return nome;
-	}
-
-	public void setNome(String nome) {
-		this.nome = nome;
-	}
+	public String getNome() {return nome;}
+	public void setNome(String nome) {this.nome = nome;}
 
 
-	public String getDescricao() {
-		return descricao;
-	}
-
-	public void setDescricao(String descricao) {
-		this.descricao = descricao;
-	}
+	public String getDescricao() {return descricao;}
+	public void setDescricao(String descricao) {this.descricao = descricao;}
 
 	
 	//--------------------------------	Métodos Auxiliares------------------------------//

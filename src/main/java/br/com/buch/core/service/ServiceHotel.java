@@ -13,6 +13,7 @@ public class ServiceHotel implements GenericService<Hotel> {
 
 	private HotelDao empresaDao;
 	
+	private static final String BUSCAR_TODAS = "Select e From Hotel e order by e.nomeFantasia";
 	
 	public ServiceHotel() {
 		empresaDao = new HotelDao();
@@ -63,7 +64,7 @@ public class ServiceHotel implements GenericService<Hotel> {
 	
 	@Override
 	public Hotel carregarEntidade(Hotel hotel) throws PersistenciaException{
-		String jpql = "Select e From Hotel e where e.id = ?1";
+		String jpql = "Select e From Hotel e left JOIN FETCH e.endereco where e.id = ?1";
 		try {
 			return empresaDao.findOne(jpql, hotel.getIdHotel());
 		} catch (Exception e) {
@@ -77,7 +78,7 @@ public class ServiceHotel implements GenericService<Hotel> {
 	@Override
 	public List<Hotel> buscarTodos() {
 		try {
-			return empresaDao.findAll();
+			return empresaDao.find(BUSCAR_TODAS);
 		} catch (Exception e) {
 			e.printStackTrace();
 			return null;
@@ -92,13 +93,10 @@ public class ServiceHotel implements GenericService<Hotel> {
 
 			if(tipoFiltro.equals(TipoFiltro.CODIGO)){						
 				String jpql = "Select e From Hotel e where e.codigo in (" + valorFiltro + ")";
-				lista = empresaDao.find(jpql);
-					
+				lista = empresaDao.find(jpql);					
 			}
-			else if(tipoFiltro.equals(TipoFiltro.NOME)){	
-				
-					lista = empresaDao.find("Select e From Hotel e where e.nomeRazao like ?",valorFiltro);
-				
+			else if(tipoFiltro.equals(TipoFiltro.NOME)){					
+				lista = empresaDao.find("Select e From Hotel e where e.nomeRazao like ?",valorFiltro);				
 			}
 			
 			return lista;

@@ -5,7 +5,11 @@
 	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
 	version="2.5">
 	
-	<display-name>adamantium</display-name>
+	<display-name>SisHostHotel</display-name>
+	
+	<welcome-file-list>
+		<welcome-file>login.xhtml</welcome-file>
+	</welcome-file-list>
 	
 	<context-param>
 		<param-name>javax.faces.PROJECT_STAGE</param-name>
@@ -53,13 +57,17 @@
 		<mime-type>application/font-woff2</mime-type>
 	</mime-mapping>
 	
+	<listener>
+		<listener-class>br.com.buch.view.util.SessionControllerListener</listener-class>
+	</listener>
+	
 	
 	<listener>
 		<listener-class>com.sun.faces.config.ConfigureListener</listener-class>
 	</listener>
 	
 	<session-config>
-		<session-timeout>30</session-timeout>
+		<session-timeout>20</session-timeout>
 	</session-config>
 	
 	

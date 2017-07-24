@@ -20,7 +20,7 @@
 		<class>br.com.buch.core.entity.Recebimento</class>
 		
 		<properties>
-			<property name="javax.persistence.jdbc.url" value="jdbc:firebirdsql:localhost/3050:D:\SISHOSTHOTEL.fdb"/>
+			<property name="javax.persistence.jdbc.url" value="jdbc:firebirdsql:192.168.1.100/3050:SISHOSTHOTEL"/>
 			<property name="javax.persistence.jdbc.user" value="sysdba"/>
 			<property name="javax.persistence.jdbc.password" value="masterkey"/>
 			<property name="javax.persistence.jdbc.driver" value="org.firebirdsql.jdbc.FBDriver"/>

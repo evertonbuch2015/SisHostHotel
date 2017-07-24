@@ -34,8 +34,11 @@
 				<p:dataTable value="#{hotelBean.entidades}" var="hotel" id="tabela" 
 					selection="#{hotelBean.entidade}" selectionMode="single"
 					rowKey="#{hotel.idHotel}" reflow="true"									
-					widgetVar="carsTable" emptyMessage="#{label.msg_tabela_vazia}"
-					style="margin: 0px -11px;">				
+					emptyMessage="#{label.msg_tabela_vazia}"
+					style="margin: 0px -11px;"
+					rows="13"
+    				paginator="true" paginatorAlwaysVisible="false" 
+    				paginatorPosition="bottom">				
 					
 
 					<p:ajax event="rowDblselect" listener="#{hotelBean.onRowDblClckSelect}"

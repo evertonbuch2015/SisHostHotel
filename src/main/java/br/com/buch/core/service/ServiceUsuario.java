@@ -1,7 +1,5 @@
 package br.com.buch.core.service;
 
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 import br.com.buch.core.dao.UsuarioDao;
@@ -16,9 +14,10 @@ import br.com.buch.view.managedBean.UsuarioBean.TipoFiltro;
 
 public class ServiceUsuario implements GenericService<Usuario> {
 
-	private static final String BUSCAR_PELO_NOME = "select u from Usuario u where u.nomeUsuario = ?1";
+	private static final String BUSCAR_PELO_NOME = "select u from Usuario u left JOIN FETCH u.hoteis where u.nomeUsuario = ?1";
 	private static final String BUSCAR_SETORES = "Select distinct u.setor From Usuario u";
 	private static final String CARREGAR_USUARIO = "Select u From Usuario u left JOIN FETCH u.hoteis where u.idUsusario = ?1";
+	private static final String BUSCAR_TODOS = "Select u From Usuario u order by u.ativo, u.nomeUsuario";
 	
 	
 	private UsuarioDao usuarioDao;
@@ -87,19 +86,16 @@ public class ServiceUsuario implements GenericService<Usuario> {
 
 	
 	public List<Usuario> buscarTodos()throws PersistenciaException{
-		List<Usuario> lista = null;
 		try {
 			
-			lista = usuarioDao.findAll();			
-			Collections.sort(lista, new Comparator<Usuario>() {
+			return usuarioDao.find(BUSCAR_TODOS);
+			/*Collections.sort(lista, new Comparator<Usuario>() {
 
-				@Override
 				public int compare(Usuario o1, Usuario o2) {				
 					return o1.getIdUsusario().compareTo(o2.getIdUsusario());
 				}
 			});
-			
-			return lista;
+*/			
 		} catch (Exception e) {			
 			e.printStackTrace();
 			return null;
@@ -132,8 +128,6 @@ public class ServiceUsuario implements GenericService<Usuario> {
 	@Override
 	public void consisteAntesEditar(Usuario entidade) throws NegocioException{	}
 	
-	
-
 	
 	public boolean fazerLogin(String login, String senha){
 		Usuario usuario = null;

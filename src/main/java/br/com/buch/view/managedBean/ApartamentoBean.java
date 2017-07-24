@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.List;
 
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.SessionScoped;
+import javax.faces.bean.ViewScoped;
 
 import br.com.buch.core.entity.Apartamento;
 import br.com.buch.core.entity.Categoria;
@@ -15,7 +15,7 @@ import br.com.buch.core.util.PersistenciaException;
 import br.com.buch.view.util.UtilMensagens;
 
 @ManagedBean
-@SessionScoped
+@ViewScoped
 public class ApartamentoBean extends GenericBean<Apartamento, ServiceApartamento> implements Serializable{
 
 	private static final long serialVersionUID = 6409242364742848848L;

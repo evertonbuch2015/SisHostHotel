@@ -13,6 +13,21 @@ import br.com.buch.view.managedBean.ApartamentoBean.TipoFiltro;
 
 public class ServiceApartamento implements GenericService<Apartamento> {
 
+	private static final String BUSCAR_TODAS = 
+			"Select a From Apartamento a LEFT JOIN FETCH a.categoria ORDER by a.numero";
+
+	private static final String BUSCAR_POR_SITUACAO = 
+			"Select a From Apartamento a LEFT JOIN FETCH a.categoria where a.situacao like ?1";
+
+	private static final String BUSCAR_POR_CATEGORIA = 
+			"Select a From Apartamento a LEFT JOIN FETCH a.categoria where a.categoria.nome like ?1";
+
+	private static final String BUSCAR_LIVRES = 
+			"Select a From Apartamento a where a.situacao = ?1";
+
+	private static final String CARREGAR_ENTIDADE = 
+			"Select a From Apartamento a LEFT JOIN FETCH a.categoria where a.idApartamento = ?1";
+	
 	private ApartamentoDao apartamentoDao;
 	
 	
@@ -63,9 +78,7 @@ public class ServiceApartamento implements GenericService<Apartamento> {
 	@Override
 	public Apartamento carregarEntidade(Apartamento entidade)throws PersistenciaException {
 		try{
-			String jpql = "Select a From Apartamento a LEFT JOIN FETCH a.categoria where a.idApartamento = ?1";
-			return apartamentoDao.findOne(jpql, entidade.getIdApartamento());
-			
+			return apartamentoDao.findOne(CARREGAR_ENTIDADE, entidade.getIdApartamento());			
 		}catch (Exception e) {
 			e.printStackTrace();
 			throw new PersistenciaException("Ocorreu uma exceção ao buscar os dados do Apartamento!" + 
@@ -77,7 +90,7 @@ public class ServiceApartamento implements GenericService<Apartamento> {
 	@Override
 	public List<Apartamento> buscarTodos()throws PersistenciaException {
 		try {
-			return apartamentoDao.findAll();
+			return apartamentoDao.find(BUSCAR_TODAS);			
 		} catch (Exception e) {
 			e.printStackTrace();
 			return null;
@@ -88,18 +101,15 @@ public class ServiceApartamento implements GenericService<Apartamento> {
 	public List<Apartamento> filtrarTabela(TipoFiltro tipoFiltro , String valorFiltro)throws Exception{
 		List<Apartamento> lista = null;
 		
-		try {
-			
+		try {			
 			if(tipoFiltro.equals(TipoFiltro.CODIGO)){
-				String jpql = "Select a From Apartamento a where a.codigo in (" + valorFiltro + ")";
-				lista = apartamentoDao.find(jpql);
-				
+				String jpql = "Select a From Apartamento a LEFT JOIN FETCH a.categoria where a.codigo in (" + valorFiltro + ")";
+				lista = apartamentoDao.find(jpql);				
 			}else if(tipoFiltro.equals(TipoFiltro.SITUACAO)){
-				lista = apartamentoDao.find("Select a From Apartamento a where a.situacao like ?1", valorFiltro);
+				lista = apartamentoDao.find(BUSCAR_POR_SITUACAO, valorFiltro);
 				
 			}else if(tipoFiltro.equals(TipoFiltro.CATEGORIA)){
-				lista = apartamentoDao.find("Select a From Apartamento a LEFT JOIN FETCH a.categoria where a.categoria.nome like ?1", valorFiltro);
-				
+				lista = apartamentoDao.find(BUSCAR_POR_CATEGORIA, valorFiltro);				
 			}
 			
 			return lista;			
@@ -129,15 +139,14 @@ public class ServiceApartamento implements GenericService<Apartamento> {
 	
 	public List<Apartamento> buscarTodosLivres() {
 		try {
-			return apartamentoDao.find("Select a From Apartamento a where a.situacao = ?1", SituacaoApartamento.LIVRE);
+			return apartamentoDao.find(BUSCAR_LIVRES, SituacaoApartamento.LIVRE);
 		} catch (Exception e) {
 			e.printStackTrace();
 			return null;
 		}		
 	}
 
-	
-	
+		
 	/**
 	 * Verifica a Disponibilidade do Apartamento no intervalo de Data Fornecida.
 	 * @param Id do Apartamento

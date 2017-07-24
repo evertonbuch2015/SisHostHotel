@@ -35,8 +35,11 @@
 					value="#{hospedeBean.entidades}" var="entidade" 
 					selection="#{hospedeBean.entidade}" selectionMode="single"
 					rowKey="#{entidade.idHospede}" reflow="true"									
-					widgetVar="carsTable" emptyMessage="#{label.msg_tabela_vazia}"
-					style="margin: 0px -11px;">				
+					emptyMessage="#{label.msg_tabela_vazia}"
+					style="margin: 0px -11px;"
+					rows="13"
+    				paginator="true" paginatorAlwaysVisible="false"
+    				paginatorPosition="bottom">				
 					
 
 					<p:ajax event="rowDblselect" listener="#{hospedeBean.onRowDblClckSelect}"
@@ -52,16 +55,16 @@
 										rendered="#{!entidade.isAtivo()}" />
 					</p:column>
 					
-					<p:column headerText="#{label.txt_codigo}" width="90">
+					<p:column headerText="#{label.txt_codigo}" width="90" sortBy="#{entidade.codigo}">
 						<h:outputText value="#{entidade.codigo}" />
 					</p:column>
 					
-					<p:column headerText="#{label.txt_documento}" width="130">
+					<p:column headerText="#{label.txt_documento}" width="130" sortBy="#{entidade.cpf}">
 						<h:outputText value="#{entidade.cpfFormatado}" />
 					</p:column>
 					
 
-					<p:column headerText="#{label.txt_nome}">
+					<p:column headerText="#{label.txt_nome}" sortBy="#{entidade.nome}">
 						<h:outputText value="#{entidade.nome}" />
 					</p:column>					
 					
@@ -107,7 +110,8 @@
 						<p:outputLabel value="#{label.txt_nome}" for="nome" />
 						<p:inputText id="nome"
 							value="#{hospedeBean.entidade.nome}" 
-							placeholder="Ex: Steve Jobs"/>
+							placeholder="Ex: Steve Jobs"
+							readonly="#{hospedeBean.visualizando}"/>
 							
 						
 						<p:outputLabel value="#{label.txt_codigo}" for="codigo" />
@@ -137,27 +141,33 @@
 						
 						<p:outputLabel value="#{label.txt_passaporte}" for="passaporte" />
 						<p:inputText id="passaporte"
-							value="#{hospedeBean.entidade.passaporte}"/>
+							value="#{hospedeBean.entidade.passaporte}"
+							readonly="#{hospedeBean.visualizando}"/>
+						
 						
 						<p:outputLabel value="#{label.txt_email}" for="email" />
 						<p:inputText id="email" 
 							value="#{hospedeBean.entidade.email}"
 							placeholder="Ex: email@dominio.com.br"
 							required="true"
-							requiredMessage="Informe um e-mail!"/>
+							requiredMessage="Informe um e-mail!"
+							readonly="#{hospedeBean.visualizando}"/>
 						
 						
 						<p:outputLabel value="#{label.txt_telefone}" for="tel1" />
 						<p:inputMask id="tel1" 
 							value="#{hospedeBean.entidade.telefone1}"
 							mask="(99)9.9999-9999"
-							placeholder="(21) 9.8781-0000"/>
+							placeholder="(21) 9.8781-0000"
+							readonly="#{hospedeBean.visualizando}"/>
+						
 						
 						<p:outputLabel value="#{label.txt_telefone}" for="tel2" />
 						<p:inputMask id="tel2"
 							value="#{hospedeBean.entidade.telefone2}" 
 							mask="(99)9.9999-9999"
-							placeholder="(21) 9.8781-0000"/>
+							placeholder="(21) 9.8781-0000"
+							readonly="#{hospedeBean.visualizando}"/>
 						
 						
 						<p:outputLabel value="#{label.txt_data_nasc}" for="dtNasc" />						
@@ -166,13 +176,15 @@
 							pattern="dd/MM/yyyy" mask="true"
 							showOn="button" locale="pt_BR"
 							required="true"
-							requiredMessage="Informe a Data de Nascimento!">
+							requiredMessage="Informe a Data de Nascimento!"
+							disabled="#{hospedeBean.visualizando}">
 						
 						</p:calendar>
 							
 						<p:outputLabel value="Sexo" for="sexo"/>
 						<p:selectOneMenu id="sexo" 
-							value="#{hospedeBean.entidade.sexo}">
+							value="#{hospedeBean.entidade.sexo}"
+							disabled="#{hospedeBean.visualizando}">
 							
 							<f:selectItem itemValue="M" itemLabel="Masculino/Male" />
 							<f:selectItem itemValue="F" itemLabel="Feminino/Female" />
@@ -181,7 +193,8 @@
 						
 						<p:outputLabel value="#{label.txt_estado_civil}" for="est_civil"/>
 						<p:selectOneMenu id="est_civil" 
-							value="#{hospedeBean.entidade.estadoCivil}">
+							value="#{hospedeBean.entidade.estadoCivil}"
+							disabled="#{hospedeBean.visualizando}">
 							
 							<f:selectItem itemValue="SOLTEIRO" itemLabel="Solteiro"/>
 							<f:selectItem itemValue="CASADO" itemLabel="Casado"/>
@@ -194,7 +207,8 @@
 						<p:inputText id="profissao" 
 							value="#{hospedeBean.entidade.profissao}"
 							required="true"
-							requiredMessage="Informe a Profissão!"/>
+							requiredMessage="Informe a Profissão!"
+							readonly="#{hospedeBean.visualizando}"/>
 							
 							
 						<p:outputLabel value="#{label.txt_data_cadastro}" for="dtCadastro" />
@@ -213,7 +227,9 @@
 						<p:selectOneButton id="ativo"
 							value="#{hospedeBean.entidade.ativo}"
 							styleClass="bu-selectOneButton"
-							style="	max-width: 65%;">
+							style="	max-width: 65%;"
+							disabled="#{hospedeBean.visualizando}">
+							
             				<f:selectItem itemLabel="#{label.txt_sim}" itemValue="S"/>
             				<f:selectItem itemLabel="#{label.txt_nao}" itemValue="N"/>
         				</p:selectOneButton>
@@ -222,7 +238,9 @@
 						<p:selectOneButton id="autoriza_email" 
 							value="#{hospedeBean.entidade.autorizaEmail}"
 							styleClass="bu-selectOneButton"
-							style="	max-width: 65%;">
+							style="	max-width: 65%;"
+							disabled="#{hospedeBean.visualizando}">
+							
             				<f:selectItem itemLabel="#{label.txt_sim}" itemValue="S"/>
             				<f:selectItem itemLabel="#{label.txt_nao}" itemValue="N"/>
         				</p:selectOneButton>
@@ -245,7 +263,8 @@
 						<p:inputMask id="cep" 
 							value="#{hospedeBean.entidade.endereco.cep}" mask="99.999-999"
 							required="true" 
-							requiredMessage="Informe no endereço o número do Cep!">
+							requiredMessage="Informe no endereço o número do Cep!"
+							readonly="#{hospedeBean.visualizando}">
 							
 							<p:ajax event="blur" process="@this" update="lgr rua bairro cidade estado pais"
 								listener="#{hospedeBean.consultaCepWebService()}"/>
@@ -255,7 +274,8 @@
 						<p:outputLabel value="#{label.txt_lgr}" for="lgr"/>
 						<p:inputText id="lgr"
 							value="#{hospedeBean.entidade.endereco.logradouro}"
-							placeholder="Ex: Avenida"/>
+							placeholder="Ex: Avenida"
+							readonly="#{hospedeBean.visualizando}"/>
 						
 						
 						<p:outputLabel value="#{label.txt_rua}" for="rua"/>
@@ -263,40 +283,46 @@
 							value="#{hospedeBean.entidade.endereco.rua}"
 							placeholder="Ex: Assis Brasil"
 							required="true" 
-							requiredMessage="Informe no endereço o nome da rua!"/>
+							requiredMessage="Informe no endereço o nome da rua!"
+							readonly="#{hospedeBean.visualizando}"/>
 							
 							
 						<p:outputLabel value="#{label.txt_numero}" for="numero"/>
 						<p:spinner id="numero" 
 							value="#{hospedeBean.entidade.endereco.numero}" min="0"
 							required="true" 
-							requiredMessage="Informe no endereço o número!"/>
+							requiredMessage="Informe no endereço o número!"
+							readonly="#{hospedeBean.visualizando}"/>
 						
 						
 						<p:outputLabel value="#{label.txt_complemento}" for="complemento"/>
 						<p:inputText id="complemento"
-							value="#{hospedeBean.entidade.endereco.complemento}"/>
+							value="#{hospedeBean.entidade.endereco.complemento}"
+							readonly="#{hospedeBean.visualizando}"/>
 							
 							
 						<p:outputLabel value="#{label.txt_bairro}" for="bairro"/>
 						<p:inputText id="bairro"
 							value="#{hospedeBean.entidade.endereco.bairro}"
 							required="true" 
-							requiredMessage="Informe no endereço o bairro!"/>
+							requiredMessage="Informe no endereço o bairro!"
+							readonly="#{hospedeBean.visualizando}"/>
 							
 							
 						<p:outputLabel value="#{label.txt_cidade}" for="cidade"/>
 						<p:inputText id="cidade"
 							value="#{hospedeBean.entidade.endereco.cidade}"
 							required="true" 
-							requiredMessage="Informe no endereço o nome da Cidade!"/>
+							requiredMessage="Informe no endereço o nome da Cidade!"
+							readonly="#{hospedeBean.visualizando}"/>
 							
 							
 						<p:outputLabel value="#{label.txt_estado}" for="estado"/>
 						<p:selectOneMenu id="estado"
 							value="#{hospedeBean.entidade.endereco.estado}"
 							required="true" 
-							requiredMessage="Informe no endereço o estado!">
+							requiredMessage="Informe no endereço o estado!"
+							disabled="#{hospedeBean.visualizando}">
 							
 							<f:selectItem itemLabel="Selecione"/>
 							<f:selectItems value="#{hospedeBean.estados}" var="a"
@@ -306,7 +332,8 @@
 						
 						<p:outputLabel value="#{label.txt_pais}" for="pais"/>
 						<p:inputText id="pais"
-							value="#{hospedeBean.entidade.endereco.pais}"/>
+							value="#{hospedeBean.entidade.endereco.pais}"
+							readonly="#{hospedeBean.visualizando}"/>
 							
 					</p:panelGrid>
 					
@@ -323,7 +350,7 @@
 					<p:inputTextarea value="#{hospedeBean.entidade.obs}" id="obs"
 						style="width: 80%" rows="15" cols="30" counter="display"
 						maxlength="255" counterTemplate="{0} Caracteres Restantes"
-						autoResize="false" readonly="!#{empresaBean.visualizando}" />
+						autoResize="false" readonly="#{empresaBean.visualizando}" />
 					<h:outputText id="display" />
 				</p:panelGrid>
 			</p:tab>

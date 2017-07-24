@@ -40,8 +40,11 @@
 					value="#{tarifarioBean.entidades}" var="entidade" 
 					selection="#{tarifarioBean.entidade}" selectionMode="single"
 					rowKey="#{entidade.idTarifario}" reflow="true"									
-					widgetVar="tabela" emptyMessage="#{label.msg_tabela_vazia}"
-					style="margin: 0px -11px;">				
+					emptyMessage="#{label.msg_tabela_vazia}"
+					style="margin: 0px -11px;"
+					rows="13"
+    				paginator="true" paginatorAlwaysVisible="false" 
+    				paginatorPosition="bottom">				
 					
 
 					<p:ajax event="rowDblselect" listener="#{tarifarioBean.onRowDblClckSelect}"
@@ -50,27 +53,29 @@
 					<p:ajax event="rowSelect" listener="#{tarifarioBean.onRowSelect}" />
 				
 					
-					<p:column headerText="#{label.txt_categoria}" >
+					<p:column headerText="#{label.txt_categoria}" sortBy="#{entidade.categoria.nome}">
 						<h:outputText value="#{entidade.categoria.nome}" />
 					</p:column>	
 					
 					
-					<p:column headerText="#{label.txt_tipo_tarifa}" >
+					<p:column headerText="#{label.txt_tipo_tarifa}" sortBy="#{entidade.tipoTarifa.nome}">
 						<h:outputText value="#{entidade.tipoTarifa.nome}" />
 					</p:column>	
 					
 					
-					<p:column headerText="#{label.txt_data_inicial}" width="150">
+					<p:column headerText="#{label.txt_data_inicial}" width="150" 
+						sortBy="#{entidade.dataInicial}" priority="6">
 						<h:outputText value="#{entidade.dataInicialFormatada}" />
 					</p:column>
 					
 					
-					<p:column headerText="#{label.txt_data_final}" width="150">
+					<p:column headerText="#{label.txt_data_final}" width="150" 
+						sortBy="#{entidade.dataFinal}" priority="5">
 						<h:outputText value="#{entidade.dataFinalFormatada}" />
 					</p:column>	
 					
 					
-					<p:column headerText="#{label.txt_valor}" width="130">
+					<p:column headerText="#{label.txt_valor}" width="130" >
 						<h:outputText value="#{entidade.valor}">
 							<f:convertNumber pattern="#,##0.00"></f:convertNumber>
 						</h:outputText>

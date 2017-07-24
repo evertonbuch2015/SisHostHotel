@@ -72,7 +72,7 @@ public class Usuario implements Serializable {
 	private Character emFerias;
 	
 
-	@OneToMany(fetch = FetchType.EAGER)
+	@OneToMany(fetch = FetchType.LAZY)
 	@JoinTable(name = "SIS_USUARIO_HOTEL", joinColumns = {
 			@JoinColumn(name = "COD_SISUSUARIO") }, inverseJoinColumns = { @JoinColumn(name = "COD_CADHOTEL") })
 	private List<Hotel> hoteis;

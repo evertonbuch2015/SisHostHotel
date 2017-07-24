@@ -24,9 +24,6 @@ import org.hibernate.validator.constraints.NotEmpty;
 @Table(name="CAD_EMPRESA")
 public class Empresa implements Serializable {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = -4732933043750247762L;
 
 	@Id
@@ -91,154 +88,76 @@ public class Empresa implements Serializable {
     private Character ativo;
     
      
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name ="COD_CADENDERECO")
     private Endereco endereco;
 
 
     //-------------------------------	GETs and SETs------------------------------//
     
-	public Integer getIdEmpresa() {
-		return idEmpresa;
+	public Integer getIdEmpresa() {return idEmpresa;}
+	public void setIdEmpresa(Integer idEmpresa) {this.idEmpresa = idEmpresa;}
+
+
+	public String getCodigo() {return codigo;}
+	public void setCodigo(String codigo) {this.codigo = codigo;}
+
+
+	public String getNomeRazao() {return nomeRazao;}
+	public void setNomeRazao(String nomeRazao) {this.nomeRazao = nomeRazao;}
+
+
+	public String getNomeFantasia() {return nomeFantasia;}
+	public void setNomeFantasia(String nomeFantasia) {this.nomeFantasia = nomeFantasia;}
+
+
+	public String getDocumento() {return documento;}
+	public void setDocumento(String documento) {this.documento = documento;}
+
+
+	public String getInscEstadual() {return inscEstadual;}
+	public void setInscEstadual(String inscEstadual) {this.inscEstadual = inscEstadual;}
+
+
+	public String getInscMunicipal() {return inscMunicipal;}
+	public void setInscMunicipal(String inscMunicipal) {this.inscMunicipal = inscMunicipal;}
+
+
+	public Date getDataCadastro() {return dataCadastro;}
+	public void setDataCadastro(Date dataCadastro) {this.dataCadastro = dataCadastro;}
+
+	
+	public String getEmail() {return email;}
+	public void setEmail(String email) {this.email = email;}
+
+
+	public String getSite() {return site;}
+	public void setSite(String site) {this.site = site;}
+
+
+	public String getTelefone1() {return telefone1;}
+	public void setTelefone1(String telefone1) {this.telefone1 = telefone1;}
+
+
+	public String getTelefone2() {return telefone2;}
+	public void setTelefone2(String telefone2) {this.telefone2 = telefone2;}
+
+
+	public String getObs() {return obs;}
+	public void setObs(String obs) {this.obs = obs;}
+
+
+	public Boolean isAtivo() {		
+		return (ativo == null) ? null: (ativo.equals('S')) ? true : false;
 	}
-
-	public void setIdEmpresa(Integer idEmpresa) {
-		this.idEmpresa = idEmpresa;
-	}
-
-
-	public String getCodigo() {
-		return codigo;
-	}
-
-	public void setCodigo(String codigo) {
-		this.codigo = codigo;
-	}
-
-
-	public String getNomeRazao() {
-		return nomeRazao;
-	}
-
-	public void setNomeRazao(String nomeRazao) {
-		this.nomeRazao = nomeRazao;
-	}
-
-
-	public String getNomeFantasia() {
-		return nomeFantasia;
-	}
-
-	public void setNomeFantasia(String nomeFantasia) {
-		this.nomeFantasia = nomeFantasia;
-	}
-
-
-	public String getDocumento() {
-		return documento;
-	}
-
-	public void setDocumento(String documento) {
-		this.documento = documento;
-	}
-
-
-	public String getInscEstadual() {
-		return inscEstadual;
-	}
-
-	public void setInscEstadual(String inscEstadual) {
-		this.inscEstadual = inscEstadual;
-	}
-
-
-	public String getInscMunicipal() {
-		return inscMunicipal;
-	}
-
-	public void setInscMunicipal(String inscMunicipal) {
-		this.inscMunicipal = inscMunicipal;
-	}
-
-
-	public Date getDataCadastro() {
-		return dataCadastro;
-	}
-
-	public void setDataCadastro(Date dataCadastro) {
-		this.dataCadastro = dataCadastro;
-	}
-
-
-	public String getEmail() {
-		return email;
-	}
-
-	public void setEmail(String email) {
-		this.email = email;
-	}
-
-
-	public String getSite() {
-		return site;
-	}
-
-	public void setSite(String site) {
-		this.site = site;
-	}
-
-
-	public String getTelefone1() {
-		return telefone1;
-	}
-
-	public void setTelefone1(String telefone1) {
-		this.telefone1 = telefone1;
-	}
-
-
-	public String getTelefone2() {
-		return telefone2;
-	}
-
-	public void setTelefone2(String telefone2) {
-		this.telefone2 = telefone2;
-	}
-
-
-	public String getObs() {
-		return obs;
-	}
-
-	public void setObs(String obs) {
-		this.obs = obs;
-	}
-
-
-	public Boolean isAtivo() {
-		if (this.ativo == null)
-			return null;
-		
-		return ativo.equals('S') ? true : false;
-	}
-
 	public void setAtivo(Boolean value) {
-		if (value == null) {
-			this.ativo = null;
-		} else {
-			this.ativo = value == true ? 'S' : 'N';
-		}
+		if (value == null) {this.ativo = null;} 
+		else {this.ativo = ((value == true) ? 'S' : 'N');}
 	}
 
 
-	public Endereco getEndereco() {
-		return endereco;
-	}
-
-	public void setEndereco(Endereco endereco) {
-		this.endereco = endereco;
-	}
-
+	public Endereco getEndereco() {return (endereco == null) ? new Endereco() : endereco;}
+	public void setEndereco(Endereco endereco) {this.endereco = endereco;}
 	
 	
 	//--------------------------------	Métodos Auxiliares------------------------------//

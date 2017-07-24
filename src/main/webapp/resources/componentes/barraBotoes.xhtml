@@ -22,6 +22,11 @@
 			rendered="#{cc.attrs.bean.visualizando or cc.attrs.bean.buscando}"
 			actionListener="#{cc.attrs.bean.novo()}" />
 
+		<p:commandButton value="#{label.visualizar}" update="@form" style="width:80px"
+			styleClass="bu-botao-azul" title="#{label.visualizar_item_selecionado}"
+			rendered="#{cc.attrs.bean.buscando}"
+			actionListener="#{cc.attrs.bean.visualizar()}" />
+
 		<p:commandButton value="#{label.txt_atualizar}"  style="width:80px"
 			styleClass="bu-botao-verde" update="tabela"
 			rendered="#{cc.attrs.bean.buscando}"

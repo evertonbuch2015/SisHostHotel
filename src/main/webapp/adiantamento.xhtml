@@ -39,8 +39,11 @@
 					value="#{adiantamentoBean.entidades}" var="entidade" 
 					selection="#{adiantamentoBean.entidade}" selectionMode="single"
 					rowKey="#{entidade.idAdiantamento}" reflow="true"									
-					widgetVar="carsTable" emptyMessage="#{label.msg_tabela_vazia}"
-					style="margin: 0px -11px;">				
+					emptyMessage="#{label.msg_tabela_vazia}"
+					style="margin: 0px -5px;"
+					rows="13"
+    				paginator="true" paginatorAlwaysVisible="false" 
+    				paginatorPosition="bottom">				
 					
 
 					<p:ajax event="rowDblselect" listener="#{adiantamentoBean.onRowDblClckSelect}"
@@ -49,16 +52,16 @@
 					<p:ajax event="rowSelect" listener="#{adiantamentoBean.onRowSelect}" />
 
 
-					<p:column headerText="#{label.txt_codigo}" width="110">
+					<p:column headerText="#{label.txt_codigo}" width="110" sortBy="#{entidade.codigo}">
 						<h:outputText value="#{entidade.codigo}" />
 					</p:column>
 					
 					
-					<p:column headerText="#{label.txt_hospede}" width="120">
+					<p:column headerText="#{label.txt_hospede}" width="120" sortBy="#{entidade.hospede.nome}">
 						<h:outputText value="#{entidade.hospede.nome}" />
 					</p:column>
 					
-					<p:column headerText="#{label.txt_data_emissao}" width="90">
+					<p:column headerText="#{label.txt_data_emissao}" width="90" sortBy="#{entidade.dtEmissao}">
 						<h:outputText value="#{entidade.dataEmissaoFormatada}" />
 					</p:column>
 					
@@ -112,7 +115,8 @@
 						<p:inputText id="descricao" 
 							value="#{adiantamentoBean.entidade.descricao}"
 							required="true"
-							requiredMessage="Informe uma Descrição!"/>
+							requiredMessage="Informe uma Descrição!"
+							readonly="#{adiantamentoBean.visualizando}"/>
 						
 					</p:panelGrid>
 					
@@ -146,7 +150,8 @@
 							value="#{adiantamentoBean.entidade.valor}"
 							onblur="mascara(this,moeda)"
 							required="true" maxlength="15"
-							requiredMessage="Preencha o Valor!">
+							requiredMessage="Preencha o Valor!"
+							readonly="#{adiantamentoBean.visualizando}">
 							
 							<f:convertNumber pattern="#,##0.00" type="currency" currencySymbol="R$"/>
 						</p:inputText>
@@ -184,7 +189,8 @@
 						<p:outputLabel value="#{label.txt_local_recebimento}" for="localRecebimento"/>
 						<p:selectOneMenu id="localRecebimento"
 							value="#{adiantamentoBean.entidade.localRecebimento}"
-							required="true" autoWidth="false">
+							required="true" autoWidth="false"
+							disabled="#{adiantamentoBean.visualizando}">
 															
 							<f:selectItem itemLabel="Selecione um Registro"/>
 							<f:selectItems value="#{adiantamentoBean.locaisRecebimento}" var="localRecebimento"
@@ -213,27 +219,30 @@
 		
 		
 		<p:dialog 
-			width="300" height="140"
-			header="Filtrar Tabela!"			
+			width="285" height="200"
+			header="#{label.filtrar_registros}"			
 			widgetVar="dialogFiltro" modal="true" draggable="true" 
-			closable="true" resizable="true" position="center center"
+			closable="true" resizable="false" position="center center"
 			showEffect="explode" hideEffect="explode">
 		
 			<p:panelGrid columns="1" cellpadding="3" 
 				styleClass="ui-panelgrid-blank">
-														
+							
+				<p:outputLabel value="#{label.tipo_filtro}"/>
 				<p:selectOneMenu id="tipoFiltro"
 					value="#{adiantamentoBean.filtro}" style="width:75%">						
 					<f:selectItem itemLabel="Selecione" />
 					<f:selectItems value="#{adiantamentoBean.tipoFiltros()}" var="a"
 						itemValue="#{a}" itemLabel="#{a.label}"/>						
 				</p:selectOneMenu>
-					
-				<p:inputText id="valorfiltro" placeholder="Valor do Filtro!" 
+				
+				
+				<p:outputLabel value="#{label.valor_filtro}"/>	
+				<p:inputText id="valorfiltro" 
 						value="#{adiantamentoBean.valorFiltro}"
 						size="30"/>
 								
-				<p:commandButton value="Filtrar" icon="ui-icon-folder-collapsed"
+				<p:commandButton value="#{label.aplicar_filtro}"
 					styleClass="bu-botao-azul" update="tabela"
 					style="margin-top:20px;"
 					actionListener="#{adiantamentoBean.filtrar()}"

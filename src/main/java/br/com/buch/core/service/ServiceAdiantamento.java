@@ -12,7 +12,14 @@ import br.com.buch.core.util.UtilErros;
 
 public class ServiceAdiantamento implements GenericService<Adiantamento> {
 
+	private static final String CARREGAR_ENTIDADE = 
+		"Select a From Adiantamento a LEFT JOIN FETCH a.hospede LEFT JOIN FETCH a.localRecebimento where a.idAdiantamento = ?";
+	
+	private static final String BUSCAR_TODOS = 
+		"Select a From Adiantamento a LEFT JOIN FETCH a.hospede";
+	
 	private AdiantamentoDao adiantamentoDao;
+	
 	
 	public ServiceAdiantamento() {
 		adiantamentoDao = new AdiantamentoDao();
@@ -29,8 +36,7 @@ public class ServiceAdiantamento implements GenericService<Adiantamento> {
 			} catch (Exception e) {
 				e.printStackTrace();				
 				throw new PersistenciaException("Ocorreu uma exceção ao inserir o Adiantamento de Cliente!" + 
-	            		" \nErro: " + UtilErros.getMensagemErro(e));
-				
+	            		" \nErro: " + UtilErros.getMensagemErro(e));				
 			}				
 		}else{
 			
@@ -46,7 +52,6 @@ public class ServiceAdiantamento implements GenericService<Adiantamento> {
 	}
 	
 	
-
 	@Override
 	public String excluir(Adiantamento entidade) throws Exception{
 		
@@ -63,15 +68,12 @@ public class ServiceAdiantamento implements GenericService<Adiantamento> {
             		" \nErro: " + UtilErros.getMensagemErro(ex));
 		}
 	}
-	
-	
+		
 
 	@Override
 	public Adiantamento carregarEntidade(Adiantamento entidade)throws PersistenciaException {
 		try{
-			String jpql = "Select a From Adiantamento a LEFT JOIN FETCH a.hospede where a.idAdiantamento = ?1";
-			return adiantamentoDao.findOne(jpql, entidade.getIdAdiantamento());
-			
+			return adiantamentoDao.findOne(CARREGAR_ENTIDADE, entidade.getIdAdiantamento());			
 		}catch (Exception e) {
 			e.printStackTrace();
 			throw new PersistenciaException("Ocorreu uma exceção ao buscar os dados do Adiantamento a Cliente!" + 
@@ -79,12 +81,11 @@ public class ServiceAdiantamento implements GenericService<Adiantamento> {
 		}
 	}
 	
-	
 
 	@Override
 	public List<Adiantamento> buscarTodos() {
 		try {
-			return adiantamentoDao.findAll();
+			return adiantamentoDao.find(BUSCAR_TODOS);
 		} catch (Exception e) {
 			e.printStackTrace();
 			return null;

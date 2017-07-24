@@ -35,8 +35,11 @@
 					value="#{categoriaBean.entidades}" var="entidade" 
 					selection="#{categoriaBean.entidade}" selectionMode="single"
 					rowKey="#{entidade.idCategoria}" reflow="true"									
-					widgetVar="carsTable" emptyMessage="#{label.msg_tabela_vazia}"
-					style="margin: 0px -11px;">				
+					emptyMessage="#{label.msg_tabela_vazia}"
+					style="margin: 0px -11px;"
+					rows="13"
+    				paginator="true" paginatorAlwaysVisible="false" 
+    				paginatorPosition="bottom">				
 					
 
 					<p:ajax event="rowDblselect" listener="#{categoriaBean.onRowDblClckSelect}"
@@ -45,11 +48,11 @@
 					<p:ajax event="rowSelect" listener="#{categoriaBean.onRowSelect}" />
 
 
-					<p:column headerText="#{label.txt_codigo}" width="120">
+					<p:column headerText="#{label.txt_codigo}" width="120" sortBy="#{entidade.idCategoria}">
 						<h:outputText value="#{entidade.idCategoria}" />
 					</p:column>
 					
-					<p:column headerText="#{label.txt_nome}" >
+					<p:column headerText="#{label.txt_nome}" sortBy="#{entidade.nome}">
 						<h:outputText value="#{entidade.nome}" />
 					</p:column>
 					

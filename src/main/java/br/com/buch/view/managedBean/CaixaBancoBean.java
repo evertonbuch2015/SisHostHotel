@@ -3,14 +3,14 @@ package br.com.buch.view.managedBean;
 import java.io.Serializable;
 
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.SessionScoped;
+import javax.faces.bean.ViewScoped;
 
 import br.com.buch.core.entity.CaixaBanco;
 import br.com.buch.core.enumerated.TipoFiltroCaixaBanco;
 import br.com.buch.core.service.ServiceCaixaBanco;
 
 @ManagedBean
-@SessionScoped
+@ViewScoped
 public class CaixaBancoBean extends GenericBean<CaixaBanco, ServiceCaixaBanco> implements Serializable{
 
 	private static final long serialVersionUID = 4996140944326181060L;

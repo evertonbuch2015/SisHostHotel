@@ -97,7 +97,7 @@ public class Hospede implements Serializable {
     private String obs;
        
     
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name ="COD_CADENDERECO")
     private Endereco endereco;
     

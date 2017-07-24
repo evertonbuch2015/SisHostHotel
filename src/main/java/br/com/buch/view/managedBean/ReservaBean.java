@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.SessionScoped;
+import javax.faces.bean.ViewScoped;
 
 import org.primefaces.event.SelectEvent;
 
@@ -26,7 +26,7 @@ import br.com.buch.view.util.UtilMensagens;
 
 
 @ManagedBean
-@SessionScoped
+@ViewScoped
 public class ReservaBean extends GenericBean<Reserva, ServiceReserva> implements Serializable{
 
 	private static final long serialVersionUID = 7126384947748854847L;

@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.List;
 
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.SessionScoped;
+import javax.faces.bean.ViewScoped;
 
 import br.com.buch.core.entity.Categoria;
 import br.com.buch.core.entity.Tarifario;
@@ -16,7 +16,7 @@ import br.com.buch.core.util.PersistenciaException;
 import br.com.buch.view.util.UtilMensagens;
 
 @ManagedBean
-@SessionScoped
+@ViewScoped
 public class TarifarioBean extends GenericBean<Tarifario, ServiceTarifario> implements Serializable{
 
 	private static final long serialVersionUID = 7612562993588960200L;

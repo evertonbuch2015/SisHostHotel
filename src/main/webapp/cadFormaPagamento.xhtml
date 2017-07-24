@@ -35,9 +35,11 @@
 					value="#{formaPagamentoBean.entidades}" var="entidade" 
 					selection="#{formaPagamentoBean.entidade}" selectionMode="single"
 					rowKey="#{entidade.idFormaPag}" reflow="true"									
-					widgetVar="carsTable" emptyMessage="#{label.msg_tabela_vazia}"
-					style="margin: 0px -11px;" 
-					rendered="#{formaPagamentoBean.buscando}">				
+					emptyMessage="#{label.msg_tabela_vazia}"
+					style="margin: 0px -11px;"
+					rows="13"
+    				paginator="true" paginatorAlwaysVisible="false"
+    				paginatorPosition="bottom">				
 					
 
 					<p:ajax event="rowDblselect" listener="#{formaPagamentoBean.onRowDblClckSelect}"
@@ -46,11 +48,11 @@
 					<p:ajax event="rowSelect" listener="#{formaPagamentoBean.onRowSelect}" />
 
 
-					<p:column headerText="#{label.txt_codigo}" width="110">
+					<p:column headerText="#{label.txt_codigo}" width="110" sortBy="#{entidade.codigo}">
 						<h:outputText value="#{entidade.codigo}" />
 					</p:column>
 					
-					<p:column headerText="#{label.txt_descricao}">
+					<p:column headerText="#{label.txt_descricao}" sortBy="#{entidade.descricao}">
 						<h:outputText value="#{entidade.descricao}" />
 					</p:column>
 					

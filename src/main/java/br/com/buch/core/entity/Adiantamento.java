@@ -6,6 +6,7 @@ import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -58,12 +59,12 @@ public class Adiantamento implements Serializable {
     private Double saldo;
        
     
-    @OneToOne
+    @OneToOne(fetch=FetchType.LAZY)
     @JoinColumn(name ="COD_CADHOSPEDE")
     private Hospede hospede;
     
     
-    @OneToOne
+    @OneToOne(fetch=FetchType.LAZY)
     @JoinColumn(name="COD_CADCAIXABANCO")
     private CaixaBanco localRecebimento;
     
@@ -71,107 +72,47 @@ public class Adiantamento implements Serializable {
     //--------------------------------	GETs and SETs------------------------------//
     
     
-    public Integer getIdAdiantamento() {
-		return idAdiantamento;
-	}
-
-	public void setIdAdiantamento(Integer idAdiantamento) {
-		this.idAdiantamento = idAdiantamento;
-	}
+    public Integer getIdAdiantamento() {return idAdiantamento;}
+	public void setIdAdiantamento(Integer idAdiantamento) {this.idAdiantamento = idAdiantamento;}
 
 	
-	public String getCodigo() {
-		return codigo;
-	}
-
-	public void setCodigo(String codigo) {
-		this.codigo = codigo;
-	}
+	public String getCodigo() {return codigo;}
+	public void setCodigo(String codigo) {this.codigo = codigo;}
 
 	
-	public String getDescricao() {
-		return descricao;
-	}
+	public String getDescricao() {return descricao;	}
+	public void setDescricao(String descricao) {this.descricao = descricao;	}
 
-	public void setDescricao(String descricao) {
-		this.descricao = descricao;
-	}
-
-	
-	public Date getDtEmissao() {
-		return dtEmissao;
-	}
-
-	public void setDtEmissao(Date dtEmissao) {
-		this.dtEmissao = dtEmissao;
-	}
-
-	
-	public Date getDtBaixa() {
-		return dtBaixa;
-	}
-
-	public void setDtBaixa(Date dtBaixa) {
-		this.dtBaixa = dtBaixa;
-	}
-
-	
-	public Double getValor() {
-		return valor;
-	}
-
-	public void setValor(Double valor) {
-		this.valor = valor;
-	}
-
-	
-	public Double getSaldo() {
-		return saldo;
-	}
-
-	public void setSaldo(Double saldo) {
-		this.saldo = saldo;
-	}
-
-
-	public Hospede getHospede() {
-		if(this.hospede == null){
-			this.hospede = new Hospede();
-		}
-		return hospede;
-	}
-
-	public void setHospede(Hospede hospede) {
-		this.hospede = hospede;
-	}
-
-	
-	public CaixaBanco getLocalRecebimento() {
-		return localRecebimento;
-	}
-	
-	public void setLocalRecebimento(CaixaBanco localRecebimento) {
-		this.localRecebimento = localRecebimento;
-	}
-	
 	
 	@Transient
     public String getDataEmissaoFormatada(){
-        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-        return sdf.format(this.dtEmissao.getTime());                
-    }
-    
-    @Transient
+        return (dtEmissao != null) ? new SimpleDateFormat("dd/MM/yyyy").format(this.dtEmissao.getTime()) : "";                
+    }	
+	public Date getDtEmissao() {return dtEmissao;}
+	public void setDtEmissao(Date dtEmissao) {this.dtEmissao = dtEmissao;}
+
+
+	@Transient
     public String getDataBaixaFormatada(){
-        if(this.dtBaixa != null){
-            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-            return sdf.format(this.dtBaixa.getTime()); 
-        }else{
-            return null;
-        }
-                       
+    	return (dtBaixa != null) ? new SimpleDateFormat("dd/MM/yyyy").format(this.dtBaixa.getTime()) : "";                       
     }
-    
+	public Date getDtBaixa() {return dtBaixa;}
+	public void setDtBaixa(Date dtBaixa) {this.dtBaixa = dtBaixa;}
+
+	
+	public Double getValor() {return valor;}
+	public void setValor(Double valor) {this.valor = valor;}
+
+	
+	public Double getSaldo() {return saldo;}
+	public void setSaldo(Double saldo) {this.saldo = saldo;	}
+
+
+	public Hospede getHospede() {return (hospede == null)? new Hospede() : hospede;	}
+	public void setHospede(Hospede hospede) {this.hospede = hospede;}
+	
+	public CaixaBanco getLocalRecebimento() {return (localRecebimento == null)? new CaixaBanco(): localRecebimento;}	
+	public void setLocalRecebimento(CaixaBanco localRecebimento) {this.localRecebimento = localRecebimento;	}
     
     //--------------------------------	Métodos Auxiliares------------------------------//
 	

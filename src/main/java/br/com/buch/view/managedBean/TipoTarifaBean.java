@@ -4,14 +4,14 @@ import java.io.Serializable;
 import java.util.List;
 
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.SessionScoped;
+import javax.faces.bean.ViewScoped;
 
 import br.com.buch.core.entity.TipoTarifa;
 import br.com.buch.core.service.ServiceTipoTarifa;
 import br.com.buch.view.util.UtilMensagens;
 
 @ManagedBean
-@SessionScoped
+@ViewScoped
 public class TipoTarifaBean extends GenericBean<TipoTarifa,ServiceTipoTarifa> implements Serializable{
 
 	private static final long serialVersionUID = -1633365565029634032L;

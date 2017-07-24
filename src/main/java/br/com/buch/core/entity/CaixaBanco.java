@@ -49,58 +49,28 @@ public class CaixaBanco implements Serializable{
         
     //--------------------------------	GETs and SETs------------------------------//
     
-	public Integer getIdCaixaBanco() {
-		return idCaixaBanco;
-	}
-
-	public void setIdCaixaBanco(Integer idCaixaBanco) {
-		this.idCaixaBanco = idCaixaBanco;
-	}
+	public Integer getIdCaixaBanco() {return idCaixaBanco;}
+	public void setIdCaixaBanco(Integer idCaixaBanco) {this.idCaixaBanco = idCaixaBanco;}
+	
+	
+	public Integer getCodigo() {return codigo;}
+	public void setCodigo(Integer codigo) {this.codigo = codigo;}
 
 	
-	public Integer getCodigo() {
-		return codigo;
-	}
-
-	public void setCodigo(Integer codigo) {
-		this.codigo = codigo;
-	}
+	public String getNome() {return nome;}
+	public void setNome(String nome) {this.nome = nome;}
+	
+	
+	public String getContaCorrente() {return contaCorrente;}
+	public void setContaCorrente(String contaCorrente) {this.contaCorrente = contaCorrente;}
+	
+	
+	public String getAgencia() {return agencia;}
+	public void setAgencia(String agencia) {this.agencia = agencia;}
 
 	
-	public String getNome() {
-		return nome;
-	}
-
-	public void setNome(String nome) {
-		this.nome = nome;
-	}
-
-	
-	public String getContaCorrente() {
-		return contaCorrente;
-	}
-
-	public void setContaCorrente(String contaCorrente) {
-		this.contaCorrente = contaCorrente;
-	}
-
-	
-	public String getAgencia() {
-		return agencia;
-	}
-
-	public void setAgencia(String agencia) {
-		this.agencia = agencia;
-	}
-
-	
-	public String getDigito() {
-		return digito;
-	}
-
-	public void setDigito(String digito) {
-		this.digito = digito;
-	}
+	public String getDigito() {return digito;}
+	public void setDigito(String digito) {this.digito = digito;}
 
 	
 	//--------------------------------	Métodos Auxiliares------------------------------//

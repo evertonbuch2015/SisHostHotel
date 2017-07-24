@@ -21,13 +21,14 @@
 <h:body>
 
 	<h:form prependId="false">
-		<div class="pen-title">
-			<h1>#{label.txt_nome_sistema}</h1>
-		</div>
+		
+	<div class="conteudo">	
 	
-	
+		<div class="pen-title"> <h1>#{label.txt_nome_sistema}</h1> </div>
+		
 		<div class="module form-module">		
 			<div class="form">
+			
 				<h2>#{label.txt_fazer_login}</h2>
 						
 				<p:inputText value="#{loginBean.login}"
@@ -111,6 +112,7 @@
 			<p:effect type="pulsate" event="load" delay="500" />
 		</p:messages>
 		
+	</div>	
 	</h:form>
 </h:body>
 

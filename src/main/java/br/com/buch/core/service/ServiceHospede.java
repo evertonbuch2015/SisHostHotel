@@ -14,6 +14,12 @@ import br.com.buch.core.util.WebServiceCep;
 
 public class ServiceHospede implements GenericService<Hospede> {
 
+	private static final String BUSCAR_TODAS = 
+			"Select h From Hospede h LEFT JOIN FETCH h.endereco"; 
+			
+	private static final String CARREGAR_ENTIDADE =
+			"Select h From Hospede h LEFT JOIN FETCH h.endereco where h.idHospede = ?1"; 
+	
 	private HospedeDao hospedeDao;
 	
 	
@@ -70,9 +76,7 @@ public class ServiceHospede implements GenericService<Hospede> {
 	@Override
 	public Hospede carregarEntidade(Hospede entidade)throws PersistenciaException {		
 		try{
-			String jpql = "Select h From Hospede h LEFT JOIN FETCH h.endereco where h.idHospede = ?1";
-			return hospedeDao.findOne(jpql, entidade.getIdHospede());
-			
+			return hospedeDao.findOne(CARREGAR_ENTIDADE, entidade.getIdHospede());			
 		}catch (Exception e) {
 			e.printStackTrace();
 			throw new PersistenciaException("Ocorreu uma exceção ao buscar os dados do Hóspede!" + 
@@ -84,7 +88,7 @@ public class ServiceHospede implements GenericService<Hospede> {
 	@Override
 	public List<Hospede> buscarTodos() {
 		try {
-			return hospedeDao.findAll();
+			return hospedeDao.find(BUSCAR_TODAS);
 		} catch (Exception e) {
 			e.printStackTrace();
 			return null;
@@ -125,7 +129,7 @@ public class ServiceHospede implements GenericService<Hospede> {
 	public Endereco consultaCepWebService(String cep){
 		Endereco endereco = null;
 		
-        WebServiceCep webServiceCep = WebServiceCep.searchCep(cep);		//Faz a busca para o cep        
+        WebServiceCep webServiceCep = WebServiceCep.searchCep(cep);       
         if (webServiceCep.wasSuccessful()) {
             endereco = new Endereco();
         	endereco.setLogradouro(webServiceCep.getLogradouroType());

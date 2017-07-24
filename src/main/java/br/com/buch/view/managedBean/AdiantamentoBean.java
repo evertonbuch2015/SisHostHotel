@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.List;
 
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.SessionScoped;
+import javax.faces.bean.ViewScoped;
 
 import org.primefaces.event.SelectEvent;
 
@@ -18,7 +18,7 @@ import br.com.buch.core.util.NegocioException;
 import br.com.buch.view.util.UtilMensagens;
 
 @ManagedBean
-@SessionScoped
+@ViewScoped
 public class AdiantamentoBean extends GenericBean<Adiantamento, ServiceAdiantamento> implements Serializable{
 
 	private static final long serialVersionUID = -8165871784161603162L;

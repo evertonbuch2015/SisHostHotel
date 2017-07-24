@@ -14,6 +14,7 @@ import javax.faces.event.AjaxBehaviorEvent;
 
 import org.primefaces.model.chart.PieChartModel;
 
+import br.com.buch.core.entity.Usuario;
 import br.com.buch.core.service.ServiceIndex;
 import br.com.buch.view.util.SessionContext;
 
@@ -28,6 +29,7 @@ public class IndexBean implements Serializable {
 	private String localeCode;
 	private static Map<String, Locale> countries;
 	private PieChartModel pieModel;
+	private Usuario usuarioLogado;
 	
 	static {
 		countries = new LinkedHashMap<String, Locale>();
@@ -41,6 +43,7 @@ public class IndexBean implements Serializable {
 	
 	@PostConstruct
 	public void init(){
+		usuarioLogado = SessionContext.getInstance().getUsuarioLogado();
 		
 		serviceIndex = new ServiceIndex();
 		createPieModel();
@@ -101,4 +104,6 @@ public class IndexBean implements Serializable {
 	public PieChartModel getPieModel() {
 		return pieModel;
     }
+	
+	
 }

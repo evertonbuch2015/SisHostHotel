@@ -1,18 +1,17 @@
 package br.com.buch.view.managedBean;
 
-
 import java.io.Serializable;
 import java.util.List;
 
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.SessionScoped;
+import javax.faces.bean.ViewScoped;
 
 import br.com.buch.core.entity.Categoria;
 import br.com.buch.core.service.ServiceCategoria;
 import br.com.buch.view.util.UtilMensagens;
 
 @ManagedBean
-@SessionScoped
+@ViewScoped
 public class CategoriaBean extends GenericBean<Categoria, ServiceCategoria> implements Serializable{
 
 	private static final long serialVersionUID = -3984110632736420732L;
