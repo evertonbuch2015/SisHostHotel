@@ -66,7 +66,7 @@ public class Adiantamento implements Serializable {
     
     @OneToOne(fetch=FetchType.LAZY)
     @JoinColumn(name="COD_CADCAIXABANCO")
-    private CaixaBanco localRecebimento;
+    private Banco localRecebimento;
     
     
     //--------------------------------	GETs and SETs------------------------------//
@@ -111,8 +111,8 @@ public class Adiantamento implements Serializable {
 	public Hospede getHospede() {return (hospede == null)? new Hospede() : hospede;	}
 	public void setHospede(Hospede hospede) {this.hospede = hospede;}
 	
-	public CaixaBanco getLocalRecebimento() {return (localRecebimento == null)? new CaixaBanco(): localRecebimento;}	
-	public void setLocalRecebimento(CaixaBanco localRecebimento) {this.localRecebimento = localRecebimento;	}
+	public Banco getLocalRecebimento() {return (localRecebimento == null)? new Banco(): localRecebimento;}	
+	public void setLocalRecebimento(Banco localRecebimento) {this.localRecebimento = localRecebimento;	}
     
     //--------------------------------	Métodos Auxiliares------------------------------//
 	

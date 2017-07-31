@@ -1,13 +1,16 @@
 /******************* INICIO COMPONENTES DO TOPO ***************/
 .bu-toggle{
 	float: right;
-	margin-top: 15px;
-	margin-right: 25px;
-	color: #34495D;
+	margin-top: 12px;
+	color: #E0EEEF;
 }
 
 
 /******************* INICIO BOTOES ***************/
+.bu-botao-toggle{
+	margin-right: 20px !important;
+}
+
 .ui-widget  .bu-botao-azul{
 	background-color: #286090  !important;
 	color: white;

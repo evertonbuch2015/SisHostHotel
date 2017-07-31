@@ -1,5 +1,6 @@
 package br.com.buch.core.service;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -12,6 +13,12 @@ import br.com.buch.view.managedBean.TarifarioBean.TipoFiltro;
 
 public class ServiceTarifario implements GenericService<Tarifario> {
 
+	private static final String BUSCAR_TODOS = 
+			"Select t From Tarifario t left Join FETCH t.categoria left Join FETCH t.tipoTarifa order by t.categoria, t.tipoTarifa, t.dataInicial";
+	
+	private static final String CARREGAR_ENTIDADE = "Select t From Tarifario t left Join FETCH t.categoria left Join FETCH t.tipoTarifa "
+			+ " where t.idTarifario = ?1 order by t.categoria, t.tipoTarifa, t.dataInicial";
+	
 	private TarifarioDao tarifarioDao;
 
 	
@@ -47,7 +54,6 @@ public class ServiceTarifario implements GenericService<Tarifario> {
 	            		" \nErro: " + UtilErros.getMensagemErro(e));
 			}
 		}
-
 	}
 
 
@@ -55,9 +61,8 @@ public class ServiceTarifario implements GenericService<Tarifario> {
 	public String excluir(Tarifario entidade) throws Exception{
 		try {
 			tarifarioDao.delete(entidade);
-			return "";
+			return "Tarifário Excluido com Sucesso";
 		}catch (Exception ex) {
-        	ex.printStackTrace();
         	throw new PersistenciaException("Ocorreu uma exceção ao Excluir o Tarifário!" + 
             		" \nErro: " + UtilErros.getMensagemErro(ex));
 		}	
@@ -67,12 +72,8 @@ public class ServiceTarifario implements GenericService<Tarifario> {
 	@Override
 	public Tarifario carregarEntidade(Tarifario entidade)throws PersistenciaException {
 		try{
-			String jpql = "Select t From Tarifario t LEFT JOIN FETCH t.categoria "
-					+ "	LEFT JOIN FETCH t.tipoTarifa where t.idTarifario = ?1";
-			return tarifarioDao.findOne(jpql, entidade.getIdTarifario());
-			
+			return tarifarioDao.findOne(CARREGAR_ENTIDADE, entidade.getIdTarifario());			
 		}catch (Exception e) {
-			e.printStackTrace();
 			throw new PersistenciaException("Ocorreu uma exceção ao buscar os dados do Tarifário!" + 
             		" \nErro: " + UtilErros.getMensagemErro(e));
 		}
@@ -82,10 +83,9 @@ public class ServiceTarifario implements GenericService<Tarifario> {
 	@Override
 	public List<Tarifario> buscarTodos() {
 		try {
-			return tarifarioDao.find("From Tarifario order by categoria, tipoTarifa, dataInicial");								
-		} catch (Exception e) {			
-			e.printStackTrace();
-			return null;
+			return tarifarioDao.find(BUSCAR_TODOS);								
+		} catch (Exception e) {
+			return new ArrayList<>();
 		}
 	}
 
@@ -121,7 +121,6 @@ public class ServiceTarifario implements GenericService<Tarifario> {
 			
 			return lista;
 		}catch (Exception e) {
-			e.printStackTrace();
 			throw new PersistenciaException("Ocorreu uma exceção ao Filtrar os dados do Tarifário!" + 
             		" \nErro: " + UtilErros.getMensagemErro(e));
 		}	

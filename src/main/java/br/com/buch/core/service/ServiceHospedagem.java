@@ -1,59 +1,113 @@
 package br.com.buch.core.service;
 
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import br.com.buch.core.dao.HospedagemDao;
 import br.com.buch.core.entity.Hospedagem;
+import br.com.buch.core.util.CodeUtils;
 import br.com.buch.core.util.NegocioException;
 import br.com.buch.core.util.PersistenciaException;
+import br.com.buch.core.util.UtilErros;
 
 public class ServiceHospedagem implements GenericService<Hospedagem> {
 
-	HospedagemDao dao;
+	private static final String CARREGAR_ENTIDADE= "Select h From Hospedagem h LEFT JOIN FETCH h.hospede"
+					+ " LEFT JOIN FETCH h.apartamento LEFT JOIN FETCH h.lancamentos where h.idHospedagem = ?";
+	
+	private static final String BUSCAR_TODOS = 
+			"From Hospedagem h LEFT JOIN FETCH h.hospede LEFT JOIN FETCH h.apartamento where h.dataEntrada Between ? and ?";
 	
 	
+	
+	private HospedagemDao dao;
+		
 	public ServiceHospedagem() {
 		dao = new HospedagemDao();
 	}
-
 	
 	
 	@Override
-	public String salvar(Hospedagem entidate) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+	public String salvar(Hospedagem entidade) throws Exception {
+		if(entidade.getIdHospedagem() == null){			
+			try {
+				
+				String codigo = CodeUtils.getDataFormatada("yyyyMM", new Date());
+				codigo += String.valueOf(dao.getMaxField("codigo") + 1);
+				entidade.setCodigo(Integer.valueOf(codigo));
+				
+				dao.save(entidade);
+				return "Hospedagem inserida com Sucesso!";
+			} catch (Exception e) {
+				e.printStackTrace();
+				throw new PersistenciaException("Ocorreu uma exceção ao inserir a Hospedagem!" + 
+	            		" \nErro: " + UtilErros.getMensagemErro(e));
+			}				
+		}else{			
+			try {
+				dao.update(entidade);
+				return "Hospedagem Alterada com Sucesso!";
+			} catch (Exception e) {
+				e.printStackTrace();
+				throw new PersistenciaException("Ocorreu uma exceção ao alterar a Hospedagem!" + 
+	            		" \nErro: " + UtilErros.getMensagemErro(e));
+			}
+		}	
 	}
-
 	
 	
 	@Override
 	public String excluir(Hospedagem entidade) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+		try {
+			dao.delete(entidade);	
+			return "Hospedagem Excluida com Sucesso!";
+		}		
+		catch (Exception ex) {
+        	ex.printStackTrace();
+        	if(ex.getCause().toString().contains("ConstraintViolationException")){
+        		throw new PersistenciaException("Hospedagem não pode ser excluida pois existem registros vinculados a ela!");
+        	}else{
+        		throw new PersistenciaException("Ocorreu uma exceção ao Excluir a Hospedagem!" + 
+                		" \nErro: " + UtilErros.getMensagemErro(ex));
+        	}
+		}
 	}
-
 	
 	
 	@Override
 	public Hospedagem carregarEntidade(Hospedagem entidade) throws PersistenciaException {
-		// TODO Auto-generated method stub
-		return null;
+		try{
+			return dao.findOne(CARREGAR_ENTIDADE, entidade.getIdHospedagem());			
+		}catch (Exception e) {
+			e.printStackTrace();
+			throw new PersistenciaException("Ocorreu uma exceção ao buscar os dados da Hospedagem!" + 
+            		" \nErro: " + UtilErros.getMensagemErro(e));
+		}
 	}
 
-	
 	
 	@Override
 	public List<Hospedagem> buscarTodos() throws PersistenciaException {
-		// TODO Auto-generated method stub
-		return null;
+		Calendar c1 = Calendar.getInstance();
+	    Calendar c2 = Calendar.getInstance();
+		c1.set(Calendar.DAY_OF_MONTH, c1.getMinimum(Calendar.DAY_OF_MONTH));
+        c2.set(Calendar.DAY_OF_MONTH, c1.getMaximum(Calendar.DAY_OF_MONTH));
+        
+        Date d1 = c1.getTime();
+        Date d2 = c2.getTime();
+        
+		try {
+			return dao.find(BUSCAR_TODOS, d1, d2);
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new PersistenciaException("Ocorreu uma exceção ao buscar os dados da Hospedagem!" + 
+            		" \nErro: " + UtilErros.getMensagemErro(e));
+		}
 	}
 
-	
 	
 	@Override
 	public void consisteAntesEditar(Hospedagem entidade) throws NegocioException {
-		// TODO Auto-generated method stub
-		
 	}
-
 }

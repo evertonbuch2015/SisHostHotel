@@ -78,45 +78,25 @@ public class Usuario implements Serializable {
 	private List<Hotel> hoteis;
 
 	// -------------------------------- GETs and SETs------------------------------//
+	
+	public Integer getIdUsusario() {return idUsusario;}
 
-	public Usuario() {
-	}
+	public void setIdUsusario(Integer idUsusario) {	this.idUsusario = idUsusario;}
 
 	
-	public Integer getIdUsusario() {
-		return idUsusario;
-	}
+	public String getNomeColaborador() {return nomeColaborador;}
 
-	public void setIdUsusario(Integer idUsusario) {
-		this.idUsusario = idUsusario;
-	}
+	public void setNomeColaborador(String nomeColaborador) {this.nomeColaborador = nomeColaborador;}
 
 	
-	public String getNomeColaborador() {
-		return nomeColaborador;
-	}
+	public String getNomeUsuario() {return nomeUsuario;}
 
-	public void setNomeColaborador(String nomeColaborador) {
-		this.nomeColaborador = nomeColaborador;
-	}
+	public void setNomeUsuario(String nomeUsuario) {this.nomeUsuario = nomeUsuario;}
 
 	
-	public String getNomeUsuario() {
-		return nomeUsuario;
-	}
+	public GrupoUsuario getGrupoUsuario() {return grupo;}
 
-	public void setNomeUsuario(String nomeUsuario) {
-		this.nomeUsuario = nomeUsuario;
-	}
-
-	
-	public GrupoUsuario getGrupoUsuario() {
-		return grupo;
-	}
-
-	public void setGrupoUsuario(GrupoUsuario grupo) {
-		this.grupo = grupo;
-	}
+	public void setGrupoUsuario(GrupoUsuario grupo) {this.grupo = grupo;}
 
 
 	public List<Hotel> getHoteis() {
@@ -126,80 +106,40 @@ public class Usuario implements Serializable {
 		return hoteis;
 	}
 
-	public void setHoteis(List<Hotel> hoteis) {
-		this.hoteis = hoteis;
-	}
+	public void setHoteis(List<Hotel> hoteis) {this.hoteis = hoteis;}
 
 	
-	public String getSetor() {
-		return setor;
-	}
+	public String getSetor() {return setor;}
 
-	public void setSetor(String setor) {
-		this.setor = setor;
-	}
+	public void setSetor(String setor) {this.setor = setor;}
 
 	
-	public Character getAtivo() {
-		return ativo;
-	}
+	public Character getAtivo() {return ativo;}
 	
-	public void setAtivo(Character ativo) {
-		this.ativo = ativo;
-	}
+	public void setAtivo(Character ativo) {this.ativo = ativo;}
 	
 	
-	public Character getEmFerias() {
-		return emFerias;
-	}
+	public Character getEmFerias() {return emFerias;}
 
-	public void setEmFerias(Character emFerias) {
-		this.emFerias = emFerias;
-	}
+	public void setEmFerias(Character emFerias) {this.emFerias = emFerias;}
 
 	
-	public String getSenha() {
-		return senha;
-	}
+	public String getSenha() {return senha;}
 
-	public void setSenha(String senha) {
-		this.senha = senha;
-	}
+	public void setSenha(String senha) {this.senha = senha;}
 	
 	
-	public String getEmail() {
-		return email;
-	}
+	public String getEmail() {return email;}
 
-	public void setEmail(String email) {
-		this.email = email;
-	}
+	public void setEmail(String email) {this.email = email;}
 
 
-	public String getFraseSecreta() {
-		return fraseSecreta;
-	}
+	public String getFraseSecreta() {return fraseSecreta;}
 
-	public void setFraseSecreta(String fraseSecreta) {
-		this.fraseSecreta = fraseSecreta;
-	}
-
-
-	public void excluirHotel(Hotel hotel){
-		if(this.getHoteis().contains(hotel)){
-			this.getHoteis().remove(hotel);
-		}
-	}
-		
-	
-	public void adicionarHotel(Hotel hotel){		
-		if(!this.getHoteis().contains(hotel)){
-			this.getHoteis().add(hotel);
-		}
-	}	
+	public void setFraseSecreta(String fraseSecreta) {this.fraseSecreta = fraseSecreta;}
 	
 	// -------------------------------- Métodos Auxiliares------------------------------//
-
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;

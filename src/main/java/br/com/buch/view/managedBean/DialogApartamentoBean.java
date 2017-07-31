@@ -11,25 +11,20 @@ import javax.faces.bean.ViewScoped;
 import org.primefaces.context.RequestContext;
 
 import br.com.buch.core.entity.Apartamento;
-import br.com.buch.core.service.ServiceApartamento;
+import br.com.buch.core.util.Constantes;
 import br.com.buch.view.util.UtilMensagens;
 
 @ManagedBean
 @ViewScoped
 public class DialogApartamentoBean implements Serializable{
 		
-	private static final long serialVersionUID = -3871976865283686929L;
-	
-	private List<Apartamento> apartamentos;
-	private ServiceApartamento serviceApartamento;
+	private static final long serialVersionUID = -3871976865283686929L;	
+	private List<Apartamento> apartamentos;	
 	
 	
-	
-	public DialogApartamentoBean() {
-		serviceApartamento = new ServiceApartamento();
-		
+	public DialogApartamentoBean() {		
 		try {
-			this.apartamentos = serviceApartamento.buscarTodos();
+			this.apartamentos = Constantes.getInstance().getListaApartamentos();
 		} catch (Exception e) {
 			UtilMensagens.mensagemErro(e.getMessage());
 		}
@@ -61,9 +56,5 @@ public class DialogApartamentoBean implements Serializable{
 	
 	public List<Apartamento> getApartamentos() {
 		return apartamentos;
-	}
-	
-	public void setApartamentos(List<Apartamento> apartamentos) {
-		this.apartamentos = apartamentos;
 	}
 }

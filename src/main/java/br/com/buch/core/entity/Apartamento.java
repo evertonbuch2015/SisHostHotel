@@ -13,7 +13,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 
 import br.com.buch.core.enumerated.SituacaoApartamento;
@@ -62,12 +61,7 @@ public class Apartamento implements Serializable {
     @NotNull(message="Informe a Categoria do Apartamento!")
     @OneToOne(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
     @JoinColumn(name ="COD_CADCATEGORIA")
-    private Categoria categoria;
-
-    
-    @Transient
-    private String descricaoTela;
-    
+    private Categoria categoria;   
     
     //-------------------------------	GETs and SETs------------------------------//
     
@@ -75,37 +69,26 @@ public class Apartamento implements Serializable {
 	public Integer getIdApartamento() {	return idApartamento;}
 	public void setIdApartamento(Integer idApartamento) {this.idApartamento = idApartamento;}
 
-
 	public Integer getNumero() {return numero;}
 	public void setNumero(Integer numero) {this.numero = numero;}
-
 	
 	public SituacaoApartamento getSituacao() {return situacao;}
 	public void setSituacao(SituacaoApartamento situacao) {this.situacao = situacao;}
 	
-
 	public String getRamal() {return ramal;}
 	public void setRamal(String ramal) {this.ramal = ramal;}
-
 
 	public Integer getCamasCasal() {return camasCasal;}
 	public void setCamasCasal(Integer camasCasal) {this.camasCasal = camasCasal;}
 
-
 	public Integer getCamasSolteiro() {return camasSolteiro;}
 	public void setCamasSolteiro(Integer camasSolteiro) {this.camasSolteiro = camasSolteiro;}
-
 
 	public String getDescricao() {return descricao;}
 	public void setDescricao(String descricao) {this.descricao = descricao;}
 
-
 	public Categoria getCategoria() {return categoria;}
 	public void setCategoria(Categoria categoria) {this.categoria = categoria;}
-	
-	
-	public String getDescricaoTela() {return "Nº: " + numero + "  -  " + categoria.getNome();}
-	public void setDescricaoTela(String descricaoTela) {this.descricaoTela = descricaoTela;}
 	
 	//--------------------------------	Métodos Auxiliares------------------------------//
 

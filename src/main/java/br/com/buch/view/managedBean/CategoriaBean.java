@@ -20,20 +20,14 @@ public class CategoriaBean extends GenericBean<Categoria, ServiceCategoria> impl
 		NOME("Nome"),
 		CODIGO("Codigo");
 		
+		TipoFiltro(String label) {this.label = label;}
 		
 		private String label;
-
-		TipoFiltro(String label) {
-			this.label = label;
-		}
 		
-		public String getLabel(){
-			return this.label;
-		}
+		public String getLabel(){return this.label;}
 	}
 	
 	private TipoFiltro filtro;	
-	private Integer idEntidade;
 	
 	
 	public CategoriaBean() {
@@ -63,27 +57,12 @@ public class CategoriaBean extends GenericBean<Categoria, ServiceCategoria> impl
 	// =============================GET AND SET=====================================	
 	
 	
-	public TipoFiltro getFiltro() {
-		return filtro;
-	}
+	public TipoFiltro getFiltro() {return filtro;}
 
-	public void setFiltro(TipoFiltro filtro) {
-		this.filtro = filtro;
-	}
+	public void setFiltro(TipoFiltro filtro) {this.filtro = filtro;}
 
-	public TipoFiltro[] tipoFiltros(){
-		return TipoFiltro.values();
-	}
+	public TipoFiltro[] tipoFiltros(){return TipoFiltro.values();}
 	
-	
-	public Integer getIdEntidade() {
-		return idEntidade;
-	}
-	
-	public void setIdEntidade(Integer idEntidade) {
-		this.idEntidade = idEntidade;
-	}
-
 	
 	@Override
 	public List<Categoria> getEntidades() {

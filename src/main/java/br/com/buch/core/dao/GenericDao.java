@@ -6,6 +6,7 @@ import java.util.List;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.persistence.EntityManager;
+import javax.persistence.PersistenceException;
 import javax.persistence.Query;
 
 
@@ -366,6 +367,27 @@ public abstract class GenericDao<T extends Serializable> {
         em.close();
         
         return count;
+    }
+    
+    
+    /**
+     * Recupera o mair valor de um registro Integer da Entidade.
+     * @param campo 
+     * @return 
+     */
+    public Integer getMaxField(String campo) throws Exception{
+    	EntityManager em = getEntityManager();
+    	try {    	
+            Query query = em.createQuery("Select max("+campo+") From " + aClass.getSimpleName()+" c ");
+            Integer num = (Integer) query.getSingleResult();
+            
+            return num == null ? 1 : num;
+		}catch(java.lang.ClassCastException ex){			
+			new PersistenceException("Campo passado por parametro deve ser um Integer.", ex);	
+			return null;
+		}finally {
+			em.close();			
+		}       
     }
 }
 

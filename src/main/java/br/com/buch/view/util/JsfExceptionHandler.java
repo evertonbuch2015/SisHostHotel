@@ -38,16 +38,18 @@ public class JsfExceptionHandler extends ExceptionHandlerWrapper {
 			Throwable throwable = context.getException();
 			
 			boolean handled = false;
-			
-			if(throwable instanceof ViewExpiredException){
-				try {
-					redirect("/login.xhtml");
+			try {				
+				if(throwable instanceof ViewExpiredException){					
 					handled = true;
-				} finally {
-					if (handled) {
-						events.remove();
-					}					
-				}				
+					redirect("/login.xhtml");									
+				}else{
+					handled = true;
+					redirect("/erros.xhtml?faces-redirect=true");
+				}					
+			} finally {
+				if (handled) {
+					events.remove();
+				}					
 			}			
 		}
 		getWrapped().handle();

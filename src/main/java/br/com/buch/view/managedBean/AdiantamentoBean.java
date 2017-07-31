@@ -1,6 +1,7 @@
 package br.com.buch.view.managedBean;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.faces.bean.ManagedBean;
@@ -9,11 +10,11 @@ import javax.faces.bean.ViewScoped;
 import org.primefaces.event.SelectEvent;
 
 import br.com.buch.core.entity.Adiantamento;
-import br.com.buch.core.entity.CaixaBanco;
+import br.com.buch.core.entity.Banco;
 import br.com.buch.core.entity.Hospede;
 import br.com.buch.core.enumerated.TipoFiltroAdiantamento;
 import br.com.buch.core.service.ServiceAdiantamento;
-import br.com.buch.core.service.ServiceCaixaBanco;
+import br.com.buch.core.util.Constantes;
 import br.com.buch.core.util.NegocioException;
 import br.com.buch.view.util.UtilMensagens;
 
@@ -22,7 +23,6 @@ import br.com.buch.view.util.UtilMensagens;
 public class AdiantamentoBean extends GenericBean<Adiantamento, ServiceAdiantamento> implements Serializable{
 
 	private static final long serialVersionUID = -8165871784161603162L;
-
 	private TipoFiltroAdiantamento filtro;	
 	
 	
@@ -57,7 +57,6 @@ public class AdiantamentoBean extends GenericBean<Adiantamento, ServiceAdiantame
 		
 	
 	public void realizarBaixa(){
-		
 		try {
 			service.realizarBaixa(entidade);
 			this.entidade = service.carregarEntidade(entidade);
@@ -75,29 +74,27 @@ public class AdiantamentoBean extends GenericBean<Adiantamento, ServiceAdiantame
 	// =============================GET AND SET=====================================
 	
 	
-	public TipoFiltroAdiantamento[] tipoFiltros(){
-		return TipoFiltroAdiantamento.values();
-	}
+	public TipoFiltroAdiantamento[] tipoFiltros(){return TipoFiltroAdiantamento.values();}
 	
-	public TipoFiltroAdiantamento getFiltro() {
-		return filtro;
-	}
+	public TipoFiltroAdiantamento getFiltro() {return filtro;}
 	
-	public void setFiltro(TipoFiltroAdiantamento filtro) {
-		this.filtro = filtro;
-	}
+	public void setFiltro(TipoFiltroAdiantamento filtro) {this.filtro = filtro;}
 	
 	
-	public List<CaixaBanco> getLocaisRecebimento(){
-		return new ServiceCaixaBanco().buscarTodos();
+	public List<Banco> getLocaisRecebimento(){
+		try {
+			return Constantes.getInstance().getListaBancos();
+		} catch (Exception e) {
+			UtilMensagens.mensagemErro(UtilMensagens.MSM_ERRO_INTERNO);
+			return new ArrayList<>();
+		}
 	}
 	
 	
 	@Override
 	public List<Adiantamento> getEntidades() {
-		if (this.entidades == null) {
+		if (this.entidades == null)
 			refresh();
-		}	
 		return entidades;
 	}
 }

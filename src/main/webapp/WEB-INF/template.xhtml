@@ -11,7 +11,7 @@
 		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
 		<meta http-equiv="pragma" content="no-cache" />
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=0.8, maximum-scale=1, user-scalable=yes" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=yes" />
 	</f:facet>
 	
 	<h:outputScript  	name="LocaleCalendario.js" 		 library="js"/>
@@ -38,13 +38,28 @@
 <h:body>
 	<div class="bu-inner-container">
 	
-	
-		<header class="bu-topbar">
-			<h:graphicImage library="images" name="logo-sistema.png" />			
-			
-			<a href="#" class="bu-toggle js-toggle"><i class="fa  fa-bars"></i></a>
-		</header>
+		<h:form>
+			<header class="bu-topbar">
+				<h:graphicImage library="images" name="logo-sistema.png" />
 				
+				<p:commandButton id="dynaButtoan" class="bu-toggle bu-botao-toggle js-toggle"
+					 type="button" icon="fa  fa-bars"/>
+							
+				<p:commandButton id="dynaButton"
+					styleClass="bu-toggle bu-botao-toggle" type="button" icon="fa fa-user"/>
+					
+				<p:menu overlay="true" trigger="dynaButton" my="left top" at="left bottom">
+					<p:submenu>
+	            		<p:menuitem value="#{label.menu_linguagem}" onclick="PF('dialogIdioma').initPosition(); PF('dialogIdioma').show(); return false;" icon="fa fa-language"/>
+	                    <p:menuitem value="#{label.menu_sair}" action="#{indexBean.deslogar()}" icon="fa fa-power-off"/>
+	        		</p:submenu>				
+				</p:menu> 
+				
+				<p:outputLabel value="#{indexBean.usuarioLogado.nomeColaborador}"
+					styleClass="bu-toggle" style="margin-top:16px !important;	margin-right: 12px;"/>
+							
+			</header>
+		</h:form>				
 				
 		<h:form prependId="false">		
 			<aside class="bu-sidebar js-sidebar">				

@@ -3688,7 +3688,7 @@ hr.ui-widget-header {
 }
 .ui-panelmenu {
   border: solid 1px #e0e0e0;
-  background-color: #537495;
+  background-color: #315569;
   color: #546e7a;
   border-radius: 2px;
   -webkit-border-radius: 2px;
@@ -3710,7 +3710,7 @@ hr.ui-widget-header {
   background-color: #558ba8;
 }
 .ui-panelmenu .ui-panelmenu-panel h3.ui-state-active {
-  background-color: #558ba8;
+  background-color: #34495D;
 }
 .ui-panelmenu .ui-panelmenu-panel .ui-panelmenu-header .ui-icon-triangle-1-e {
   background-image: url("#{resource['primefaces-adamantium:images/right-arrow-white.svg']}");
@@ -3741,7 +3741,7 @@ hr.ui-widget-header {
   color: #fff;
 }
 .ui-panelmenu .ui-panelmenu-panel .ui-panelmenu-content .ui-menuitem a {
-  color: #fff;
+  color: #E0EEEF;
   font-size: 12px;
   font-family: 'latoregular';
   padding: 4px 5px 7px 30px;

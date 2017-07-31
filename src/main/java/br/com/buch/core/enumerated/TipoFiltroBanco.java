@@ -1,13 +1,13 @@
 package br.com.buch.core.enumerated;
 
-public enum TipoFiltroCaixaBanco {
+public enum TipoFiltroBanco {
 	
 		CODIGO("Código"), 
 		NOME("Nome");
 		
 		private String label;
 
-		TipoFiltroCaixaBanco(String label) {
+		TipoFiltroBanco(String label) {
 			this.label = label;
 		}
 		

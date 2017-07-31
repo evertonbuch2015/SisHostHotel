@@ -15,33 +15,25 @@ import br.com.buch.view.util.UtilMensagens;
 @ViewScoped
 public class FormaPagamentoBean extends GenericBean<FormaPagamento, ServiceFormaPagamento> implements Serializable{
 
-	private static final long serialVersionUID = 8656047049480224440L;
-
 	public enum TipoFiltro{
 		NOME("Nome"),
 		CODIGO("Codigo");
 		
+		TipoFiltro(String label) {this.label = label;}
 		
-		private String label;
-
-		TipoFiltro(String label) {
-			this.label = label;
-		}
+		private String label;		
 		
-		public String getLabel(){
-			return this.label;
-		}
+		public String getLabel(){return this.label;}
 	}
 	
 	
-	private TipoFiltro filtro;	
-	private Integer idEntidade;
+	private static final long serialVersionUID = 8656047049480224440L;	
+	private TipoFiltro filtro;
 	
 	
 	public FormaPagamentoBean() {
 		super(new ServiceFormaPagamento());
 	}
-
 	
 	// =======================METODOS DO USUARIO=====================================
 	
@@ -63,34 +55,17 @@ public class FormaPagamentoBean extends GenericBean<FormaPagamento, ServiceForma
 	
 	// =============================GET AND SET=====================================
 	
-	public TipoFiltro getFiltro() {
-		return filtro;
-	}
+	public TipoFiltro getFiltro() {return filtro;}
 
-	public void setFiltro(TipoFiltro filtro) {
-		this.filtro = filtro;
-	}
+	public void setFiltro(TipoFiltro filtro) {this.filtro = filtro;}
 
-	public TipoFiltro[] tipoFiltros(){
-		return TipoFiltro.values();
-	}
+	public TipoFiltro[] tipoFiltros(){return TipoFiltro.values();}
 	
-	
-	public Integer getIdEntidade() {
-		return idEntidade;
-	}
-	
-	public void setIdEntidade(Integer idEntidade) {
-		this.idEntidade = idEntidade;
-	}
-
-	
+		
 	@Override
 	public List<FormaPagamento> getEntidades() {
-		if (this.entidades == null) {
+		if (this.entidades == null)
 			refresh();
-		}	
 		return entidades;
 	}
-	
 }

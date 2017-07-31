@@ -18,7 +18,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name="CAD_CAIXABANCO")
-public class CaixaBanco implements Serializable{
+public class Banco implements Serializable{
 
 	private static final long serialVersionUID = -8172847214408341346L;
 
@@ -91,7 +91,7 @@ public class CaixaBanco implements Serializable{
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		CaixaBanco other = (CaixaBanco) obj;
+		Banco other = (Banco) obj;
 		if (idCaixaBanco == null) {
 			if (other.idCaixaBanco != null)
 				return false;

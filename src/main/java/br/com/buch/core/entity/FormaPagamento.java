@@ -39,40 +39,24 @@ public class FormaPagamento implements Serializable{
     
     //-------------------------------	GETs and SETs------------------------------//
 	
-    public Integer getIdFormaPag() {
-		return idFormaPag;
-	}
+    public Integer getIdFormaPag() {return idFormaPag;}
 
-	public void setIdFormaPag(Integer idFormaPag) {
-		this.idFormaPag = idFormaPag;
-	}
+	public void setIdFormaPag(Integer idFormaPag) {this.idFormaPag = idFormaPag;}
 
 
-	public Integer getCodigo() {
-		return codigo;
-	}
+	public Integer getCodigo() {return codigo;}
 
-	public void setCodigo(Integer codigo) {
-		this.codigo = codigo;
-	}
+	public void setCodigo(Integer codigo) {this.codigo = codigo;}
 
 
-	public String getDescricao() {
-		return descricao;
-	}
+	public String getDescricao() {return descricao;}
 
-	public void setDescricao(String descricao) {
-		this.descricao = descricao;
-	}
+	public void setDescricao(String descricao) {this.descricao = descricao;}
 
 
-	public Integer getParcelas() {
-		return parcelas;
-	}
-
-	public void setParcelas(Integer parcelas) {
-		this.parcelas = parcelas;
-	}
+	public Integer getParcelas() {return parcelas;}
+	
+	public void setParcelas(Integer parcelas) {this.parcelas = parcelas;}
 
 
 	//--------------------------------	Métodos Auxiliares------------------------------//

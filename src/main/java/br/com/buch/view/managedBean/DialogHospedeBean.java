@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 
@@ -28,13 +29,13 @@ public class DialogHospedeBean implements Serializable{
 	private ServiceHospede serviceHospede;
 	
 	
-	
-	public DialogHospedeBean() {
+	@PostConstruct
+	public void init(){
 		serviceHospede = new ServiceHospede();
+		hospedes = new ArrayList<Hospede>();
 	}
 	
 	//--------------------------------	Métodos da View ------------------------------//
-	
 	
 	public void pesquisar(){				
 		try {
@@ -65,32 +66,17 @@ public class DialogHospedeBean implements Serializable{
 	
 	//--------------------------------	GETs and SETs------------------------------//
 	
-	public List<Hospede> getHospedes() {
-		if(this.hospedes == null){
-			this.hospedes = new ArrayList<Hospede>();
-		}
-		return hospedes;
-	}
+	public List<Hospede> getHospedes() {return hospedes;}
 	
 	
-	public TipoFiltroHospede getFiltro() {
-		return tipoFiltro;
-	}
+	public TipoFiltroHospede getFiltro() {return tipoFiltro;}
 
-	public void setFiltro(TipoFiltroHospede filtro) {
-		this.tipoFiltro = filtro;
-	}
+	public void setFiltro(TipoFiltroHospede filtro) {this.tipoFiltro = filtro;}
 
-	public TipoFiltroHospede[] tipoFiltros(){
-		return TipoFiltroHospede.values();
-	}
+	public TipoFiltroHospede[] tipoFiltros(){return TipoFiltroHospede.values();}
 
 
-	public String getValorFiltro() {
-		return valorFiltro;
-	}
+	public String getValorFiltro() {return valorFiltro;}
 	
-	public void setValorFiltro(String valorFiltro) {
-		this.valorFiltro = valorFiltro;
-	}
+	public void setValorFiltro(String valorFiltro) {this.valorFiltro = valorFiltro;}
 }

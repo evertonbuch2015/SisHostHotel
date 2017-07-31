@@ -22,8 +22,10 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.Transient;
+import javax.validation.constraints.NotNull;
 
 import br.com.buch.core.enumerated.SituacaoHospedagem;
+import br.com.buch.core.util.CodeUtils;
 
 @Entity
 @Table(name="HOSPEDAGEM")
@@ -102,204 +104,145 @@ public class Hospedagem implements Serializable {
     
     
     @OneToOne
+    @NotNull
     @JoinColumn(name ="COD_CADAPARTAMENTO")
     private Apartamento apartamento;
        
     
     @OneToOne
+    @NotNull
     @JoinColumn(name ="COD_CADHOSPEDE")
     private Hospede hospede;
 
     
     @OneToMany(mappedBy = "hospedagem", targetEntity = HospedeAdicional.class,
-    			fetch = FetchType.EAGER, cascade = CascadeType.ALL)    
+    			fetch = FetchType.LAZY, cascade = CascadeType.ALL)    
     private List<HospedeAdicional> hospedesAdicionais;
     
     
     @OneToMany(mappedBy = "hospedagem", targetEntity = HospedagemLancamento.class, 
-    			fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    			fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<HospedagemLancamento> lancamentos;
 
 
     
    //--------------------------------	GETs and SETs------------------------------//
     
-	public Integer getIdHospedagem() {
-		return idHospedagem;
-	}
+	public Integer getIdHospedagem() {return idHospedagem;}
 
-	public void setIdHospedagem(Integer idHospedagem) {
-		this.idHospedagem = idHospedagem;
-	}
+	public void setIdHospedagem(Integer idHospedagem) {this.idHospedagem = idHospedagem;}
 
 
-	public Integer getCodigo() {
-		return codigo;
-	}
+	public Integer getCodigo() {return codigo;}
 
-	public void setCodigo(Integer codigo) {
-		this.codigo = codigo;
-	}
+	public void setCodigo(Integer codigo) {this.codigo = codigo;}
 
 
-	public Date getDataEntrada() {
-		return dataEntrada;
-	}
+	public Date getDataEntrada() {return dataEntrada;}
 
-	public void setDataEntrada(Date dataEntrada) {
-		this.dataEntrada = dataEntrada;
-	}
+	public void setDataEntrada(Date dataEntrada) {this.dataEntrada = dataEntrada;}
 
 
-	public Date getDataSaida() {
-		return dataSaida;
-	}
+	public Date getDataSaida() {return dataSaida;}
 
-	public void setDataSaida(Date dataSaida) {
-		this.dataSaida = dataSaida;
-	}
+	public void setDataSaida(Date dataSaida) {this.dataSaida = dataSaida;}
 
 
 	public Integer getDiarias() {
-		return diarias;
+		try {
+			return diarias == null ? CodeUtils.diasDiferenca(dataEntrada, dataSaida): diarias;
+		} catch (Exception e) {
+			return 0;
+		}
 	}
 
-	public void setDiarias(Integer diarias) {
-		this.diarias = diarias;
-	}
+	public void setDiarias(Integer diarias) {this.diarias = diarias;}
 
 
-	public SituacaoHospedagem getSituacao() {
-		return situacao;
-	}
+	public SituacaoHospedagem getSituacao() {return situacao;}
 	
-	public void setSituacao(SituacaoHospedagem situacao) {
-		this.situacao = situacao;
-	}
-	
-	
+	public void setSituacao(SituacaoHospedagem situacao) {this.situacao = situacao;}
 	
 
-	public Double getValorDiaria() {
-		return valorDiaria;
-	}
+	public Double getValorDiaria() {return valorDiaria;}
 
-	public void setValorDiaria(Double valorDiaria) {
-		this.valorDiaria = valorDiaria;
-	}
+	public void setValorDiaria(Double valorDiaria) {this.valorDiaria = valorDiaria;}
 
 
-	public Double getValorDesconto() {
-		return valorDesconto;
-	}
+	public Double getValorDesconto() {return valorDesconto;}
 
-	public void setValorDesconto(Double valorDesconto) {
-		this.valorDesconto = valorDesconto;
-	}
+	public void setValorDesconto(Double valorDesconto) {this.valorDesconto = valorDesconto;}
 
 
-	public Double getValorTaxaTurismo() {
-		return valorTaxaTurismo;
-	}
+	public Double getValorTaxaTurismo() {return valorTaxaTurismo;}
 
-	public void setValorTaxaTurismo(Double valorTaxaTurismo) {
-		this.valorTaxaTurismo = valorTaxaTurismo;
-	}
+	public void setValorTaxaTurismo(Double valorTaxaTurismo) {this.valorTaxaTurismo = valorTaxaTurismo;}
 
 
-	public Double getValorTaxaServico() {
-		return valorTaxaServico;
-	}
+	public Double getValorTaxaServico() {return valorTaxaServico;}
 
-	public void setValorTaxaServico(Double valorTaxaServico) {
-		this.valorTaxaServico = valorTaxaServico;
-	}
+	public void setValorTaxaServico(Double valorTaxaServico) {this.valorTaxaServico = valorTaxaServico;}
 
 
-	public Double getValorTotal() {
-		Double valor = 0.0;
-		
-		valor += (this.valorDiaria != null) ? valorDiaria * getDiarias() : 0.0;		
-		valor += (this.valorTaxaServico != null) ? valorTaxaServico : 0.0;
-		valor += (this.valorTaxaTurismo != null) ? valorTaxaTurismo : 0.0;
-		
-		valor -= (this.valorDesconto != null) ? valorDesconto : 0.0;
-		
-		this.valorTotal = valor;
-		
+	public Double getValorTotal() {		
+		try {			
+			Double valor = 0.0;
+			
+			valor += (this.valorDiaria != null) ? valorDiaria * getDiarias() : 0.0;		
+			valor += (this.valorTaxaServico != null) ? valorTaxaServico : 0.0;
+			valor += (this.valorTaxaTurismo != null) ? valorTaxaTurismo : 0.0;
+			
+			valor -= (this.valorDesconto != null) ? valorDesconto : 0.0;
+			
+			this.valorTotal = valor;
+		} catch (Exception e) {
+			valorTotal = 0.0;
+		}			
 		return valorTotal;
 	}
 
-	public void setValorTotal(Double valorTotal) {
-		this.valorTotal = valorTotal;
-	}
+	public void setValorTotal(Double valorTotal) {this.valorTotal = valorTotal;}
 	
 	
-	
-	public String getObs() {
-		return obs;
-	}
+	public String getObs() {return obs;}
 
-	public void setObs(String obs) {
-		this.obs = obs;
-	}
+	public void setObs(String obs) {this.obs = obs;}
 
 
-	public String getMotivoViagem() {
-		return motivoViagem;
-	}
+	public String getMotivoViagem() {return motivoViagem;}
 
-	public void setMotivoViagem(String motivoViagem) {
-		this.motivoViagem = motivoViagem;
-	}
+	public void setMotivoViagem(String motivoViagem) {this.motivoViagem = motivoViagem;}
 
 
-	public String getMeioTransporte() {
-		return meioTransporte;
-	}
+	public String getMeioTransporte() {return meioTransporte;}
 
-	public void setMeioTransporte(String meioTransporte) {
-		this.meioTransporte = meioTransporte;
-	}
+	public void setMeioTransporte(String meioTransporte) {this.meioTransporte = meioTransporte;}
 
 
-	public String getProximoDestino() {
-		return proximoDestino;
-	}
+	public String getProximoDestino() {return proximoDestino;}
 
-	public void setProximoDestino(String proximoDestino) {
-		this.proximoDestino = proximoDestino;
-	}
+	public void setProximoDestino(String proximoDestino) {this.proximoDestino = proximoDestino;}
 
 
-	public String getDestinoAnterior() {
-		return destinoAnterior;
-	}
+	public String getDestinoAnterior() {return destinoAnterior;}
 
-	public void setDestinoAnterior(String destinoAnterior) {
-		this.destinoAnterior = destinoAnterior;
-	}
+	public void setDestinoAnterior(String destinoAnterior) {this.destinoAnterior = destinoAnterior;}
 
 
-	public Apartamento getApartamento() {
-		return apartamento;
-	}
+	public Apartamento getApartamento() {return apartamento;}
 
-	public void setApartamento(Apartamento apartamento) {
-		this.apartamento = apartamento;
-	}
+	public void setApartamento(Apartamento apartamento) {this.apartamento = apartamento;}
 
 
-	public Hospede getHospede() {
-		return hospede;
-	}
+	public Hospede getHospede() {return hospede;}
 
-	public void setHospede(Hospede hospede) {
-		this.hospede = hospede;
-	}
+	public void setHospede(Hospede hospede) {this.hospede = hospede;}
 
 
 	public List<HospedeAdicional> getHospedesAdicionais() {
+		if(hospedesAdicionais == null){
+			hospedesAdicionais = new ArrayList<>();
+		}
 		return hospedesAdicionais;
 	}
 

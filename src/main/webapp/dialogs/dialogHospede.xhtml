@@ -7,34 +7,33 @@
 	<meta charset="UTF-8"/>
 	<link rel="stylesheet" type="text/css"
 			href="resources/style/default.css" media="screen" />
-
 </h:head>
+
 <h:body>
 
 	<h:form>
     	<div id="customheader" style="display:none">
     		<i  class="fa fa-users" ></i>	
-    		<p:outputLabel value="Consulta de Hóspedes" style="margin-left: 10px"/>
+    		<p:outputLabel value="#{label.consulta_hospedes}" style="margin-left: 10px"/>
     	</div>
     	
    		<p:panelGrid columns="2" 
 			styleClass="ui-panelgrid-blank">
-				
-												
+															
 			<p:selectOneMenu id="tipoFiltro"
-				value="#{dialogHospedeBean.filtro}" style="width:80%" required="true">						
-				<f:selectItem itemLabel="Selecione o Filtro" />
+				value="#{dialogHospedeBean.filtro}" style="width:80%" required="true">
 				<f:selectItems value="#{dialogHospedeBean.tipoFiltros()}"
 					var="a" itemValue="#{a}" itemLabel="#{a.label}"/>						
 			</p:selectOneMenu>
 			<p:outputLabel value=""/>
 			
 				
-			<p:inputText id="valorfiltro" placeholder="Valor do Filtro!" 
-					value="#{dialogHospedeBean.valorFiltro}"
-					size="35" required="true"/>
+			<p:inputText id="valorfiltro" 
+				value="#{dialogHospedeBean.valorFiltro}"
+				placeholder="#{label.valor_filtro}"		
+				size="35" required="true"/>
 							
-			<p:commandButton value="Filtrar" icon="ui-icon-folder-collapsed"
+			<p:commandButton value="#{label.filtrar_registros}" icon="ui-icon-folder-collapsed"
 				styleClass="bu-botao-azul" update="tabela"
 				actionListener="#{dialogHospedeBean.pesquisar()}"/>	
 				
@@ -49,11 +48,12 @@
     		paginator="true" paginatorAlwaysVisible="false" 
     		paginatorPosition="bottom">
     		
-				<p:column headerText="#{label.txt_codigo}" width="60">
+				<p:column headerText="#{label.txt_codigo}" 
+					width="60" sortBy="#{hospede.codigo}">
 					<h:outputText value="#{hospede.codigo}" />
 				</p:column>
 	
-				<p:column headerText="#{label.txt_nome}">
+				<p:column headerText="#{label.txt_nome}" sortBy="#{hospede.nome}">
 					<h:outputText value="#{hospede.nome}" />
 				</p:column>
 	

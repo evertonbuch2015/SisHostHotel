@@ -36,7 +36,7 @@ public class ServiceReserva implements GenericService<Reserva> {
 			
 			try {
 				reservaDao.update(entidade);
-				return "Reserva Alterado com Sucesso!";
+				return "Reserva Alterada com Sucesso!";
 			} catch (Exception e) {
 				e.printStackTrace();
 				throw new PersistenciaException("Ocorreu uma exceção ao alterar a Reserva!" + 

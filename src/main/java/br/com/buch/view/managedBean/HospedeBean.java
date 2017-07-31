@@ -20,9 +20,7 @@ import br.com.buch.view.util.UtilMensagens;
 public class HospedeBean extends GenericBean<Hospede, ServiceHospede> implements Serializable{
 	
 	private static final long serialVersionUID = -6802914921786106522L;
-	
-	private TipoFiltroHospede filtro;	
-	private Integer idHospede;
+	private TipoFiltroHospede filtro;
 	
 	
 	public HospedeBean() {
@@ -61,38 +59,20 @@ public class HospedeBean extends GenericBean<Hospede, ServiceHospede> implements
 	}
 	// =============================GET AND SET=====================================
 
-	public TipoFiltroHospede getFiltro() {
-		return filtro;
-	}
+	public TipoFiltroHospede getFiltro() {return filtro;}
 
-	public void setFiltro(TipoFiltroHospede filtro) {
-		this.filtro = filtro;
-	}
+	public void setFiltro(TipoFiltroHospede filtro) {this.filtro = filtro;}
 
-	public TipoFiltroHospede[] tipoFiltros(){
-		return TipoFiltroHospede.values();
-	}
+	public TipoFiltroHospede[] tipoFiltros(){return TipoFiltroHospede.values();}
 
 	
-	public Estados[] getEstados(){
-		return Estados.values();
-	}
-
-		
-	public Integer getIdHospede() {
-		return idHospede;
-	}
-	
-	public void setIdHospede(Integer idHospede) {
-		this.idHospede = idHospede;
-	}
+	public Estados[] getEstados(){return Estados.values();}
 	
 	
 	@Override
 	public List<Hospede> getEntidades() {
-		if (this.entidades == null) {
+		if (this.entidades == null)
 			refresh();
-		}	
 		return entidades;
 	}
 }

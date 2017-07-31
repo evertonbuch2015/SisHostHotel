@@ -10,10 +10,7 @@
 	template="/WEB-INF/template.xhtml"
 	xmlns:app="http://java.sun.com/jsf/composite/componentes">
 
-	<ui:define name="tituloPagina">
-		#{label.tit_formas_pag}
-	</ui:define>
-
+	<ui:define name="tituloPagina">#{label.tit_formas_pag}</ui:define>
 
 	<ui:define name="conteudo">
 		
@@ -36,7 +33,7 @@
 					selection="#{formaPagamentoBean.entidade}" selectionMode="single"
 					rowKey="#{entidade.idFormaPag}" reflow="true"									
 					emptyMessage="#{label.msg_tabela_vazia}"
-					style="margin: 0px -11px;"
+					style="margin: 0px -8px;"
 					rows="13"
     				paginator="true" paginatorAlwaysVisible="false"
     				paginatorPosition="bottom">				
@@ -76,7 +73,6 @@
 				</p:dataTable>
 			</p:tab>
 		</p:tabView>	
-		
 		
 		
 		<p:tabView rendered="#{!formaPagamentoBean.buscando}">					

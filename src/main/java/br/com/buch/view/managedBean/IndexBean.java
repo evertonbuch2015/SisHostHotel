@@ -22,14 +22,14 @@ import br.com.buch.view.util.SessionContext;
 @ManagedBean
 @SessionScoped
 public class IndexBean implements Serializable {
-	
-	
-	private ServiceIndex serviceIndex;
+		
 	private static final long serialVersionUID = 201405150723L;
 	private String localeCode;
 	private static Map<String, Locale> countries;
 	private PieChartModel pieModel;
 	private Usuario usuarioLogado;
+	private ServiceIndex serviceIndex;
+	
 	
 	static {
 		countries = new LinkedHashMap<String, Locale>();
@@ -80,30 +80,24 @@ public class IndexBean implements Serializable {
         pieModel.setShowDataLabels(true);
         pieModel.setDiameter(150);
     }
+	
+	
 	// =============================GET AND SET======================================
 	
-	public Map<String, Locale> getCountries() {
-		return countries;
-	}
-
+	public Map<String, Locale> getCountries() {return countries;}
 	
 	public String getLocaleCode() {
 		if ((this.localeCode == null) && (FacesContext.getCurrentInstance().getViewRoot() != null) &&
 				(FacesContext.getCurrentInstance().getViewRoot().getLocale() != null)) {
 			this.localeCode = FacesContext.getCurrentInstance().getViewRoot().getLocale().getLanguage();
 		}
-
 		return this.localeCode;
 	}
 
-	public void setLocaleCode(String localeCode) {
-		this.localeCode = localeCode;
-	}
+	public void setLocaleCode(String localeCode) {this.localeCode = localeCode;}
 
+	public PieChartModel getPieModel() {return pieModel;}
 	
-	public PieChartModel getPieModel() {
-		return pieModel;
-    }
-	
-	
+	public Usuario getUsuarioLogado() {return usuarioLogado;}
+
 }

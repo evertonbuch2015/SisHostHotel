@@ -75,7 +75,7 @@ public class Recebimento implements Serializable {
 	
 	@OneToOne()
     @JoinColumn(name ="COD_CADCAIXABANCO")
-    private CaixaBanco localRecebimento;
+    private Banco localRecebimento;
 
 	
 	//--------------------------------	GETs and SETs------------------------------//
@@ -143,11 +143,11 @@ public class Recebimento implements Serializable {
 	}
 
 
-	public CaixaBanco getLocalRecebimento() {
+	public Banco getLocalRecebimento() {
 		return localRecebimento;
 	}
 
-	public void setLocalRecebimento(CaixaBanco localRecebimento) {
+	public void setLocalRecebimento(Banco localRecebimento) {
 		this.localRecebimento = localRecebimento;
 	}
 

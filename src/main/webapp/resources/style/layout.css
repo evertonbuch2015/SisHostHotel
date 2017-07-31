@@ -19,6 +19,11 @@
 	padding: 0px 2px
 }
 
+.bu-div20{height: 20px;}
+
+.bu-div40{height: 40px;}
+
+.bu-div50{height: 50px;}
 
 
 /******************* INICIO TOPO ***************/
@@ -29,7 +34,7 @@
 	width:100%;
 	margin-top :-1;
 	
-	background-color:#f7f5f3;
+	background-color:#34495D;
 	border-bottom: 1px solid #D7D7D2;
 }
 

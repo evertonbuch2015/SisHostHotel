@@ -37,22 +37,14 @@ public class TipoTarifa implements Serializable {
     
     //--------------------------------	GETs and SETs------------------------------//
     
-	public Integer getIdTipoTarifa() {
-		return idTipoTarifa;
-	}
+	public Integer getIdTipoTarifa() {	return idTipoTarifa;}
 
-	public void setIdTipoTarifa(Integer idTipoTarifa) {
-		this.idTipoTarifa = idTipoTarifa;
-	}
+	public void setIdTipoTarifa(Integer idTipoTarifa) {this.idTipoTarifa = idTipoTarifa;}
 
 
-	public String getNome() {
-		return nome;
-	}
+	public String getNome() {return nome;}
 
-	public void setNome(String nome) {
-		this.nome = nome;
-	}
+	public void setNome(String nome) {this.nome = nome;}
 
 
 	

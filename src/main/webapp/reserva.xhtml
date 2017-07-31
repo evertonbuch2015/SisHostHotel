@@ -10,14 +10,11 @@
 	template="/WEB-INF/template.xhtml"
 	xmlns:app="http://java.sun.com/jsf/composite/componentes">
 
-	<ui:define name="tituloPagina">
-		#{label.tit_reservas}
-	</ui:define>
+	<ui:define name="tituloPagina">#{label.tit_reservas}</ui:define>
 	
 	<ui:define name="head">
 		<h:outputScript library="js" name="Monetario.js"/>	
 	</ui:define> >
-
 
 	<ui:define name="conteudo">
 		
@@ -40,7 +37,7 @@
 					selection="#{reservaBean.entidade}" selectionMode="single"
 					rowKey="#{entidade.idReserva}" reflow="true"									
 					emptyMessage="#{label.msg_tabela_vazia}"
-					style="margin: 0px -11px;"
+					style="margin: 0px -8px;"
 					rows="13"
     				paginator="true" paginatorAlwaysVisible="false"
     				paginatorPosition="bottom">				
@@ -197,7 +194,7 @@
 						<p:outputLabel value="#{label.txt_apartamento}" for="apartamento" />
 						<h:panelGrid columns="2">
    							<p:inputText id="apartamento" size="40"
-   								value="#{reservaBean.entidade.apartamento.descricaoTela}"
+   								value="#{reservaBean.descricaoApartamento}"
 								readonly="#{facesContext.currentPhaseId.name eq 'RENDER_RESPONSE'}"
 								required="true"/>
 								

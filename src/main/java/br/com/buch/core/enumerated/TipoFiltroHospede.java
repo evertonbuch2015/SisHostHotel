@@ -1,19 +1,14 @@
 package br.com.buch.core.enumerated;
 
 public enum TipoFiltroHospede {
-	
-		CODIGO("Código"), 
+		
 		NOME("Nome"),
+		CODIGO("Código"),
 		CPF("CPF");
 		
-		private String label;
-
-		TipoFiltroHospede(String label) {
-			this.label = label;
-		}
+		TipoFiltroHospede(String label) {this.label = label;}
 		
-		public String getLabel(){
-			return this.label;
-		}
-	
+		private String label;
+		
+		public String getLabel(){return this.label;}
 }

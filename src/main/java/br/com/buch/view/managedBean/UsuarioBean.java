@@ -3,10 +3,8 @@ package br.com.buch.view.managedBean;
 import java.io.Serializable;
 import java.util.List;
 
-import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
-import javax.faces.context.FacesContext;
 
 import org.primefaces.event.SelectEvent;
 
@@ -21,25 +19,19 @@ import br.com.buch.view.util.UtilMensagens;
 @ViewScoped
 public class UsuarioBean extends GenericBean<Usuario, ServiceUsuario> implements Serializable{
 
-	private static final long serialVersionUID = 7007370320624874450L;
-
 	public enum TipoFiltro{
 		CODIGO("Código"), 
 		NOME("Nome Usuário");
 		
-		private String label;
-
-		TipoFiltro(String label) {
-			this.label = label;
-		}
+		TipoFiltro(String label) {this.label = label;}
 		
-		public String getLabel(){
-			return this.label;
-		}
+		private String label;		
+		
+		public String getLabel(){return this.label;}
 	}
 	
-	private TipoFiltro filtro;	
-	private Integer usuarioId;
+	private static final long serialVersionUID = 7007370320624874450L;
+	private TipoFiltro filtro;
 	
 	
 	public UsuarioBean() {
@@ -63,7 +55,6 @@ public class UsuarioBean extends GenericBean<Usuario, ServiceUsuario> implements
 	}
 	
 
-	
 	public void excluirEmpresa(Hotel empresa){
 		if(this.entidade.getHoteis().contains(empresa)){
 			this.entidade.getHoteis().remove(empresa);
@@ -75,8 +66,7 @@ public class UsuarioBean extends GenericBean<Usuario, ServiceUsuario> implements
 		if(!this.entidade.getHoteis().contains(empresa)){
 			this.entidade.getHoteis().add(empresa);
 		}else{
-			FacesMessage msg = new FacesMessage("Hotel já cadastrada para este Usuário", "Hotel já cadastrada para este Usuário");
-			FacesContext.getCurrentInstance().addMessage(null, msg);
+			UtilMensagens.mensagemAtencao("Hotel já cadastrada para este Usuário!");
 		}
 	}	
 		
@@ -89,38 +79,14 @@ public class UsuarioBean extends GenericBean<Usuario, ServiceUsuario> implements
 	
 	// =============================GET AND SET=================================
 	
-	public Integer getUsuarioId() {
-		return usuarioId;
-	}
-
-	public void setUsuarioId(Integer usuarioId) {
-		this.usuarioId = usuarioId;
-	}
+	public TipoFiltro[] tipoFiltros(){return TipoFiltro.values();}
+	
+	public TipoFiltro getFiltro() {return filtro;}
+		
+	public void setFiltro(TipoFiltro filtro) {this.filtro = filtro;}
 
 	
-	public TipoFiltro getFiltro() {
-		return filtro;
-	}
+	public GrupoUsuario[] getGrupoUsuarios(){return GrupoUsuario.values();}	
 		
-	public void setFiltro(TipoFiltro filtro) {
-		this.filtro = filtro;
-	}
-
-		
-	public GrupoUsuario[] getGrupoUsuarios(){
-		return GrupoUsuario.values();
-	}	
-		
-	
-	//RETORNA LISTA DE SETORES PARA O COMBO
-	public List<String> getSetores(){
-		return service.buscarSetores();
-	}
-	
-	
-	//RETORNA LISTA DE FILTROS PARA O COMBO
-	public TipoFiltro[] tipoFiltros(){
-		return TipoFiltro.values();
-	}
-		
+	public List<String> getSetores(){return service.buscarSetores();}		
 }

@@ -14,11 +14,7 @@ import javax.persistence.Table;
 @Table(name = "CAD_ENDERECO")
 public class Endereco implements Serializable {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = -6239389754217648981L;
-
 
 
 	@Id
@@ -71,114 +67,59 @@ public class Endereco implements Serializable {
     //--------------------------------	GETs and SETs------------------------------//
     
     
-	public Integer getIdEndereco() {
-		return idEndereco;
-	}
+	public Integer getIdEndereco() {return idEndereco;}
+
+	public void setIdEndereco(Integer idEndereco) {this.idEndereco = idEndereco;}
+
+	
+	public String getLogradouro() {return logradouro;}
+
+	public void setLogradouro(String logradouro) {this.logradouro = logradouro;}
 
 
-	public void setIdEndereco(Integer idEndereco) {
-		this.idEndereco = idEndereco;
-	}
+	public String getRua() {return rua;}
+
+	public void setRua(String rua) {this.rua = rua;}
 
 
-	public String getLogradouro() {
-		return logradouro;
-	}
+	public Integer getNumero() {return numero;}
+
+	public void setNumero(Integer numero) {this.numero = numero;}
 
 
-	public void setLogradouro(String logradouro) {
-		this.logradouro = logradouro;
-	}
+	public String getComplemento() {return complemento;}
+
+	public void setComplemento(String complemento) {this.complemento = complemento;}
 
 
-	public String getRua() {
-		return rua;
-	}
+	public String getBairro() {return bairro;}
+
+	public void setBairro(String bairro) {this.bairro = bairro;}
+
+	
+	public String getCep() {return cep;}
+	
+	public void setCep(String cep) {this.cep = cep;}
 
 
-	public void setRua(String rua) {
-		this.rua = rua;
-	}
+	public String getEstado() {return estado;}
+
+	public void setEstado(String estado) {this.estado = estado;}
 
 
-	public Integer getNumero() {
-		return numero;
-	}
+	public String getCidade() {return cidade;}
+
+	public void setCidade(String cidade) {this.cidade = cidade;}
 
 
-	public void setNumero(Integer numero) {
-		this.numero = numero;
-	}
+	public String getPais() {return pais;}
 
+	public void setPais(String pais) {this.pais = pais;}
 
-	public String getComplemento() {
-		return complemento;
-	}
+	
+	public Integer getCodigoMunicipio() {return codigoMunicipio;}
 
-
-	public void setComplemento(String complemento) {
-		this.complemento = complemento;
-	}
-
-
-	public String getBairro() {
-		return bairro;
-	}
-
-
-	public void setBairro(String bairro) {
-		this.bairro = bairro;
-	}
-
-
-	public String getCep() {
-		return cep;
-	}
-
-
-	public void setCep(String cep) {
-		this.cep = cep;
-	}
-
-
-	public String getEstado() {
-		return estado;
-	}
-
-
-	public void setEstado(String estado) {
-		this.estado = estado;
-	}
-
-
-	public String getCidade() {
-		return cidade;
-	}
-
-
-	public void setCidade(String cidade) {
-		this.cidade = cidade;
-	}
-
-
-	public String getPais() {
-		return pais;
-	}
-
-
-	public void setPais(String pais) {
-		this.pais = pais;
-	}
-
-
-	public Integer getCodigoMunicipio() {
-		return codigoMunicipio;
-	}
-
-
-	public void setCodigoMunicipio(Integer codigoMunicipio) {
-		this.codigoMunicipio = codigoMunicipio;
-	}
+	public void setCodigoMunicipio(Integer codigoMunicipio) {this.codigoMunicipio = codigoMunicipio;}
 
 	
 	//--------------------------------	Métodos Auxiliares------------------------------//

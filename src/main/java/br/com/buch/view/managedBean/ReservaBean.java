@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 
@@ -19,9 +20,8 @@ import br.com.buch.core.enumerated.TipoFiltroReserva;
 import br.com.buch.core.service.ServiceApartamento;
 import br.com.buch.core.service.ServiceReserva;
 import br.com.buch.core.service.ServiceTarifario;
-import br.com.buch.core.service.ServiceTipoTarifa;
+import br.com.buch.core.util.Constantes;
 import br.com.buch.core.util.NegocioException;
-import br.com.buch.core.util.PersistenciaException;
 import br.com.buch.view.util.UtilMensagens;
 
 
@@ -36,18 +36,19 @@ public class ReservaBean extends GenericBean<Reserva, ServiceReserva> implements
 	private ServiceTarifario serviceTarifario;
 	private TipoTarifa tipoTarifa;
 	private boolean tarifaManual;
-	
+	private String descricaoApartamento;
 	
 	public ReservaBean() {
-		super(new ServiceReserva());
-		this.serviceApartamento = new ServiceApartamento();
+		super(new ServiceReserva());	
 	}
-
 	
 	
+	@PostConstruct
+	public void init(){
+		serviceApartamento = new ServiceApartamento();
+	}
 	
 	// =======================METODOS DO USUARIO=====================================
-	
 	
 	@Override
 	public void filtrar() {
@@ -169,54 +170,36 @@ public class ReservaBean extends GenericBean<Reserva, ServiceReserva> implements
 	// =============================GET AND SET=====================================
 
 	
-	public TipoFiltroReserva getFiltro() {
-		return filtro;
-	}
+	public TipoFiltroReserva getFiltro() {return filtro;}
 
-	public void setFiltro(TipoFiltroReserva filtro) {
-		this.filtro = filtro;
-	}
+	public void setFiltro(TipoFiltroReserva filtro) {this.filtro = filtro;}
 
-	public TipoFiltroReserva[] tipoFiltros(){
-		return TipoFiltroReserva.values();
-	}
+	public TipoFiltroReserva[] tipoFiltros(){return TipoFiltroReserva.values();}
 
 	
 	@Override
 	public List<Reserva> getEntidades() {
-		if (this.entidades == null) {
+		if (this.entidades == null)
 			refresh();
-		}	
 		return entidades;
-	}
-	
-	
-	public List<Apartamento> apartamentos(){
-		try {
-			return serviceApartamento.buscarTodos();
-		} catch (PersistenciaException e) {
-			e.printStackTrace();
-			return new ArrayList<Apartamento>();
-		}
-	}
-	
-	
-	public List<TipoTarifa> tiposTarifa(){
-		return new ServiceTipoTarifa().buscarTodos();
-	}
-	
-	public TipoTarifa getTipoTarifa() {
-		return tipoTarifa;
-	}
-	
-	public void setTipoTarifa(TipoTarifa tipoTarifa) {
-		this.tipoTarifa = tipoTarifa;
 	}
 		
 	
-	public boolean isTarifaManual() {
-		return tarifaManual;
+	public List<TipoTarifa> tiposTarifa(){
+		try {
+			return Constantes.getInstance().getListaTiposTarifa();
+		} catch (Exception e) {
+			UtilMensagens.mensagemErro(UtilMensagens.MSM_ERRO_INTERNO);
+			return new ArrayList<>();
+		}
 	}
+	
+	public TipoTarifa getTipoTarifa() {return tipoTarifa;}
+	
+	public void setTipoTarifa(TipoTarifa tipoTarifa) {this.tipoTarifa = tipoTarifa;}
+		
+	
+	public boolean isTarifaManual() {return tarifaManual;}
 
 	
 	private ServiceTarifario getServiceTarifario() {
@@ -225,4 +208,16 @@ public class ReservaBean extends GenericBean<Reserva, ServiceReserva> implements
 		}
 		return serviceTarifario;
 	}
+	
+	
+	public String getDescricaoApartamento() {
+		if(entidade.getApartamento() != null){
+			this.descricaoApartamento = "Nº: " + entidade.getApartamento().getNumero() + "  -  " + entidade.getApartamento().getCategoria().getNome();
+		}	
+		return descricaoApartamento;
+	}
+	
+	public void setDescricaoApartamento(String descricaoApartamento) {
+		this.descricaoApartamento = descricaoApartamento;
+	}	
 }

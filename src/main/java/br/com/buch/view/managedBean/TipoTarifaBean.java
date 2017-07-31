@@ -14,25 +14,18 @@ import br.com.buch.view.util.UtilMensagens;
 @ViewScoped
 public class TipoTarifaBean extends GenericBean<TipoTarifa,ServiceTipoTarifa> implements Serializable{
 
-	private static final long serialVersionUID = -1633365565029634032L;
-
 	public enum TipoFiltro{
 		CODIGO("Código"), NOME("Nome");
 		
-		private String label;
-
-		TipoFiltro(String label) {
-			this.label = label;
-		}
+		TipoFiltro(String label) {this.label = label;}
 		
-		public String getLabel(){
-			return this.label;
-		}
+		private String label;		
+		
+		public String getLabel(){return this.label;}
 	}
 	
-	
-	private TipoFiltro filtro;	
-	private Integer idTipotarifa;
+	private static final long serialVersionUID = -1633365565029634032L;	
+	private TipoFiltro filtro;
 	
 	
 	public TipoTarifaBean() {
@@ -59,33 +52,17 @@ public class TipoTarifaBean extends GenericBean<TipoTarifa,ServiceTipoTarifa> im
 	
 	// =============================GET AND SET=====================================
 	
-	public TipoFiltro[] tipoFiltros(){
-		return TipoFiltro.values();
-	}
+	public TipoFiltro[] tipoFiltros(){return TipoFiltro.values();}
 	
-	public TipoFiltro getFiltro() {
-		return filtro;
-	}
+	public TipoFiltro getFiltro() {return filtro;}
 	
-	public void setFiltro(TipoFiltro filtro) {
-		this.filtro = filtro;
-	}
+	public void setFiltro(TipoFiltro filtro) {this.filtro = filtro;}
 
-	
-	public Integer getIdTipotarifa() {
-		return idTipotarifa;
-	}
-	
-	public void setIdTipotarifa(Integer idTipotarifa) {
-		this.idTipotarifa = idTipotarifa;
-	}
-	
 	
 	@Override
 	public List<TipoTarifa> getEntidades() {	
-		if (this.entidades == null) {
-			refresh();
-		}	
+		if (this.entidades == null)
+			refresh();	
 		return entidades;
 	}
 }

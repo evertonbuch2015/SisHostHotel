@@ -10,10 +10,7 @@
 	template="/WEB-INF/template.xhtml"
 	xmlns:app="http://java.sun.com/jsf/composite/componentes">
 
-	<ui:define name="tituloPagina">
-		#{label.tit_hotel}
-	</ui:define>
-
+	<ui:define name="tituloPagina">#{label.tit_hotel}</ui:define>
 
 	<ui:define name="conteudo">
 		
@@ -35,7 +32,7 @@
 					selection="#{hotelBean.entidade}" selectionMode="single"
 					rowKey="#{hotel.idHotel}" reflow="true"									
 					emptyMessage="#{label.msg_tabela_vazia}"
-					style="margin: 0px -11px;"
+					style="margin: 0px -8px;"
 					rows="13"
     				paginator="true" paginatorAlwaysVisible="false" 
     				paginatorPosition="bottom">				
