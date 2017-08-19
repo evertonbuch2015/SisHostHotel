@@ -249,8 +249,7 @@
 							<f:selectItem itemLabel="Selecione um Registro"/>
 							<f:selectItems value="#{hospedagemBean.tiposTarifa()}"
 								var="a" itemValue="#{a}" itemLabel="#{a.nome}"/>
-						</p:selectOneMenu>
-						
+						</p:selectOneMenu>				
 												
 					</p:panelGrid>
 					
@@ -322,8 +321,7 @@
 								<f:convertNumber pattern="#,##0.00" type="currency" currencySymbol="R$"/>
 							</p:inputText>
 					</p:panelGrid>
-					
-					
+										
 				</div>
 			</p:tab>
 			
@@ -335,18 +333,6 @@
 						cellpadding="10" layout="grid"
 						columnClasses="ui-grid-col-1,ui-grid-col-3,ui-grid-col-1,ui-grid-col-1,ui-grid-col-2">
 						
-						
-					</p:panelGrid>
-				</div>
-			</p:tab>
-			
-			
-			<p:tab title="#{label.txt_aba_dados_SNRHos}" titleStyle="font-size: 10px;color: #455a64;">
-				<div class="ui-fluid">
-					<p:panelGrid 
-						styleClass="ui-panelgrid-blank" columns="5"
-						cellpadding="10" layout="grid"
-						columnClasses="ui-grid-col-1,ui-grid-col-3,ui-grid-col-1,ui-grid-col-1,ui-grid-col-2">
 						
 						
 					</p:panelGrid>
@@ -360,30 +346,75 @@
 		
 		
 		<p:dialog 
-			width="300" height="140"
-			header="Filtrar Tabela!"			
+			width="400" height="270"
+			header="#{label.filtrar_registros}"	resizable="false"	
 			widgetVar="dialogFiltro" modal="true" draggable="true" 
-			closable="true" resizable="true" position="center center"
+			closable="true" position="center center"
 			showEffect="explode" hideEffect="explode">
 		
-			<p:panelGrid columns="1" cellpadding="3" 
-				styleClass="ui-panelgrid-blank">
+			<p:panelGrid columns="2" 
+				styleClass="ui-panelgrid-blank"
+				cellpadding="10" layout="grid"
+				columnClasses="ui-grid-col-3,ui-grid-col-9">
 														
+				<p:outputLabel value="#{label.tipo_filtro}"/>														
 				<p:selectOneMenu id="tipoFiltro"
-					value="#{hospedagemBean.filtro}" style="width:75%">						
+					value="#{hospedagemBean.filtro}"
+					style="width:75% !important">	
+										
 					<f:selectItem itemLabel="Selecione" />
 					<f:selectItems value="#{hospedagemBean.tipoFiltros()}" var="a"
-						itemValue="#{a}" itemLabel="#{a.label}"/>						
+						itemValue="#{a}" itemLabel="#{a.label}"/>
+						
+					<p:ajax event="change" update="dtEntradaFiltro dtEntradaFiltro2 situacaoFiltro valorfiltro"/>  						
 				</p:selectOneMenu>
+				
+								
+				<p:outputLabel value="#{label.txt_data_entrada}" for="dtEntradaFiltro" />						
+				<p:calendar id="dtEntradaFiltro"
+							value="#{hospedagemBean.dataFiltro}"
+							pattern="dd/MM/yyyy" mask="true"
+							showOn="button" locale="pt_BR"
+							size="28"
+							disabled="#{hospedagemBean.filtro.ordinal() ne 3}"
+							>							
+				</p:calendar>
+				
+				<p:outputLabel value="#{label.txt_data_entrada}"/>						
+				<p:calendar id="dtEntradaFiltro2"
+							value="#{hospedagemBean.dataFiltroFinal}"
+							pattern="dd/MM/yyyy" mask="true"
+							showOn="button" locale="pt_BR"
+							size="28"
+							disabled="#{hospedagemBean.filtro.ordinal() ne 3}"
+							>							
+				</p:calendar>
+				
+				
+				<p:outputLabel value="#{label.txt_situacao}"/>														
+				<p:selectOneMenu id="situacaoFiltro"
+					value="#{hospedagemBean.situacaoFiltro}" 
+					style="width:75% !important"
+					disabled="#{hospedagemBean.filtro.ordinal() ne 5}">
 					
-				<p:inputText id="valorfiltro" placeholder="Valor do Filtro!" 
-						value="#{hospedagemBean.valorFiltro}"
-						size="30"/>
+					<f:selectItem itemLabel="Selecione" />											
+					<f:selectItems value="#{hospedagemBean.situacoesHospedagem}" var="a"
+						itemValue="#{a}" itemLabel="#{a.label}"/>  						
+				</p:selectOneMenu>
+				
+				
+				<p:outputLabel value="#{label.outros_filtros}"/>	
+				<p:inputText id="valorfiltro"
+					value="#{hospedagemBean.valorFiltro}"
+					size="34"
+					disabled="#{(hospedagemBean.filtro.ordinal() eq 3) 
+									or (hospedagemBean.filtro.ordinal() eq 5)}"/>
+				
 								
 				<p:commandButton value="Filtrar" icon="ui-icon-folder-collapsed"
 					styleClass="bu-botao-azul" update="tabela"
 					style="margin-top:20px;"
-					actionListener="#{hospedagemBean.filtrar()}"
+					actionListener="#{hospedagemBean.filtrar}"
 					onclick="PF('dialogFiltro').hide();" />	
 					
 			</p:panelGrid>	

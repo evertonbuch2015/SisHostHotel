@@ -20,8 +20,7 @@ import br.com.buch.view.util.UtilMensagens;
 public class HospedeBean extends GenericBean<Hospede, ServiceHospede> implements Serializable{
 	
 	private static final long serialVersionUID = -6802914921786106522L;
-	private TipoFiltroHospede filtro;
-	
+	private TipoFiltroHospede filtro;	
 	
 	public HospedeBean() {
 		super(new ServiceHospede());

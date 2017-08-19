@@ -62,68 +62,39 @@ public class Tarifario implements Serializable {
     
     //--------------------------------	GETs and SETs------------------------------//
 	
-    public Integer getIdTarifario() {
-		return idTarifario;
-	}
+    public Integer getIdTarifario() {return idTarifario;}
 
-	public void setIdTarifario(Integer idTarifario) {
-		this.idTarifario = idTarifario;
-	}
+	public void setIdTarifario(Integer idTarifario) {this.idTarifario = idTarifario;}
 
 
 	
-	public String getDataInicialFormatada(){
-		return new SimpleDateFormat("dd/MM/yyyy").format(this.dataInicial);
-	}
+	public String getDataInicialFormatada(){return new SimpleDateFormat("dd/MM/yyyy").format(this.dataInicial);}
 	
-	public Date getDataInicial() {
-		return dataInicial;
-	}
+	public Date getDataInicial() {return dataInicial;}
 
-	public void setDataInicial(Date dataInicial) {
-		this.dataInicial = dataInicial;
-	}
+	public void setDataInicial(Date dataInicial) {this.dataInicial = dataInicial;}
 
 	
+	public String getDataFinalFormatada(){return new SimpleDateFormat("dd/MM/yyyy").format(this.dataFinal);}
 	
-	public String getDataFinalFormatada(){
-		return new SimpleDateFormat("dd/MM/yyyy").format(this.dataFinal);
-	}
-	
-	public Date getDataFinal() {
-		return dataFinal;
-	}
+	public Date getDataFinal() {return dataFinal;}
 
-	public void setDataFinal(Date dataFinal) {
-		this.dataFinal = dataFinal;
-	}
+	public void setDataFinal(Date dataFinal) {this.dataFinal = dataFinal;}
 
 
-	public Categoria getCategoria() {
-		return categoria;
-	}
+	public Categoria getCategoria() {return categoria;}
 
-	public void setCategoria(Categoria categoria) {
-		this.categoria = categoria;
-	}
+	public void setCategoria(Categoria categoria) {this.categoria = categoria;}
 
 
-	public TipoTarifa getTipoTarifa() {
-		return tipoTarifa;
-	}
+	public TipoTarifa getTipoTarifa() {return tipoTarifa;}
 
-	public void setTipoTarifa(TipoTarifa tipoTarifa) {
-		this.tipoTarifa = tipoTarifa;
-	}
+	public void setTipoTarifa(TipoTarifa tipoTarifa) {this.tipoTarifa = tipoTarifa;}
 
 
-	public Double getValor() {
-		return valor;
-	}
+	public Double getValor() {return valor;}
 
-	public void setValor(Double valor) {
-		this.valor = valor;
-	}
+	public void setValor(Double valor) {this.valor = valor;}
 
 
 	//--------------------------------	Métodos Auxiliares------------------------------//

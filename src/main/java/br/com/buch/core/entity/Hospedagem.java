@@ -83,24 +83,7 @@ public class Hospedagem implements Serializable {
     
     
     @Column(name = "OBS" , length = 255)
-    private String obs;
-      
-    
-    @Column(name = "MOTIVO_VIAGEM" , length = 60)
-    private String motivoViagem;
-    
-    
-    @Column(name = "MEIO_TRANSPORTE" , length = 20)
-    private String meioTransporte;
-    
-    
-    @Column(name = "PROXIMO_DESTINO" , length = 60)
-    private String proximoDestino;
-    
-    
-    @Column(name = "DESTINO_ANTERIOR" , length = 60)
-    private String destinoAnterior;
-    
+    private String obs;  
     
     
     @OneToOne
@@ -123,7 +106,6 @@ public class Hospedagem implements Serializable {
     @OneToMany(mappedBy = "hospedagem", targetEntity = HospedagemLancamento.class, 
     			fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<HospedagemLancamento> lancamentos;
-
 
     
    //--------------------------------	GETs and SETs------------------------------//
@@ -208,27 +190,7 @@ public class Hospedagem implements Serializable {
 
 	public void setObs(String obs) {this.obs = obs;}
 
-
-	public String getMotivoViagem() {return motivoViagem;}
-
-	public void setMotivoViagem(String motivoViagem) {this.motivoViagem = motivoViagem;}
-
-
-	public String getMeioTransporte() {return meioTransporte;}
-
-	public void setMeioTransporte(String meioTransporte) {this.meioTransporte = meioTransporte;}
-
-
-	public String getProximoDestino() {return proximoDestino;}
-
-	public void setProximoDestino(String proximoDestino) {this.proximoDestino = proximoDestino;}
-
-
-	public String getDestinoAnterior() {return destinoAnterior;}
-
-	public void setDestinoAnterior(String destinoAnterior) {this.destinoAnterior = destinoAnterior;}
-
-
+	
 	public Apartamento getApartamento() {return apartamento;}
 
 	public void setApartamento(Apartamento apartamento) {this.apartamento = apartamento;}

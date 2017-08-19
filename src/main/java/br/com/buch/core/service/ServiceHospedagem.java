@@ -6,10 +6,12 @@ import java.util.List;
 
 import br.com.buch.core.dao.HospedagemDao;
 import br.com.buch.core.entity.Hospedagem;
+import br.com.buch.core.enumerated.TipoFiltroHospedagem;
 import br.com.buch.core.util.CodeUtils;
 import br.com.buch.core.util.NegocioException;
 import br.com.buch.core.util.PersistenciaException;
 import br.com.buch.core.util.UtilErros;
+
 
 public class ServiceHospedagem implements GenericService<Hospedagem> {
 
@@ -109,5 +111,54 @@ public class ServiceHospedagem implements GenericService<Hospedagem> {
 	
 	@Override
 	public void consisteAntesEditar(Hospedagem entidade) throws NegocioException {
+	}
+	
+	
+	public List<Hospedagem> filtrarTabela(TipoFiltroHospedagem tipoFiltro , Object...valorFiltro)throws Exception{
+		List<Hospedagem> lista = null;
+		
+		try {
+			
+			if(tipoFiltro.equals(TipoFiltroHospedagem.CODIGO)){				
+				String jpql = "From Hospedagem h LEFT JOIN FETCH h.hospede LEFT JOIN FETCH h.apartamento where h.codigo = ?";
+				lista = dao.find(jpql, valorFiltro);
+			}
+			
+			else if(tipoFiltro.equals(TipoFiltroHospedagem.CPF_HOSPEDE)){				
+				String jpql = "From Hospedagem h LEFT JOIN FETCH h.hospede LEFT JOIN FETCH h.apartamento where h.hospede.cpf = ?";
+				lista = dao.find(jpql,valorFiltro);
+			}
+			
+			else if(tipoFiltro.equals(TipoFiltroHospedagem.NOME_HOSPEDE)){				
+				String jpql = "From Hospedagem h LEFT JOIN FETCH h.hospede LEFT JOIN FETCH h.apartamento where h.hospede.nome like ?";
+				lista = dao.find(jpql,valorFiltro);
+			}
+			
+			else if(tipoFiltro.equals(TipoFiltroHospedagem.SITUACAO)){
+				String jpql = "From Hospedagem h LEFT JOIN FETCH h.hospede LEFT JOIN FETCH h.apartamento where h.situacao = ?";
+				lista = dao.find(jpql,valorFiltro);
+			}
+			
+			else if(tipoFiltro.equals(TipoFiltroHospedagem.DATA_ENTRADA)){
+				try{	
+					String jpql;
+					if (valorFiltro.length == 1){
+						jpql = " From Hospedagem h LEFT JOIN FETCH h.hospede LEFT JOIN FETCH h.apartamento where h.dataEntrada = ?";
+					}else{
+						jpql = " From Hospedagem h LEFT JOIN FETCH h.hospede LEFT JOIN FETCH h.apartamento where h.dataEntrada Between ? and ?";
+					}					
+										
+					lista = dao.find(jpql,valorFiltro);					
+				}catch (Exception e) {
+					e.printStackTrace();
+				}								
+			}
+			
+			return lista;			
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new PersistenciaException("Ocorreu uma exceção ao Filtrar os dados do Chamado!" + 
+            		" \nErro: " + UtilErros.getMensagemErro(e));
+		}					
 	}
 }

@@ -112,58 +112,33 @@ public class Reserva implements Serializable {
     
     //--------------------------------	GETs and SETs------------------------------//
 	
-    public Integer getIdReserva() {
-		return idReserva;
-	}
+    public Integer getIdReserva() {return idReserva;}
 
-	public void setIdReserva(Integer idReserva) {
-		this.idReserva = idReserva;
-	}
+	public void setIdReserva(Integer idReserva) {this.idReserva = idReserva;}
 
-
-	public String getCodigo() {
-		return codigo;
-	}
-
-	public void setCodigo(String codigo) {
-		this.codigo = codigo;
-	}
-
-
-	public String getDataEntradaFormatada(){
-		return new SimpleDateFormat("dd/MM/yyyy").format(this.dataEntrada);
-	}
 	
-	public Date getDataEntrada() {
-		return dataEntrada;
-	}
+	public String getCodigo() {return codigo;}
 
-	public void setDataEntrada(Date dataEntrada) {
-		this.dataEntrada = dataEntrada;
-	}
+	public void setCodigo(String codigo) {this.codigo = codigo;}
 
 
-	public String getDataSaidaFormatada(){
-		return new SimpleDateFormat("dd/MM/yyyy").format(this.dataSaida);
-	}
+	public String getDataEntradaFormatada(){return new SimpleDateFormat("dd/MM/yyyy").format(this.dataEntrada);}
 	
-	public Date getDataSaida() {
-		return dataSaida;
-	}
+	public Date getDataEntrada() {return dataEntrada;}
 
-	public void setDataSaida(Date dataSaida) {
-		this.dataSaida = dataSaida;
-		
-	}
+	public void setDataEntrada(Date dataEntrada) {this.dataEntrada = dataEntrada;}
 
 
-	public Calendar getDataConfirmacao() {
-		return dataConfirmacao;
-	}
+	public String getDataSaidaFormatada(){return new SimpleDateFormat("dd/MM/yyyy").format(this.dataSaida);}
+	
+	public Date getDataSaida() {return dataSaida;}
 
-	public void setDataConfirmacao(Calendar dataConfirmacao) {
-		this.dataConfirmacao = dataConfirmacao;
-	}
+	public void setDataSaida(Date dataSaida) {this.dataSaida = dataSaida;}
+
+
+	public Calendar getDataConfirmacao() {return dataConfirmacao;}
+
+	public void setDataConfirmacao(Calendar dataConfirmacao) {this.dataConfirmacao = dataConfirmacao;}
 
 
 	public Integer getDiarias() {
@@ -182,81 +157,47 @@ public class Reserva implements Serializable {
 		
 	}
 	
-	public void setDiarias(Integer diarias) {
-		this.diarias = diarias;
-	}
+	public void setDiarias(Integer diarias) {this.diarias = diarias;}
 
 
-	public String getObs() {
-		return obs;
-	}
+	public String getObs() {return obs;}
 
-	public void setObs(String obs) {
-		this.obs = obs;
-	}
+	public void setObs(String obs) {this.obs = obs;}
 
 
-	public SituacaoHospedagem getSituacao() {
-		return situacao;
-	}
+	public SituacaoHospedagem getSituacao() {return situacao;}
 
-	public void setSituacao(SituacaoHospedagem situacao) {
-		this.situacao = situacao;
-	}
+	public void setSituacao(SituacaoHospedagem situacao) {this.situacao = situacao;}
 
 
-	public Calendar getDataCancelamento() {
-		return dataCancelamento;
-	}
+	public Calendar getDataCancelamento() {return dataCancelamento;}
 
-	public void setDataCancelamento(Calendar dataCancelamento) {
-		this.dataCancelamento = dataCancelamento;
-	}
+	public void setDataCancelamento(Calendar dataCancelamento) {this.dataCancelamento = dataCancelamento;}
 
 
-	public String getMotivoCancelamento() {
-		return motivoCancelamento;
-	}
+	public String getMotivoCancelamento() {return motivoCancelamento;}
 
-	public void setMotivoCancelamento(String motivoCancelamento) {
-		this.motivoCancelamento = motivoCancelamento;
-	}
+	public void setMotivoCancelamento(String motivoCancelamento) {this.motivoCancelamento = motivoCancelamento;}
 
 
-	public Double getValorDiaria() {
-		return valorDiaria;
-	}
+	public Double getValorDiaria() {return valorDiaria;}
 
-	public void setValorDiaria(Double valorDiaria) {
-		this.valorDiaria = valorDiaria;
-	}
+	public void setValorDiaria(Double valorDiaria) {this.valorDiaria = valorDiaria;}
 
 
-	public Double getValorDesconto() {
-		return valorDesconto;
-	}
+	public Double getValorDesconto() {return valorDesconto;}
 
-	public void setValorDesconto(Double valorDesconto) {
-		this.valorDesconto = valorDesconto;
-	}
+	public void setValorDesconto(Double valorDesconto) {this.valorDesconto = valorDesconto;}
 
 
-	public Double getValorTaxaTurismo() {
-		return valorTaxaTurismo;
-	}
+	public Double getValorTaxaTurismo() {return valorTaxaTurismo;}
 
-	public void setValorTaxaTurismo(Double valorTaxaTurismo) {
-		this.valorTaxaTurismo = valorTaxaTurismo;
-	}
+	public void setValorTaxaTurismo(Double valorTaxaTurismo) {this.valorTaxaTurismo = valorTaxaTurismo;}
 
 
-	public Double getValorTaxaServico() {
-		return valorTaxaServico;
-	}
+	public Double getValorTaxaServico() {return valorTaxaServico;}
 
-	public void setValorTaxaServico(Double valorTaxaServico) {
-		this.valorTaxaServico = valorTaxaServico;
-	}
+	public void setValorTaxaServico(Double valorTaxaServico) {this.valorTaxaServico = valorTaxaServico;}
 
 
 	public Double getValorTotal() {
@@ -273,27 +214,17 @@ public class Reserva implements Serializable {
 		return valorTotal;
 	}
 
-	public void setValorTotal(Double valorTotal) {
-		this.valorTotal = valorTotal;
-	}
+	public void setValorTotal(Double valorTotal) {this.valorTotal = valorTotal;}
 
 
-	public Hospede getHospede() {
-		return hospede;
-	}
+	public Hospede getHospede() {return hospede;}
 
-	public void setHospede(Hospede hospede) {
-		this.hospede = hospede;
-	}
+	public void setHospede(Hospede hospede) {this.hospede = hospede;}
 
 
-	public Apartamento getApartamento() {
-		return apartamento;
-	}
+	public Apartamento getApartamento() {return apartamento;}
 
-	public void setApartamento(Apartamento apartamento) {
-		this.apartamento = apartamento;
-	}
+	public void setApartamento(Apartamento apartamento) {this.apartamento = apartamento;}
 
 	
 	

@@ -99,6 +99,8 @@
 			        
 			        
 			        <p:submenu label="#{label.menu_caixa}">
+			        	<p:menuitem value="#{label.menu_adiant_clientes}" 
+			            	url="/adiantamento.xhtml?faces-redirect=true"		icon="fa fa-money"/>
 			            <p:menuitem value="#{label.menu_pagamentos}" icon="fa fa-arrow-circle-up"/>			            	
 			            <p:menuitem value="#{label.menu_recebimentos}" icon="fa fa-arrow-circle-down"/>
 			        </p:submenu>		      		       
@@ -109,32 +111,13 @@
 						<p:menuitem value="#{label.menu_hospedagens}" 		
 							url="/hospedagem.xhtml?faces-redirect=true"			icon="fa fa-suitcase" />
 								                    
-	                    <p:menuitem value="#{label.menu_walckin}" 		
-	                    	url="http://www.primefaces.org/downloads" 			icon="ui-icon-arrowreturnthick-1-e" />	
-	                    
-	                    <p:menuitem value="#{label.menu_checkin}" 		
-	                    	url="http://www.primefaces.org" 					icon="ui-icon-arrowreturnthick-1-e" />	                    
-	                    	                    
-	                    <p:menuitem value="#{label.menu_checkout}" 		
-	                    	url="http://www.primefaces.org/documentation" 		icon="ui-icon-arrowreturnthick-1-w" />	                    	                                                            
-	                    
 	                    <p:menuitem value="#{label.menu_reservas}" 		
 	                    	url="/reserva.xhtml?faces-redirect=true" 			icon="fa fa-calendar" />	                    
 	                    
 	                    <p:menuitem value="#{label.menu_mapa_estadias}" 
 	                    	url="/mapaEstadias.xhtml?faces-redirect=true"		icon="fa fa-sitemap" />
 	                            
-			        </p:submenu>
-			        
-			        <p:submenu label="#{label.menu_contas_pagar}">
-			            <p:menuitem value="#{label.menu_adiant_fornecedor}" icon="fa fa-money"/>
-			            <p:menuitem value="#{label.menu_dup_pagar}" icon="fa fa-money"/>			            
-			        </p:submenu>
-			        
-			        <p:submenu label="#{label.menu_contas_receber}">
-			            <p:menuitem value="#{label.menu_adiant_clientes}" 
-			            	url="/adiantamento.xhtml?faces-redirect=true"		icon="fa fa-money"/>			            
-			        </p:submenu>
+			        </p:submenu>			        
 			        
 			        <p:submenu label="#{label.menu_configuracoes}" >
 	                    <p:menuitem value="#{label.menu_hotel}"		url="/cadHotel.xhtml?faces-redirect=true" icon="fa fa-university"/>	                    
