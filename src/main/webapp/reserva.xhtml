@@ -31,7 +31,7 @@
 		
 		
 		<p:tabView rendered="#{reservaBean.buscando}" prependId="false">						
-			<p:tab title="#{label.txt_consulta}"> 	
+			<p:tab title="#{label.consulta_reservas}"> 	
 				<p:dataTable id="tabela"
 					value="#{reservaBean.entidades}" var="entidade" 
 					selection="#{reservaBean.entidade}" selectionMode="single"
@@ -83,7 +83,7 @@
 					</p:column>					
 					
 					
-					<p:column headerText="#{label.txt_acoes}" exportable="false" width="80">						
+					<p:column headerText="#{label.txt_acoes}" exportable="false" width="120">						
 						<p:commandButton actionListener="#{reservaBean.editar(entidade)}" 
 							icon="ui-icon-pencil" update="@form" title="Editar Registro"/>
 												
@@ -102,6 +102,15 @@
 							<p:confirm header="#{label.txt_confirmacao}" 
 								message="Deseja Realmente cancelar esta Reserva?" icon="ui-icon-alert"/>	
 						</p:commandButton>
+						
+						
+						<p:commandButton 
+							icon="fa fa-bed"
+							styleClass="botaoAzul" 
+							title="Realizar Check-In!"
+							action="#{reservaBean.fazerCheckin(entidade)}">
+							
+						</p:commandButton>
 							
 					</p:column>					
 
@@ -110,16 +119,17 @@
 		</p:tabView>	
 		
 		<p:tabView rendered="#{!reservaBean.buscando}">					
-			<p:tab title="#{label.txt_dados_gerais}" titleStyle="font-size: 10px;color: #455a64;">
+			<p:tab title="#{label.dados_reserva}" titleStyle="font-size: 10px;color: #455a64;">
 				<div class="ui-fluid">
+					
 					<p:panelGrid 
 						styleClass="ui-panelgrid-blank" columns="5"
 						cellpadding="10" layout="grid"
-						columnClasses="ui-grid-col-1,ui-grid-col-3,ui-grid-col-1,ui-grid-col-1,ui-grid-col-2">
+						columnClasses="ui-grid-col-2,ui-grid-col-3,ui-grid-col-1,ui-grid-col-1,ui-grid-col-3">
 
 						
 						<p:outputLabel value="#{label.txt_codigo}" for="codigo" />
-						<p:inputText id="codigo" style="width:80%"
+						<p:inputText id="codigo"
 							value="#{reservaBean.entidade.codigo}"
 							readonly="true"/>
 						
@@ -136,7 +146,7 @@
 					<p:panelGrid 
 						styleClass="ui-panelgrid-blank" columns="5"
 						cellpadding="10" layout="grid"
-						columnClasses="ui-grid-col-1,ui-grid-col-3,ui-grid-col-1,ui-grid-col-1,ui-grid-col-2">	
+						columnClasses="ui-grid-col-2,ui-grid-col-3,ui-grid-col-1,ui-grid-col-1,ui-grid-col-3">	
 					
 						
 						
@@ -188,7 +198,7 @@
 					<p:panelGrid 
 						styleClass="ui-panelgrid-blank" columns="2"
 						cellpadding="10" layout="grid"
-						columnClasses="ui-grid-col-1,ui-grid-col-5,ui-grid-col-1,ui-grid-col-5">
+						columnClasses="ui-grid-col-2,ui-grid-col-5,ui-grid-col-1,ui-grid-col-5">
 						
 						
 						<p:outputLabel value="#{label.txt_apartamento}" for="apartamento" />
@@ -242,14 +252,14 @@
 					<p:panelGrid 
 						styleClass="ui-panelgrid-blank" columns="2"
 						cellpadding="10" layout="grid"
-						columnClasses="ui-grid-col-1,ui-grid-col-3">
+						columnClasses="ui-grid-col-2,ui-grid-col-3"
+						rendered="#{hospedagemBean.inserindo}">
 						
 						
 						
-						<p:outputLabel value="#{label.txt_tipo_tarifa}" for="tipoTarifa" rendered="#{reservaBean.inserindo}"/>
+						<p:outputLabel value="#{label.txt_tipo_tarifa}" for="tipoTarifa"/>
 						<p:selectOneMenu id="tipoTarifa" 
-							value="#{reservaBean.tipoTarifa}"
-							rendered="#{reservaBean.inserindo}">
+							value="#{reservaBean.tipoTarifa}">
 							
 							<p:ajax event="change" update="valorDiaria valorTotal"
 								listener="#{reservaBean.onTipoTarifaChange}" />  
@@ -264,9 +274,9 @@
 					
 					
 					<p:panelGrid 
-						styleClass="ui-panelgrid-blank" columns="6"
+						styleClass="ui-panelgrid-blank" columns="5"
 						cellpadding="10" layout="grid"
-						columnClasses="ui-grid-col-1,ui-grid-col-2,ui-grid-col-1,ui-grid-col-2,ui-grid-col-1,ui-grid-col-2">
+						columnClasses="ui-grid-col-2,ui-grid-col-3,ui-grid-col-1,ui-grid-col-1,ui-grid-col-3">
 						
 														
 							<p:outputLabel value="#{label.txt_valor_diaria}" for="valorDiaria"/>
@@ -281,6 +291,7 @@
 								<f:convertNumber pattern="#,##0.00" type="currency" currencySymbol="R$"/>
 							</p:inputText>
 							
+							<p:outputLabel/>
 							
 							<p:outputLabel value="#{label.txt_desconco}" for="valorDesconto"/>
 							<p:inputText id="valorDesconto" 
@@ -305,6 +316,7 @@
 								<f:convertNumber pattern="#,##0.00" type="currency" currencySymbol="R$"/>
 							</p:inputText>
 							
+							<p:outputLabel/>
 							
 							<p:outputLabel value="#{label.txt_taxa_servico}" for="valorTaxaServico"/>
 							<p:inputText id="valorTaxaServico" 
@@ -327,8 +339,7 @@
 								<f:convertNumber pattern="#,##0.00" type="currency" currencySymbol="R$"/>
 							</p:inputText>
 					</p:panelGrid>
-					
-					
+										
 				</div>
 			</p:tab>
 

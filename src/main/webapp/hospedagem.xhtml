@@ -10,6 +10,11 @@
 	template="/WEB-INF/template.xhtml"
 	xmlns:app="http://java.sun.com/jsf/composite/componentes">
 
+	<f:metadata>
+		<f:viewParam name="reserva" value="#{hospedagemBean.idReservaParametro}" />			
+		<f:viewAction action="#{hospedagemBean.carregaReserva}" if="#{param.reserva != null}" />
+	</f:metadata>
+
 	<ui:define name="tituloPagina">#{label.tit_hospedagens}</ui:define>
 	
 	<ui:define name="head">
@@ -169,6 +174,13 @@
 								update="dtEntrada diarias @this valorTotal" />
 							
 						</p:calendar>
+						
+						<p:outputLabel/>
+						
+						<p:outputLabel value="#{label.codigo_reserva}" for="reserva" />
+						<p:inputText id="reserva"
+							value="#{hospedagemBean.entidade.reserva.codigo}"
+							readonly="true"/>
 																	
 																								
 					</p:panelGrid>

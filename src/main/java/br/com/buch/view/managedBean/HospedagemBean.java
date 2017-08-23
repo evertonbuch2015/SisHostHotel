@@ -14,12 +14,14 @@ import org.primefaces.event.SelectEvent;
 import br.com.buch.core.entity.Apartamento;
 import br.com.buch.core.entity.Hospedagem;
 import br.com.buch.core.entity.Hospede;
+import br.com.buch.core.entity.Reserva;
 import br.com.buch.core.entity.Tarifario;
 import br.com.buch.core.entity.TipoTarifa;
 import br.com.buch.core.enumerated.SituacaoHospedagem;
 import br.com.buch.core.enumerated.TipoFiltroHospedagem;
 import br.com.buch.core.service.ServiceApartamento;
 import br.com.buch.core.service.ServiceHospedagem;
+import br.com.buch.core.service.ServiceReserva;
 import br.com.buch.core.service.ServiceTarifario;
 import br.com.buch.core.service.ServiceTipoTarifa;
 import br.com.buch.core.util.NegocioException;
@@ -44,6 +46,7 @@ public class HospedagemBean extends GenericBean<Hospedagem, ServiceHospedagem> i
 	private SituacaoHospedagem situacaoFiltro;
 	private Date dataFiltro;
 	private Date dataFiltroFinal;
+	private Integer idReservaParametro;
 	
 	
 	public HospedagemBean() {
@@ -184,6 +187,30 @@ public class HospedagemBean extends GenericBean<Hospedagem, ServiceHospedagem> i
 		
 	}
 	
+	public void carregaReserva(){
+		try {
+			
+			novo();			
+			Reserva reserva = new ServiceReserva().carregarEntidade(idReservaParametro);
+			
+			entidade.setApartamento(reserva.getApartamento());
+			entidade.setHospede(reserva.getHospede());
+			entidade.setDataEntrada(reserva.getDataEntrada());
+			entidade.setDataSaida(reserva.getDataSaida());
+			entidade.setSituacao(SituacaoHospedagem.CHECKIN);
+			entidade.setValorDesconto(reserva.getValorDesconto());
+			entidade.setValorDiaria(reserva.getValorDiaria());
+			entidade.setValorTaxaServico(reserva.getValorTaxaServico());
+			entidade.setValorTaxaTurismo(reserva.getValorTaxaTurismo());		
+			entidade.setObs(reserva.getObs());		
+			
+			entidade.setReserva(reserva);
+			
+		} catch (PersistenciaException e) {
+			
+		}
+	}
+	
 	
 	// =============================GET AND SET=====================================
 
@@ -202,23 +229,28 @@ public class HospedagemBean extends GenericBean<Hospedagem, ServiceHospedagem> i
 	
 	public void setTipoTarifa(TipoTarifa tipoTarifa) {this.tipoTarifa = tipoTarifa;}	
 	
+	
 	public boolean isTarifaManual() {return tarifaManual;}
+	
 	
 	public String getDescricaoApartamento() {
 		if(entidade.getApartamento() != null){
 			this.descricaoApartamento = "Nº: " + entidade.getApartamento().getNumero() + "  -  " + entidade.getApartamento().getCategoria().getNome();
-		}	
+		}else{
+			this.descricaoApartamento = "";
+		}
+		
 		return descricaoApartamento;
 	}
 	
 	public void setDescricaoApartamento(String descricaoApartamento) {
 		this.descricaoApartamento = descricaoApartamento;
-	}	
-	
-	
+	}
+		
 	public SituacaoHospedagem[] getSituacoesHospedagem(){
 		return SituacaoHospedagem.values();
 	}
+	
 	
 	@Override
 	public List<Hospedagem> getEntidades() {
@@ -238,6 +270,7 @@ public class HospedagemBean extends GenericBean<Hospedagem, ServiceHospedagem> i
 		}
 	}
 	
+	
 	private ServiceTarifario getServiceTarifario() {
 		if(this.serviceTarifario == null){
 			this.serviceTarifario = new ServiceTarifario();
@@ -245,8 +278,10 @@ public class HospedagemBean extends GenericBean<Hospedagem, ServiceHospedagem> i
 		return serviceTarifario;
 	}
 	
+	
 	public SituacaoHospedagem getSituacaoFiltro() {return situacaoFiltro;}
 
+	
 	public void setSituacaoFiltro(SituacaoHospedagem situacaoFiltro) {this.situacaoFiltro = situacaoFiltro;}
 
 	
@@ -254,11 +289,21 @@ public class HospedagemBean extends GenericBean<Hospedagem, ServiceHospedagem> i
 
 	public void setDataFiltro(Date dataFiltro) {this.dataFiltro = dataFiltro;}
 	
+	
 	public Date getDataFiltroFinal() {
 		return dataFiltroFinal;
 	}
 	
 	public void setDataFiltroFinal(Date dataFiltroFinal) {
 		this.dataFiltroFinal = dataFiltroFinal;
+	}
+	
+	
+	public Integer getIdReservaParametro() {
+		return idReservaParametro;
+	}
+	
+	public void setIdReservaParametro(Integer idReservaParametro) {
+		this.idReservaParametro = idReservaParametro;
 	}
 }

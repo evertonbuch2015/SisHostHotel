@@ -57,7 +57,7 @@ public class Reserva implements Serializable {
     
     @Column(name = "DATA_CONFIRMACAO")
     @Temporal(TemporalType.DATE)
-    private Calendar dataConfirmacao;
+    private Date dataConfirmacao;
     
     
     @Transient
@@ -89,7 +89,7 @@ public class Reserva implements Serializable {
     
     @Column(name = "DATA_CANCELAMENTO")
     @Temporal(TemporalType.DATE)
-    private Calendar dataCancelamento;
+    private Date dataCancelamento;
     
     @Column(name="MOTIVO_CANCELAMENTO",length=100)
     private String motivoCancelamento;
@@ -136,9 +136,9 @@ public class Reserva implements Serializable {
 	public void setDataSaida(Date dataSaida) {this.dataSaida = dataSaida;}
 
 
-	public Calendar getDataConfirmacao() {return dataConfirmacao;}
+	public Date getDataConfirmacao() {return dataConfirmacao;}
 
-	public void setDataConfirmacao(Calendar dataConfirmacao) {this.dataConfirmacao = dataConfirmacao;}
+	public void setDataConfirmacao(Date dataConfirmacao) {this.dataConfirmacao = dataConfirmacao;}
 
 
 	public Integer getDiarias() {
@@ -170,9 +170,9 @@ public class Reserva implements Serializable {
 	public void setSituacao(SituacaoHospedagem situacao) {this.situacao = situacao;}
 
 
-	public Calendar getDataCancelamento() {return dataCancelamento;}
+	public Date getDataCancelamento() {return dataCancelamento;}
 
-	public void setDataCancelamento(Calendar dataCancelamento) {this.dataCancelamento = dataCancelamento;}
+	public void setDataCancelamento(Date dataCancelamento) {this.dataCancelamento = dataCancelamento;}
 
 
 	public String getMotivoCancelamento() {return motivoCancelamento;}

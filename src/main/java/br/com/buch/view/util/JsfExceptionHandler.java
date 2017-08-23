@@ -44,6 +44,7 @@ public class JsfExceptionHandler extends ExceptionHandlerWrapper {
 					redirect("/login.xhtml");									
 				}else{
 					handled = true;
+					throwable.printStackTrace();
 					redirect("/erros.xhtml?faces-redirect=true");
 				}					
 			} finally {

@@ -1,6 +1,7 @@
 package br.com.buch.core.entity;
 
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import javax.persistence.CascadeType;
@@ -33,8 +34,8 @@ public class Empresa implements Serializable {
     private Integer idEmpresa;
 	
 	
-    @Column(name = "CODIGO" ,nullable = true , length = 2, unique = true)
-	private String codigo;
+    @Column(name = "CODIGO", unique = true)
+	private Integer codigo;
    
 	
 	@NotEmpty(message="O Nome deve ser informado!")
@@ -99,8 +100,8 @@ public class Empresa implements Serializable {
 	public void setIdEmpresa(Integer idEmpresa) {this.idEmpresa = idEmpresa;}
 
 
-	public String getCodigo() {return codigo;}
-	public void setCodigo(String codigo) {this.codigo = codigo;}
+	public Integer getCodigo() {return codigo;}
+	public void setCodigo(Integer codigo) {this.codigo = codigo;}
 
 
 	public String getNomeRazao() {return nomeRazao;}
@@ -111,6 +112,15 @@ public class Empresa implements Serializable {
 	public void setNomeFantasia(String nomeFantasia) {this.nomeFantasia = nomeFantasia;}
 
 
+	public String getDocumentoFormatado(){
+		if(this.documento != null){
+			return 	documento.substring(0, 2) + "." + documento.substring(2, 5) + "." + documento.substring(5, 8)
+			+ "/" + documento.substring(8,12) +"-"+ documento.substring(12);
+		}else{
+			return null;
+		}
+		
+	}
 	public String getDocumento() {return documento;}
 	public void setDocumento(String documento) {this.documento = documento;}
 
@@ -123,6 +133,13 @@ public class Empresa implements Serializable {
 	public void setInscMunicipal(String inscMunicipal) {this.inscMunicipal = inscMunicipal;}
 
 
+	public String getDataCadastroFormatada() {
+		if(this.dataCadastro != null){
+			return new SimpleDateFormat("dd/MM/yyyy").format(dataCadastro);
+		}else{
+			return null;
+		}
+	}
 	public Date getDataCadastro() {return dataCadastro;}
 	public void setDataCadastro(Date dataCadastro) {this.dataCadastro = dataCadastro;}
 
@@ -150,13 +167,26 @@ public class Empresa implements Serializable {
 	public Boolean isAtivo() {		
 		return (ativo == null) ? null: (ativo.equals('S')) ? true : false;
 	}
-	public void setAtivo(Boolean value) {
+	/*public void setAtivo(Boolean value) {
 		if (value == null) {this.ativo = null;} 
 		else {this.ativo = ((value == true) ? 'S' : 'N');}
+	}*/
+	
+	public Character getAtivo() {
+		return ativo;
+	}
+	
+	public void setAtivo(Character ativo) {
+		this.ativo = ativo;
 	}
 
 
-	public Endereco getEndereco() {return (endereco == null) ? new Endereco() : endereco;}
+	public Endereco getEndereco() {
+		if(this.endereco == null){
+			this.endereco = new Endereco();
+		}
+		return endereco;
+	}
 	public void setEndereco(Endereco endereco) {this.endereco = endereco;}
 	
 	

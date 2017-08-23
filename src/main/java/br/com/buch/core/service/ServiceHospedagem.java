@@ -6,6 +6,8 @@ import java.util.List;
 
 import br.com.buch.core.dao.HospedagemDao;
 import br.com.buch.core.entity.Hospedagem;
+import br.com.buch.core.entity.Reserva;
+import br.com.buch.core.enumerated.SituacaoHospedagem;
 import br.com.buch.core.enumerated.TipoFiltroHospedagem;
 import br.com.buch.core.util.CodeUtils;
 import br.com.buch.core.util.NegocioException;
@@ -15,7 +17,7 @@ import br.com.buch.core.util.UtilErros;
 
 public class ServiceHospedagem implements GenericService<Hospedagem> {
 
-	private static final String CARREGAR_ENTIDADE= "Select h From Hospedagem h LEFT JOIN FETCH h.hospede"
+	private static final String CARREGAR_ENTIDADE= "Select h From Hospedagem h LEFT JOIN FETCH h.hospede LEFT JOIN FETCH h.reserva"
 					+ " LEFT JOIN FETCH h.apartamento LEFT JOIN FETCH h.lancamentos where h.idHospedagem = ?";
 	
 	private static final String BUSCAR_TODOS = 
@@ -35,11 +37,19 @@ public class ServiceHospedagem implements GenericService<Hospedagem> {
 		if(entidade.getIdHospedagem() == null){			
 			try {
 				
-				String codigo = CodeUtils.getDataFormatada("yyyyMM", new Date());
-				codigo += String.valueOf(dao.getMaxField("codigo") + 1);
-				entidade.setCodigo(Integer.valueOf(codigo));
+				String data = CodeUtils.getDataFormatada("yyyyMM", new Date());
+				
+				String codigo = String.valueOf(dao.getCodigoHospedagem());				
+				entidade.setCodigo(data+codigo);
 				
 				dao.save(entidade);
+				
+				if(entidade.getReserva()!= null){
+					Reserva reserva = entidade.getReserva();
+					reserva.setSituacao(SituacaoHospedagem.UTILIZADA);
+					new ServiceReserva().salvar(reserva);
+				}
+				
 				return "Hospedagem inserida com Sucesso!";
 			} catch (Exception e) {
 				e.printStackTrace();

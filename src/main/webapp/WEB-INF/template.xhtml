@@ -6,6 +6,8 @@
 
 <f:view contentType="text/html" locale="#{indexBean.localeCode}">
 
+<ui:insert name="parametros"/>	
+
 <h:head>
 	<f:facet name="first">
 		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -70,7 +72,7 @@
 			            	url="/cadHospede.xhtml?faces-redirect=true" 		icon="fa fa-user"/>			            
 			            
 			            <p:menuitem value="#{label.menu_empresas}"
-			            	url="/cadEmpresas.xhtml?faces-redirect=true"		icon="fa fa-building-o" />			            
+			            	url="/cadEmpresa.xhtml?faces-redirect=true"		icon="fa fa-building-o" />			            
 			            
 			            <p:menuitem value="#{label.menu_apartamento}"
 			            	url="/cadApartamento.xhtml?faces-redirect=true" 	icon="fa fa-bed" />			            
@@ -84,18 +86,22 @@
 			            <p:menuitem value="#{label.menu_forma_pagamento}"
 			            	url="/cadFormaPagamento.xhtml?faces-redirect=true" 	icon="fa fa-cc-visa" />
 			            
-			            <p:menuitem value="#{label.menu_tipo_tarifa}"
-			            	url="/cadTipoTarifa.xhtml?faces-redirect=true"		icon="fa fa-bar-chart-o" />
-			            
-			            <p:menuitem value="#{label.menu_tarifas}"
-			            	url="/cadTarifario.xhtml?faces-redirect=true" 		icon="fa fa-usd"/>			            
 			           
 			            <p:menuitem value="#{label.menu_produtos}"
 			            	url="/cadProduto.xhtml?faces-redirect=true" 		icon="fa fa-cubes"/>			            
-			            
-			            <p:menuitem value="#{label.menu_grupos_produto}" 
-			            	url="/cadGrupoProduto.xhtml?faces-redirect=true"	icon="ui-icon-wrench" />			            
+			            	            
 			        </p:submenu>
+			        
+			        
+			        
+			        <p:submenu label="#{label.menu_tarifas}">
+			        	<p:menuitem value="#{label.menu_tipo_tarifa}"
+			            	url="/cadTipoTarifa.xhtml?faces-redirect=true"		icon="fa fa-bar-chart-o" />
+			            
+			            <p:menuitem value="#{label.menu_tarifario}"
+			            	url="/cadTarifario.xhtml?faces-redirect=true" 		icon="fa fa-usd"/>
+			        </p:submenu>
+			        
 			        
 			        
 			        <p:submenu label="#{label.menu_caixa}">
@@ -129,14 +135,12 @@
 			    </p:panelMenu>											
 			</aside>
 		
-		
-		
-		
+
 		
 			<section class="bu-content js-content">								
 				<ui:insert name="conteudo"/>						
 				
-				<p:confirmDialog global="true">
+				<p:confirmDialog global="true" width="350" height="50">
 					<p:commandButton value="#{label.txt_sim}" type="button" icon="ui-icon-check" styleClass="ui-confirmdialog-yes"/>
 					<p:commandButton value="#{label.txt_nao}" type="button" icon="ui-icon-close" styleClass="ui-confirmdialog-no"/>
 				</p:confirmDialog>

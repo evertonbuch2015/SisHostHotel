@@ -79,6 +79,16 @@ public class ReservaBean extends GenericBean<Reserva, ServiceReserva> implements
 	}
 	
 	
+	public String fazerCheckin(Reserva reserva){		
+		if (reserva.getSituacao().equals(SituacaoHospedagem.CONFIRMADA)){			
+			return "hospedagem?faces-redirect=true&reserva=" + reserva.getIdReserva();
+		}else{
+			UtilMensagens.mensagemAtencao("Reserva deve estar com Status de Confirmada para realizar o Check-In");
+			return "";
+		}			
+	}
+	
+	
 	public void onDataEntradaSelect(SelectEvent event) {
 		verificaDisponibilidadeApartamento();
     }

@@ -4,6 +4,7 @@ public enum SituacaoHospedagem {
 
 	CONFIRMADA("Confirmada"),
 	NAO_CONFIRMADA("Não Confirmada"),
+	UTILIZADA("Utilizada"),
 	CHECKIN("Check-In"),
 	CHECKOUT("Check-Out"),
 	CANCELADA("Cancelada");

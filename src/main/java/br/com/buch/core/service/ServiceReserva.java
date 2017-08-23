@@ -85,6 +85,20 @@ public class ServiceReserva implements GenericService<Reserva> {
             		" \nErro: " + UtilErros.getMensagemErro(e));
 		}
 	}
+	
+	
+	public Reserva carregarEntidade(Integer id) throws PersistenciaException {
+		try{
+			String jpql = "Select r From Reserva r LEFT JOIN FETCH r.hospede"
+						+ " LEFT JOIN FETCH r.apartamento where r.idReserva = ?1";
+			return reservaDao.findOne(jpql, id);
+			
+		}catch (Exception e) {
+			e.printStackTrace();
+			throw new PersistenciaException("Ocorreu uma exceção ao buscar os dados da Reserva!" + 
+            		" \nErro: " + UtilErros.getMensagemErro(e));
+		}
+	}
 
 	
 	@Override
@@ -123,8 +137,6 @@ public class ServiceReserva implements GenericService<Reserva> {
 			throw e;
 		}
 	}
-
-
 	
 	
 	public void cancelarReserva(Reserva reserva) throws Exception{
@@ -132,8 +144,13 @@ public class ServiceReserva implements GenericService<Reserva> {
 		if(reserva.getSituacao() == SituacaoHospedagem.CANCELADA ){
 			throw new NegocioException("Reserva já esta Cancelada no Sistema!");
 		}
+		
+		if(reserva.getSituacao() == SituacaoHospedagem.UTILIZADA){
+			throw new NegocioException("Reserva já foi utilizada em uma Hospedagem!");
+		}
 				
 		reserva.setSituacao(SituacaoHospedagem.CANCELADA);
+		reserva.setDataCancelamento(new Date());
 		
 		reservaDao.update(reserva);
 	}

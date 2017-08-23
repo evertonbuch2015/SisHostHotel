@@ -1,0 +1,323 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition 
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:p="http://primefaces.org/ui" 
+	template="/WEB-INF/template.xhtml"
+	xmlns:app="http://java.sun.com/jsf/composite/componentes">
+
+	<ui:define name="tituloPagina">#{label.tit_empresa}</ui:define>
+
+	<ui:define name="conteudo">
+		
+		<p:breadCrumb>
+			<p:menuitem value="Home" url="/index.xhtml" />
+			<p:menuitem value="#{label.menu_cadastro}"/>
+    		<p:menuitem value="#{label.empresas}" url="#" />			
+		</p:breadCrumb>
+		
+		<p:messages autoUpdate="true" closable="true">
+			<p:effect type="pulsate" event="load" delay="500" />
+			<p:effect type="clip" event="load" delay="10000" />
+		</p:messages>
+		
+		
+		<p:tabView rendered="#{empresaBean.buscando}" prependId="false">						
+			<p:tab title="#{label.txt_consulta}"> 	
+				<p:dataTable value="#{empresaBean.entidades}" var="empresa" id="tabela" 
+					selection="#{empresaBean.entidade}" selectionMode="single"
+					rowKey="#{empresa.idEmpresa}" reflow="true"									
+					emptyMessage="#{label.msg_tabela_vazia}"
+					style="margin: 0px -8px;"
+					rows="13"
+    				paginator="true" paginatorAlwaysVisible="false" 
+    				paginatorPosition="bottom">				
+					
+
+					<p:ajax event="rowDblselect" listener="#{empresaBean.onRowDblClckSelect}"
+						global="false" update="@form"/>
+
+					<p:ajax event="rowSelect" listener="#{empresaBean.onRowSelect}" />
+
+
+					<p:column headerText="#{label.txt_codigo}" sortBy="#{empresa.codigo}">
+						<h:outputText value="#{empresa.codigo}" />
+					</p:column>
+										
+
+					<p:column headerText="#{label.txt_nome_razao}" sortBy="#{empresa.nomeRazao}">
+						<h:outputText value="#{empresa.nomeRazao}" />
+					</p:column>
+
+
+					<p:column headerText="#{label.txt_documento}" sortBy="#{empresa.documento}">
+						<h:outputText value="#{empresa.documentoFormatado}" />
+					</p:column>
+					
+					
+					<p:column headerText="#{label.txt_email}" >
+						<h:outputText value="#{empresa.email}" />
+					</p:column>
+					
+					
+					<p:column headerText="#{label.txt_acoes}" exportable="false">						
+						<p:commandButton actionListener="#{empresaBean.editar(empresa)}" 
+							icon="ui-icon-pencil" update="@form"/>
+							
+						<p:commandButton actionListener="#{empresaBean.excluir(empresa)}" 
+							icon="ui-icon-trash" update="@form">
+							
+							<p:confirm header="Confirmação" message="Deseja Excluir este empresa"/>
+						</p:commandButton>
+					</p:column>					
+
+				</p:dataTable>
+			</p:tab>
+		</p:tabView>
+		
+						
+		<p:tabView rendered="#{!empresaBean.buscando}">						
+			<p:tab title="#{label.txt_dados_gerais}"
+				titleStyle="font-size: 10px;color: #455a64;">
+				
+				<div class="ui-fluid">
+					
+					<p:panelGrid 
+						styleClass="ui-panelgrid-blank" columns="2"
+						cellpadding="10" layout="grid"
+						columnClasses="ui-grid-col-2,ui-grid-col-3">
+						
+						<p:outputLabel value="#{label.txt_codigo}" for="codigo" />
+						<p:inputText id="codigo"
+							value="#{empresaBean.entidade.codigo}"
+							readonly="true"/>
+					</p:panelGrid>
+						
+											
+					<p:panelGrid 
+						styleClass="ui-panelgrid-blank" columns="2"
+						cellpadding="10" layout="grid"
+						columnClasses="ui-grid-col-2,ui-grid-col-8">
+						
+													
+						<p:outputLabel value="#{label.txt_nome_razao}:" for="nome_razao" />
+						<p:inputText id="nome_razao" 
+							value="#{empresaBean.entidade.nomeRazao}" placeholder="máximo 60 caracteres"
+							required="true" 
+							requiredMessage="Informe o nome razão do empresa!"/>
+						
+						
+						<p:outputLabel value="#{label.txt_nome_fantasia}:" for="nome_fantasia" />
+						<p:inputText id="nome_fantasia" 
+							value="#{empresaBean.entidade.nomeFantasia}" 
+							placeholder="máximo 60 caracteres"
+							required="true" 
+							requiredMessage="Informe o nome fantasia do empresa!"/>
+						
+						
+					</p:panelGrid>
+					
+					<p:separator style="width:85%;margin-left:-25px"/>
+					
+					<p:panelGrid 
+						styleClass="ui-panelgrid-blank" columns="4"
+						cellpadding="10" layout="grid"
+						columnClasses="ui-grid-col-2,ui-grid-col-3,ui-grid-col-2,ui-grid-col-3">
+						
+						<p:outputLabel value="#{label.txt_email}:" for="email" />
+						<p:inputText id="email"
+							value="#{empresaBean.entidade.email}" placeholder="Ex: email@dominio.com.br"
+							required="true" 
+							requiredMessage="Informe um e-mail de contato!"/>
+						
+						
+						<p:outputLabel value="#{label.txt_site}:" for="site" />
+						<p:inputText id="site"
+							value="#{empresaBean.entidade.site}" placeholder="Ex: www.dominio.com.br"/>
+							
+							
+						<p:outputLabel value="#{label.txt_telefone}:" for="telefone1" />							
+						<p:inputMask id="telefone1"
+							value="#{empresaBean.entidade.telefone1}"
+							mask="(99)9999-9999" placeholder="Ex: (21) 2616-0000 "
+							readonly="#{empresaBean.visualizando}"
+							requiredMessage="Informe ao menos um telefone de contato!"/>
+						
+						
+						<p:outputLabel value="#{label.txt_telefone}:" for="telefone2" />							
+						<p:inputMask id="telefone2"
+							value="#{empresaBean.entidade.telefone2}"
+							mask="(99)9999-9999" placeholder="Ex: (21) 2616-0000 "/>
+							
+						
+					</p:panelGrid>	
+					
+					<p:separator style="width:85%;margin-left:-25px"/>
+					
+					<p:panelGrid 
+						styleClass="ui-panelgrid-blank" columns="4"
+						cellpadding="10" layout="grid"
+						columnClasses="ui-grid-col-2,ui-grid-col-3,ui-grid-col-2,ui-grid-col-3">
+							
+						<p:outputLabel value="#{label.txt_documento}:" for="documento" />
+						<p:inputMask id="documento"
+							mask="99.999.999/9999-99" required="true"
+							value="#{empresaBean.entidade.documento}"
+							readonly="#{empresaBean.visualizando}"
+							requiredMessage="Informe o Número do Documento!"/>
+						
+						
+						<p:outputLabel value="#{label.txt_insc_estadual}:" for="insc_estadual" />							
+						<p:inputMask id="insc_estadual"
+							value="#{empresaBean.entidade.inscEstadual}"/>
+						
+						<p:outputLabel value="#{label.txt_insc_municipal}:" for="insc_municipal" />							
+						<p:inputMask id="insc_municipal"
+							value="#{empresaBean.entidade.inscMunicipal}"
+							mask="999999999-9"/>
+											
+										
+						<p:outputLabel value="#{label.txt_data_cadastro}:" for="dtCadastro"/>
+						<p:inputText id="dtCadastro" readonly="true"
+							value="#{empresaBean.entidade.dataCadastroFormatada}" mask="99/99/9999"/>
+												
+					</p:panelGrid>
+				</div>
+			</p:tab>
+
+
+			<p:tab title="Endereço">
+				
+				<div class="ui-fluid">
+					<p:panelGrid
+						styleClass="ui-panelgrid-blank" columns="4"
+						cellpadding="10" layout="grid"
+						columnClasses="ui-grid-col-1 texto,ui-grid-col-4,ui-grid-col-1 texto bu-left,ui-grid-col-3">
+	
+												
+						<p:outputLabel value="#{label.txt_cep}" for="cep" />
+						<p:inputMask id="cep" 
+							value="#{empresaBean.entidade.endereco.cep}" mask="99.999-999"
+							required="true" 
+							requiredMessage="Informe no endereço o número do Cep!"
+							readonly="#{empresaBean.visualizando}">
+							
+							<p:ajax event="blur" process="@this" update="lgr rua bairro cidade estado pais"
+								listener="#{empresaBean.consultaCepWebService}"/>
+						</p:inputMask>
+															
+						<p:outputLabel value="#{label.txt_lgr}" for="lgr"/>
+						<p:inputText id="lgr"
+							value="#{empresaBean.entidade.endereco.logradouro}"
+							placeholder="Ex: Avenida"/>
+						
+						<p:outputLabel value="#{label.txt_rua}" for="rua"/>
+						<p:inputText id="rua"
+							value="#{empresaBean.entidade.endereco.rua}"
+							placeholder="Ex: Assis Brasil"
+							required="true" 
+							requiredMessage="Informe no endereço o nome da rua!"/>
+							
+						<p:outputLabel value="#{label.txt_numero}" for="numero"/>
+						<p:spinner id="numero" 
+							value="#{empresaBean.entidade.endereco.numero}" min="0"
+							required="true" 
+							requiredMessage="Informe no endereço o número!"/>
+						
+						
+						<p:outputLabel value="#{label.txt_complemento}" for="complemento"/>
+						<p:inputText id="complemento"
+							value="#{empresaBean.entidade.endereco.complemento}"/>
+							
+						<p:outputLabel value="#{label.txt_bairro}" for="bairro"/>
+						<p:inputText id="bairro"
+							value="#{empresaBean.entidade.endereco.bairro}"
+							required="true" 
+							requiredMessage="Informe no endereço o bairro!"/>
+							
+						<p:outputLabel value="#{label.txt_cidade}" for="cidade"/>
+						<p:inputText id="cidade"
+							value="#{empresaBean.entidade.endereco.cidade}"
+							required="true" 
+							requiredMessage="Informe no endereço o nome da Cidade!"/>
+							
+						<p:outputLabel value="#{label.txt_estado}" for="estado"/>
+						<p:selectOneMenu id="estado"
+							value="#{empresaBean.entidade.endereco.estado}"
+							required="true" 
+							requiredMessage="Informe no endereço o estado!">
+							
+							<f:selectItem itemLabel="Selecione"/>
+							<f:selectItems value="#{empresaBean.estados}" var="a"
+								itemValue="#{a}" itemLabel="#{a}"/>
+						</p:selectOneMenu>
+						
+						<p:outputLabel value="#{label.txt_pais}" for="pais"/>
+						<p:inputText id="pais"
+							value="#{empresaBean.entidade.endereco.pais}"/>
+					</p:panelGrid>
+				</div>
+			</p:tab>
+
+
+			<p:tab title="#{label.txt_obs}">
+				<p:panelGrid columns="1"
+					styleClass="ui-panelgrid-blank"
+					layout="grid">
+						
+					<p:outputLabel value="#{label.txt_obs}" for="obs" />
+					<p:inputTextarea value="#{empresaBean.entidade.obs}" id="obs"
+						style="width: 80%" rows="15" cols="30" counter="display"
+						maxlength="255" counterTemplate="{0} Caracteres Restantes"
+						autoResize="false" readonly="#{empresaBean.visualizando}" />
+					<h:outputText id="display" />
+				</p:panelGrid>
+			</p:tab>
+			
+			
+			<p:tab title="#{label.hospedes_vinculados}">
+				
+			</p:tab>
+
+		</p:tabView>
+		
+		
+		<app:barraBotoes bean="#{empresaBean}"/>
+		
+		
+		<p:dialog 
+			width="300" height="140"
+			header="Filtrar Tabela!"			
+			widgetVar="dialogFiltro" modal="true" draggable="true" 
+			closable="true" resizable="true" position="center center"
+			showEffect="explode" hideEffect="explode">
+		
+			<p:panelGrid columns="1" cellpadding="3" 
+				styleClass="ui-panelgrid-blank">
+														
+				<p:selectOneMenu id="tipoFiltro"
+					value="#{empresaBean.filtro}" style="width:75%">						
+					<f:selectItem itemLabel="Selecione" />
+					<f:selectItems value="#{empresaBean.tipoFiltros()}" var="a"
+						itemValue="#{a}" itemLabel="#{a.label}"/>						
+				</p:selectOneMenu>
+					
+				<p:inputText id="valorfiltro" placeholder="Valor do Filtro!" 
+						value="#{empresaBean.valorFiltro}"
+						size="30"/>
+								
+				<p:commandButton value="Filtrar" icon="ui-icon-folder-collapsed"
+					styleClass="bu-botao-azul" update="tabela"
+					style="margin-top:20px;"
+					actionListener="#{empresaBean.filtrar()}"
+					onclick="PF('dialogFiltro').hide();" />	
+					
+			</p:panelGrid>	
+		</p:dialog>
+				
+	</ui:define>
+</ui:composition>

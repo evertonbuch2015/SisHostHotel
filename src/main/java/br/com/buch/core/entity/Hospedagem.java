@@ -42,7 +42,7 @@ public class Hospedagem implements Serializable {
 	
 	
 	@Column(name="CODIGO")
-    private Integer codigo;
+    private String codigo;
 	
 	
 	@Column(name = "DATA_ENTRADA")
@@ -98,6 +98,11 @@ public class Hospedagem implements Serializable {
     private Hospede hospede;
 
     
+    @OneToOne
+    @JoinColumn(name ="COD_RESERVA")
+    private Reserva reserva;
+    
+    
     @OneToMany(mappedBy = "hospedagem", targetEntity = HospedeAdicional.class,
     			fetch = FetchType.LAZY, cascade = CascadeType.ALL)    
     private List<HospedeAdicional> hospedesAdicionais;
@@ -106,8 +111,8 @@ public class Hospedagem implements Serializable {
     @OneToMany(mappedBy = "hospedagem", targetEntity = HospedagemLancamento.class, 
     			fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<HospedagemLancamento> lancamentos;
-
     
+        
    //--------------------------------	GETs and SETs------------------------------//
     
 	public Integer getIdHospedagem() {return idHospedagem;}
@@ -115,9 +120,9 @@ public class Hospedagem implements Serializable {
 	public void setIdHospedagem(Integer idHospedagem) {this.idHospedagem = idHospedagem;}
 
 
-	public Integer getCodigo() {return codigo;}
+	public String getCodigo() {return codigo;}
 
-	public void setCodigo(Integer codigo) {this.codigo = codigo;}
+	public void setCodigo(String codigo) {this.codigo = codigo;}
 
 
 	public Date getDataEntrada() {return dataEntrada;}
@@ -200,6 +205,15 @@ public class Hospedagem implements Serializable {
 
 	public void setHospede(Hospede hospede) {this.hospede = hospede;}
 
+	
+	public Reserva getReserva() {
+		return reserva;
+	}
+	
+	public void setReserva(Reserva reserva) {
+		this.reserva = reserva;
+	}
+	
 
 	public List<HospedeAdicional> getHospedesAdicionais() {
 		if(hospedesAdicionais == null){

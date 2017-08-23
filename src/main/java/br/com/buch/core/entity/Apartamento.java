@@ -59,7 +59,7 @@ public class Apartamento implements Serializable {
     
     
     @NotNull(message="Informe a Categoria do Apartamento!")
-    @OneToOne(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
+    @OneToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
     @JoinColumn(name ="COD_CADCATEGORIA")
     private Categoria categoria;   
     
