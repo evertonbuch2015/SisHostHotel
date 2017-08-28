@@ -25,7 +25,8 @@ public class Recebimento implements Serializable {
 	public enum OrigemRecebimento{
 		ADIANTAMENTO("Adiantamento"),
 		HOSPEDAGEM("Hospedagem"),
-		ENTRADA_MANUAL("Entrada Manual");
+		ENTRADA_MANUAL("Entrada Manual"),
+		CONSUMO("Consumo");
 		
 		private String label;
 		
@@ -51,16 +52,12 @@ public class Recebimento implements Serializable {
     private Integer numero;
 	
 	
-	@Column(name="DOCUMENTO_ORIGEM")
-    private Integer documentoOrigem;
-	
-	
 	@Column(name="ORIGEM_RECEBIMENTO", length=20)
 	@Enumerated(EnumType.STRING)
     private OrigemRecebimento origemRecebimento;
 	
 	
-	@Column(name="DESCRICAO",nullable = false, length=100)
+	@Column(name="DESCRICAO", nullable = false, length=150)
     private String descricao;
 	
 	
@@ -95,15 +92,6 @@ public class Recebimento implements Serializable {
 
 	public void setNumero(Integer numero) {
 		this.numero = numero;
-	}
-
-
-	public Integer getDocumentoOrigem() {
-		return documentoOrigem;
-	}
-
-	public void setDocumentoOrigem(Integer documentoOrigem) {
-		this.documentoOrigem = documentoOrigem;
 	}
 
 

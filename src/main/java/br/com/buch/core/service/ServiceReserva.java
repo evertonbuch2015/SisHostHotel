@@ -105,14 +105,20 @@ public class ServiceReserva implements GenericService<Reserva> {
 	public List<Reserva> buscarTodos() throws PersistenciaException {
 		Calendar c1 = Calendar.getInstance();
 	    Calendar c2 = Calendar.getInstance();
-		c1.set(Calendar.DAY_OF_MONTH, c1.getMinimum(Calendar.DAY_OF_MONTH));
-        c2.set(Calendar.DAY_OF_MONTH, c1.getMaximum(Calendar.DAY_OF_MONTH));
-        
+	    
+	    //Dentro do mês Corrente
+		//c1.set(Calendar.DAY_OF_MONTH, c1.getMinimum(Calendar.DAY_OF_MONTH));
+        //c2.set(Calendar.DAY_OF_MONTH, c1.getMaximum(Calendar.DAY_OF_MONTH));
+	    
+	    //30 dias para trás e 30 dias para frente 
+	    c1.add(Calendar.DAY_OF_MONTH, -30);
+	    c2.add(Calendar.DAY_OF_MONTH, 30);
+	    
         Date d1 = c1.getTime();
         Date d2 = c2.getTime();
         
 		try {
-			return reservaDao.find("From Reserva r where r.dataEntrada Between ?1 and ?2",d1,d2);
+			return reservaDao.find("From Reserva r where r.dataEntrada Between ?1 and ?2 order by r.dataEntrada",d1,d2);
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw new PersistenciaException("Ocorreu uma exceção ao buscar os dados da Reserva!" + 

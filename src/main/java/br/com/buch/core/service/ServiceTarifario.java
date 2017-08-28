@@ -138,15 +138,14 @@ public class ServiceTarifario implements GenericService<Tarifario> {
 		
 		try {
 			String jpql = " Select t From Tarifario t where t.categoria = ?1 and t.tipoTarifa = ?2"
-						+ " and ((t.dataInicial BETWEEN ?3 and ?4) or (t.dataFinal BETWEEN ?3 and ?4))";
+						+ " and ((t.dataInicial >= ?3 and t.dataInicial <= ?4) or (t.dataFinal >= ?3 and t.dataFinal <= ?4))";
 			
 			lista = tarifarioDao.find(jpql, entidate.getCategoria(),entidate.getTipoTarifa(),entidate.getDataInicial(),entidate.getDataFinal());
 		} catch (Exception e) {
 			e.printStackTrace();
-		}
-				
+		}				
 		
-		return (lista.size() == 0) ?true:false;
+		return ((lista == null) || ( lista.size()) == 0) ?true:false;
 	}
 
 

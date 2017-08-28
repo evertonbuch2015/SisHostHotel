@@ -5,6 +5,8 @@ import java.io.Serializable;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -36,7 +38,8 @@ public class Apartamento implements Serializable {
     private Integer numero;
     
 	
-    @Column(name="SITUACAO",nullable = true, length = 20)
+    @Column(name="SITUACAO")
+    @Enumerated(EnumType.STRING)
     private SituacaoApartamento situacao;
     
     

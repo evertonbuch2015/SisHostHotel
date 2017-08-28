@@ -238,10 +238,15 @@
 						
 						
 					</p:panelGrid>
-					
-					
-					<p:separator/>
-					
+				</div>
+			</p:tab>
+			
+			
+			
+			<p:tab title="#{label.dados_financeiros}" 
+				titleStyle="font-size: 10px;color: #455a64;" rendered="#{hospedagemBean.inserindo} or #{hospedagemBean.alterando}">
+				
+				<div class="ui-fluid">					
 					
 					<p:panelGrid 
 						styleClass="ui-panelgrid-blank" columns="2"
@@ -251,7 +256,7 @@
 						
 						
 						
-						<p:outputLabel value="#{label.txt_tipo_tarifa}" for="tipoTarifa" rendered="#{hospedagemBean.inserindo}"/>
+						<p:outputLabel value="#{label.txt_tipo_tarifa}" for="tipoTarifa"/>
 						<p:selectOneMenu id="tipoTarifa" 
 							value="#{hospedagemBean.tipoTarifa}">
 							
@@ -332,23 +337,56 @@
 								
 								<f:convertNumber pattern="#,##0.00" type="currency" currencySymbol="R$"/>
 							</p:inputText>
+							
+							<p:separator/>
+							
+							
 					</p:panelGrid>
 										
 				</div>
 			</p:tab>
 			
 			
-			<p:tab title="#{label.txt_aba_lancamentos}" titleStyle="font-size: 10px;color: #455a64;">
-				<div class="ui-fluid">
-					<p:panelGrid 
-						styleClass="ui-panelgrid-blank" columns="5"
-						cellpadding="10" layout="grid"
-						columnClasses="ui-grid-col-1,ui-grid-col-3,ui-grid-col-1,ui-grid-col-1,ui-grid-col-2">
+			<p:tab title="#{label.txt_aba_lancamentos}" 
+				titleStyle="font-size: 10px;color: #455a64;" rendered="#{hospedagemBean.visualizando}">
+				
+				<p:dataTable id="tabela"
+					value="#{hospedagemBean.entidade.lancamentos}" var="lancamento"
+					emptyMessage="#{label.msg_tabela_vazia}"
+					style="margin: 15px 10px; width: 90%">				
+
+					
+					<p:column headerText="#{label.data}" width="130" style="text-align: left;">
+						<h:outputText value="#{lancamento.dataCadastroFormatada}" />
+					</p:column>
+					
+					
+					<p:column headerText="#{label.txt_descricao}" style="text-align: left;">
+						<h:outputText value="#{lancamento.descricao}" />
+					</p:column>
+					
+									
+
+					<p:column headerText="#{label.txt_quantidade}" width="80" style="text-align: left;">
+						<h:outputText value="#{lancamento.quantidade}" />
+					</p:column>
+					
+					<p:column headerText="#{label.txt_valor}" width="80" style="text-align: left;">
+						<h:outputText value="R$ #{lancamento.vlUnitario}">
+							<f:convertNumber pattern="#,##0.00"/>
+						</h:outputText>
 						
-						
-						
-					</p:panelGrid>
-				</div>
+					</p:column>
+					
+					
+					<p:column headerText="#{label.txt_valor_total}" width="80" style="text-align: left;">
+						<h:outputText value="R$ #{lancamento.vlTotal}">						
+							<f:convertNumber pattern="#,##0.00"/>
+						</h:outputText>
+					</p:column>
+					
+				</p:dataTable>
+				
 			</p:tab>
 
 		</p:tabView>

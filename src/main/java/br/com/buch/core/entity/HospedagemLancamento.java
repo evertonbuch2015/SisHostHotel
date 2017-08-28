@@ -2,10 +2,13 @@ package br.com.buch.core.entity;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -14,6 +17,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
+import javax.persistence.Transient;
 
 
 /**
@@ -27,6 +31,27 @@ public class HospedagemLancamento implements Serializable {
 
 	private static final long serialVersionUID = -2398248490404309696L;
 
+	
+	public enum OrigemLancamento{
+		DESCONTO("Desconto"),
+		TX_TURISMO("Taxa de Turismo"),
+		TX_SERVICO("Taxa de Serviço"),
+		DIARIA("Diária"),
+		ADIANTAMENTO("Adiantamento"),
+		CONSUMO("Consumo");
+		
+		private String label;
+		
+		private OrigemLancamento(String label){
+			this.label = label;
+		}
+		
+		public String getLabel(){
+			return label;
+		}
+
+	}
+	
 	
 	@Id
     @SequenceGenerator(name="G_HOSPEDAGEM_LANCAMENTO", sequenceName="\"G_HOSPEDAGEM_LANCAMENTO\"", allocationSize=1)  
@@ -56,6 +81,12 @@ public class HospedagemLancamento implements Serializable {
     private Date dataCadastro;
 	
 
+	@Column(name="ORIGEM_LANCAMENTO")
+	@Enumerated(EnumType.STRING)
+	private OrigemLancamento origemLancamento;
+	
+	
+	
 	@ManyToOne
     @JoinColumn(name ="COD_HOSPEDAGEM")
     private Hospedagem hospedagem;
@@ -122,6 +153,13 @@ public class HospedagemLancamento implements Serializable {
 	}
 
 
+
+	@Transient
+    public String getDataCadastroFormatada(){
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:MM");
+        return sdf.format(this.dataCadastro.getTime());                
+    }
+    
 	public Date getDataCadastro() {
 		return dataCadastro;
 	}
@@ -139,6 +177,10 @@ public class HospedagemLancamento implements Serializable {
 		this.hospedagem = hospedagem;
 	}
 
+	
+	public OrigemLancamento getOrigemLancamento() {return origemLancamento;}
+	
+	public void setOrigemLancamento(OrigemLancamento origemLancamento) {this.origemLancamento = origemLancamento;}
 	
 	//--------------------------------	Métodos Auxiliares------------------------------//
 	

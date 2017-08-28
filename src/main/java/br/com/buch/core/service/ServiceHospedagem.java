@@ -21,7 +21,7 @@ public class ServiceHospedagem implements GenericService<Hospedagem> {
 					+ " LEFT JOIN FETCH h.apartamento LEFT JOIN FETCH h.lancamentos where h.idHospedagem = ?";
 	
 	private static final String BUSCAR_TODOS = 
-			"From Hospedagem h LEFT JOIN FETCH h.hospede LEFT JOIN FETCH h.apartamento where h.dataEntrada Between ? and ?";
+			"From Hospedagem h LEFT JOIN FETCH h.hospede LEFT JOIN FETCH h.apartamento where h.dataEntrada Between ? and ? order by h.dataEntrada";
 	
 	
 	
@@ -103,8 +103,14 @@ public class ServiceHospedagem implements GenericService<Hospedagem> {
 	public List<Hospedagem> buscarTodos() throws PersistenciaException {
 		Calendar c1 = Calendar.getInstance();
 	    Calendar c2 = Calendar.getInstance();
-		c1.set(Calendar.DAY_OF_MONTH, c1.getMinimum(Calendar.DAY_OF_MONTH));
-        c2.set(Calendar.DAY_OF_MONTH, c1.getMaximum(Calendar.DAY_OF_MONTH));
+	    
+	    //Dentro do mês Corrente
+  		//c1.set(Calendar.DAY_OF_MONTH, c1.getMinimum(Calendar.DAY_OF_MONTH));
+        //c2.set(Calendar.DAY_OF_MONTH, c1.getMaximum(Calendar.DAY_OF_MONTH));
+  	    
+  	    //30 dias para trás e 30 dias para frente 
+  	    c1.add(Calendar.DAY_OF_MONTH, -30);
+  	    c2.add(Calendar.DAY_OF_MONTH, 30);
         
         Date d1 = c1.getTime();
         Date d2 = c2.getTime();
