@@ -4,13 +4,16 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
+import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 
+import br.com.buch.core.entity.Empresa;
 import br.com.buch.core.entity.Endereco;
 import br.com.buch.core.entity.Hospede;
 import br.com.buch.core.enumerated.Estados;
 import br.com.buch.core.enumerated.TipoFiltroHospede;
+import br.com.buch.core.service.ServiceEmpresa;
 import br.com.buch.core.service.ServiceHospede;
 import br.com.buch.view.util.UtilMensagens;
 
@@ -21,11 +24,18 @@ public class HospedeBean extends GenericBean<Hospede, ServiceHospede> implements
 	
 	private static final long serialVersionUID = -6802914921786106522L;
 	private TipoFiltroHospede filtro;	
+	private ServiceEmpresa serviceEmpresa;
 	
 	public HospedeBean() {
 		super(new ServiceHospede());
 	}
 
+	
+	@PostConstruct
+	public void init(){
+		serviceEmpresa = new ServiceEmpresa();
+	}
+	
 	// =======================METODOS DO USUARIO=====================================
 	
 	
@@ -56,6 +66,12 @@ public class HospedeBean extends GenericBean<Hospede, ServiceHospede> implements
 			}
 		}		
 	}
+	
+	
+	public List<Empresa> buscarEmpresas(String query){
+		return serviceEmpresa.buscarPorNomeFantasia("%"+query+"%");
+	}
+	
 	// =============================GET AND SET=====================================
 
 	public TipoFiltroHospede getFiltro() {return filtro;}

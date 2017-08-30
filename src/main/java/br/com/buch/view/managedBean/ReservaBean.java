@@ -18,10 +18,12 @@ import br.com.buch.core.entity.TipoTarifa;
 import br.com.buch.core.enumerated.SituacaoHospedagem;
 import br.com.buch.core.enumerated.TipoFiltroReserva;
 import br.com.buch.core.service.ServiceApartamento;
+import br.com.buch.core.service.ServiceHospede;
 import br.com.buch.core.service.ServiceReserva;
 import br.com.buch.core.service.ServiceTarifario;
 import br.com.buch.core.util.Constantes;
 import br.com.buch.core.util.NegocioException;
+import br.com.buch.core.util.PersistenciaException;
 import br.com.buch.view.util.UtilMensagens;
 
 
@@ -34,9 +36,9 @@ public class ReservaBean extends GenericBean<Reserva, ServiceReserva> implements
 	private TipoFiltroReserva filtro;	
 	private ServiceApartamento serviceApartamento;
 	private ServiceTarifario serviceTarifario;
+	private ServiceHospede serviceHospede;
 	private TipoTarifa tipoTarifa;
 	private boolean tarifaManual;
-	private String descricaoApartamento;
 	
 	public ReservaBean() {
 		super(new ServiceReserva());	
@@ -46,6 +48,7 @@ public class ReservaBean extends GenericBean<Reserva, ServiceReserva> implements
 	@PostConstruct
 	public void init(){
 		serviceApartamento = new ServiceApartamento();
+		serviceHospede = new ServiceHospede();
 	}
 	
 	// =======================METODOS DO USUARIO=====================================
@@ -177,6 +180,74 @@ public class ReservaBean extends GenericBean<Reserva, ServiceReserva> implements
 		}
 	}
 	
+	
+	public void confirmarReserva(){
+		if (this.entidade == null) {
+			UtilMensagens.mensagemAtencao("Selecione um Registro na Lista!");
+			return;
+		}
+		
+		try {
+			service.confirmarReserva(this.entidade);
+			refresh();
+			mudarBuscar();
+			
+			UtilMensagens.mensagemInformacao("Reserva Confirmada com Sucesso!");
+		}
+		catch (NegocioException e) {
+			UtilMensagens.mensagemAtencao(e.getMessage());
+		}
+		catch (Exception e) {
+			UtilMensagens.mensagemErro(e.getMessage());
+		}
+	}
+	
+	
+	public List<Apartamento> buscarApartamentos(String query){
+		try{
+			if (query.equals("")) {
+				return serviceApartamento.buscarTodos();
+			} else {
+				return serviceApartamento.buscarPorNumero(Integer.parseInt(query));
+			}
+		}catch (NumberFormatException e) {
+			UtilMensagens.mensagemErro("Informe um Número Válido");
+			return null;			
+		} catch (PersistenciaException e) {
+			UtilMensagens.mensagemErro(e.getMessage());
+			return null;
+		}
+	}
+	
+	
+	public List<Hospede> buscarHospedes(String query){
+		if (query != null && query.length() < 3){
+			return null;
+		}
+		
+		try{
+			return serviceHospede.buscarPorNome("%"+query+"%");
+		}catch (Exception e) {
+			UtilMensagens.mensagemErro(e.getMessage());
+			return null;
+		}
+	}
+	
+	
+	public void onItemApartamentoSelect(SelectEvent event) {
+		Apartamento apartamento = (Apartamento) event.getObject();
+        if (apartamento != null) {
+			entidade.setApartamento(apartamento);
+		}
+	}
+	
+	public void onItemHospedeSelect(SelectEvent event) {
+         Hospede hospede = (Hospede) event.getObject();
+         if (hospede != null) {
+			entidade.setHospede(hospede);
+		}
+    }
+ 
 	// =============================GET AND SET=====================================
 
 	
@@ -219,15 +290,4 @@ public class ReservaBean extends GenericBean<Reserva, ServiceReserva> implements
 		return serviceTarifario;
 	}
 	
-	
-	public String getDescricaoApartamento() {
-		if(entidade.getApartamento() != null){
-			this.descricaoApartamento = "Nº: " + entidade.getApartamento().getNumero() + "  -  " + entidade.getApartamento().getCategoria().getNome();
-		}	
-		return descricaoApartamento;
 	}
-	
-	public void setDescricaoApartamento(String descricaoApartamento) {
-		this.descricaoApartamento = descricaoApartamento;
-	}	
-}

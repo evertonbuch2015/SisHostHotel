@@ -160,4 +160,29 @@ public class ServiceReserva implements GenericService<Reserva> {
 		
 		reservaDao.update(reserva);
 	}
+	
+	
+	public void confirmarReserva(Reserva reserva) throws Exception{
+		
+		if(reserva.getSituacao() == SituacaoHospedagem.CANCELADA ){
+			throw new NegocioException("Reserva já esta cancelada no sistema!");
+		}
+		
+		if(reserva.getSituacao() == SituacaoHospedagem.UTILIZADA){
+			throw new NegocioException("Reserva já foi utilizada em uma Hospedagem!");
+		}
+		
+		if(reserva.getSituacao() == SituacaoHospedagem.CONFIRMADA){
+			throw new NegocioException("Reserva já foi confirmada!");
+		}
+		
+		if (reserva.getDataEntrada().before(new Date())) {
+			throw new NegocioException("Data de entrada da Reserva é menor que data atual!");
+		}
+				
+		reserva.setSituacao(SituacaoHospedagem.CONFIRMADA);
+		reserva.setDataConfirmacao(new Date());
+		
+		reservaDao.update(reserva);
+	}
 }

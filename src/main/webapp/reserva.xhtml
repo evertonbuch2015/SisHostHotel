@@ -92,12 +92,12 @@
 							icon="ui-icon-trash" update="@form" title="Excluir Registro">
 							
 							<p:confirm header="#{label.txt_confirmacao}" 
-								message="Deseja Excluir este Registro?" icon="ui-icon-alert"/>
+								message="#{label.msg_12}" icon="ui-icon-alert"/>
 						</p:commandButton>
 						
 						
 						<p:commandButton actionListener="#{reservaBean.cancelarReserva(entidade)}" 
-							icon="ui-icon-cancel" update="@form" title="Cancelar Reserva">
+							icon="ui-icon-cancel" update="@form" title="#{label.msg_11}">
 						
 							<p:confirm header="#{label.txt_confirmacao}" 
 								message="Deseja Realmente cancelar esta Reserva?" icon="ui-icon-alert"/>	
@@ -203,10 +203,18 @@
 						
 						<p:outputLabel value="#{label.txt_apartamento}" for="apartamento" />
 						<h:panelGrid columns="2">
-   							<p:inputText id="apartamento" size="40"
-   								value="#{reservaBean.descricaoApartamento}"
-								readonly="#{facesContext.currentPhaseId.name eq 'RENDER_RESPONSE'}"
-								required="true"/>
+   														
+							<p:autoComplete id="apartamento" 
+								value="#{reservaBean.entidade.apartamento}"
+		 						var="ap" itemLabel="#{ap}" itemValue="#{ap}" 
+		 						dropdown="true" queryDelay="2000" size="40"
+								forceSelection="true" readonly="#{reservaBean.visualizando}"
+								completeMethod="#{reservaBean.buscarApartamentos}"
+								required="true"
+								requiredMessage="Informe o Apartamento!">
+								
+								<p:ajax event="itemSelect" listener="#{reservaBean.onItemApartamentoSelect}"/>
+							</p:autoComplete>
 								
 							<p:commandButton 
 								icon="fa fa-search" process="@this" update="@none"
@@ -225,10 +233,27 @@
 						
 						<p:outputLabel value="#{label.txt_hospede}" for="hospede" />
 						<h:panelGrid columns="2">
-   							<p:inputText id="hospede" size="40"
-   								value="#{reservaBean.entidade.hospede.nome}"
-								readonly="#{facesContext.currentPhaseId.name eq 'RENDER_RESPONSE'}"
-								required="true"/>
+   															
+							<p:autoComplete id="hospede" 
+								value="#{reservaBean.entidade.hospede}"
+		 						var="hospede" itemLabel="#{hospede.nome}" itemValue="#{hospede}"
+		 						minQueryLength="4" maxResults="20" 
+		 						dropdown="true" queryDelay="2000" size="40"
+								forceSelection="true" readonly="#{reservaBean.visualizando}"
+								completeMethod="#{reservaBean.buscarHospedes}"
+								required="true"
+								requiredMessage="Informe o Hóspede!">
+								
+								<p:ajax event="itemSelect" listener="#{reservaBean.onItemHospedeSelect}"/>
+								
+								<p:column headerText="Código">
+					               <h:outputText value="#{hospede.codigo}"/>
+					        	</p:column>
+					
+					           	<p:column headerText="Nome">
+					               <h:outputText value="#{hospede.nome}" />
+					           	</p:column>
+							</p:autoComplete>
 								
 							<p:commandButton 
 								icon="fa fa-search" process="@this" update="@none"
@@ -346,12 +371,25 @@
 		</p:tabView>
 		
 		
-		<app:barraBotoes bean="#{reservaBean}"/>
+		<app:barraBotoes bean="#{reservaBean}">
+		
+			<p:commandButton id="confirmar" 
+				value="#{label.confirmar_reserva}"
+				styleClass="bu-botao-azul"
+				update="@form"
+				actionListener="#{reservaBean.confirmarReserva}"
+				rendered="#{reservaBean.visualizando || reservaBean.buscando}"
+				title="#{label.msg_10}">
+			
+				<p:confirm header="#{label.txt_confirmacao}" 
+					message="Confirmar esta Reserva?" icon="ui-icon-alert"/>
+			</p:commandButton>
+		</app:barraBotoes>
 		
 		
 		<p:dialog 
 			width="300" height="140"
-			header="Filtrar Tabela!"			
+			header="#{label.filtrar_registros}"			
 			widgetVar="dialogFiltro" modal="true" draggable="true" 
 			closable="true" resizable="true" position="center center"
 			showEffect="explode" hideEffect="explode">

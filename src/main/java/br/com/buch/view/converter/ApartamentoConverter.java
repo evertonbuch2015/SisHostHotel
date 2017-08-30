@@ -23,7 +23,7 @@ public class ApartamentoConverter  implements Converter {
         	Apartamento entity = (Apartamento) value;
             if (entity != null && entity instanceof Apartamento && entity.getIdApartamento() != null) {
                 uiComponent.getAttributes().put( entity.getIdApartamento().toString(), entity);
-                return entity.toString();
+                return entity.getIdApartamento().toString();
             }
         }
         return "";

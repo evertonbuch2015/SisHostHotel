@@ -20,21 +20,25 @@
 		<p:commandButton value="#{label.txt_novo}" update="@form" style="width:80px"
 			styleClass="bu-botao-azul"
 			rendered="#{cc.attrs.bean.visualizando or cc.attrs.bean.buscando}"
-			actionListener="#{cc.attrs.bean.novo()}" />
+			actionListener="#{cc.attrs.bean.novo()}" 
+			title="#{label.msg_02}"/>
 
 		<p:commandButton value="#{label.visualizar}" update="@form" style="width:80px"
-			styleClass="bu-botao-azul" title="#{label.visualizar_item_selecionado}"
+			styleClass="bu-botao-azul"
 			rendered="#{cc.attrs.bean.buscando}"
-			actionListener="#{cc.attrs.bean.visualizar()}" />
+			actionListener="#{cc.attrs.bean.visualizar()}"
+			title="#{label.msg_05}"/>
 
 		<p:commandButton value="#{label.txt_atualizar}"  style="width:80px"
 			styleClass="bu-botao-verde" update="tabela"
 			rendered="#{cc.attrs.bean.buscando}"
-			actionListener="#{cc.attrs.bean.refresh()}" />
+			actionListener="#{cc.attrs.bean.refresh()}"
+			title="#{label.msg_03}"/>
 
 		<p:commandButton value="#{label.txt_editar}" update="@form" style="width:80px"
 			styleClass="bu-botao-azul" rendered="#{cc.attrs.bean.visualizando}" immediate="true"
-			actionListener="#{cc.attrs.bean.editar()}" />
+			actionListener="#{cc.attrs.bean.editar()}"
+			title="#{label.msg_07}"/>
 
 		<p:commandButton value="#{label.txt_salvar}" update="@form" style="width:80px"
 			styleClass="bu-botao-verde" resetValues="@form"
@@ -43,16 +47,19 @@
 
 
 		<p:commandButton value="#{label.txt_excluir}" style="width:80px"
-			styleClass="bu-botao-vermelho" rendered="#{cc.attrs.bean.visualizando}" />
+			styleClass="bu-botao-vermelho" 
+			rendered="#{cc.attrs.bean.visualizando}" title="#{label.msg_06}"/>
 
 		<p:commandButton value="#{label.txt_cancelar}" update="@form" style="width:80px"
 			styleClass="bu-botao-laranja" immediate="true"
 			rendered="#{!cc.attrs.bean.buscando}"
-			actionListener="#{cc.attrs.bean.cancelar()}" />			
+			actionListener="#{cc.attrs.bean.cancelar()}" 
+			title="#{label.msg_08}"/>			
 			
 		<p:commandButton value="#{label.txt_pesquisar}" style="width:80px"
 			styleClass="bu-botao-verde" rendered="#{cc.attrs.bean.buscando}"
-			onclick="PF('dialogFiltro').initPosition(); PF('dialogFiltro').show(); return false;"  />
+			onclick="PF('dialogFiltro').initPosition(); PF('dialogFiltro').show(); return false;"
+			title="#{label.msg_04}"/>
 		
 		<cc:insertChildren>
 		

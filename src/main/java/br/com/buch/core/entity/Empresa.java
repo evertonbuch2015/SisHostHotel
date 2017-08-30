@@ -190,6 +190,7 @@ public class Empresa implements Serializable {
 	public void setEndereco(Endereco endereco) {this.endereco = endereco;}
 	
 	
+	
 	//--------------------------------	Métodos Auxiliares------------------------------//
 	
 	@Override
@@ -199,7 +200,6 @@ public class Empresa implements Serializable {
 		result = prime * result + ((idEmpresa == null) ? 0 : idEmpresa.hashCode());
 		return result;
 	}
-
 	
 	@Override
 	public boolean equals(Object obj) {
@@ -216,5 +216,11 @@ public class Empresa implements Serializable {
 		} else if (!idEmpresa.equals(other.idEmpresa))
 			return false;
 		return true;
-	}	
+	}
+	
+	
+	@Override
+	public String toString() {
+		return super.toString();
+	}
 }

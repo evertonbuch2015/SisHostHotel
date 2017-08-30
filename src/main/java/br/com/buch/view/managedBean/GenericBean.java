@@ -204,8 +204,9 @@ public abstract class GenericBean<E extends Serializable,T extends GenericServic
 	}
 	
 			
+	@SuppressWarnings("unchecked")
 	public void onRowSelect(SelectEvent event) {		
-		//this.entidade = (E) event.getObject();
+		this.entidade = (E) event.getObject();
 	}
 	
 	

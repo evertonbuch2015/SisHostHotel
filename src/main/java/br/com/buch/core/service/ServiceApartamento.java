@@ -1,5 +1,6 @@
 package br.com.buch.core.service;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -103,7 +104,7 @@ public class ServiceApartamento implements GenericService<Apartamento> {
 		
 		try {			
 			if(tipoFiltro.equals(TipoFiltro.CODIGO)){
-				String jpql = "Select a From Apartamento a LEFT JOIN FETCH a.categoria where a.codigo in (" + valorFiltro + ")";
+				String jpql = "Select a From Apartamento a LEFT JOIN FETCH a.categoria where a.numero in (" + valorFiltro + ")";
 				lista = apartamentoDao.find(jpql);				
 			}else if(tipoFiltro.equals(TipoFiltro.SITUACAO)){
 				lista = apartamentoDao.find(BUSCAR_POR_SITUACAO, valorFiltro);
@@ -165,6 +166,20 @@ public class ServiceApartamento implements GenericService<Apartamento> {
 		default:
 			break;
 		}
+	}
+
+
+	
+	
+	
+	public List<Apartamento> buscarPorNumero(Integer numero) {		
+		try{
+			String jpql = "Select a From Apartamento a LEFT JOIN FETCH a.categoria where a.numero >= ?";
+			return apartamentoDao.find(jpql, numero);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return new ArrayList<>();
+		}	
 	}
 	
 }

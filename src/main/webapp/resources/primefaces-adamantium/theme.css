@@ -5208,7 +5208,7 @@ hr.ui-widget-header {
   color: #ffffff;
   background-color: #546e7a;
   padding: 6px 8px;
-  font-size: 16px;
+  font-size: 12px;
   border: 0px;
   margin: 0px;
   font-weight: normal;
@@ -5224,7 +5224,7 @@ hr.ui-widget-header {
 .ui-autocomplete-panel .ui-autocomplete-table th,
 .ui-autocomplete-panel .ui-autocomplete-table td {
   border-color: #f5f5f5 !important;
-  padding: 14px 10px !important;
+  padding: 5px 8px !important;
 }
 .ui-autocomplete-multiple .ui-autocomplete-multiple-container .ui-autocomplete-token {
   background-color: #c6d6df;
@@ -5249,7 +5249,7 @@ hr.ui-widget-header {
 .ui-autocomplete-itemtip table thead tr th {
   border-bottom: solid 1px #e8edf2 !important;
   color: #778d9b;
-  font-size: 16px;
+  font-size: 12px;
 }
 /* Style For UI MultiSelectListbox --------------------------------------------------------------------------------------*/
 .ui-multiselectlistbox .ui-multiselectlistbox-listcontainer {

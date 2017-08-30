@@ -18,7 +18,7 @@ public class ServiceHospede implements GenericService<Hospede> {
 			"Select h From Hospede h LEFT JOIN FETCH h.endereco"; 
 			
 	private static final String CARREGAR_ENTIDADE =
-			"Select h From Hospede h LEFT JOIN FETCH h.endereco where h.idHospede = ?1"; 
+			"Select h From Hospede h LEFT JOIN FETCH h.endereco LEFT JOIN FETCH h.empresa where h.idHospede = ?1"; 
 	
 	private HospedeDao hospedeDao;
 	
@@ -141,5 +141,10 @@ public class ServiceHospede implements GenericService<Hospede> {
         }
         
         return endereco;
+	}
+
+	
+	public List<Hospede> buscarPorNome(String nome) throws Exception{
+		return hospedeDao.find("Select h From Hospede h where h.nome like ?", nome);
 	}
 }

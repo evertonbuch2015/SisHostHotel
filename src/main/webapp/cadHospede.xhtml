@@ -244,6 +244,34 @@
         				
 					</p:panelGrid>
 					
+					<p:separator/>
+					
+					
+					<p:panelGrid 
+						styleClass="ui-panelgrid-blank" columns="2"
+						cellpadding="2" layout="grid"
+						columnClasses="ui-grid-col-1 bu-texto,ui-grid-col-4">
+						
+						<p:outputLabel value="#{label.txt_empresa}" for="emp" />
+						<p:autoComplete id="emp" 
+							value="#{hospedeBean.entidade.empresa}"
+	 						var="empresa" itemLabel="#{empresa.nomeFantasia}" itemValue="#{empresa}" 
+	 						minQueryLength="3" dropdown="true"
+							forceSelection="true" readonly="#{hospedeBean.visualizando}"
+							completeMethod="#{hospedeBean.buscarEmpresas}">
+							
+							
+							<p:column headerText="Código">
+				               <h:outputText value="#{empresa.codigo}"/>
+				        	</p:column>
+				
+				           	<p:column headerText="Nome">
+				               <h:outputText value="#{empresa.nomeFantasia}" />
+				           	</p:column>
+						</p:autoComplete>
+					
+					</p:panelGrid>
+					
 				</div>
 			</p:tab>
 

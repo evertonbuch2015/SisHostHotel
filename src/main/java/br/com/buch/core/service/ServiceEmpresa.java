@@ -17,6 +17,10 @@ public class ServiceEmpresa implements GenericService<Empresa> {
 	
 	private static final String BUSCAR_TODAS = "Select e From Empresa e order by e.nomeFantasia";
 	
+	private static final String BUSCAR_POR_NOME_FANTASIA = 
+			"Select e From Empresa e where e.nomeFantasia Like ? order by e.nomeFantasia";
+	
+	
 	public ServiceEmpresa() {
 		dao = new EmpresaDao();
 	}
@@ -111,8 +115,6 @@ public class ServiceEmpresa implements GenericService<Empresa> {
 		}
 	}
 
-
-	
 	
 	@Override
 	public void consisteAntesEditar(Empresa entidade) throws NegocioException{
@@ -137,4 +139,13 @@ public class ServiceEmpresa implements GenericService<Empresa> {
         return endereco;
 	}
 
+	
+	public List<Empresa> buscarPorNomeFantasia(String nome){
+		try {
+			return dao.find(BUSCAR_POR_NOME_FANTASIA, nome);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
 }
