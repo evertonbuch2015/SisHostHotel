@@ -232,22 +232,7 @@ public class ReservaBean extends GenericBean<Reserva, ServiceReserva> implements
 			return null;
 		}
 	}
-	
-	
-	public void onItemApartamentoSelect(SelectEvent event) {
-		Apartamento apartamento = (Apartamento) event.getObject();
-        if (apartamento != null) {
-			entidade.setApartamento(apartamento);
-		}
-	}
-	
-	public void onItemHospedeSelect(SelectEvent event) {
-         Hospede hospede = (Hospede) event.getObject();
-         if (hospede != null) {
-			entidade.setHospede(hospede);
-		}
-    }
- 
+	 
 	// =============================GET AND SET=====================================
 
 	

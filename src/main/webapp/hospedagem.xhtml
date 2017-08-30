@@ -195,12 +195,20 @@
 						columnClasses="ui-grid-col-2,ui-grid-col-5,ui-grid-col-1,ui-grid-col-5">
 						
 						
-						<p:outputLabel value="#{label.txt_apartamento}" for="apartamento" />
+						<p:outputLabel value="#{label.txt_apartamento}" for="apartamento" />						
 						<h:panelGrid columns="2">
-   							<p:inputText id="apartamento" size="40"
-   								value="#{hospedagemBean.descricaoApartamento}"
-								readonly="#{facesContext.currentPhaseId.name eq 'RENDER_RESPONSE'}"
-								required="true"/>
+   															
+							<p:autoComplete id="apartamento" 
+								value="#{hospedagemBean.entidade.apartamento}"
+		 						var="ap" itemLabel="#{ap}" itemValue="#{ap}" 
+		 						dropdown="true" queryDelay="1000" size="40"
+								forceSelection="true" readonly="#{hospedagemBean.visualizando}"
+								completeMethod="#{hospedagemBean.buscarApartamentos}"
+								required="true"
+								requiredMessage="Informe o Apartamento!">
+								
+								<p:ajax event="itemSelect" listener="#{hospedagemBean.apartamentoSelecionado}"/>
+							</p:autoComplete>
 								
 							<p:commandButton 
 								icon="fa fa-search" process="@this" update="@none"
@@ -219,10 +227,27 @@
 						
 						<p:outputLabel value="#{label.txt_hospede}" for="hospede" />
 						<h:panelGrid columns="2">
-   							<p:inputText id="hospede" size="40"
-   								value="#{hospedagemBean.entidade.hospede.nome}"
-								readonly="#{facesContext.currentPhaseId.name eq 'RENDER_RESPONSE'}"
-								required="true"/>
+   															
+							<p:autoComplete id="hospede" 
+								value="#{hospedagemBean.entidade.hospede}"
+		 						var="hospede" itemLabel="#{hospede.nome}" itemValue="#{hospede}"
+		 						minQueryLength="4" maxResults="20" 
+		 						dropdown="true" queryDelay="1000" size="40"
+								forceSelection="true" readonly="#{hospedagemBean.visualizando}"
+								completeMethod="#{hospedagemBean.buscarHospedes}"
+								required="true"
+								requiredMessage="Informe o Hóspede!">
+								
+								<p:ajax event="itemSelect" listener="#{hospedagemBean.hospedeSelecionado}"/>
+								
+								<p:column headerText="Código">
+					               <h:outputText value="#{hospede.codigo}"/>
+					        	</p:column>
+					
+					           	<p:column headerText="Nome">
+					               <h:outputText value="#{hospede.nome}" />
+					           	</p:column>
+							</p:autoComplete>
 								
 							<p:commandButton 
 								icon="fa fa-search" process="@this" update="@none"

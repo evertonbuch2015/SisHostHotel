@@ -21,6 +21,7 @@ import br.com.buch.core.enumerated.SituacaoHospedagem;
 import br.com.buch.core.enumerated.TipoFiltroHospedagem;
 import br.com.buch.core.service.ServiceApartamento;
 import br.com.buch.core.service.ServiceHospedagem;
+import br.com.buch.core.service.ServiceHospede;
 import br.com.buch.core.service.ServiceReserva;
 import br.com.buch.core.service.ServiceTarifario;
 import br.com.buch.core.service.ServiceTipoTarifa;
@@ -38,10 +39,10 @@ public class HospedagemBean extends GenericBean<Hospedagem, ServiceHospedagem> i
 
 	private TipoFiltroHospedagem filtro;	
 	private ServiceApartamento serviceApartamento;
+	private ServiceHospede serviceHospede;
 	private ServiceTarifario serviceTarifario;
 	private TipoTarifa tipoTarifa;
 	private boolean tarifaManual;	
-	private String descricaoApartamento;
 	
 	private SituacaoHospedagem situacaoFiltro;
 	private Date dataFiltro;
@@ -53,9 +54,11 @@ public class HospedagemBean extends GenericBean<Hospedagem, ServiceHospedagem> i
 		super(new ServiceHospedagem());
 	}
 
+	
 	@PostConstruct
 	public void init(){
 		serviceApartamento = new ServiceApartamento();
+		serviceHospede = new ServiceHospede();
 	}
 	
 	// =======================METODOS DO USUARIO=====================================
@@ -119,6 +122,7 @@ public class HospedagemBean extends GenericBean<Hospedagem, ServiceHospedagem> i
 	public void onDataEntradaSelect(SelectEvent event) {
 		verificaDisponibilidadeApartamento();
     }
+	
 	
 	public void onDataSaidaSelect(SelectEvent event) {
 		verificaDisponibilidadeApartamento();
@@ -187,6 +191,7 @@ public class HospedagemBean extends GenericBean<Hospedagem, ServiceHospedagem> i
 		
 	}
 	
+	
 	public void carregaReserva(){
 		try {
 			
@@ -212,6 +217,36 @@ public class HospedagemBean extends GenericBean<Hospedagem, ServiceHospedagem> i
 	}
 	
 	
+	public List<Apartamento> buscarApartamentos(String query){
+		try{
+			if (query.equals("")) {
+				return serviceApartamento.buscarTodos();
+			} else {
+				return serviceApartamento.buscarPorNumero(Integer.parseInt(query));
+			}
+		}catch (NumberFormatException e) {
+			UtilMensagens.mensagemErro("Informe um Número Válido");
+			return null;			
+		} catch (PersistenciaException e) {
+			UtilMensagens.mensagemErro(e.getMessage());
+			return null;
+		}
+	}
+	
+	
+	public List<Hospede> buscarHospedes(String query){
+		if (query != null && query.length() < 3){
+			return null;
+		}
+		
+		try{
+			return serviceHospede.buscarPorNome("%"+query+"%");
+		}catch (Exception e) {
+			UtilMensagens.mensagemErro(e.getMessage());
+			return null;
+		}
+	}
+ 
 	// =============================GET AND SET=====================================
 
 	
@@ -232,21 +267,7 @@ public class HospedagemBean extends GenericBean<Hospedagem, ServiceHospedagem> i
 	
 	public boolean isTarifaManual() {return tarifaManual;}
 	
-	
-	public String getDescricaoApartamento() {
-		if(entidade.getApartamento() != null){
-			this.descricaoApartamento = "Nº: " + entidade.getApartamento().getNumero() + "  -  " + entidade.getApartamento().getCategoria().getNome();
-		}else{
-			this.descricaoApartamento = "";
-		}
-		
-		return descricaoApartamento;
-	}
-	
-	public void setDescricaoApartamento(String descricaoApartamento) {
-		this.descricaoApartamento = descricaoApartamento;
-	}
-		
+
 	public SituacaoHospedagem[] getSituacoesHospedagem(){
 		return SituacaoHospedagem.values();
 	}

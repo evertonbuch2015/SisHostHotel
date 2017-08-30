@@ -97,6 +97,17 @@ public class ServiceHospedagem implements GenericService<Hospedagem> {
             		" \nErro: " + UtilErros.getMensagemErro(e));
 		}
 	}
+	
+	
+	public Hospedagem carregarEntidade(Integer idHospedagem) throws PersistenciaException {
+		try{
+			return dao.findOne(CARREGAR_ENTIDADE, idHospedagem);			
+		}catch (Exception e) {
+			e.printStackTrace();
+			throw new PersistenciaException("Ocorreu uma exceção ao buscar os dados da Hospedagem!" + 
+            		" \nErro: " + UtilErros.getMensagemErro(e));
+		}
+	}
 
 	
 	@Override

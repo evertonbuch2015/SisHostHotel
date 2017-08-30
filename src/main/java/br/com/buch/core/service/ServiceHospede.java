@@ -145,6 +145,6 @@ public class ServiceHospede implements GenericService<Hospede> {
 
 	
 	public List<Hospede> buscarPorNome(String nome) throws Exception{
-		return hospedeDao.find("Select h From Hospede h where h.nome like ?", nome);
+		return hospedeDao.find("Select h From Hospede h where lower(h.nome) like lower(?)", nome);
 	}
 }

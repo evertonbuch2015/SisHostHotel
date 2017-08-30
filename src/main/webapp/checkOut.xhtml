@@ -1,0 +1,111 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui" 
+	template="/WEB-INF/template.xhtml">
+
+
+	<f:metadata>
+		<f:viewParam name="hospedagem" value="#{checkoutBean.idHospedagem}" />			
+		<f:viewAction action="#{checkoutBean.buscarHospedagem}" if="#{param.hospedagem != null}" />
+	</f:metadata>
+	
+	<ui:define name="tituloPagina">#{label.txt_nome_sistema}</ui:define>
+
+	<ui:define name="conteudo">
+		<p:breadCrumb>
+			<p:menuitem value="Home" url="/index.xhtml" />
+			<p:menuitem value="#{label.menu_hospedagem}"/>
+    		<p:menuitem value="#{label.checkout}" url="#" />
+		</p:breadCrumb>
+		
+		<p:messages autoUpdate="true" closable="true">
+			<p:effect type="pulsate" event="load" delay="500" />
+			<p:effect type="clip" event="load" delay="10000" />
+		</p:messages>
+		
+		
+		
+		<p:wizard flowListener="#{checkoutBean.onFlowProcess}"
+			style="margin: 20px 5px; width: 80%;">
+	        
+	        <p:tab id="dadosHospedagem" title="Confirmação dos Dados">
+	 			<p:panelGrid columns="2"
+						cellpadding="10" layout="grid"
+						columnClasses="ui-grid-col-2,ui-grid-col-3">
+	 			</p:panelGrid>	    
+	        </p:tab>
+	 
+	 
+	        
+	        <p:tab id="adiantamento" title="Adiantamento">
+                 <p:panelGrid columns="2"
+					cellpadding="10" layout="grid"
+					columnClasses="ui-grid-col-2,ui-grid-col-3">
+					
+	 			</p:panelGrid> 
+	        </p:tab>
+	 
+	 
+	 
+	 
+	        <p:tab id="lancmentos" title="Lançamentos Financeiros">
+	            <p:panel>
+	            <p:dataTable id="tabela"
+					value="#{checkoutBean.hospedagem.lancamentos}" var="lancamento"
+					style="width: 100%">				
+
+					
+					<p:column headerText="#{label.data}" width="130" style="text-align: left;">
+						<h:outputText value="#{lancamento.dataCadastroFormatada}" />
+					</p:column>
+					
+					
+					<p:column headerText="#{label.txt_descricao}" style="text-align: left;">
+						<h:outputText value="#{lancamento.descricao}" />
+					</p:column>
+					
+									
+
+					<p:column headerText="#{label.txt_quantidade}" width="80" style="text-align: left;">
+						<h:outputText value="#{lancamento.quantidade}" />
+					</p:column>
+					
+					<p:column headerText="#{label.txt_valor}" width="80" style="text-align: left;">
+						<h:outputText value="R$ #{lancamento.vlUnitario}">
+							<f:convertNumber pattern="#,##0.00"/>
+						</h:outputText>
+						
+					</p:column>
+					
+					
+					<p:column headerText="#{label.txt_valor_total}" width="80" style="text-align: left;">
+						<h:outputText value="R$ #{lancamento.vlTotal}">						
+							<f:convertNumber pattern="#,##0.00"/>
+						</h:outputText>
+					</p:column>
+					
+				</p:dataTable>	
+				</p:panel>            
+	        </p:tab>
+	        
+	        
+	        
+	        <p:tab id="Recebimento" title="Recebimento">
+	            <p:panelGrid columns="2"
+					cellpadding="10" layout="grid"
+					columnClasses="ui-grid-col-2,ui-grid-col-3">
+					
+	 			
+	            
+	            	<p:commandButton value="Confirmar" 
+	            		actionListener="#{checkoutBean.confirmarCheckOut}" process="@this"/>
+	            </p:panelGrid>
+	        </p:tab>
+	        
+	        
+	    </p:wizard>	
+			
+	</ui:define>
+</ui:composition>

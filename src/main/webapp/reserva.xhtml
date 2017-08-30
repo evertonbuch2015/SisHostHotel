@@ -115,6 +115,7 @@
 					</p:column>					
 
 				</p:dataTable>
+				<p:spacer style="margin-top:30px;"/>
 			</p:tab>
 		</p:tabView>	
 		
@@ -207,13 +208,13 @@
 							<p:autoComplete id="apartamento" 
 								value="#{reservaBean.entidade.apartamento}"
 		 						var="ap" itemLabel="#{ap}" itemValue="#{ap}" 
-		 						dropdown="true" queryDelay="2000" size="40"
+		 						dropdown="true" queryDelay="1000" size="40"
 								forceSelection="true" readonly="#{reservaBean.visualizando}"
 								completeMethod="#{reservaBean.buscarApartamentos}"
 								required="true"
 								requiredMessage="Informe o Apartamento!">
 								
-								<p:ajax event="itemSelect" listener="#{reservaBean.onItemApartamentoSelect}"/>
+								<p:ajax event="itemSelect" listener="#{reservaBean.apartamentoSelecionado}"/>
 							</p:autoComplete>
 								
 							<p:commandButton 
@@ -238,13 +239,13 @@
 								value="#{reservaBean.entidade.hospede}"
 		 						var="hospede" itemLabel="#{hospede.nome}" itemValue="#{hospede}"
 		 						minQueryLength="4" maxResults="20" 
-		 						dropdown="true" queryDelay="2000" size="40"
+		 						dropdown="true" queryDelay="1000" size="40"
 								forceSelection="true" readonly="#{reservaBean.visualizando}"
 								completeMethod="#{reservaBean.buscarHospedes}"
 								required="true"
 								requiredMessage="Informe o Hóspede!">
 								
-								<p:ajax event="itemSelect" listener="#{reservaBean.onItemHospedeSelect}"/>
+								<p:ajax event="itemSelect" listener="#{reservaBean.hospedeSelecionado}"/>
 								
 								<p:column headerText="Código">
 					               <h:outputText value="#{hospede.codigo}"/>
@@ -364,15 +365,11 @@
 								<f:convertNumber pattern="#,##0.00" type="currency" currencySymbol="R$"/>
 							</p:inputText>
 					</p:panelGrid>
-										
-				</div>
+				</div>				
 			</p:tab>
-
-		</p:tabView>
-		
+		</p:tabView>		
 		
 		<app:barraBotoes bean="#{reservaBean}">
-		
 			<p:commandButton id="confirmar" 
 				value="#{label.confirmar_reserva}"
 				styleClass="bu-botao-azul"
