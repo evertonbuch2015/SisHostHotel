@@ -11,7 +11,7 @@
 		<f:viewAction action="#{checkoutBean.buscarHospedagem}" if="#{param.hospedagem != null}" />
 	</f:metadata>
 	
-	<ui:define name="tituloPagina">#{label.txt_nome_sistema}</ui:define>
+	<ui:define name="tituloPagina">#{label.checkout}</ui:define>
 
 	<ui:define name="conteudo">
 		<p:breadCrumb>
@@ -20,41 +20,107 @@
     		<p:menuitem value="#{label.checkout}" url="#" />
 		</p:breadCrumb>
 		
-		<p:messages autoUpdate="true" closable="true">
-			<p:effect type="pulsate" event="load" delay="500" />
-			<p:effect type="clip" event="load" delay="10000" />
-		</p:messages>
-		
-		
+		<p:growl id="growl" autoUpdate="true" showDetail="true"  sticky="true" />		
 		
 		<p:wizard flowListener="#{checkoutBean.onFlowProcess}"
-			style="margin: 20px 5px; width: 80%;">
+			style="margin: 20px 5px; width: 65%;">
 	        
 	        <p:tab id="dadosHospedagem" title="Confirmação dos Dados">
-	 			<p:panelGrid columns="2"
+	        
+	        	<p:panelGrid columns="2"
 						cellpadding="10" layout="grid"
-						columnClasses="ui-grid-col-2,ui-grid-col-3">
-	 			</p:panelGrid>	    
+						columnClasses="ui-grid-col-3,ui-grid-col-6"
+						style="margin-top:10px;min-height: 350px">								
+					
+					<p:outputLabel value="#{label.txt_codigo}" for="codigo" style="font-size:13px !important"/>
+					<p:inputText id="codigo" size="20"
+						value="#{checkoutBean.hospedagem.codigo}" 
+						readonly="true"/>
+					
+					<p:outputLabel value="#{label.txt_data_entrada}" for="dtEntrada" style="font-size:13px !important"/>
+					<p:inputText id="dtEntrada" size="20"
+						value="#{checkoutBean.hospedagem.dataEntradaFormatada}" 
+						readonly="true"/>
+						
+					<p:outputLabel value="#{label.txt_data_saida}" for="dtSaida" style="font-size:13px !important" />
+					<p:inputText id="dtSaida" size="20"
+						value="#{checkoutBean.hospedagem.dataSaidaFormatada}" 
+						readonly="true"/>
+					
+					<p:outputLabel value="#{label.txt_diarias}" for="diarias" style="font-size:13px !important" />
+					<p:inputText id="diarias" size="20"
+						value="#{checkoutBean.hospedagem.diarias}" 
+						readonly="true"/>	
+				
+				
+	        		<p:outputLabel/><p:outputLabel/>
+	        		<p:outputLabel/><p:outputLabel/>	 			
+						
+						
+					<p:outputLabel value="#{label.txt_hospede}" for="hospede" style="font-size:13px !important"/>
+					<p:inputText id="hospede" style="width:100%"
+						value="#{checkoutBean.hospedagem.hospede.nome}" 
+						readonly="true"/>
+						
+					<p:outputLabel value="#{label.txt_apartamento}" for="ap" style="font-size:13px !important"/>
+					<p:inputText id="ap" style="width:100%"
+						value="#{checkoutBean.hospedagem.apartamento.toString()}" 
+						readonly="true"/>
+							
+				</p:panelGrid>
+				
+				<p:spacer style="margin-top:20px;"/>
+				
 	        </p:tab>
 	 
 	 
 	        
 	        <p:tab id="adiantamento" title="Adiantamento">
-                 <p:panelGrid columns="2"
-					cellpadding="10" layout="grid"
-					columnClasses="ui-grid-col-2,ui-grid-col-3">
+                 <p:panel style="margin-top:10px;min-height: 350px">
 					
-	 			</p:panelGrid> 
+					<p:dataTable id="tabelaAdiantamento"
+						value="#{checkoutBean.adiantamentos}" var="adiantamento"
+						style="width: 100%;">				
+	
+						
+						<p:column headerText="#{label.txt_data_emissao}" width="130" style="text-align: left;">
+							<h:outputText value="#{adiantamento.dataEmissaoFormatada}" />
+						</p:column>
+												
+						
+						<p:column headerText="#{label.txt_valor}" width="80" style="text-align: left;">
+							<h:outputText value="R$ #{adiantamento.valor}">
+								<f:convertNumber pattern="#,##0.00"/>
+							</h:outputText>							
+						</p:column>
+						
+						
+						<p:column headerText="#{label.txt_saldo}" width="80" style="text-align: left;">
+							<h:outputText value="R$ #{adiantamento.saldo}">						
+								<f:convertNumber pattern="#,##0.00"/>
+							</h:outputText>
+						</p:column>
+						
+						<p:column headerText="#{label.txt_selecione}" width="110">						
+							<p:commandButton actionListener="#{checkoutBean.adiantamentoSelecionado(adiantamento)}" 
+								icon="ui-icon-pencil" update="tabelaAdiantamento"/>
+						</p:column>			
+						
+					</p:dataTable>
+	 			</p:panel>
+	 			
+	 			<p:spacer style="margin-top:20px;"/>
+	 			
 	        </p:tab>
 	 
 	 
 	 
 	 
 	        <p:tab id="lancmentos" title="Lançamentos Financeiros">
-	            <p:panel>
+	            <p:panel style="margin-top:10px;min-height: 350px">
 	            <p:dataTable id="tabela"
 					value="#{checkoutBean.hospedagem.lancamentos}" var="lancamento"
-					style="width: 100%">				
+					style="width: 100%" sortBy="#{lancamento.hospedagem.idHospedagem}">				
 
 					
 					<p:column headerText="#{label.data}" width="130" style="text-align: left;">
@@ -74,7 +140,7 @@
 					
 					<p:column headerText="#{label.txt_valor}" width="80" style="text-align: left;">
 						<h:outputText value="R$ #{lancamento.vlUnitario}">
-							<f:convertNumber pattern="#,##0.00"/>
+							<f:convertNumber pattern="#,##0.00" minFractionDigits="2"/>
 						</h:outputText>
 						
 					</p:column>
@@ -82,26 +148,47 @@
 					
 					<p:column headerText="#{label.txt_valor_total}" width="80" style="text-align: left;">
 						<h:outputText value="R$ #{lancamento.vlTotal}">						
-							<f:convertNumber pattern="#,##0.00"/>
+							<f:convertNumber pattern="#,##0.00" minFractionDigits="2"/>
 						</h:outputText>
 					</p:column>
 					
+					
+					<p:summaryRow>
+            			<p:column colspan="4" style="text-align:right">
+                			<h:outputText value="#{label.txt_valor_total}"/>
+            			</p:column>
+            			
+            			<p:column style="text-align: left;">
+                			<h:outputText value= "R$ #{checkoutBean.hospedagem.totalLancamentos}">
+                    			<f:convertNumber pattern="#,##0.00"/>
+                			</h:outputText>
+            			</p:column>
+        			</p:summaryRow>
+					
 				</p:dataTable>	
-				</p:panel>            
+				</p:panel>
+				
+				<p:spacer style="margin-top:20px;"/>
+				<!--  <p:separator style="margin-top:20px;width: 60%;margin-left:0px"/>-->
+				            
 	        </p:tab>
 	        
 	        
 	        
-	        <p:tab id="Recebimento" title="Recebimento">
+	        <p:tab id="Recebimento" title="Pagamento">
 	            <p:panelGrid columns="2"
 					cellpadding="10" layout="grid"
-					columnClasses="ui-grid-col-2,ui-grid-col-3">
+					columnClasses="ui-grid-col-2,ui-grid-col-3"
+					style="margin-top:10px;min-height: 350px">
 					
 	 			
 	            
 	            	<p:commandButton value="Confirmar" 
 	            		actionListener="#{checkoutBean.confirmarCheckOut}" process="@this"/>
 	            </p:panelGrid>
+	            
+	            <p:spacer style="margin-top:20px;"/>
+	            
 	        </p:tab>
 	        
 	        

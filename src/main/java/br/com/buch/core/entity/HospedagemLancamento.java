@@ -50,6 +50,27 @@ public class HospedagemLancamento implements Serializable {
 			return label;
 		}
 
+		public static Boolean isCredito(OrigemLancamento origem){
+			switch (origem) {
+				case ADIANTAMENTO :
+					return true;
+				case DESCONTO:
+					return true;
+				default:
+					return false;
+			}
+		}
+		
+		public static Boolean isDebito(OrigemLancamento origem){
+			switch (origem) {
+				case ADIANTAMENTO :
+					return false;
+				case DESCONTO:
+					return false;
+				default:
+					return true;
+			}
+		}
 	}
 	
 	
@@ -145,6 +166,9 @@ public class HospedagemLancamento implements Serializable {
 
 
 	public BigDecimal getVlTotal() {
+		if(vlTotal == null){
+			vlTotal = BigDecimal.valueOf(quantidade*vlUnitario);
+		}
 		return vlTotal;
 	}
 

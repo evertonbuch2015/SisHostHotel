@@ -852,17 +852,17 @@ label {
 .ui-datatable .ui-datatable-subtable-header,
 .ui-datatable .ui-datatable-summaryrow {
   color: #ffffff;
-  background-color: #0288d1;
+  background-color: #ebf2f6;
   border-radius: 1px !important;
   -webkit-border-radius: 1px !important;
   -moz-border-radius: 1px !important;
-  font-size: 14px;
+  font-size: 13px;
   padding: 8px 10px !important;
   font-weight: normal;
   font-family: 'latobold';
 }
 .ui-datatable .ui-datatable-summaryrow td {
-  color: #a5d6f0;
+  color: #546e7a;
 }
 .ui-datatable .ui-datatable-header .ui-button {
   margin-top: -3px !important;
@@ -924,7 +924,7 @@ label {
 .ui-datatable table tfoot tr td,
 .ui-datatable table thead tr th {
   color: #ffffff;
-  background-color: #7c95a2;
+  background-color: #3983aa;
   border: solid 1px #c1d5df;
   outline: none;
   padding: 6px;
@@ -4229,8 +4229,8 @@ hr.ui-widget-header {
   top: 85px !important;
 }
 .ui-growl-item {
-  padding: 20px 20px !important;
-  background-color: #ffffff;
+  padding: 12px 15px !important;
+  background-color: #edf6d9;
   border-radius: 2px;
   -webkit-border-radius: 2px;
   -moz-border-radius: 2px;
@@ -4238,7 +4238,7 @@ hr.ui-widget-header {
 .ui-growl-message {
   font-size: 14px !important;
   line-height: 16px !important;
-  font-family: 'latoregular';
+  font-family: 'latoregular';  
 }
 .ui-growl-image {
   width: 30px !important;
@@ -4257,7 +4257,7 @@ hr.ui-widget-header {
   margin-top: 5px;
 }
 .ui-growl-image-info {
-  background-image: url("#{resource['primefaces-adamantium:images/warn-blue.svg']}") !important;
+  background-image: url("#{resource['primefaces-adamantium:images/info-blue.svg']}") !important;
   background-position: center !important;
   background-size: 140% !important;
   margin-top: 5px;
@@ -4279,7 +4279,7 @@ hr.ui-widget-header {
   color: #03a9f4 !important;
 }
 .ui-growl-image-warn + .ui-growl-message {
-  color: #f9bf08 !important;
+  color: #dab100 !important;
 }
 .ui-growl-image-error + .ui-growl-message {
   color: #f03369 !important;
@@ -5514,14 +5514,14 @@ hr.ui-widget-header {
 }
 /*Style For UI Wizard --------------------------------------------------------------------------------------*/
 .ui-wizard .ui-wizard-step-titles li {
-  padding: 10px 20px !important;
+  padding: 4px 20px !important;
   font-size: 14px;
   color: #ffffff;
   font-family: 'latoregular';
   border-radius: 2px !important;
   -webkit-border-radius: 2px !important;
   -moz-border-radius: 2px !important;
-  background-color: #0288d1;
+  background-color: #5a8da8;  
 }
 .ui-wizard .ui-wizard-step-titles li.ui-state-highlight {
   background-color: #29a1ec;
@@ -5556,7 +5556,7 @@ hr.ui-widget-header {
   border-bottom: solid 1px #03A9F4 !important;
 }
 .ui-datatable table thead tr th.ui-state-focus {
-  background-color: #c1d5df;
+  background-color: #3983aa;
   -webkit-box-shadow: inset 0px -3px 0px 0px #546e7a;
   -moz-box-shadow: inset 0px -3px 0px 0px #546e7a;
   box-shadow: inset 0px -3px 0px 0px #546e7a;

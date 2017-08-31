@@ -24,6 +24,7 @@ import javax.persistence.Temporal;
 import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 
+import br.com.buch.core.entity.HospedagemLancamento.OrigemLancamento;
 import br.com.buch.core.enumerated.SituacaoHospedagem;
 import br.com.buch.core.util.CodeUtils;
 
@@ -79,8 +80,7 @@ public class Hospedagem implements Serializable {
         
     @Transient
     private Double valorTotal;
-            
-    
+                
     
     @Column(name = "OBS" , length = 255)
     private String obs;  
@@ -173,17 +173,17 @@ public class Hospedagem implements Serializable {
 
 	public Double getValorTotal() {		
 		try {			
-			Double valor = 0.0;
+			Double valor = 0.00;
 			
-			valor += (this.valorDiaria != null) ? valorDiaria * getDiarias() : 0.0;		
-			valor += (this.valorTaxaServico != null) ? valorTaxaServico : 0.0;
-			valor += (this.valorTaxaTurismo != null) ? valorTaxaTurismo : 0.0;
+			valor += (this.valorDiaria != null) ? valorDiaria * getDiarias() : 0.00;		
+			valor += (this.valorTaxaServico != null) ? valorTaxaServico : 0.00;
+			valor += (this.valorTaxaTurismo != null) ? valorTaxaTurismo : 0.00;
 			
-			valor -= (this.valorDesconto != null) ? valorDesconto : 0.0;
+			valor -= (this.valorDesconto != null) ? valorDesconto : 0.00;
 			
 			this.valorTotal = valor;
 		} catch (Exception e) {
-			valorTotal = 0.0;
+			valorTotal = 0.00;
 		}			
 		return valorTotal;
 	}
@@ -237,7 +237,6 @@ public class Hospedagem implements Serializable {
 	public void setLancamentos(List<HospedagemLancamento> lancamentos) {
 		this.lancamentos = lancamentos;
 	}
-
 		
 	
 	@Transient
@@ -252,6 +251,19 @@ public class Hospedagem implements Serializable {
         return sdf.format(this.dataSaida.getTime());                
     }
     
+    
+    @Transient
+    public Double getTotalLancamentos(){
+    	Double valor = 0.00;
+    	for (HospedagemLancamento hospedagemLancamento : lancamentos) {
+			if(OrigemLancamento.isCredito(hospedagemLancamento.getOrigemLancamento())){
+				valor -= hospedagemLancamento.getVlTotal().doubleValue();
+			}else{
+				valor += hospedagemLancamento.getVlTotal().doubleValue();
+			}
+		}
+    	return valor;
+    }
     
 	//--------------------------------	Métodos Auxiliares------------------------------//	
 

@@ -5,6 +5,7 @@ import java.util.List;
 
 import br.com.buch.core.dao.AdiantamentoDao;
 import br.com.buch.core.entity.Adiantamento;
+import br.com.buch.core.entity.Hospede;
 import br.com.buch.core.enumerated.TipoFiltroAdiantamento;
 import br.com.buch.core.util.NegocioException;
 import br.com.buch.core.util.PersistenciaException;
@@ -167,4 +168,8 @@ public class ServiceAdiantamento implements GenericService<Adiantamento> {
 		}
 	}
 
+	
+	public List<Adiantamento> buscarPorHospede(Hospede hospede) throws Exception{
+		return adiantamentoDao.find("Select a From Adiantamento a LEFT JOIN FETCH a.hospede LEFT JOIN FETCH a.localRecebimento where a.hospede = ? and a.saldo > 0", hospede);
+	}
 }
