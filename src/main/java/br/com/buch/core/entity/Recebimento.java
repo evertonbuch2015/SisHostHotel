@@ -1,6 +1,7 @@
 package br.com.buch.core.entity;
 
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -15,6 +16,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
+import javax.persistence.Transient;
 
 @Entity
 @Table(name="RECEBIMENTO")
@@ -75,69 +77,43 @@ public class Recebimento implements Serializable {
     private Banco localRecebimento;
 
 	
+	@OneToOne()
+    @JoinColumn(name ="COD_CADFORMAPAGAMENTO")
+	private FormaPagamento formaPagamento; 
+
 	//--------------------------------	GETs and SETs------------------------------//
 	
-	public Integer getIdRecebimento() {
-		return idRecebimento;
-	}
 
-	public void setIdRecebimento(Integer idRecebimento) {
-		this.idRecebimento = idRecebimento;
-	}
+	public Integer getIdRecebimento() {return idRecebimento;}
+	public void setIdRecebimento(Integer idRecebimento) {this.idRecebimento = idRecebimento;}
 
+	public Integer getNumero() {return numero;}
+	public void setNumero(Integer numero) {this.numero = numero;}
 
-	public Integer getNumero() {
-		return numero;
-	}
+	public OrigemRecebimento getOrigemRecebimento() {return origemRecebimento;}
+	public void setOrigemRecebimento(OrigemRecebimento origemRecebimento) {this.origemRecebimento = origemRecebimento;}
 
-	public void setNumero(Integer numero) {
-		this.numero = numero;
-	}
+	public String getDescricao() {return descricao;}
+	public void setDescricao(String descricao) {this.descricao = descricao;}
 
+	
+	@Transient
+    public String getDataEmissaoFormatada(){
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        return sdf.format(this.dtEmissao.getTime());                
+    }
+    
+	public Date getDtEmissao() {return dtEmissao;}
+	public void setDtEmissao(Date dtEmissao) {this.dtEmissao = dtEmissao;}
 
-	public OrigemRecebimento getOrigemRecebimento() {
-		return origemRecebimento;
-	}
+	public Double getValor() {return valor;}
+	public void setValor(Double valor) {this.valor = valor;}
 
-	public void setOrigemRecebimento(OrigemRecebimento origemRecebimento) {
-		this.origemRecebimento = origemRecebimento;
-	}
-
-
-	public String getDescricao() {
-		return descricao;
-	}
-
-	public void setDescricao(String descricao) {
-		this.descricao = descricao;
-	}
-
-
-	public Date getDtEmissao() {
-		return dtEmissao;
-	}
-
-	public void setDtEmissao(Date dtEmissao) {
-		this.dtEmissao = dtEmissao;
-	}
-
-
-	public Double getValor() {
-		return valor;
-	}
-
-	public void setValor(Double valor) {
-		this.valor = valor;
-	}
-
-
-	public Banco getLocalRecebimento() {
-		return localRecebimento;
-	}
-
-	public void setLocalRecebimento(Banco localRecebimento) {
-		this.localRecebimento = localRecebimento;
-	}
+	public Banco getLocalRecebimento() {return localRecebimento;}
+	public void setLocalRecebimento(Banco localRecebimento) {this.localRecebimento = localRecebimento;}
+	
+	public FormaPagamento getFormaPagamento() {return formaPagamento;}
+	public void setFormaPagamento(FormaPagamento formaPagamento) {this.formaPagamento = formaPagamento;}
 
 	
 	//--------------------------------	Métodos Auxiliares------------------------------//
@@ -168,7 +144,4 @@ public class Recebimento implements Serializable {
 			return false;
 		return true;
 	}
-	
-	
-		
 }

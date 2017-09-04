@@ -247,6 +247,20 @@ public class HospedagemBean extends GenericBean<Hospedagem, ServiceHospedagem> i
 		}
 	}
  
+	
+	public String fazerCheckOut(Hospedagem hospedagem){		
+		if (hospedagem.getSituacao().equals(SituacaoHospedagem.CHECKIN)){			
+			return "hospedagem?faces-redirect=true&hospedagem=" + hospedagem.getIdHospedagem();
+		}else{
+			UtilMensagens.mensagemAtencao("Já foi realizado o Check-Out desta Hospedagem!");
+			return "";
+		}			
+	}
+	
+	public void retornoCheckOut(){
+		UtilMensagens.mensagemInformacao("Check-Out Realizado com Sucesso!");
+	}
+	
 	// =============================GET AND SET=====================================
 
 	

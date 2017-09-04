@@ -20,7 +20,7 @@
     		<p:menuitem value="#{label.txt_formas_pag}" url="#" />
 		</p:breadCrumb>
 		
-		<p:messages autoUpdate="true" closable="true">
+		<p:messages autoUpdate="true" showDetail="true" closable="true" showSummary="false">
 			<p:effect type="pulsate" event="load" delay="500" />
 			<p:effect type="clip" event="load" delay="10000" />
 		</p:messages>
@@ -51,12 +51,7 @@
 					
 					<p:column headerText="#{label.txt_descricao}" sortBy="#{entidade.descricao}">
 						<h:outputText value="#{entidade.descricao}" />
-					</p:column>
-					
-					<p:column headerText="#{label.txt_parcelas}" width="110">
-						<h:outputText value="#{entidade.parcelas}" />
-					</p:column>
-										
+					</p:column>									
 					
 					<p:column headerText="#{label.txt_acoes}" exportable="false" width="110">						
 						<p:commandButton actionListener="#{formaPagamentoBean.editar(entidade)}" 
@@ -95,15 +90,7 @@
 							placeholder="Ex: Á Vista"
 							rendered="true"
 							requiredMessage="Informe a Descrição!"/>
-						
-						
-						<p:outputLabel value="#{label.txt_parcelas}" for="parcelas"/>
-						<p:spinner id="parcelas" 
-							value="#{formaPagamentoBean.entidade.parcelas}"
-							min="0" max="99"
-							required="true" 
-							requiredMessage="Informe a Quantidade de parcelas"/>
-
+							
 					</p:panelGrid>
 					
 				</div>

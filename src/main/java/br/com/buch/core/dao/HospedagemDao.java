@@ -1,10 +1,14 @@
 package br.com.buch.core.dao;
 
+import java.util.List;
+
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceException;
 import javax.persistence.Query;
 
+import br.com.buch.core.entity.Adiantamento;
 import br.com.buch.core.entity.Hospedagem;
+import br.com.buch.core.entity.Recebimento;
 
 public class HospedagemDao extends GenericDao<Hospedagem> {
 
@@ -26,6 +30,37 @@ public class HospedagemDao extends GenericDao<Hospedagem> {
 		}finally {
 			em.close();			
 		}       
-    } 
+    }
+
+
+	
+    
+    public void confirmarCheckOut(Hospedagem hospedagem, Recebimento recebimento, List<Adiantamento> adiantamentos) throws Exception{
+		EntityManager entityManager = getEntityManager();
+    	
+    	try{
+    		entityManager.getTransaction().begin();
+    		    		
+        	for (Adiantamento adiantamento : adiantamentos) {
+        		entityManager.merge(adiantamento);
+    		}
+        	        	
+        	entityManager.merge(recebimento);
+        	entityManager.merge(hospedagem);
+        	
+        	entityManager.getTransaction().commit();
+            
+        }catch(Exception e){
+        	e.printStackTrace();
+        	doRollback(entityManager);
+        	throw e;
+        }finally{
+        	entityManager.close();
+		}
+		
+    	
+    	
+    	
+	} 
      
 }

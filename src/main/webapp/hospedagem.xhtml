@@ -13,6 +13,9 @@
 	<f:metadata>
 		<f:viewParam name="reserva" value="#{hospedagemBean.idReservaParametro}" />			
 		<f:viewAction action="#{hospedagemBean.carregaReserva}" if="#{param.reserva != null}" />
+		
+		<f:viewParam name="retornoCheckOut" />
+		<f:viewAction action="#{hospedagemBean.retornoCheckOut}" if="#{param.retornoCheckOut != null}" />
 	</f:metadata>
 
 	<ui:define name="tituloPagina">#{label.tit_hospedagens}</ui:define>
@@ -30,7 +33,7 @@
     		<p:menuitem value="#{label.txt_hospedagens}" url="#" />
 		</p:breadCrumb>
 		
-		<p:messages autoUpdate="true" closable="true">
+		<p:messages autoUpdate="true" showDetail="true" closable="true" showSummary="false">
 			<p:effect type="pulsate" event="load" delay="500" />
 			<p:effect type="clip" event="load" delay="10000" />
 		</p:messages>
@@ -98,7 +101,17 @@
 							
 							<p:confirm header="#{label.txt_confirmacao}" 
 								message="Deseja Excluir este Registro?" icon="ui-icon-alert"/>
-						</p:commandButton>							
+						</p:commandButton>
+						
+						<p:commandButton 
+							icon="fa fa-bed"
+							styleClass="botaoAzul" 
+							title="Realizar Check-Out!"
+							action="#{hospedagemBean.fazerCheckOut(entidade)}">
+							
+							<p:confirm header="#{label.txt_confirmacao}" 
+								message="Deseja Realmente fazer o Check-Out desta Hospedagem?"/>	
+						</p:commandButton>
 					</p:column>					
 
 				</p:dataTable>

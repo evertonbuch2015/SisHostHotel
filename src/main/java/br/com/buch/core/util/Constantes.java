@@ -6,10 +6,12 @@ import java.util.List;
 import br.com.buch.core.dao.ApartamentoDao;
 import br.com.buch.core.dao.BancoDao;
 import br.com.buch.core.dao.CategoriaDao;
+import br.com.buch.core.dao.FormaPagamentoDao;
 import br.com.buch.core.dao.TipoTarifaDao;
 import br.com.buch.core.entity.Apartamento;
 import br.com.buch.core.entity.Banco;
 import br.com.buch.core.entity.Categoria;
+import br.com.buch.core.entity.FormaPagamento;
 import br.com.buch.core.entity.TipoTarifa;
 import br.com.buch.core.entity.Usuario;
 
@@ -23,6 +25,7 @@ public class Constantes {
 	private List<Categoria> listaCategorias;
 	private List<Banco> listaBancos;
 	private List<TipoTarifa> listaTiposTarifa;
+	private List<FormaPagamento> listaFormasPagamento;
 	
 	private Constantes() {
 		usuariosLogados = new ArrayList<Usuario>();
@@ -38,10 +41,11 @@ public class Constantes {
 	
 	public void refresh(){
 		try {			
-			listaApartamentos 	= new ApartamentoDao().findAll();
-			listaCategorias 	= new CategoriaDao().findAll();
-			listaBancos 		= new BancoDao().findAll();
-			listaTiposTarifa    = new TipoTarifaDao().findAll();
+			listaApartamentos 	 = new ApartamentoDao().findAll();
+			listaCategorias 	 = new CategoriaDao().findAll();
+			listaBancos 		 = new BancoDao().findAll();
+			listaTiposTarifa     = new TipoTarifaDao().findAll();
+			listaFormasPagamento = new FormaPagamentoDao().findAll();			
 		}catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -52,21 +56,39 @@ public class Constantes {
 	
 	
 	public List<Apartamento> getListaApartamentos() throws Exception {
-		return listaApartamentos != null ? listaApartamentos : new ApartamentoDao().findAll();
+		if (listaApartamentos == null) {
+			listaApartamentos = new ApartamentoDao().findAll();
+		}
+		return listaApartamentos;
 	}
 	
 	public List<Categoria> getListaCategorias() throws Exception {
-		return listaCategorias != null ? listaCategorias :new CategoriaDao().findAll();
+		if (listaCategorias == null) {
+			listaCategorias = new CategoriaDao().findAll();
+		}
+		return listaCategorias;
 	}
 	
 	public List<Banco> getListaBancos() throws Exception {
-		return listaBancos != null ? listaBancos : new BancoDao().findAll();
+		if (listaBancos == null) {
+			listaBancos = new BancoDao().findAll();
+		}
+		return listaBancos; 
 	}
 	
-	public List<TipoTarifa> getListaTiposTarifa() throws Exception {
-		return listaTiposTarifa != null ? listaTiposTarifa : new TipoTarifaDao().findAll();
+	public List<TipoTarifa> getListaTiposTarifa()throws Exception{
+		if (listaTiposTarifa == null) {
+			listaTiposTarifa = new TipoTarifaDao().findAll();
+		}
+		return listaTiposTarifa;
 	}
 	
+	public List<FormaPagamento> getListaFormasPagamento()throws Exception{
+		if (listaFormasPagamento == null) {
+			listaFormasPagamento = new FormaPagamentoDao().findAll();
+		}
+		return listaFormasPagamento;
+	}
 	
 	public void addUsuarioLogado(Usuario usuario){
 		if(!this.usuariosLogados.contains(usuario))

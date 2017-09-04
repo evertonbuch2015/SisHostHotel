@@ -48,9 +48,7 @@ public class FormaPagamentoBean extends GenericBean<FormaPagamento, ServiceForma
 
 	
 	@Override
-	public FormaPagamento criarEntidade() {
-		return new FormaPagamento();
-	}
+	public FormaPagamento criarEntidade() {return new FormaPagamento();}
 
 	
 	// =============================GET AND SET=====================================

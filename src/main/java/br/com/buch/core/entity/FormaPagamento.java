@@ -31,10 +31,6 @@ public class FormaPagamento implements Serializable{
     
     @Column(name = "DESCRICAO", length = 60)
     private String descricao;
-    
-    
-    @Column(name = "PARCELAS")
-    private Integer parcelas;
 
     
     //-------------------------------	GETs and SETs------------------------------//
@@ -52,11 +48,6 @@ public class FormaPagamento implements Serializable{
 	public String getDescricao() {return descricao;}
 
 	public void setDescricao(String descricao) {this.descricao = descricao;}
-
-
-	public Integer getParcelas() {return parcelas;}
-	
-	public void setParcelas(Integer parcelas) {this.parcelas = parcelas;}
 
 
 	//--------------------------------	Métodos Auxiliares------------------------------//

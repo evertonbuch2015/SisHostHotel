@@ -24,7 +24,7 @@
     		<p:menuitem value="#{label.txt_reservas}" url="#" />
 		</p:breadCrumb>
 		
-		<p:messages autoUpdate="true" closable="true">
+		<p:messages autoUpdate="true" showDetail="true" closable="true" showSummary="false">
 			<p:effect type="pulsate" event="load" delay="500" />
 			<p:effect type="clip" event="load" delay="10000" />
 		</p:messages>
@@ -110,6 +110,8 @@
 							title="Realizar Check-In!"
 							action="#{reservaBean.fazerCheckin(entidade)}">
 							
+							<p:confirm header="#{label.txt_confirmacao}" 
+								message="Deseja Fazer Check-In desta Reserva?"/>	
 						</p:commandButton>
 							
 					</p:column>					

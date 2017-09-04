@@ -5,7 +5,10 @@ import java.util.Date;
 import java.util.List;
 
 import br.com.buch.core.dao.HospedagemDao;
+import br.com.buch.core.entity.Adiantamento;
 import br.com.buch.core.entity.Hospedagem;
+import br.com.buch.core.entity.Recebimento;
+import br.com.buch.core.entity.Recebimento.OrigemRecebimento;
 import br.com.buch.core.entity.Reserva;
 import br.com.buch.core.enumerated.SituacaoHospedagem;
 import br.com.buch.core.enumerated.TipoFiltroHospedagem;
@@ -187,5 +190,17 @@ public class ServiceHospedagem implements GenericService<Hospedagem> {
 			throw new PersistenciaException("Ocorreu uma exceção ao Filtrar os dados do Chamado!" + 
             		" \nErro: " + UtilErros.getMensagemErro(e));
 		}					
+	}
+
+	
+	public void confirmarCheckOut(Hospedagem hospedagem, Recebimento recebimento, List<Adiantamento> adiantamentos)throws Exception{
+		recebimento.setDescricao("Hospedagem Nº "+hospedagem.getCodigo()+" / " + hospedagem.getHospede().getNome());
+		recebimento.setDtEmissao(new Date());
+		recebimento.setOrigemRecebimento(OrigemRecebimento.HOSPEDAGEM);
+		recebimento.setValor(hospedagem.getTotalLancamentos());
+		
+		hospedagem.setSituacao(SituacaoHospedagem.CHECKOUT);
+		
+		dao.confirmarCheckOut(hospedagem, recebimento, adiantamentos);
 	}
 }
