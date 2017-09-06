@@ -118,7 +118,7 @@
 			</p:tab>
 		</p:tabView>	
 		
-		<p:tabView rendered="#{!hospedagemBean.buscando}">					
+		<p:tabView rendered="#{!hospedagemBean.buscando}" effect="fade" effectDuration="fast">					
 			<p:tab title="#{label.txt_dados_gerais}" titleStyle="font-size: 10px;color: #455a64;">
 				<div class="ui-fluid">
 					<p:panelGrid 
@@ -406,11 +406,11 @@
 					
 									
 
-					<p:column headerText="#{label.txt_quantidade}" width="80" style="text-align: left;">
+					<p:column headerText="#{label.txt_quantidade}" width="80" >
 						<h:outputText value="#{lancamento.quantidade}" />
 					</p:column>
 					
-					<p:column headerText="#{label.txt_valor}" width="80" style="text-align: left;">
+					<p:column headerText="#{label.txt_valor}" width="80" >
 						<h:outputText value="R$ #{lancamento.vlUnitario}">
 							<f:convertNumber pattern="#,##0.00"/>
 						</h:outputText>
@@ -418,7 +418,7 @@
 					</p:column>
 					
 					
-					<p:column headerText="#{label.txt_valor_total}" width="80" style="text-align: left;">
+					<p:column headerText="#{label.txt_valor_total}" width="80" >
 						<h:outputText value="R$ #{lancamento.vlTotal}">						
 							<f:convertNumber pattern="#,##0.00"/>
 						</h:outputText>

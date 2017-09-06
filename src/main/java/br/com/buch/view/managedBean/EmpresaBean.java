@@ -7,10 +7,14 @@ import java.util.List;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 
+import org.primefaces.event.TabChangeEvent;
+
 import br.com.buch.core.entity.Empresa;
 import br.com.buch.core.entity.Endereco;
+import br.com.buch.core.entity.Hospede;
 import br.com.buch.core.enumerated.Estados;
 import br.com.buch.core.service.ServiceEmpresa;
+import br.com.buch.core.service.ServiceHospede;
 import br.com.buch.view.util.UtilMensagens;
 
 @ManagedBean
@@ -29,7 +33,8 @@ public class EmpresaBean extends GenericBean<Empresa, ServiceEmpresa> implements
 	
 	private static final long serialVersionUID = -7531048359021089980L;	
 	private TipoFiltro filtro;
-	
+	private List<Hospede> hospedes;
+	private ServiceHospede serviceHospede;
 	
 	public EmpresaBean() {
 		super(new ServiceEmpresa());
@@ -65,6 +70,20 @@ public class EmpresaBean extends GenericBean<Empresa, ServiceEmpresa> implements
 		}		
 	}
 	
+	
+	public void onTabChange(TabChangeEvent event) {		
+        if (event.getTab().getId().equals("tabHospedes")){
+        	if(serviceHospede == null){
+    			serviceHospede = new ServiceHospede();
+    		}
+        	
+        	try {
+				this.hospedes = serviceHospede.buscarPorEmpresa(entidade);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+        }        
+    }
 	// =============================GET AND SET=====================================
 		
 	
@@ -77,6 +96,7 @@ public class EmpresaBean extends GenericBean<Empresa, ServiceEmpresa> implements
 	
 	public Estados[] getEstados(){return Estados.values();}
 	
+	public List<Hospede> getHospedes() {return hospedes;}
 	
 	@Override
 	public List<Empresa> getEntidades() {

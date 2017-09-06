@@ -1,6 +1,7 @@
 package br.com.buch.view.managedBean;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -83,7 +84,7 @@ public class CheckoutBean implements Serializable{
 			hospedagemLancamento.setHospedagem(hospedagem);
 			hospedagemLancamento.setOrigemLancamento(OrigemLancamento.ADIANTAMENTO);
 			hospedagemLancamento.setQuantidade(1);
-			hospedagemLancamento.setVlUnitario(adiantamento.getValor());
+			hospedagemLancamento.setVlUnitario(BigDecimal.valueOf(adiantamento.getValor()));
 			
 			hospedagem.getLancamentos().add(hospedagemLancamento);
 			

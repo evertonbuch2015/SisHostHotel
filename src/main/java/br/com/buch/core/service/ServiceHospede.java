@@ -3,6 +3,7 @@ package br.com.buch.core.service;
 import java.util.List;
 
 import br.com.buch.core.dao.HospedeDao;
+import br.com.buch.core.entity.Empresa;
 import br.com.buch.core.entity.Endereco;
 import br.com.buch.core.entity.Hospede;
 import br.com.buch.core.enumerated.TipoFiltroHospede;
@@ -146,5 +147,13 @@ public class ServiceHospede implements GenericService<Hospede> {
 	
 	public List<Hospede> buscarPorNome(String nome) throws Exception{
 		return hospedeDao.find("Select h From Hospede h where lower(h.nome) like lower(?)", nome);
+	}
+
+
+
+	
+	
+	public List<Hospede> buscarPorEmpresa(Empresa entidade)throws Exception{
+		return hospedeDao.find("Select h From Hospede h where h.empresa = ?", entidade);
 	}
 }

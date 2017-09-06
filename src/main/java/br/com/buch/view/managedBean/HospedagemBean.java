@@ -7,7 +7,7 @@ import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.SessionScoped;
+import javax.faces.bean.ViewScoped;
 
 import org.primefaces.event.SelectEvent;
 
@@ -31,7 +31,7 @@ import br.com.buch.view.util.UtilMensagens;
 
 
 @ManagedBean
-@SessionScoped
+@ViewScoped
 public class HospedagemBean extends GenericBean<Hospedagem, ServiceHospedagem> implements Serializable{
 
 
@@ -80,7 +80,7 @@ public class HospedagemBean extends GenericBean<Hospedagem, ServiceHospedagem> i
 				}				
 				
 			}else if(filtro == TipoFiltroHospedagem.CODIGO){
-				this.entidades = service.filtrarTabela(filtro, Integer.parseInt(valorFiltro));
+				this.entidades = service.filtrarTabela(filtro, valorFiltro);
 			}
 			else if(filtro != null){
 				this.entidades = service.filtrarTabela(filtro, valorFiltro);
@@ -250,7 +250,7 @@ public class HospedagemBean extends GenericBean<Hospedagem, ServiceHospedagem> i
 	
 	public String fazerCheckOut(Hospedagem hospedagem){		
 		if (hospedagem.getSituacao().equals(SituacaoHospedagem.CHECKIN)){			
-			return "hospedagem?faces-redirect=true&hospedagem=" + hospedagem.getIdHospedagem();
+			return "checkOut?faces-redirect=true&hospedagem=" + hospedagem.getIdHospedagem();
 		}else{
 			UtilMensagens.mensagemAtencao("Já foi realizado o Check-Out desta Hospedagem!");
 			return "";

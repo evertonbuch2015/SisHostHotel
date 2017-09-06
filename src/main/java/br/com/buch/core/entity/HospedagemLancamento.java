@@ -90,7 +90,7 @@ public class HospedagemLancamento implements Serializable {
 	
 	
 	@Column(name="VL_UNITARIO")
-	private Double vlUnitario;
+	private BigDecimal vlUnitario;
 	
 	
 	@Column(name = "VL_TOTAL", insertable=false, updatable=false)
@@ -118,7 +118,7 @@ public class HospedagemLancamento implements Serializable {
 	}
 	
 	
-	public HospedagemLancamento(String descricao, Integer quantidade, Double vlUnitario) {
+	public HospedagemLancamento(String descricao, Integer quantidade, BigDecimal vlUnitario) {
 		super();
 		this.descricao = descricao;
 		this.quantidade = quantidade;
@@ -156,18 +156,18 @@ public class HospedagemLancamento implements Serializable {
 	}
 
 
-	public Double getVlUnitario() {
+	public BigDecimal getVlUnitario() {
 		return vlUnitario;
 	}
 
-	public void setVlUnitario(Double vlUnitario) {
+	public void setVlUnitario(BigDecimal vlUnitario) {
 		this.vlUnitario = vlUnitario;
 	}
 
 
 	public BigDecimal getVlTotal() {
 		if(vlTotal == null){
-			vlTotal = BigDecimal.valueOf(quantidade*vlUnitario);
+			vlTotal = vlUnitario.multiply(BigDecimal.valueOf(quantidade));
 		}
 		return vlTotal;
 	}
