@@ -10,14 +10,14 @@
 	template="/WEB-INF/template.xhtml"
 	xmlns:app="http://java.sun.com/jsf/composite/componentes">
 
-	<ui:define name="tituloPagina">#{label.tit_formas_pag}</ui:define>
+	<ui:define name="tituloPagina">#{label.tit_banco}</ui:define>
 
 	<ui:define name="conteudo">
 		
 		<p:breadCrumb>
 			<p:menuitem value="Home" url="/index.xhtml" />
-			<p:menuitem value="#{label.menu_cadastro}"/>
-    		<p:menuitem value="#{label.txt_formas_pag}" url="#" />
+			<p:menuitem value="Cadastros"/>
+    		<p:menuitem value="#{label.tit_banco}" url="#" />
 		</p:breadCrumb>
 		
 		<p:messages autoUpdate="true" showDetail="true" closable="true" showSummary="false">
@@ -26,44 +26,44 @@
 		</p:messages>
 		
 		
-		<p:tabView rendered="#{formaPagamentoBean.buscando}" prependId="false">						
-			<p:tab title="Consulta"> 	
+		<p:tabView rendered="#{bancoBean.buscando}" prependId="false">						
+			<p:tab title="#{label.consulta_bancos}"> 	
 				<p:dataTable id="tabela"
-					value="#{formaPagamentoBean.entidades}" var="entidade" 
-					selection="#{formaPagamentoBean.entidade}" selectionMode="single"
-					rowKey="#{entidade.idFormaPag}" reflow="true"									
+					value="#{bancoBean.entidades}" var="entidade" 
+					selection="#{bancoBean.entidade}" selectionMode="single"
+					rowKey="#{entidade.idBanco}" reflow="true"									
 					emptyMessage="#{label.msg_tabela_vazia}"
 					style="margin: -11px -8px;"
 					rows="13"
-    				paginator="true" paginatorAlwaysVisible="false"
+    				paginator="true" paginatorAlwaysVisible="false" 
     				paginatorPosition="bottom">				
 					
 
-					<p:ajax event="rowDblselect" listener="#{formaPagamentoBean.onRowDblClckSelect}"
+					<p:ajax event="rowDblselect" listener="#{bancoBean.onRowDblClckSelect}"
 						global="false" update="@form"/>
 
-					<p:ajax event="rowSelect" listener="#{formaPagamentoBean.onRowSelect}" />
+					<p:ajax event="rowSelect" listener="#{bancoBean.onRowSelect}" />
 
 
 					<p:column headerText="#{label.txt_codigo}" style="text-align: center !important;"  
-						width="110" sortBy="#{entidade.codigo}">
+						width="120" sortBy="#{entidade.codigo}">
 						<h:outputText value="#{entidade.codigo}" />
 					</p:column>
 					
-					<p:column headerText="#{label.txt_descricao}" sortBy="#{entidade.descricao}">
-						<h:outputText value="#{entidade.descricao}" />
-					</p:column>									
+					<p:column headerText="#{label.txt_nome}" sortBy="#{entidade.nome}">
+						<h:outputText value="#{entidade.nome}" />
+					</p:column>
+														
 					
 					<p:column headerText="#{label.txt_acoes}" style="text-align: center !important;"  
 						exportable="false" width="110">						
-						<p:commandButton actionListener="#{formaPagamentoBean.editar(entidade)}" 
+						<p:commandButton actionListener="#{bancoBean.editar(entidade)}" 
 							icon="ui-icon-pencil" update="@form"/>
 							
-						<p:commandButton actionListener="#{formaPagamentoBean.excluir(entidade)}" 
+						<p:commandButton actionListener="#{bancoBean.excluir(entidade)}" 
 							icon="ui-icon-trash" update="@form">
 							
-							<p:confirm header="#{label.txt_confirmacao}" 
-								message="Deseja Excluir este Registro" icon="ui-icon-alert"/>
+							<p:confirm header="Confirmação" message="Deseja Excluir este Registro" icon="ui-icon-alert"/>
 						</p:commandButton>
 					</p:column>					
 
@@ -72,36 +72,33 @@
 		</p:tabView>	
 		
 		
-		<p:tabView rendered="#{!formaPagamentoBean.buscando}" effect="fade" effectDuration="fast">					
-			<p:tab title="#{label.txt_dados_gerais}" titleStyle="font-size: 10px;color: #455a64;">
+		
+		<p:tabView rendered="#{!bancoBean.buscando}" effect="fade" effectDuration="fast">					
+			<p:tab title="Dados Gerais" titleStyle="font-size: 10px;color: #455a64;">
 				<div class="ui-fluid">
 					<p:panelGrid 
 						styleClass="ui-panelgrid-blank" columns="2"
 						cellpadding="10" layout="grid"
-						columnClasses="ui-grid-col-2,ui-grid-col-4">
+						columnClasses="ui-grid-col-1,ui-grid-col-4">
 
-						
 						<p:outputLabel value="#{label.txt_codigo}" for="codigo" />
-						<p:inputText id="codigo" 
-							value="#{formaPagamentoBean.entidade.codigo}" readonly="true"/>
+						<p:inputText id="codigo"
+							value="#{bancoBean.entidade.codigo}" 
+							readonly="#{bancoBean.visualizando}"
+							requiredMessage="Informe O Código do Banco!"/>
 						
+						<p:outputLabel value="#{label.txt_nome}" for="nome" />
+						<p:inputText id="nome"
+							value="#{bancoBean.entidade.nome}"
+							placeholder="Informe o nome"/>
 						
-						<p:outputLabel value="#{label.txt_descricao}" for="descricao" />
-						<p:inputText id="descricao" 
-							value="#{formaPagamentoBean.entidade.descricao}" 
-							placeholder="Ex: Á Vista"
-							rendered="true"
-							requiredMessage="Informe a Descrição!"/>
-							
-					</p:panelGrid>
-					
+					</p:panelGrid>					
 				</div>
 			</p:tab>
-
 		</p:tabView>
 		
 		
-		<app:barraBotoes bean="#{formaPagamentoBean}"/>
+		<app:barraBotoes bean="#{bancoBean}"/>
 		
 		
 		<p:dialog 
@@ -115,20 +112,20 @@
 				styleClass="ui-panelgrid-blank">
 														
 				<p:selectOneMenu id="tipoFiltro"
-					value="#{formaPagamentoBean.filtro}" style="width:75%">						
+					value="#{bancoBean.filtro}" style="width:75%">						
 					<f:selectItem itemLabel="Selecione" />
-					<f:selectItems value="#{formaPagamentoBean.tipoFiltros()}" var="a"
+					<f:selectItems value="#{bancoBean.tipoFiltros()}" var="a"
 						itemValue="#{a}" itemLabel="#{a.label}"/>						
 				</p:selectOneMenu>
 					
 				<p:inputText id="valorfiltro" placeholder="Valor do Filtro!" 
-						value="#{formaPagamentoBean.valorFiltro}"
+						value="#{bancoBean.valorFiltro}"
 						size="30"/>
 								
 				<p:commandButton value="Filtrar" icon="ui-icon-folder-collapsed"
 					styleClass="bu-botao-azul" update="tabela"
 					style="margin-top:20px;"
-					actionListener="#{formaPagamentoBean.filtrar()}"
+					actionListener="#{bancoBean.filtrar()}"
 					onclick="PF('dialogFiltro').hide();" />	
 					
 			</p:panelGrid>	

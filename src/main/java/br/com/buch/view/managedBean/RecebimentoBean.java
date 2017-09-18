@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.SessionScoped;
+import javax.faces.bean.ViewScoped;
 
 import br.com.buch.core.entity.Banco;
 import br.com.buch.core.entity.FormaPagamento;
@@ -16,7 +16,7 @@ import br.com.buch.core.service.ServiceRecebimento;
 import br.com.buch.core.util.Constantes;
 
 @ManagedBean
-@SessionScoped
+@ViewScoped
 public class RecebimentoBean extends GenericBean<Recebimento, ServiceRecebimento> implements Serializable{
 
 	private static final long serialVersionUID = 4996140944326181060L;

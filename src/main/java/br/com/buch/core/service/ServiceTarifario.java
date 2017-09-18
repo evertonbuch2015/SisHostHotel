@@ -44,7 +44,9 @@ public class ServiceTarifario implements GenericService<Tarifario> {
 	            		" \nErro: " + UtilErros.getMensagemErro(e));
 			}
 		} else {
-
+			if(!validaAntesSalvar(entidate))
+				throw new Exception("Já existe um Tarifário para esta categoria e Tipo de tarifa no intervalo de data informada!");
+			
 			try {
 				tarifarioDao.update(entidate);
 				return "Tarifário Alterado com Sucesso!";
@@ -137,10 +139,18 @@ public class ServiceTarifario implements GenericService<Tarifario> {
 		List<Tarifario> lista = null;
 		
 		try {
-			String jpql = " Select t From Tarifario t where t.categoria = ?1 and t.tipoTarifa = ?2"
-						+ " and ((t.dataInicial >= ?3 and t.dataInicial <= ?4) or (t.dataFinal >= ?3 and t.dataFinal <= ?4))";
 			
-			lista = tarifarioDao.find(jpql, entidate.getCategoria(),entidate.getTipoTarifa(),entidate.getDataInicial(),entidate.getDataFinal());
+			if(entidate.getIdTarifario() == null){
+				String jpql = " Select t From Tarifario t where t.categoria = ?1 and t.tipoTarifa = ?2"
+						+ " and ((t.dataInicial >= ?3 and t.dataInicial <= ?4) or (t.dataFinal >= ?3 and t.dataFinal <= ?4))";
+				lista = tarifarioDao.find(jpql, entidate.getCategoria(),entidate.getTipoTarifa(),entidate.getDataInicial(),entidate.getDataFinal());
+			}else{
+				String jpql = " Select t From Tarifario t where t.categoria = ?1 and t.tipoTarifa = ?2 and t.idTarifario != ?3"
+						+ " and ((t.dataInicial >= ?4 and t.dataInicial <= ?5) or (t.dataFinal >= ?4 and t.dataFinal <= ?5))";
+				lista = tarifarioDao.find(jpql, entidate.getCategoria(),entidate.getTipoTarifa(),
+										  entidate.getIdTarifario(),entidate.getDataInicial(),entidate.getDataFinal());
+			}
+						
 		} catch (Exception e) {
 			e.printStackTrace();
 		}				

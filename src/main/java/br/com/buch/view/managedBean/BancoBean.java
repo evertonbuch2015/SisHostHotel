@@ -1,6 +1,7 @@
 package br.com.buch.view.managedBean;
 
 import java.io.Serializable;
+import java.util.List;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
@@ -43,4 +44,9 @@ public class BancoBean extends GenericBean<Banco, ServiceBanco> implements Seria
 	public TipoFiltroBanco getFiltro() {return filtro;}
 	
 	public void setFiltro(TipoFiltroBanco filtro) {this.filtro = filtro;}
+	
+	@Override
+	public List<Banco> getEntidades() {	
+		return super.getEntidades();
+	}
 }

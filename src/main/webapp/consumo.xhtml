@@ -1,0 +1,262 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition 
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:p="http://primefaces.org/ui" 
+	template="/WEB-INF/template.xhtml"
+	xmlns:app="http://java.sun.com/jsf/composite/componentes">
+
+	<ui:define name="tituloPagina">#{label.tit_consumo}</ui:define>
+
+	<ui:define name="head">
+		<h:outputScript library="js" name="Monetario.js"/>
+	</ui:define>
+	
+	<ui:define name="conteudo">
+	
+		<p:breadCrumb>
+			<p:menuitem value="Home" url="/index.xhtml" />
+			<p:menuitem value="Cadastros"/>
+    		<p:menuitem value="#{label.tit_consumo}" url="#" />			
+		</p:breadCrumb>
+		
+		<p:messages autoUpdate="true" showDetail="true" closable="true" showSummary="false">
+			<p:effect type="bounce" event="load"/>
+			<p:effect type="explode" event="load" delay="12000"/>
+		</p:messages>
+		
+		
+		<p:tabView rendered="#{consumoBean.buscando}" prependId="false">						
+			<p:tab title="#{label.consulta_produtos}"> 	
+				<p:dataTable id="tabela"
+					value="#{consumoBean.entidades}" var="entidade" 
+					selection="#{consumoBean.entidade}" selectionMode="single"
+					rowKey="#{entidade.idConsumo}" reflow="true"									
+					emptyMessage="#{label.msg_tabela_vazia}"
+					style="margin: -11px -8px;" rows="13"
+    				paginator="true" paginatorAlwaysVisible="false" 
+    				paginatorPosition="bottom">				
+					
+
+					<p:ajax event="rowDblselect" listener="#{consumoBean.onRowDblClckSelect}"
+						global="false" update="@form"/>
+
+					<p:ajax event="rowSelect" listener="#{consumoBean.onRowSelect}" />
+					
+
+					<p:column headerText="#{label.txt_codigo}" style="text-align: center !important;"
+						sortBy="#{entidade.idConsumo}" width="110">
+						<h:outputText value="#{entidade.idConsumo}"/>
+					</p:column>
+
+					<p:column headerText="#{label.txt_hospedagem}" sortBy="#{entidade.hospedagem.codigo}">
+						<h:outputText value="#{entidade.hospedagem.codigo}"/>
+					</p:column>
+
+
+					<p:column headerText="#{label.txt_produto}" sortBy="#{entidade.produto.nome}">											
+						<h:outputText value="#{entidade.produto.nome}"/>
+					</p:column>
+
+
+					<p:column headerText="#{label.data}" sortBy="#{entidade.dataConsumo}">
+						<h:outputText value="#{entidade.dataConsumoFormatada}" />
+					</p:column>
+					
+										
+					<p:column headerText="#{label.txt_valor_total}" width="120" priority="5">
+						<h:outputText value="#{entidade.valorTotal}">
+							<f:convertNumber pattern="#,##0.00"></f:convertNumber>
+						</h:outputText>
+					</p:column>
+					
+					
+					<p:column headerText="#{label.txt_acoes}" style="text-align: center !important;"
+						exportable="false" width="110">
+						<p:commandButton actionListener="#{consumoBean.editar(entidade)}" 
+							icon="ui-icon-pencil" update="@form"/>
+							
+						<p:commandButton actionListener="#{consumoBean.excluir(entidade)}" 
+							icon="ui-icon-trash" update="@form">
+							
+							<p:confirm header="Confirmação" message="Deseja Excluir este Consumo"/>
+						</p:commandButton>
+					</p:column>					
+
+				</p:dataTable>
+			</p:tab>
+		</p:tabView>	
+		
+		
+		
+		<p:tabView rendered="#{!consumoBean.buscando}" prependId="false" effect="fade" effectDuration="fast">					
+			<p:tab title="#{label.txt_dados_gerais}" titleStyle="font-size: 10px;color: #455a64;">
+				<div class="ui-fluid">
+					<p:panelGrid 
+						styleClass="ui-panelgrid-blank" columns="2"
+						cellpadding="10" layout="grid"
+						columnClasses="ui-grid-col-1 bu-texto,ui-grid-col-6">
+
+
+						<p:outputLabel value="#{label.txt_hospedagem}" for="hosp" />
+						<p:autoComplete id="hosp" 
+							value="#{consumoBean.entidade.hospedagem}"
+	 						var="hospedagem" itemLabel="#{hospedagem.codigo}" itemValue="#{hospedagem}" 
+	 						dropdown="true"
+							forceSelection="true" readonly="#{consumoBean.visualizando}"
+							completeMethod="#{consumoBean.buscarHospedagens}">
+							
+							
+							<p:column headerText="Código">
+				               <h:outputText value="#{hospedagem.codigo}"/>
+				        	</p:column>
+				
+				           	<p:column headerText="Hóspede">
+				               <h:outputText value="#{hospedagem.hospede.nome}" />
+				           	</p:column>
+				           	
+				           	<p:column headerText="Apartamento">
+				               <h:outputText value="#{hospedagem.apartamento.numero}" />
+				           	</p:column>
+				           	
+						</p:autoComplete>
+						
+												
+							
+						<p:outputLabel value="#{label.produto}" for="prod" />
+						<p:autoComplete id="prod" 
+							value="#{consumoBean.entidade.produto}"
+	 						var="produto" itemLabel="#{produto.nome}" itemValue="#{produto}" 
+	 						minQueryLength="3" dropdown="true"
+							forceSelection="true" readonly="#{consumoBean.visualizando}"
+							completeMethod="#{consumoBean.buscarProdutos}">
+							
+							<p:ajax event="itemSelect" listener="#{consumoBean.produtoSelecionado}" 
+								process="@this" update="vlTotal valorUni"/>
+							
+							<p:column headerText="Código">
+				               <h:outputText value="#{produto.codigo}"/>
+				        	</p:column>
+				
+				           	<p:column headerText="Nome">
+				               <h:outputText value="#{produto.nome}" />
+				           	</p:column>
+						</p:autoComplete>
+        				
+        			</p:panelGrid>
+        			
+        			
+        			
+        			<p:panelGrid 
+						styleClass="ui-panelgrid-blank" columns="4"
+						cellpadding="10" layout="grid"
+						columnClasses="ui-grid-col-1 bu-texto,ui-grid-col-4,ui-grid-col-1 bu-texto bu-left,ui-grid-col-4">
+						
+						<p:outputLabel value="#{label.txt_quantidade}" for="qtd"/>
+						<p:spinner id="qtd" 
+							value="#{consumoBean.entidade.quantidade}" min="0"
+							required="true"
+							requiredMessage="Informe a Quantidade!"
+							readonly="#{consumoBean.visualizando}">
+							
+							<p:ajax event="change" update="vlTotal"/>  
+						</p:spinner>
+							
+						
+						<p:outputLabel value="#{label.txt_valor}" for="valorUni"/>
+						<p:inputText id="valorUni" 
+							value="#{consumoBean.entidade.produto.valor}"							
+							readonly="true">
+							<f:convertNumber pattern="#,##0.00" type="currency" currencySymbol="R$"/>
+						</p:inputText>
+						
+						
+						<p:outputLabel value="#{label.txt_valor_total}" for="vlTotal"/>
+						<p:inputText id="vlTotal" 
+							value="#{consumoBean.entidade.valorTotal}"							
+							readonly="true">
+							<f:convertNumber pattern="#,##0.00" type="currency" currencySymbol="R$"/>
+						</p:inputText>
+						
+						
+						<p:outputLabel value="#{label.data}" for="dtCadastro" />
+						<p:inputText id="dtCadastro"
+							value="#{consumoBean.entidade.dataConsumoFormatada}" 
+							readonly="true"/>
+					</p:panelGrid>
+
+				</div>
+			</p:tab>
+
+		</p:tabView>
+		
+		
+		<app:barraBotoes bean="#{consumoBean}"/>
+		
+		
+		<p:dialog 
+			width="400" height="300"
+			header="#{label.filtrar_registros}"			
+			widgetVar="dialogFiltro" modal="true" draggable="true" 
+			closable="true" resizable="false" position="center center"
+			showEffect="explode" hideEffect="explode">
+		
+			<p:panelGrid columns="2" 
+				styleClass="ui-panelgrid-blank"
+				cellpadding="10" layout="grid"
+				columnClasses="ui-grid-col-3,ui-grid-col-9">
+				
+									
+				<p:outputLabel value="#{label.tipo_filtro}"/>
+				<p:selectOneMenu id="tipoFiltro"
+					value="#{consumoBean.filtro}" style="width:80%">						
+					<f:selectItem itemLabel="Selecione" />
+					<f:selectItems value="#{consumoBean.tipoFiltros()}" var="a"
+						itemValue="#{a}" itemLabel="#{a.label}"/>			
+						
+					<p:ajax event="change" update="dtEntradaFiltro dtEntradaFiltro2 valorfiltro"/>  				
+				</p:selectOneMenu>
+				
+				
+				<p:outputLabel value="#{label.txt_data_entrada}" for="dtEntradaFiltro" />						
+				<p:calendar id="dtEntradaFiltro"
+							value="#{consumoBean.dataFiltroInicial}"
+							pattern="dd/MM/yyyy" mask="true"
+							showOn="button" locale="pt_BR"
+							size="28"
+							disabled="#{consumoBean.filtro.ordinal() eq 0}"
+							>							
+				</p:calendar>
+				
+				<p:outputLabel value="#{label.txt_data_entrada}"/>						
+				<p:calendar id="dtEntradaFiltro2"
+							value="#{consumoBean.dataFiltroFinal}"
+							pattern="dd/MM/yyyy" mask="true"
+							showOn="button" locale="pt_BR"
+							size="28"
+							disabled="#{consumoBean.filtro.ordinal() eq 0}"
+							>							
+				</p:calendar>	
+				
+				<p:outputLabel value="#{label.outros_filtros}"/>	
+				<p:inputText id="valorfiltro"
+					value="#{consumoBean.valorFiltro}"
+					size="34"
+					disabled="#{consumoBean.filtro.ordinal() eq 1}"/>
+					
+								
+				<p:commandButton value="#{label.aplicar_filtro}"
+					styleClass="bu-botao-azul" update="tabela"
+					style="margin-top:20px;"
+					actionListener="#{consumoBean.filtrar()}"
+					onclick="PF('dialogFiltro').hide();" />	
+					
+			</p:panelGrid>	
+		</p:dialog>
+		
+	</ui:define>
+</ui:composition>

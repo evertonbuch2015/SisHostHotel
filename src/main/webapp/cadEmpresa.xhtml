@@ -21,8 +21,8 @@
 		</p:breadCrumb>
 		
 		<p:messages autoUpdate="true" showDetail="true" closable="true" showSummary="false">
-			<p:effect type="pulsate" event="load" delay="500" />
-			<p:effect type="clip" event="load" delay="10000" />
+			<p:effect type="bounce" event="load"/>
+			<p:effect type="explode" event="load" delay="12000"/>
 		</p:messages>
 		
 		
@@ -32,7 +32,7 @@
 					selection="#{empresaBean.entidade}" selectionMode="single"
 					rowKey="#{empresa.idEmpresa}" reflow="true"									
 					emptyMessage="#{label.msg_tabela_vazia}"
-					style="margin: 0px -8px;"
+					style="margin: -11px -8px;"
 					rows="13"
     				paginator="true" paginatorAlwaysVisible="false" 
     				paginatorPosition="bottom">				
@@ -44,7 +44,8 @@
 					<p:ajax event="rowSelect" listener="#{empresaBean.onRowSelect}" />
 
 
-					<p:column headerText="#{label.txt_codigo}" sortBy="#{empresa.codigo}">
+					<p:column headerText="#{label.txt_codigo}" style="text-align: center !important;"  
+						sortBy="#{empresa.codigo}">
 						<h:outputText value="#{empresa.codigo}" />
 					</p:column>
 										
@@ -64,7 +65,7 @@
 					</p:column>
 					
 					
-					<p:column headerText="#{label.txt_acoes}" exportable="false">						
+					<p:column headerText="#{label.txt_acoes}" style="text-align: center !important;"  exportable="false">
 						<p:commandButton actionListener="#{empresaBean.editar(empresa)}" 
 							icon="ui-icon-pencil" update="@form"/>
 							
@@ -80,7 +81,7 @@
 		</p:tabView>
 		
 						
-		<p:tabView rendered="#{!empresaBean.buscando}" >	
+		<p:tabView rendered="#{!empresaBean.buscando}" effect="fade" effectDuration="fast">	
 		
 			<p:ajax event="tabChange" listener="#{empresaBean.onTabChange}" update="tabelaHospedes"/>
 								

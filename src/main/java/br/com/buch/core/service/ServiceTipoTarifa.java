@@ -4,6 +4,8 @@ import java.util.List;
 
 import br.com.buch.core.dao.TipoTarifaDao;
 import br.com.buch.core.entity.TipoTarifa;
+import br.com.buch.core.util.Constantes;
+import br.com.buch.core.util.Constantes.ConstantesLista;
 import br.com.buch.core.util.NegocioException;
 import br.com.buch.core.util.PersistenciaException;
 import br.com.buch.core.util.UtilErros;
@@ -26,6 +28,7 @@ public class ServiceTipoTarifa implements GenericService<TipoTarifa> {
 			
 			try {
 				tipoTarifaDao.save(entidate);
+				Constantes.getInstance().refresh(ConstantesLista.FORMAS_PAGAMENTO);
 				return "Tipo de Tarifa Cadastrada com Sucesso!";
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -36,6 +39,7 @@ public class ServiceTipoTarifa implements GenericService<TipoTarifa> {
 			
 			try {				
 				tipoTarifaDao.update(entidate);
+				Constantes.getInstance().refresh(ConstantesLista.FORMAS_PAGAMENTO);
 				return "Tipo de Tarifa Alterada com Sucesso!";
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -50,6 +54,7 @@ public class ServiceTipoTarifa implements GenericService<TipoTarifa> {
 	public String excluir(TipoTarifa entidade)throws Exception {
 		try {
 			tipoTarifaDao.delete(entidade);
+			Constantes.getInstance().refresh(ConstantesLista.FORMAS_PAGAMENTO);
 			return "";
 		}catch (Exception ex) {
         	ex.printStackTrace();

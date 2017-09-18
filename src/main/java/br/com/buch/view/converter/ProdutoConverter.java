@@ -5,26 +5,26 @@ import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
 
-import br.com.buch.core.entity.Banco;
+import br.com.buch.core.entity.Produto;
 
 
-@FacesConverter(forClass = Banco.class)
-public class CaixaBancoConverter  implements Converter {
+@FacesConverter(forClass = Produto.class)
+public class ProdutoConverter  implements Converter {
     
     public Object getAsObject(FacesContext facesContext, UIComponent uiComponent, String value) {
         if (value != null && !value.isEmpty()) {
-            return (Banco) uiComponent.getAttributes().get(value);
+            return (Produto) uiComponent.getAttributes().get(value);
         }
         return null;
     }
 
     
     public String getAsString(FacesContext facesContext, UIComponent uiComponent, Object value) {
-        if (value instanceof Banco) {
-        	Banco entity = (Banco) value;
-            if (entity != null && entity instanceof Banco && entity.getIdCaixaBanco() != null) {
-                uiComponent.getAttributes().put( entity.getIdCaixaBanco().toString(), entity);
-                return entity.getIdCaixaBanco().toString();
+        if (value instanceof Produto) {
+        	Produto entity = (Produto) value;
+            if (entity != null && entity instanceof Produto && entity.getIdProduto() != null) {
+                uiComponent.getAttributes().put( entity.getIdProduto().toString(), entity);
+                return entity.getIdProduto().toString();
             }
         }
         return "";

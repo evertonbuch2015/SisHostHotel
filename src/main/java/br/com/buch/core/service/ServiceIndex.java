@@ -1,11 +1,14 @@
 package br.com.buch.core.service;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.collections4.map.HashedMap;
 
+import br.com.buch.core.dao.ReservaDao;
 import br.com.buch.core.entity.Apartamento;
 import br.com.buch.core.util.PersistenciaException;
 
@@ -17,9 +20,21 @@ public class ServiceIndex {
 	}
 	
 	
-	public Map<String,Number> getGraficoApartamentos(){
+	public Map<Object,Number> getGraficoReservas(){
+		Map<Object,Number> data = new HashedMap<Object,Number>();
+		List<Object[]> lista = new ReservaDao().getReservasAgrupadoPorData();
+				
+		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+		for (Object[] object : lista) {
+			data.put(sdf.format((Date)object[0]), (Integer)object[1]);
+		}
+		return data;
+	}
+	
+	
+	public Map<Object,Number> getGraficoApartamentos(){
 		
-		Map<String,Number> data = new HashedMap<String,Number>();
+		Map<Object,Number> data = new HashedMap<Object,Number>();
 		List<Apartamento> lista = new ArrayList<Apartamento>();
 		Integer livre = 0, ocupado = 0, reservado = 0, manutencao = 0, governaca = 0;
 		

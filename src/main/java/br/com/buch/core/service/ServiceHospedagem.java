@@ -25,7 +25,9 @@ public class ServiceHospedagem implements GenericService<Hospedagem> {
 	
 	private static final String BUSCAR_TODOS = 
 			"From Hospedagem h LEFT JOIN FETCH h.hospede LEFT JOIN FETCH h.apartamento where h.dataEntrada Between ? and ? order by h.dataEntrada";
-	
+
+	private static final String BUSCAR_TODOS_ATIVAS = 
+			"From Hospedagem h LEFT JOIN FETCH h.hospede LEFT JOIN FETCH h.apartamento where h.situacao = ? order by h.dataEntrada";
 	
 	
 	private HospedagemDao dao;
@@ -202,5 +204,18 @@ public class ServiceHospedagem implements GenericService<Hospedagem> {
 		hospedagem.setSituacao(SituacaoHospedagem.CHECKOUT);
 		
 		dao.confirmarCheckOut(hospedagem, recebimento, adiantamentos);
+	}
+
+
+	
+	
+	public List<Hospedagem> getHospedagensAtivas()throws PersistenciaException{
+		try {
+			return dao.find(BUSCAR_TODOS_ATIVAS, SituacaoHospedagem.CHECKIN);
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new PersistenciaException("Ocorreu uma exceção ao buscar os dados da Hospedagem!" + 
+            		" \nErro: " + UtilErros.getMensagemErro(e));
+		}
 	}
 }

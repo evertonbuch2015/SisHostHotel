@@ -18,9 +18,7 @@
 			<p:menuitem value="Home" url="/index.xhtml" />
 			<p:menuitem value="#{label.menu_hospedagem}"/>
     		<p:menuitem value="#{label.checkout}" url="#" />
-		</p:breadCrumb>
-		
-		<p:growl id="growl" autoUpdate="true" showDetail="true"  sticky="true" />		
+		</p:breadCrumb>	
 		
 		<p:wizard flowListener="#{checkoutBean.onFlowProcess}"
 			style="margin: 20px 5px; width: 65%;">

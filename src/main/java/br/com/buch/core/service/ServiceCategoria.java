@@ -4,6 +4,8 @@ import java.util.List;
 
 import br.com.buch.core.dao.CategoriaDao;
 import br.com.buch.core.entity.Categoria;
+import br.com.buch.core.util.Constantes;
+import br.com.buch.core.util.Constantes.ConstantesLista;
 import br.com.buch.core.util.PersistenciaException;
 import br.com.buch.core.util.UtilErros;
 import br.com.buch.view.managedBean.CategoriaBean.TipoFiltro;
@@ -24,6 +26,7 @@ public class ServiceCategoria implements GenericService<Categoria> {
 		if(entidate.getIdCategoria() == null){
 			try {
 				categoriaDao.save(entidate);
+				Constantes.getInstance().refresh(ConstantesLista.CATEGORIAS);
 				return "Categoria de Apartamento Cadastrada com Sucesso!";
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -34,6 +37,7 @@ public class ServiceCategoria implements GenericService<Categoria> {
 			
 			try {
 				categoriaDao.update(entidate);
+				Constantes.getInstance().refresh(ConstantesLista.CATEGORIAS);
 				return "Categoria de Apartamento Alterado com Sucesso!";
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -48,6 +52,7 @@ public class ServiceCategoria implements GenericService<Categoria> {
 	public String excluir(Categoria entidade) throws Exception{
 		try {
 			categoriaDao.delete(entidade);
+			Constantes.getInstance().refresh(ConstantesLista.CATEGORIAS);
 			return "";
 		}catch (Exception ex) {
         	ex.printStackTrace();
@@ -75,7 +80,8 @@ public class ServiceCategoria implements GenericService<Categoria> {
 	@Override
 	public List<Categoria> buscarTodos()throws PersistenciaException {
 		try {
-			return categoriaDao.findAll();
+			return Constantes.getInstance().getListaCategorias();
+			//return categoriaDao.findAll();
 		} catch (Exception e) {
 			e.printStackTrace();
 			return null;

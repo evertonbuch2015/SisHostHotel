@@ -55,25 +55,25 @@ public class UsuarioBean extends GenericBean<Usuario, ServiceUsuario> implements
 	}
 	
 
-	public void excluirEmpresa(Hotel empresa){
-		if(this.entidade.getHoteis().contains(empresa)){
-			this.entidade.getHoteis().remove(empresa);
+	public void excluirHotel(Hotel hotel){
+		if(this.entidade.getHoteis().contains(hotel)){
+			this.entidade.getHoteis().remove(hotel);
 		}
 	}
 		
 	
-	public void adicionarEmpresa(Hotel empresa){		
-		if(!this.entidade.getHoteis().contains(empresa)){
-			this.entidade.getHoteis().add(empresa);
+	public void adicionarHotel(Hotel hotel){		
+		if(!this.entidade.getHoteis().contains(hotel)){
+			this.entidade.getHoteis().add(hotel);
 		}else{
 			UtilMensagens.mensagemAtencao("Hotel já cadastrada para este Usuário!");
 		}
 	}	
 		
 	
-	public void empresaSelecionada(SelectEvent event){
-		Hotel empresa = (Hotel) event.getObject();
-		adicionarEmpresa(empresa);
+	public void hotelSelecionado(SelectEvent event){
+		Hotel hotel = (Hotel) event.getObject();
+		adicionarHotel(hotel);
 	}
 	
 	
@@ -85,6 +85,10 @@ public class UsuarioBean extends GenericBean<Usuario, ServiceUsuario> implements
 		
 	public void setFiltro(TipoFiltro filtro) {this.filtro = filtro;}
 
+	@Override
+	public List<Usuario> getEntidades() {	
+		return super.getEntidades();
+	}
 	
 	public GrupoUsuario[] getGrupoUsuarios(){return GrupoUsuario.values();}	
 		

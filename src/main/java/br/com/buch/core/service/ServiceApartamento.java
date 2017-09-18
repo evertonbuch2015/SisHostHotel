@@ -7,6 +7,8 @@ import java.util.List;
 import br.com.buch.core.dao.ApartamentoDao;
 import br.com.buch.core.entity.Apartamento;
 import br.com.buch.core.enumerated.SituacaoApartamento;
+import br.com.buch.core.util.Constantes;
+import br.com.buch.core.util.Constantes.ConstantesLista;
 import br.com.buch.core.util.NegocioException;
 import br.com.buch.core.util.PersistenciaException;
 import br.com.buch.core.util.UtilErros;
@@ -43,6 +45,7 @@ public class ServiceApartamento implements GenericService<Apartamento> {
 			
 			try {
 				apartamentoDao.save(entidate);
+				Constantes.getInstance().refresh(ConstantesLista.APARTAMENTOS);
 				return "Apartamento Cadastrado com Sucesso!";
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -53,13 +56,14 @@ public class ServiceApartamento implements GenericService<Apartamento> {
 			
 			try {
 				apartamentoDao.update(entidate);
+				Constantes.getInstance().refresh(ConstantesLista.APARTAMENTOS);
 				return "Apartamento Alterado com Sucesso!";
 			} catch (Exception e) {
 				e.printStackTrace();
 				throw new PersistenciaException("Ocorreu uma exceção ao Alterar o Apartamento!" + 
 	            		" \nErro: " + UtilErros.getMensagemErro(e));
 			}
-		}
+		}		
 	}
 
 	
@@ -67,6 +71,7 @@ public class ServiceApartamento implements GenericService<Apartamento> {
 	public String excluir(Apartamento entidade)throws Exception {
 		try {
 			apartamentoDao.delete(entidade);
+			Constantes.getInstance().refresh(ConstantesLista.APARTAMENTOS);
 			return "";
 		}catch (Exception ex) {
         	ex.printStackTrace();
@@ -91,7 +96,8 @@ public class ServiceApartamento implements GenericService<Apartamento> {
 	@Override
 	public List<Apartamento> buscarTodos()throws PersistenciaException {
 		try {
-			return apartamentoDao.find(BUSCAR_TODAS);			
+			return Constantes.getInstance().getListaApartamentos();
+			//return apartamentoDao.find(BUSCAR_TODAS);			
 		} catch (Exception e) {
 			e.printStackTrace();
 			return null;

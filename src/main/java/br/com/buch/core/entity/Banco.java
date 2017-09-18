@@ -27,7 +27,7 @@ public class Banco implements Serializable{
     @SequenceGenerator(name="G_CAD_CAIXABANCO", sequenceName="\"G_CAD_CAIXABANCO\"", allocationSize=1)  
     @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="G_CAD_CAIXABANCO")
     @Column(name = "COD_CADCAIXABANCO")
-    private Integer idCaixaBanco;
+    private Integer idBanco;
     
     
     @Column(name="CODIGO")
@@ -36,22 +36,11 @@ public class Banco implements Serializable{
     @Column(name="NOME",nullable = false,length = 60)
     private String nome;
     
-    
-    @Column(name="CONTA_CORRENTE",nullable = true,length = 20)
-    private String contaCorrente;
-        
-    @Column(name="AGENCIA",nullable = true,length = 10)
-    private String agencia;
-
-    @Column(name="DIGITO",nullable = true,length = 10)
-    private String digito;
-
         
     //--------------------------------	GETs and SETs------------------------------//
     
-	public Integer getIdCaixaBanco() {return idCaixaBanco;}
-	public void setIdCaixaBanco(Integer idCaixaBanco) {this.idCaixaBanco = idCaixaBanco;}
-	
+    public Integer getIdBanco() {return idBanco;}
+    public void setIdBanco(Integer idBanco) {this.idBanco = idBanco;}
 	
 	public Integer getCodigo() {return codigo;}
 	public void setCodigo(Integer codigo) {this.codigo = codigo;}
@@ -61,28 +50,18 @@ public class Banco implements Serializable{
 	public void setNome(String nome) {this.nome = nome;}
 	
 	
-	public String getContaCorrente() {return contaCorrente;}
-	public void setContaCorrente(String contaCorrente) {this.contaCorrente = contaCorrente;}
-	
-	
-	public String getAgencia() {return agencia;}
-	public void setAgencia(String agencia) {this.agencia = agencia;}
-
-	
-	public String getDigito() {return digito;}
-	public void setDigito(String digito) {this.digito = digito;}
-
-	
 	//--------------------------------	Métodos Auxiliares------------------------------//
+	
 	
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((idCaixaBanco == null) ? 0 : idCaixaBanco.hashCode());
+		result = prime * result + ((idBanco == null) ? 0 : idBanco.hashCode());
 		return result;
 	}
-
+	
+	
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -92,14 +71,14 @@ public class Banco implements Serializable{
 		if (getClass() != obj.getClass())
 			return false;
 		Banco other = (Banco) obj;
-		if (idCaixaBanco == null) {
-			if (other.idCaixaBanco != null)
+		if (idBanco == null) {
+			if (other.idBanco != null)
 				return false;
-		} else if (!idCaixaBanco.equals(other.idCaixaBanco))
+		} else if (!idBanco.equals(other.idBanco))
 			return false;
 		return true;
 	}
-    
+
 	
 	@Override
 	public String toString() {	

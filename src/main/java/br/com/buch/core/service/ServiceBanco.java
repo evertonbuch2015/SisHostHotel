@@ -5,6 +5,8 @@ import java.util.List;
 
 import br.com.buch.core.dao.BancoDao;
 import br.com.buch.core.entity.Banco;
+import br.com.buch.core.util.Constantes;
+import br.com.buch.core.util.Constantes.ConstantesLista;
 import br.com.buch.core.util.PersistenciaException;
 import br.com.buch.core.util.UtilErros;
 
@@ -20,10 +22,11 @@ public class ServiceBanco implements GenericService<Banco> {
 	
 	@Override
 	public String salvar(Banco entidate)throws Exception {
-		if (entidate.getIdCaixaBanco() == null) {
+		if (entidate.getIdBanco() == null) {
 
 			try {
 				dao.save(entidate);
+				Constantes.getInstance().refresh(ConstantesLista.FORMAS_PAGAMENTO);
 				return "Banco Cadastrado com Sucesso!";
 			} catch (Exception e) {
 				throw new PersistenciaException("Ocorreu uma exceção ao inserir o Banco!" + 
@@ -33,6 +36,7 @@ public class ServiceBanco implements GenericService<Banco> {
 
 			try {
 				dao.update(entidate);
+				Constantes.getInstance().refresh(ConstantesLista.FORMAS_PAGAMENTO);
 				return "Banco Alterado com Sucesso!";
 			} catch (Exception e) {
 				throw new PersistenciaException("Ocorreu uma exceção ao Alterar o Banco!" + 
@@ -46,7 +50,8 @@ public class ServiceBanco implements GenericService<Banco> {
 	public String excluir(Banco entidade)throws Exception{
 		try {
 			dao.delete(entidade);
-			return "";
+			Constantes.getInstance().refresh(ConstantesLista.FORMAS_PAGAMENTO);
+			return "Banco Excluido com Sucesso!";
 		}catch (Exception ex) {
         	throw new PersistenciaException("Ocorreu uma exceção ao Excluir o Banco!" + 
             		" \nErro: " + UtilErros.getMensagemErro(ex));
@@ -57,7 +62,7 @@ public class ServiceBanco implements GenericService<Banco> {
 	@Override
 	public Banco carregarEntidade(Banco entidade)throws PersistenciaException {
 		try{			
-			return dao.findById(entidade.getIdCaixaBanco());
+			return dao.findById(entidade.getIdBanco());
 		}catch (Exception e) {
 			throw new PersistenciaException("Ocorreu uma exceção ao buscar os dados do Banco!" + 
             		" \nErro: " + UtilErros.getMensagemErro(e));

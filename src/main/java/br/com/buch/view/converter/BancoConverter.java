@@ -21,9 +21,9 @@ public class BancoConverter  implements Converter {
     public String getAsString(FacesContext facesContext, UIComponent uiComponent, Object value) {
         if (value instanceof Banco) {
         	Banco entity = (Banco) value;
-            if (entity != null && entity instanceof Banco && entity.getIdCaixaBanco() != null) {
-                uiComponent.getAttributes().put( entity.getIdCaixaBanco().toString(), entity);
-                return entity.getIdCaixaBanco().toString();
+            if (entity != null && entity instanceof Banco && entity.getIdBanco() != null) {
+                uiComponent.getAttributes().put( entity.getIdBanco().toString(), entity);
+                return entity.getIdBanco().toString();
             }
         }
         return "";

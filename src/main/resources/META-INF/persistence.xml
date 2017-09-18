@@ -18,19 +18,22 @@
 		<class>br.com.buch.core.entity.Adiantamento</class>
 		<class>br.com.buch.core.entity.Banco</class>
 		<class>br.com.buch.core.entity.Recebimento</class>
+		<class>br.com.buch.core.entity.Produto</class>
+		<class>br.com.buch.core.entity.Consumo</class>
 		
 		<properties>
-			<property name="javax.persistence.jdbc.url" value="jdbc:firebirdsql:localhost:SISHOSTHOTEL"/>
+			<property name="javax.persistence.jdbc.url" value="jdbc:firebirdsql:localhost:SISHOSTHOTEL?charSet=UTF-8"/>
 			<property name="javax.persistence.jdbc.user" value="sysdba"/>
 			<property name="javax.persistence.jdbc.password" value="masterkey"/>
 			<property name="javax.persistence.jdbc.driver" value="org.firebirdsql.jdbc.FBDriver"/>
 			
 			<property name="hibernate.dialect" value="org.hibernate.dialect.FirebirdDialect"/>
 			<property name="hibernate.connection.autocommit" value="false"/>
+			
+			<!-- 
 			<property name="hibernate.show_sql" value="true"/>
 			<property name="hibernate.format_sql" value="true"/>
-			
-			<!-- <property name="hibernate.hbm2ddl.auto" value="update"/>-->
+			<property name="hibernate.hbm2ddl.auto" value="update"/>-->
 		</properties>
 	</persistence-unit>
 </persistence>

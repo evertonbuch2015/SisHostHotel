@@ -14,6 +14,7 @@ import br.com.buch.core.entity.Banco;
 import br.com.buch.core.entity.Hospede;
 import br.com.buch.core.enumerated.TipoFiltroAdiantamento;
 import br.com.buch.core.service.ServiceAdiantamento;
+import br.com.buch.core.service.ServiceHospede;
 import br.com.buch.core.util.Constantes;
 import br.com.buch.core.util.NegocioException;
 import br.com.buch.view.util.UtilMensagens;
@@ -24,10 +25,11 @@ public class AdiantamentoBean extends GenericBean<Adiantamento, ServiceAdiantame
 
 	private static final long serialVersionUID = -8165871784161603162L;
 	private TipoFiltroAdiantamento filtro;	
-	
+	private ServiceHospede serviceHospede;
 	
 	public AdiantamentoBean() {
 		super(new ServiceAdiantamento());
+		serviceHospede = new ServiceHospede();
 	}
 	
 	
@@ -70,6 +72,19 @@ public class AdiantamentoBean extends GenericBean<Adiantamento, ServiceAdiantame
 		}
 	}
 	
+	
+	public List<Hospede> buscarHospedes(String query){
+		if (query != null && query.length() < 3){
+			return null;
+		}
+		
+		try{
+			return serviceHospede.buscarPorNome("%"+query+"%");
+		}catch (Exception e) {
+			UtilMensagens.mensagemErro(e.getMessage());
+			return null;
+		}
+	}
 	
 	// =============================GET AND SET=====================================
 	

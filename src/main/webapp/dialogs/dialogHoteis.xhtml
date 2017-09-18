@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+<h:head>
+	<meta charset="UTF-8"/>
+	<link rel="stylesheet" type="text/css"
+			href="resources/style/default.css" media="screen" />
+
+</h:head>
+<h:body>
+
+	<h:form>
+    	<div id="customheader" style="display:none">
+    		<i  class="ui-icon-wrench" ></i>	
+    		<p:outputLabel value="#{label.consulta_hoteis}" style="margin-left: 10px"/>
+    	</div>
+    	   		  	
+    	<p:separator/>
+    	
+    	<p:dataTable id="tabela" 
+    		value="#{dialogHotelBean.hoteis}" var="entidade" 
+    		style="font-size: 13px !important;" 
+    		emptyMessage="#{label.msg_tabela_vazia}" rows="14"
+    		paginator="true" paginatorAlwaysVisible="false" 
+    		paginatorPosition="bottom">
+    		
+    		
+    			<p:column headerText="#{label.txt_codigo}" width="100">
+					<h:outputText value="#{entidade.codigo}"/>
+				</p:column>
+    		
+				<p:column headerText="#{label.txt_nome}">
+					<h:outputText value="#{entidade.nomeFantasia}" />
+				</p:column>
+	
+				<p:column headerText="#{label.txt_documento}" width="100">
+					<h:outputText value="#{entidade.documentoFormatado}" />
+				</p:column>				
+				
+				<p:column style="text-align: center" width="50">
+					<p:commandButton icon="ui-icon-check" iconPos="center"  
+						title="#{label.txt_selecione}" process="@this"
+						action="#{dialogHotelBean.retornoDialog(entidade)}"/>
+				</p:column>
+			</p:dataTable>
+	</h:form>
+
+</h:body>
+</html>

@@ -21,8 +21,8 @@
 		</p:breadCrumb>
 		
 		<p:messages autoUpdate="true" showDetail="true" closable="true" showSummary="false">
-			<p:effect type="pulsate" event="load" delay="500" />
-			<p:effect type="clip" event="load" delay="10000" />
+			<p:effect type="bounce" event="load"/>
+			<p:effect type="explode" event="load" delay="12000"/>
 		</p:messages>
 		
 		
@@ -32,7 +32,7 @@
 					selection="#{hotelBean.entidade}" selectionMode="single"
 					rowKey="#{hotel.idHotel}" reflow="true"									
 					emptyMessage="#{label.msg_tabela_vazia}"
-					style="margin: 0px -8px;"
+					style="margin: -11px -8px;"
 					rows="13"
     				paginator="true" paginatorAlwaysVisible="false" 
     				paginatorPosition="bottom">				
@@ -44,11 +44,11 @@
 					<p:ajax event="rowSelect" listener="#{hotelBean.onRowSelect}" />
 
 
-					<p:column headerText="#{label.txt_codigo}" >
+					<p:column headerText="#{label.txt_codigo}" width="120" style="text-align: center !important;" >
 						<h:outputText value="#{hotel.codigo}" />
 					</p:column>
 					
-					<p:column headerText="#{label.txt_filial}" >
+					<p:column headerText="#{label.txt_filial}" width="120" style="text-align: center !important;" >
 						<h:outputText value="#{hotel.filial}" />
 					</p:column>
 					
@@ -68,7 +68,7 @@
 					</p:column>
 					
 					
-					<p:column headerText="#{label.txt_acoes}" exportable="false">						
+					<p:column headerText="#{label.txt_acoes}" style="text-align: center !important;" exportable="false">
 						<p:commandButton actionListener="#{hotelBean.editar(hotel)}" 
 							icon="ui-icon-pencil" update="@form"/>
 							
@@ -84,7 +84,7 @@
 		</p:tabView>
 		
 						
-		<p:tabView rendered="#{!hotelBean.buscando}">						
+		<p:tabView rendered="#{!hotelBean.buscando}" effect="fade" effectDuration="fast">						
 			<p:tab title="#{label.txt_dados_gerais}"
 				titleStyle="font-size: 10px;color: #455a64;">
 				

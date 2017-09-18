@@ -1,5 +1,6 @@
 package br.com.buch.view.managedBean;
 
+import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -15,7 +16,9 @@ import br.com.buch.core.entity.MapaReserva;
 
 @ManagedBean
 @ViewScoped
-public class MapaReservaBean {
+public class MapaReservaBean implements Serializable{
+
+	private static final long serialVersionUID = -7371992755633594553L;
 
 	private List<MapaReserva> mapaReservas;
 	private Integer mes;

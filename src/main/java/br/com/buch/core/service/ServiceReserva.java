@@ -13,6 +13,9 @@ import br.com.buch.core.util.UtilErros;
 
 public class ServiceReserva implements GenericService<Reserva> {
 
+	private static final String BUSCAR_RESERVAS_VENCIDAS = 
+			"Select r From Reserva r LEFT JOIN FETCH r.hospede LEFT JOIN FETCH r.apartamento"
+			+ " where r.dataEntrada <= ?1 and r.situacao in (?2,?3) order by r.dataEntrada";
 	private ReservaDao reservaDao;
 	
 	public ServiceReserva() {
@@ -184,5 +187,16 @@ public class ServiceReserva implements GenericService<Reserva> {
 		reserva.setDataConfirmacao(new Date());
 		
 		reservaDao.update(reserva);
+	}
+
+	
+	public List<Reserva> buscarReservasVencidas()throws Exception{        
+		try {
+			return reservaDao.find(BUSCAR_RESERVAS_VENCIDAS,new Date(),SituacaoHospedagem.CONFIRMADA,SituacaoHospedagem.NAO_CONFIRMADA);
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new PersistenciaException("Ocorreu uma exceção ao buscar os dados da Reserva!" + 
+            		" \nErro: " + UtilErros.getMensagemErro(e));
+		}
 	}
 }

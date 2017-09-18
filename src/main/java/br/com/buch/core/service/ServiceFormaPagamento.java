@@ -4,6 +4,8 @@ import java.util.List;
 
 import br.com.buch.core.dao.FormaPagamentoDao;
 import br.com.buch.core.entity.FormaPagamento;
+import br.com.buch.core.util.Constantes;
+import br.com.buch.core.util.Constantes.ConstantesLista;
 import br.com.buch.core.util.PersistenciaException;
 import br.com.buch.core.util.UtilErros;
 import br.com.buch.view.managedBean.FormaPagamentoBean.TipoFiltro;
@@ -24,6 +26,7 @@ public class ServiceFormaPagamento implements GenericService<FormaPagamento> {
 
 			try {
 				formaPagamentoDao.save(entidate);
+				Constantes.getInstance().refresh(ConstantesLista.FORMAS_PAGAMENTO);
 				return "Forma de Pagamento Cadastrada com Sucesso!";
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -34,6 +37,7 @@ public class ServiceFormaPagamento implements GenericService<FormaPagamento> {
 
 			try {
 				formaPagamentoDao.update(entidate);
+				Constantes.getInstance().refresh(ConstantesLista.FORMAS_PAGAMENTO);
 				return "Forma de Pagamento Alterado com Sucesso!";
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -48,6 +52,7 @@ public class ServiceFormaPagamento implements GenericService<FormaPagamento> {
 	public String excluir(FormaPagamento entidade) throws Exception{
 		try {
 			formaPagamentoDao.delete(entidade);
+			Constantes.getInstance().refresh(ConstantesLista.FORMAS_PAGAMENTO);
 			return "";
 		}catch (Exception ex) {
         	ex.printStackTrace();

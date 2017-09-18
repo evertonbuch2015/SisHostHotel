@@ -25,8 +25,8 @@
 		</p:breadCrumb>
 		
 		<p:messages autoUpdate="true" showDetail="true" closable="true" showSummary="false">
-			<p:effect type="pulsate" event="load" delay="500" />
-			<p:effect type="clip" event="load" delay="10000" />
+			<p:effect type="bounce" event="load"/>
+			<p:effect type="explode" event="load" delay="12000"/>
 		</p:messages>
 		
 		
@@ -37,7 +37,7 @@
 					selection="#{adiantamentoBean.entidade}" selectionMode="single"
 					rowKey="#{entidade.idAdiantamento}" reflow="true"									
 					emptyMessage="#{label.msg_tabela_vazia}"
-					style="margin: 0px -8px;"
+					style="margin: -11px -8px;"
 					rows="13"
     				paginator="true" paginatorAlwaysVisible="false" 
     				paginatorPosition="bottom">				
@@ -49,7 +49,8 @@
 					<p:ajax event="rowSelect" listener="#{adiantamentoBean.onRowSelect}" />
 
 
-					<p:column headerText="#{label.txt_codigo}" width="110" sortBy="#{entidade.codigo}">
+					<p:column headerText="#{label.txt_codigo}" style="text-align: center !important;"
+						width="90" sortBy="#{entidade.codigo}">
 						<h:outputText value="#{entidade.codigo}" />
 					</p:column>
 					
@@ -76,7 +77,8 @@
 					</p:column>
 										
 					
-					<p:column headerText="#{label.txt_acoes}" exportable="false" width="110">						
+					<p:column headerText="#{label.txt_acoes}" style="text-align: center !important;"  
+						exportable="false" width="110">						
 						<p:commandButton actionListener="#{adiantamentoBean.editar(entidade)}" 
 							icon="ui-icon-pencil" update="@form"/>
 							
@@ -94,7 +96,7 @@
 		
 		
 		
-		<p:tabView rendered="#{!adiantamentoBean.buscando}">					
+		<p:tabView rendered="#{!adiantamentoBean.buscando}" effect="fade" effectDuration="fast">					
 			<p:tab title="#{label.txt_dados_gerais}" titleStyle="font-size: 10px;color: #455a64;">
 				<div class="ui-fluid">
 					<p:panelGrid 
@@ -165,10 +167,27 @@
 						
 						<p:outputLabel value="#{label.txt_hospede}" for="hospede" />
 						<h:panelGrid columns="2">
-   							<p:inputText id="hospede" size="40"
-   								value="#{adiantamentoBean.entidade.hospede.nome}"
-								readonly="#{facesContext.currentPhaseId.name eq 'RENDER_RESPONSE'}"
-								required="true"/>
+   															
+							<p:autoComplete id="hospede" 
+								value="#{adiantamentoBean.entidade.hospede}"
+		 						var="hospede" itemLabel="#{hospede.nome}" itemValue="#{hospede}"
+		 						minQueryLength="4" maxResults="20" 
+		 						dropdown="true" queryDelay="1000" size="40"
+								forceSelection="true" readonly="#{adiantamentoBean.visualizando}"
+								completeMethod="#{adiantamentoBean.buscarHospedes}"
+								required="true"
+								requiredMessage="Informe o Hóspede!">
+								
+								<p:ajax event="itemSelect" listener="#{adiantamentoBean.hospedeSelecionado}"/>
+								
+								<p:column headerText="Código">
+					               <h:outputText value="#{hospede.codigo}"/>
+					        	</p:column>
+					
+					           	<p:column headerText="Nome">
+					               <h:outputText value="#{hospede.nome}" />
+					           	</p:column>
+							</p:autoComplete>
 								
 							<p:commandButton 
 								icon="fa fa-search" process="@this" update="@none"

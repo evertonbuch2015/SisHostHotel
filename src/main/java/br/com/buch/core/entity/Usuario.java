@@ -138,6 +138,15 @@ public class Usuario implements Serializable {
 
 	public void setFraseSecreta(String fraseSecreta) {this.fraseSecreta = fraseSecreta;}
 	
+	
+
+	public Boolean isAtivo() {
+		if (this.ativo == null)
+			return null;
+		
+		return ativo.equals('S') ? true : false;
+	}
+	
 	// -------------------------------- Métodos Auxiliares------------------------------//
 	
 	@Override

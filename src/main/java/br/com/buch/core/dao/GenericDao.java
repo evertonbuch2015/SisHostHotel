@@ -100,16 +100,25 @@ public abstract class GenericDao<T extends Serializable> {
    @SuppressWarnings("unchecked")
    public T findOne(EntityManager em,String jpql , Object...params)throws Exception{
        em.getTransaction().begin();
-       
-       Query query = em.createQuery(jpql);
-       
-       for(int i=0 ; i < params.length ; i++){
-           query.setParameter(i+1, params[i]);
-       }
-       
+              		
        T entity = null;
-       entity = (T) query.getSingleResult();		
-       
+       try {
+    	   Query query = em.createQuery(jpql);
+           
+           for(int i=0 ; i < params.length ; i++){
+               query.setParameter(i+1, params[i]);
+           } 
+           
+           entity = (T) query.getSingleResult();
+           em.getTransaction().commit();
+           
+		} catch (Exception e) {
+			e.printStackTrace();
+			doRollback(em);
+			throw e;
+		}finally{
+			em.close();
+		}
        return entity;
    }
     

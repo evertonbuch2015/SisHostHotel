@@ -1,0 +1,286 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition 
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:p="http://primefaces.org/ui" 
+	template="/WEB-INF/template.xhtml"
+	xmlns:app="http://java.sun.com/jsf/composite/componentes">
+
+	<ui:define name="tituloPagina">#{label.tit_ususarios}</ui:define>
+
+
+	<ui:define name="conteudo">
+		
+		<p:breadCrumb>
+			<p:menuitem value="Home" url="/index.xhtml" />
+			<p:menuitem value="#{label.menu_cadastro}"/>
+    		<p:menuitem value="#{label.tit_ususarios}" url="#" />
+		</p:breadCrumb>
+				
+		<p:messages autoUpdate="true" showDetail="true" closable="true" showSummary="false">
+			<p:effect type="bounce" event="load"/>
+			<p:effect type="explode" event="load" delay="12000"/>
+		</p:messages>
+		
+		
+		<p:tabView rendered="#{usuarioBean.buscando}" prependId="false">						
+			<p:tab title="#{label.consulta_usuarios}"> 	
+				
+				<p:dataTable id="tabela"
+					value="#{usuarioBean.entidades}" var="entidade"
+					selection="#{usuarioBean.entidade}" selectionMode="single"
+					rowKey="#{entidade.idUsusario}" reflow="true"									
+					paginatorPosition="bottom"
+					paginator="true" paginatorAlwaysVisible="false" 
+					emptyMessage="#{label.msg_tabela_vazia}"
+					style="margin: -11px -8px;" rows="13">				
+					
+
+					<p:ajax event="rowDblselect" listener="#{usuarioBean.onRowDblClckSelect}"
+						global="false" update="@form"/>
+
+					<p:ajax event="rowSelect" listener="#{usuarioBean.onRowSelect}"/>
+
+
+					<p:column headerText="#{label.txt_ativo}" width="80" 
+						style="text-align: center !important;">
+						
+						<p:graphicImage value="/resources/images/checked.png"
+										rendered="#{entidade.isAtivo()}" />
+						<p:graphicImage value="/resources/images/unchecked.png"
+										rendered="#{not entidade.isAtivo()}"/>
+					</p:column>
+
+															
+					<p:column headerText="#{label.txt_nome}">
+						<h:outputText value="#{entidade.nomeColaborador}"/>
+					</p:column>
+
+					<p:column headerText="#{label.txt_nome_usuario}">
+						<h:outputText value="#{entidade.nomeUsuario}"/>
+					</p:column>
+
+					<p:column headerText="#{label.txt_grupo}">
+						<h:outputText value="#{entidade.grupoUsuario}"/>
+					</p:column>
+					
+					<p:column headerText="#{label.txt_acoes}" style="text-align: center !important;" 
+						exportable="false" width="110">						
+						<p:commandButton actionListener="#{usuarioBean.editar(entidade)}" 
+							icon="ui-icon-pencil" update="@form"/>
+							
+						<p:commandButton actionListener="#{usuarioBean.excluir(entidade)}" 
+							icon="ui-icon-trash" update="@form">
+							
+							<p:confirm header="#{label.txt_confirmacao}" 
+								message="Deseja Excluir este Registro" icon="ui-icon-alert"/>
+						</p:commandButton>
+					</p:column>					
+
+				</p:dataTable>
+			</p:tab>
+		</p:tabView>	
+		
+		
+		
+		<p:tabView rendered="#{!usuarioBean.buscando}" effect="fade" effectDuration="fast">					
+			<p:tab title="#{label.txt_dados_gerais}" titleStyle="font-size: 10px;color: #455a64;">
+				<div class="ui-fluid">
+					<p:panelGrid 
+						styleClass="ui-panelgrid-blank" columns="4"
+						cellpadding="10" layout="grid"
+						columnClasses="ui-grid-col-1 bu-texto,ui-grid-col-4,ui-grid-col-1 bu-texto bu-left,ui-grid-col-4">
+
+
+						<p:outputLabel value="#{label.txt_codigo}" for="id"/>
+						<p:inputText id="id"
+							value="#{usuarioBean.entidade.idUsusario}"
+							readonly="True"/>
+							
+	
+						<p:outputLabel value="#{label.txt_nome}" for="nome" />
+						<p:inputText id="nome"
+							value="#{usuarioBean.entidade.nomeColaborador}"
+							required="true" requiredMessage="Informe nome do Colaborador!"
+							readonly="#{usuarioBean.visualizando}"/>
+					
+					</p:panelGrid>
+					
+					
+					<p:panelGrid 
+						styleClass="ui-panelgrid-blank" columns="4"
+						cellpadding="10" layout="grid"
+						columnClasses="ui-grid-col-1 bu-texto,ui-grid-col-4,ui-grid-col-1 bu-texto bu-left,ui-grid-col-4">
+						
+						<p:outputLabel value="#{label.txt_nome_usuario}" for="usr" />
+						<p:inputText id="usr"
+							value="#{usuarioBean.entidade.nomeUsuario}" 
+							readonly="#{usuarioBean.visualizando}" 
+							onblur="value=value.toUpperCase()"
+							required="true" requiredMessage="Informe o Usuário!">
+							<f:validateLength maximum="15"/>							
+						</p:inputText>
+						
+						
+						<p:outputLabel value="#{label.txt_senha}" for="senha" />
+						<p:password id="senha" 
+							value="#{usuarioBean.entidade.senha}" 
+							feedback="true"
+							required="true" readonly="#{usuarioBean.visualizando}"
+							requiredMessage="Informe a senha!" redisplay="true">
+						</p:password>
+	
+						
+						<p:outputLabel value="#{label.setor}" for="setor" />
+						<p:selectOneMenu id="setor" 
+							value="#{usuarioBean.entidade.setor}" 
+							editable="true" autoWidth="false"
+							disabled="#{usuarioBean.visualizando}"> 
+							<f:selectItems value="#{usuarioBean.setores}" />
+						</p:selectOneMenu>
+											
+						
+						<p:outputLabel value="#{label.txt_grupo}" for="grupo" />
+						<p:selectOneMenu id="grupo"
+							value="#{usuarioBean.entidade.grupoUsuario}"
+							required="true"
+							requiredMessage="Informe o Grupo de Acesso"
+							disabled="#{usuarioBean.visualizando}"> 
+							<f:selectItems value="#{usuarioBean.grupoUsuarios}" />
+						</p:selectOneMenu>
+						
+					</p:panelGrid>
+					
+					<p:panelGrid 
+						styleClass="ui-panelgrid-blank" columns="4"
+						cellpadding="2" layout="grid"
+						columnClasses="ui-grid-col-1 bu-texto,ui-grid-col-4,ui-grid-col-1 bu-texto bu-left,ui-grid-col-4">
+							
+						<p:outputLabel value="#{label.em_ferias}" for="em_ferias"/>	
+						<p:selectOneButton id="em_ferias"
+							value="#{usuarioBean.entidade.emFerias}"
+							disabled="#{usuarioBean.visualizando}"
+							styleClass="bu-selectOneButton"
+							style="	max-width: 35%;">
+            				
+            				<f:selectItem itemLabel="#{label.txt_sim}" itemValue="S"/>
+            				<f:selectItem itemLabel="#{label.txt_nao}" itemValue="N"/>
+        				</p:selectOneButton>
+        				
+        				
+        				
+        				<p:outputLabel value="#{label.txt_ativo}" for="inativo"/>	
+						<p:selectOneButton id="inativo"
+							value="#{usuarioBean.entidade.ativo}" 
+							disabled="#{usuarioBean.visualizando}"
+							styleClass="bu-selectOneButton"
+							style="	max-width: 35%;">
+							
+            				<f:selectItem itemLabel="#{label.txt_sim}" itemValue="S"/>
+            				<f:selectItem itemLabel="#{label.txt_nao}" itemValue="N"/>
+        				</p:selectOneButton>
+        				
+					</p:panelGrid>
+					
+				</div>
+			</p:tab>
+
+
+			
+			<p:tab title="#{label.hoteis}" id="tabDadosEmpresas">		
+			
+				<p:panelGrid 
+						styleClass="ui-panelgrid-blank" columns="2"
+						cellpadding="2" layout="grid"
+						columnClasses="ui-grid-col-3 bu-texto,ui-grid-col-4">
+					
+					<p:outputLabel value="#{label.hoteis}"/>					
+					<p:commandButton 
+						icon="fa fa-plus" process="@this" update="@none"
+						styleClass="botaoAzul" 
+						action="#{dialogHotelBean.abrirDialog()}"
+						disabled="#{usuarioBean.visualizando}">
+						
+						<p:ajax event="dialogReturn" 
+							listener="#{usuarioBean.hotelSelecionado}" 
+							process="@this" update="tblEmpresas" />
+					</p:commandButton>
+					
+				</p:panelGrid>
+				
+				
+				<p:dataTable 
+					var="empresa" 
+					value="#{usuarioBean.entidade.hoteis}" 
+					id="tblEmpresas" style="width: 70%">
+					
+	                <p:column headerText="#{label.txt_codigo}" style="width: 15%">
+	                    <h:outputText value="#{empresa.codigo}" />
+	                </p:column>
+	 
+	                <p:column headerText="#{label.txt_nome}" style="width: 40%">
+	                    <h:outputText value="#{empresa.nomeRazao}" />
+	                </p:column>
+	 
+	                <p:column headerText="#{label.txt_documento}" style="width: 30%">
+	                    <h:outputText value="#{empresa.documentoFormatado}" />
+	                </p:column>
+	 
+	                <p:column headerText="#{label.txt_acoes}" style="width:15%;">						
+					
+						<p:commandButton actionListener="#{usuarioBean.excluirHotel(empresa)}" 
+							styleClass="excluirBotao" icon="ui-icon-trash" process="@this"	
+							 
+							update="tblEmpresas" disabled="#{usuarioBean.visualizando}">
+							
+							<p:confirm header="#{label.txt_confirmacao}" 
+								message="Deseja Excluir este Registro" icon="ui-icon-alert"/>
+							
+						</p:commandButton>						
+					</p:column>					                
+	            </p:dataTable>		
+	           
+			</p:tab>
+
+		</p:tabView>
+		
+		
+		<app:barraBotoes bean="#{usuarioBean}"/>
+		
+		
+		<p:dialog 
+			width="300" height="140"
+			header="Filtrar Tabela!"			
+			widgetVar="dialogFiltro" modal="true" draggable="true" 
+			closable="true" resizable="true" position="center center"
+			showEffect="explode" hideEffect="explode">
+		
+			<p:panelGrid columns="1" cellpadding="3" 
+				styleClass="ui-panelgrid-blank">
+														
+				<p:selectOneMenu id="tipoFiltro"
+					value="#{usuarioBean.filtro}" style="width:75%">						
+					<f:selectItem itemLabel="Selecione" />
+					<f:selectItems value="#{usuarioBean.tipoFiltros()}" var="a"
+						itemValue="#{a}" itemLabel="#{a.label}"/>						
+				</p:selectOneMenu>
+					
+				<p:inputText id="valorfiltro" placeholder="Valor do Filtro!" 
+						value="#{usuarioBean.valorFiltro}"
+						size="30"/>
+								
+				<p:commandButton value="Filtrar" icon="ui-icon-folder-collapsed"
+					styleClass="bu-botao-azul" update="tabela"
+					style="margin-top:20px;"
+					actionListener="#{usuarioBean.filtrar()}"
+					onclick="PF('dialogFiltro').hide();" />	
+					
+			</p:panelGrid>	
+		</p:dialog>
+		
+	</ui:define>
+</ui:composition>

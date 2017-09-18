@@ -11,6 +11,10 @@
 }
 
 
+.bu-no-padding .ui-grid-row{
+	padding: 1px 0px !important
+}
+
 
 /******************* INICIO ESTRUTURA ***************/
 .bu-inner-container {

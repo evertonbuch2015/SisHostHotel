@@ -6,9 +6,76 @@
 	template="/WEB-INF/template.xhtml">
 
 	<ui:define name="tituloPagina">#{label.txt_nome_sistema}</ui:define>
-
-	<ui:define name="conteudo">
-		<p:chart type="pie" model="#{indexBean.pieModel}" style="width:350px;height:250px"/>	
+	
+	<ui:define name="botaoSuperior">
+		
+		<p:commandButton id="refreshCharts" title="Atualizar Gráficos" 
+			actionListener="#{indexBean.atualizarGraficos()}"
+			styleClass="bu-toggle bu-botao-toggle" icon="fa fa-bar-chart-o" update="barRes barAp"/>
+		
+		<p:commandButton id="atualizarListas" title="Atualizar Listas de Dados"
+			actionListener="#{indexBean.atualizarListasDados()}"
+			styleClass="bu-toggle bu-botao-toggle" icon="fa fa-refresh"/>
+			
+	</ui:define>
+	
+	<ui:define name="conteudo">	
+	
+		<p:carousel value="#{indexBean.reservasVencidas}" 
+			headerText="#{label.reservas_vencidas}" rendered="#{indexBean.reservasVencidas.size() >0}"
+			var="res" itemStyle="text-align:left" responsive="true" numVisible="4">
+			
+	        <p:panelGrid columns="2" styleClass="bu-no-padding"
+	        	style="width:100%;margin:0px 0px;" layout="grid"
+	        	columnClasses="ui-grid-col-4,ui-grid-col-8">
+	 
+	            <h:outputText value="#{label.cod_reserva}"/>
+	            <h:outputText value="Nº #{res.codigo}"/>
+	 	 
+	            <h:outputText value="#{label.txt_hospede}"/>
+	            <h:outputText value="#{res.hospede.nome}"/>
+	 
+	 			<h:outputText value="#{label.txt_apartamento}"/>
+	            <h:outputText value="Nº #{res.apartamento.numero}" />
+	            
+	            <h:outputText value="#{label.txt_data_entrada}"/>
+	            <h:outputText value="#{res.dataEntradaFormatada}"/>
+	        </p:panelGrid>
+	 
+	    </p:carousel>
+	
+	
+		<p:carousel value="#{indexBean.hospedagensAVencer}" 
+			headerText="#{label.msg_13}" rendered="#{indexBean.hospedagensAVencer.size() > 0}"
+			var="hosp" itemStyle="text-align:center" responsive="true" numVisible="4">
+			
+	        <p:panelGrid styleClass="ui-panelgrid-blank"
+				cellpadding="10"
+				columns="2" style="width:100%;margin:0px 0px">
+	 
+	            <h:outputText value="#{label.txt_codigo}"/>
+	            <h:outputText value="Nº #{hosp.codigo}"/>
+	 	 
+	            <h:outputText value="#{label.txt_hospede}"/>
+	            <h:outputText value="#{hosp.hospede.nome}"/>
+	 
+	 			<h:outputText value="#{label.txt_apartamento}"/>
+	            <h:outputText value="Nº #{hosp.apartamento.numero}" />
+	            
+	            <h:outputText value="#{label.txt_data_entrada}"/>
+	            <h:outputText value="#{hosp.dataEntradaFormatada}"/>
+	        </p:panelGrid>
+	 
+	    </p:carousel>
+	    
+	    <p:separator/>
+    	<p:chart type="bar" model="#{indexBean.barModel}" id="barRes"
+    		responsive="true" style="width:100%;height:250px !important"/>
+    	
+    	<p:separator/>
+    	<p:chart type="bar" model="#{indexBean.barModel2}" id="barAp" 
+    		responsive="true" style="width:100%;height:250px !important"/>
+    			
 	</ui:define>
 
 </ui:composition>

@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.ejb.TransactionAttribute;
+import javax.ejb.TransactionAttributeType;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
@@ -17,14 +19,14 @@ public class MapaReservaDao {
 	
 	
 	@SuppressWarnings("unchecked")
+	@TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
 	public List<MapaReserva> getMapaReserva(Date dtInicial, Date dtFinal){
 		EntityManager em = getEntityManager();
-    	em.getTransaction().begin();
-        em.clear();
-        
+    	       
+		em.getTransaction().begin();
         String sql ="select * from GET_MAPA_RESERVA(:dtInicial, :dtFinal)";
         
-        Query query = getEntityManager().createNativeQuery(sql);
+        Query query = getEntityManager().createNativeQuery(sql).setHint("org.hibernate.readOnly", true);
         query.setParameter("dtInicial",dtInicial );
         query.setParameter("dtFinal",dtFinal );
         
@@ -70,11 +72,10 @@ public class MapaReservaDao {
         		
         		entities.add(mapaReserva);
         	}            
-            
-            
-		} catch (Exception e) {
+		} catch (Exception e) {			
 			throw e;
-		}finally{
+		}finally{		
+			em.getTransaction().commit();
 			em.close();
 		}
         

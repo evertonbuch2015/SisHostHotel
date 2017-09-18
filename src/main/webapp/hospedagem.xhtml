@@ -34,8 +34,8 @@
 		</p:breadCrumb>
 		
 		<p:messages autoUpdate="true" showDetail="true" closable="true" showSummary="false">
-			<p:effect type="pulsate" event="load" delay="500" />
-			<p:effect type="clip" event="load" delay="10000" />
+			<p:effect type="bounce" event="load"/>
+			<p:effect type="explode" event="load" delay="12000"/>
 		</p:messages>
 		
 		
@@ -46,7 +46,7 @@
 					selection="#{hospedagemBean.entidade}" selectionMode="single"
 					rowKey="#{entidade.idHospedagem}" reflow="true"									
 					emptyMessage="#{label.msg_tabela_vazia}"
-					style="margin: 0px -8px;"
+					style="margin: -11px -8px;"
 					rows="13"
     				paginator="true" paginatorAlwaysVisible="false" 
     				paginatorPosition="bottom">				
@@ -58,7 +58,8 @@
 					<p:ajax event="rowSelect" listener="#{hospedagemBean.onRowSelect}" />
 
 
-					<p:column headerText="#{label.txt_codigo}" width="60" sortBy="#{entidade.codigo}">
+					<p:column headerText="#{label.txt_codigo}" style="text-align: center !important;" 
+						width="60" sortBy="#{entidade.codigo}">
 						<h:outputText value="#{entidade.codigo}" />
 					</p:column>
 					
@@ -91,7 +92,8 @@
 					</p:column>					
 					
 					
-					<p:column headerText="#{label.txt_acoes}" exportable="false" width="110">						
+					<p:column headerText="#{label.txt_acoes}" style="text-align: center !important;" 
+						exportable="false" width="110">						
 						<p:commandButton actionListener="#{hospedagemBean.editar(entidade)}" 
 							icon="ui-icon-pencil" update="@form" title="Editar Registro"/>
 												

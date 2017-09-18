@@ -842,7 +842,7 @@ label {
   background-repeat: no-repeat;
 }
 .ui-datatable .ui-datatable-odd {
-  background-color: #eef2f7;
+  background-color: #f8f9d54d;
 }
 .ui-datatable .ui-datatable-even {
   background-color: #ffffff;
@@ -923,13 +923,13 @@ label {
 .ui-datatable table thead tr th,
 .ui-datatable table tfoot tr td,
 .ui-datatable table thead tr th {
-  color: #ffffff;
-  background-color: #3983aa;
+  color: #546274;
+  background-color: #e8f6dd;
   border: solid 1px #c1d5df;
   outline: none;
   padding: 6px;
-  font-family: 'latoregular';
-  font-size: 12px !important;
+  font-family: 'Helvetica'!important;
+  font-size: 11px !important;
 }
 .ui-datatable table thead tr th.ui-state-hover,
 .ui-datatable .ui-datatable-sticky table thead tr th.ui-state-hover {
@@ -964,7 +964,11 @@ label {
   -ms-transition: all 0.2s ease;
   -o-transition: all 0.2s ease;
   transition: all 0.2s ease;
-  text-align: center;
+  text-align: left;
+}
+
+.ui-datatable thead th{
+	text-align: left !important;	
 }
 
 .ui-datatable table tbody tr td .ui-row-toggler.ui-icon-circle-triangle-s {
@@ -1126,15 +1130,15 @@ label {
   font-family: 'latoregular';
 }
 .ui-datagrid .ui-datagrid-header {
-  color: #ffffff;
+  color: #546274;
   border-radius: 0px !important;
   -webkit-border-radius: 0px !important;
   -moz-border-radius: 0px !important;
   font-size: 16px;
-  background-color: #0288d1;
-  padding: 7px 10px !important;
+  background-color: #dde9db;
+  padding: 5px 10px !important;
   font-weight: normal;
-  font-family: 'latobold';
+  font-family: 'Helvetica' !important;
 }
 .ui-datagrid .ui-datagrid-content {
   font-size: 14px;
@@ -1709,15 +1713,15 @@ label {
   font-family: 'latoregular';
 }
 .ui-carousel .ui-carousel-header {
-  background-color: #5c6bc0;
+  background-color: #628fa4;
   height: auto !important;
-  padding: 10px 20px !important;
+  padding: 0px 10px !important;
   border-radius: 1px;
   -webkit-border-radius: 1px;
   -moz-border-radius: 1px;
-  font-family: 'latobold';
+  font-family: 'latoregular';
   color: #ffffff;
-  font-size: 16px;
+  font-size: 14px;
   margin: -2px -1px !important;
   font-weight: lighter;
 }
@@ -5225,6 +5229,8 @@ hr.ui-widget-header {
 .ui-autocomplete-panel .ui-autocomplete-table td {
   border-color: #f5f5f5 !important;
   padding: 5px 8px !important;
+  font-size: 12px;
+  color: #546274;
 }
 .ui-autocomplete-multiple .ui-autocomplete-multiple-container .ui-autocomplete-token {
   background-color: #c6d6df;

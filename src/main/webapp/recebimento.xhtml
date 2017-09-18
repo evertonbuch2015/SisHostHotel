@@ -25,8 +25,8 @@
 		</p:breadCrumb>
 		
 		<p:messages autoUpdate="true" showDetail="true" closable="true" showSummary="false">
-			<p:effect type="pulsate" event="load" delay="500" />
-			<p:effect type="clip" event="load" delay="10000" />
+			<p:effect type="bounce" event="load"/>
+			<p:effect type="explode" event="load" delay="12000"/>
 		</p:messages>
 		
 		
@@ -37,7 +37,7 @@
 					selection="#{recebimentoBean.entidade}" selectionMode="single"
 					rowKey="#{entidade.idRecebimento}" reflow="true"									
 					emptyMessage="#{label.msg_tabela_vazia}"
-					style="margin: 0px -8px;"
+					style="margin: -11px -8px;"
 					rows="13"
     				paginator="true" paginatorAlwaysVisible="false" 
     				paginatorPosition="bottom">				
@@ -49,12 +49,13 @@
 					<p:ajax event="rowSelect" listener="#{recebimentoBean.onRowSelect}" />
 				
 					
-					<p:column headerText="#{label.numero}" width="90" sortBy="#{entidade.numero}">
+					<p:column headerText="#{label.numero}" style="text-align: center !important;"  
+						width="90" sortBy="#{entidade.numero}">
 						<h:outputText value="#{entidade.numero}" />
 					</p:column>	
 					
 					
-					<p:column headerText="#{label.txt_data_emissao}" width="110" 
+					<p:column headerText="#{label.txt_data_emissao}" width="110"
 						sortBy="#{entidade.dtEmissao}" priority="4">
 						<h:outputText value="#{entidade.dataEmissaoFormatada}" />
 					</p:column>	
@@ -73,12 +74,14 @@
 					</p:column>
 					
 					
-					<p:column headerText="#{label.txt_local_recebimento}" width="160" priority="5">
+					<p:column headerText="#{label.txt_local_recebimento}" 
+						width="160" priority="5">
 						<h:outputText value="#{entidade.localRecebimento.toString()}"/>
 					</p:column>
 															
 					
-					<p:column headerText="#{label.txt_acoes}" exportable="false" width="110">						
+					<p:column headerText="#{label.txt_acoes}" style="text-align: center !important;" 
+						exportable="false" width="110">						
 						<p:commandButton actionListener="#{recebimentoBean.editar(entidade)}" 
 							icon="ui-icon-pencil" update="@form"/>
 							
@@ -95,7 +98,7 @@
 		
 		
 		
-		<p:tabView rendered="#{!recebimentoBean.buscando}">					
+		<p:tabView rendered="#{!recebimentoBean.buscando}" effect="fade" effectDuration="fast">					
 			<p:tab title="#{label.txt_dados_gerais}" titleStyle="font-size: 10px;color: #455a64;">
 				<div class="ui-fluid">
 					<p:panelGrid 

@@ -42,14 +42,15 @@
 	
 		<h:form>
 			<header class="bu-topbar">
-				<h:graphicImage library="images" name="logo-sistema.png" />
+				<h:graphicImage library="images" name="logo_sistema_2.png" style="margin-top:5px;"/>
 				
 				<p:commandButton id="dynaButtoan" class="bu-toggle bu-botao-toggle js-toggle"
 					 type="button" icon="fa  fa-bars"/>
 							
+							
 				<p:commandButton id="dynaButton"
 					styleClass="bu-toggle bu-botao-toggle" type="button" icon="fa fa-user"/>
-					
+				
 				<p:menu overlay="true" trigger="dynaButton" my="left top" at="left bottom">
 					<p:submenu>
 	            		<p:menuitem value="#{label.menu_linguagem}" onclick="PF('dialogIdioma').initPosition(); PF('dialogIdioma').show(); return false;" icon="fa fa-language"/>
@@ -57,6 +58,12 @@
 	        		</p:submenu>				
 				</p:menu> 
 				
+				
+				<p:button id="homebutton" outcome="index?faces-redirect=true"
+					styleClass="bu-toggle bu-botao-toggle" icon="fa fa-home" title="Ir para Página Inicial"/>
+				
+				<ui:insert name="botaoSuperior"/>
+								
 				<p:outputLabel value="#{indexBean.usuarioLogado.nomeColaborador}"
 					styleClass="bu-toggle" style="margin-top:16px !important;	margin-right: 12px;"/>
 							
@@ -72,7 +79,7 @@
 			            	url="/cadHospede.xhtml?faces-redirect=true" 		icon="fa fa-user"/>			            
 			            
 			            <p:menuitem value="#{label.menu_empresas}"
-			            	url="/cadEmpresa.xhtml?faces-redirect=true"		icon="fa fa-building-o" />			            
+			            	url="/cadEmpresa.xhtml?faces-redirect=true"			icon="fa fa-building-o" />			            
 			            
 			            <p:menuitem value="#{label.menu_apartamento}"
 			            	url="/cadApartamento.xhtml?faces-redirect=true" 	icon="fa fa-bed" />			            
@@ -81,7 +88,7 @@
 			            	url="/cadCategoria.xhtml?faces-redirect=true" 		icon="ui-icon-wrench" />			            
 			            
 			            <p:menuitem value="#{label.menu_banco}"
-			            	url="/cadHospede.xhtml?faces-redirect=true" 		icon="fa fa-archive" />			 			            	           
+			            	url="/cadBanco.xhtml?faces-redirect=true" 		icon="fa fa-archive" />			 			            	           
 			            
 			            <p:menuitem value="#{label.menu_forma_pagamento}"
 			            	url="/cadFormaPagamento.xhtml?faces-redirect=true" 	icon="fa fa-cc-visa" />
@@ -89,7 +96,9 @@
 			           
 			            <p:menuitem value="#{label.menu_produtos}"
 			            	url="/cadProduto.xhtml?faces-redirect=true" 		icon="fa fa-cubes"/>			            
-			            	            
+			            
+			            <p:menuitem value="#{label.menu_hotel}"		
+			            	url="/cadHotel.xhtml?faces-redirect=true" 			icon="fa fa-university"/>
 			        </p:submenu>
 			        
 			        
@@ -107,8 +116,10 @@
 			        <p:submenu label="#{label.menu_caixa}">
 			        	<p:menuitem value="#{label.menu_adiant_clientes}" 
 			            	url="/adiantamento.xhtml?faces-redirect=true"		icon="fa fa-money"/>
-			            <p:menuitem value="#{label.menu_pagamentos}" 
-			            	url="/recebimento.xhtml?faces-redirect=true"		icon="fa fa-arrow-circle-up"/>			            	
+			            
+			              <p:menuitem value="#{label.menu_pagamentos}" 
+			            	url="/recebimento.xhtml?faces-redirect=true"		icon="fa fa-arrow-circle-up"/>		            	
+			            
 			            <p:menuitem value="#{label.menu_recebimentos}" 
 			            	url="/recebimento.xhtml?faces-redirect=true" 		icon="fa fa-arrow-circle-down"/>
 			        </p:submenu>		      		       
@@ -116,6 +127,9 @@
 			        			        
 			        <p:submenu label="#{label.menu_hospedagem}">
 			        
+			        	<p:menuitem value="#{label.menu_consumo}" 
+	                    	url="/consumo.xhtml?faces-redirect=true" 			icon="fa fa-dollar" />
+						
 						<p:menuitem value="#{label.menu_hospedagens}" 		
 							url="/hospedagem.xhtml?faces-redirect=true"			icon="fa fa-suitcase" />
 								                    
@@ -130,12 +144,18 @@
 	                            
 			        </p:submenu>			        
 			        
-			        <p:submenu label="#{label.menu_configuracoes}" >
-	                    <p:menuitem value="#{label.menu_hotel}"		url="/cadHotel.xhtml?faces-redirect=true" icon="fa fa-university"/>	                    
-	                    <p:menuitem value="#{label.menu_usuario}" 	url="http://www.primefaces.org/downloads" icon="fa fa-lock"/>
-	                    <p:menuitem value="#{label.menu_linguagem}" onclick="PF('dialogIdioma').initPosition(); PF('dialogIdioma').show(); return false;" icon="fa fa-language"/>
-	                    <p:menuitem value="#{label.menu_sobre}" 	url="http://www.primefaces.org/documentation" icon="fa fa-info"/>	
-	                    <p:menuitem value="#{label.menu_sair}"		action="#{indexBean.deslogar()}" icon="fa fa-power-off"/>                    
+			        <p:submenu label="#{label.menu_configuracoes}">
+	                    <p:menuitem value="#{label.menu_usuario}" 	
+	                    	url="/usuarios.xhtml?faces-redirect=true" 			icon="fa fa-lock"/>
+	                    
+	                    <p:menuitem value="#{label.menu_linguagem}" 			icon="fa fa-language"
+	                    	onclick="PF('dialogIdioma').initPosition(); PF('dialogIdioma').show(); return false;"/>
+	                    
+	                    <p:menuitem value="#{label.menu_sobre}" 	
+	                    	url="http://www.primefaces.org/documentation" icon="fa fa-info"/>	
+	                    
+	                    <p:menuitem value="#{label.menu_sair}"		
+	                    	action="#{indexBean.deslogar()}" 					icon="fa fa-power-off"/>                    
 			        </p:submenu>
 			    </p:panelMenu>											
 			</aside>
