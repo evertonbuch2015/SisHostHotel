@@ -4,6 +4,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.PersistenceException;
+
 import br.com.buch.core.dao.RecebimentoDao;
 import br.com.buch.core.entity.Recebimento;
 import br.com.buch.core.entity.Recebimento.OrigemRecebimento;
@@ -19,6 +21,18 @@ public class ServiceRecebimento implements GenericService<Recebimento> {
 	
 	private static final String BUSCAR_TODOS = 
 			"From Recebimento r LEFT JOIN FETCH r.formaPagamento LEFT JOIN FETCH r.localRecebimento where r.dtEmissao Between ? and ? order by r.dtEmissao";
+
+	private static final String FILTRAR_POR_CODIGO = "Select r From Recebimento r LEFT JOIN FETCH r.localRecebimento where r.numero = ?";
+	
+	private static final String FILTRAR_POR_FORMA_PAGAMENTO = "Select r From Recebimento r LEFT JOIN FETCH r.localRecebimento where r.formaPagamento = ?";
+	
+	private static final String FILTRAR_POR_FORMA_PAGAMENTO_NULL = "Select r From Recebimento r LEFT JOIN FETCH r.localRecebimento where r.formaPagamento is null";
+	
+	private static final String FILTRAR_POR_BANCO = "Select r From Recebimento r LEFT JOIN FETCH r.localRecebimento where r.localRecebimento = ?";
+	
+	private static final String FILTRO_POR_DATA_ENTRADA = "Select r From Recebimento r LEFT JOIN FETCH r.localRecebimento where r.dtEmissao = ?";
+	
+	private static final String FILTRO_POR_DATA_ENTRADA_BEETWEN = "Select r From Recebimento r LEFT JOIN FETCH r.localRecebimento where r.dtEmissao Between ? and ?";
 	
 	private RecebimentoDao dao; 
 	
@@ -111,41 +125,44 @@ public class ServiceRecebimento implements GenericService<Recebimento> {
 	public List<Recebimento> filtrarTabela(TipoFiltroRecebimento tipoFiltro , Object...valorFiltro)throws Exception{
 		List<Recebimento> lista = null;
 		
+		if(!(valorFiltro.length > 0)){
+			throw new NegocioException("Informe o Valor do Filtro!");
+		}
+		
 		try {			
-			if(tipoFiltro.equals(TipoFiltroRecebimento.CODIGO)){
-				lista = dao.find("Select r From Recebimento r LEFT JOIN FETCH r.localRecebimento where r.numero = ?",valorFiltro);
-			}	
+			if(tipoFiltro.equals(TipoFiltroRecebimento.CODIGO)){	
+				try {
+					Integer.parseInt((String) valorFiltro[0]);
+					lista = dao.find(FILTRAR_POR_CODIGO,valorFiltro);
+				} catch (NumberFormatException e) {
+					throw new NegocioException("Informe um valor numérico para o filtro por Número de Recebimento!");
+				}				
+			}		
 			
 			else if(tipoFiltro.equals(TipoFiltroRecebimento.FORMA_PAGAMENTO)){
-				String jpql = "Select r From Recebimento r LEFT JOIN FETCH r.localRecebimento where r.formaPagamento = ?";
-				lista = dao.find(jpql,valorFiltro);
-			}
+				if(valorFiltro[0] == null){
+					lista = dao.find(FILTRAR_POR_FORMA_PAGAMENTO_NULL);
+				}else{
+					lista = dao.find(FILTRAR_POR_FORMA_PAGAMENTO,valorFiltro);
+				}				
+			}			
 			
 			else if(tipoFiltro.equals(TipoFiltroRecebimento.LOCAL_RECEBIMENTO)){
-				String jpql = "Select r From Recebimento h LEFT JOIN FETCH r.localRecebimento where r.localRecebimento = ?";
-				lista = dao.find(jpql,valorFiltro);
+				if(valorFiltro[0] == null){
+					throw new NegocioException("Informe um Local de Recebimento para Filtrar!");
+				}
+				lista = dao.find(FILTRAR_POR_BANCO,valorFiltro);
 			}
+			
 			else if(tipoFiltro.equals(TipoFiltroRecebimento.DATA_EMISSAO)){
-				try{	
-					String jpql;
-					if (valorFiltro.length == 1){
-						jpql = "Select r From Recebimento r LEFT JOIN FETCH r.localRecebimento where r.dtEmissao = ?";
-					}else{
-						jpql = "Select r From Recebimento r LEFT JOIN FETCH r.localRecebimento where r.dtEmissao Between ? and ?";
-					}					
-										
-					lista = dao.find(jpql,valorFiltro);					
-				}catch (Exception e) {
-					e.printStackTrace();
-				}								
+				lista = dao.find(valorFiltro.length == 1 ? FILTRO_POR_DATA_ENTRADA : FILTRO_POR_DATA_ENTRADA_BEETWEN, valorFiltro);							
 			}
 			
 			return lista;			
 			
-		} catch (Exception e) {
-			e.printStackTrace();
+		} catch (PersistenceException e) {
 			throw new PersistenciaException(
-					"Ocorreu algum exceção ao Filtrar os dados da Categoria!\nErro: " + UtilErros.getMensagemErro(e));
+					"Ocorreu algum exceção ao Filtrar os dados do Recebimento!\nErro: " + UtilErros.getMensagemErro(e));
 		}					
 	}
 

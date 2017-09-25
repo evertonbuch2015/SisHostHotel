@@ -2,11 +2,11 @@ package br.com.buch.core.enumerated;
 
 public enum TipoFiltroAdiantamento {
 
-	CODIGO("Código"), 
-	HOSPEDE_CODIGO("Código Hóspede"),
+	CODIGO("Código"),
 	HOSPEDE_NOME("Nome Hóspede"),
 	HOSPEDE_CPF("CPF Hóspede"),	
-	DATA_EMISSAO("Data Emissão");
+	DATA_EMISSAO("Data Emissão"),
+	LOCAL_RECEBIMENTO("Local Recebimento");
 
 	private String label;
 

@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.PersistenceException;
+
 import br.com.buch.core.dao.TarifarioDao;
 import br.com.buch.core.entity.Tarifario;
 import br.com.buch.core.util.NegocioException;
@@ -122,7 +124,7 @@ public class ServiceTarifario implements GenericService<Tarifario> {
 			}
 			
 			return lista;
-		}catch (Exception e) {
+		}catch (PersistenceException e) {
 			throw new PersistenciaException("Ocorreu uma exceção ao Filtrar os dados do Tarifário!" + 
             		" \nErro: " + UtilErros.getMensagemErro(e));
 		}	

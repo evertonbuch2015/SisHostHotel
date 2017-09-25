@@ -235,33 +235,73 @@
 		
 		
 		<p:dialog 
-			width="285" height="200"
-			header="#{label.filtrar_registros}"			
+			width="400" height="270"
+			header="#{label.filtrar_registros}"	resizable="false"	
 			widgetVar="dialogFiltro" modal="true" draggable="true" 
-			closable="true" resizable="false" position="center center"
+			closable="true" position="center center"
 			showEffect="explode" hideEffect="explode">
 		
-			<p:panelGrid columns="1" cellpadding="3" 
-				styleClass="ui-panelgrid-blank">
-							
-				<p:outputLabel value="#{label.tipo_filtro}"/>
+			<p:panelGrid columns="2" 
+				styleClass="ui-panelgrid-blank"
+				cellpadding="10" layout="grid"
+				columnClasses="ui-grid-col-3,ui-grid-col-9">
+														
+				<p:outputLabel value="#{label.tipo_filtro}"/>														
 				<p:selectOneMenu id="tipoFiltro"
-					value="#{adiantamentoBean.filtro}" style="width:75%">						
+					value="#{adiantamentoBean.filtro}"
+					style="width:75% !important">	
+										
 					<f:selectItem itemLabel="Selecione" />
 					<f:selectItems value="#{adiantamentoBean.tipoFiltros()}" var="a"
-						itemValue="#{a}" itemLabel="#{a.label}"/>						
+						itemValue="#{a}" itemLabel="#{a.label}"/>
+						
+					<p:ajax event="change" update="dtEntradaFiltro dtEntradaFiltro2 valorfiltro filtroBanco"/>
+				</p:selectOneMenu>
+				
+								
+				<p:outputLabel value="#{label.txt_data_entrada}" for="dtEntradaFiltro" />						
+				<p:calendar id="dtEntradaFiltro"
+							value="#{adiantamentoBean.dataFiltro}"
+							pattern="dd/MM/yyyy" mask="true"
+							showOn="button" locale="pt_BR"
+							size="28"
+							disabled="#{adiantamentoBean.filtro.ordinal() ne 3}">
+				</p:calendar>
+				
+				<p:outputLabel value="#{label.txt_data_entrada}"/>						
+				<p:calendar id="dtEntradaFiltro2"
+							value="#{adiantamentoBean.dataFiltroFinal}"
+							pattern="dd/MM/yyyy" mask="true"
+							showOn="button" locale="pt_BR"
+							size="28"
+							disabled="#{adiantamentoBean.filtro.ordinal() ne 3}">							
+				</p:calendar>
+				
+				
+				<p:outputLabel value="#{label.txt_local_recebimento}"/>														
+				<p:selectOneMenu id="filtroBanco"
+					value="#{adiantamentoBean.banco}"
+					style="width:75% !important"
+					disabled="#{adiantamentoBean.filtro.ordinal() ne 4}">
+					
+					<f:selectItem itemLabel="Selecione" />											
+					<f:selectItems value="#{adiantamentoBean.locaisRecebimento}" var="a"
+						itemValue="#{a}" itemLabel="#{a.toString()}"/>  						
 				</p:selectOneMenu>
 				
 				
-				<p:outputLabel value="#{label.valor_filtro}"/>	
-				<p:inputText id="valorfiltro" 
-						value="#{adiantamentoBean.valorFiltro}"
-						size="30"/>
+				<p:outputLabel value="#{label.outros_filtros}"/>	
+				<p:inputText id="valorfiltro"
+					value="#{adiantamentoBean.valorFiltro}"
+					size="34"
+					disabled="#{(adiantamentoBean.filtro.ordinal() eq 3) 
+									or (adiantamentoBean.filtro.ordinal() eq 4)}"/>
+				
 								
-				<p:commandButton value="#{label.aplicar_filtro}"
+				<p:commandButton value="Filtrar" icon="ui-icon-folder-collapsed"
 					styleClass="bu-botao-azul" update="tabela"
 					style="margin-top:20px;"
-					actionListener="#{adiantamentoBean.filtrar()}"
+					actionListener="#{adiantamentoBean.filtrar}"
 					onclick="PF('dialogFiltro').hide();" />	
 					
 			</p:panelGrid>	

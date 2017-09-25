@@ -2,6 +2,7 @@ package br.com.buch.view.managedBean;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.faces.bean.ManagedBean;
@@ -27,6 +28,11 @@ public class AdiantamentoBean extends GenericBean<Adiantamento, ServiceAdiantame
 	private TipoFiltroAdiantamento filtro;	
 	private ServiceHospede serviceHospede;
 	
+	//Filtros
+	private Banco banco;
+	private Date dataFiltro;
+	private Date dataFiltroFinal;
+	
 	public AdiantamentoBean() {
 		super(new ServiceAdiantamento());
 		serviceHospede = new ServiceHospede();
@@ -38,9 +44,31 @@ public class AdiantamentoBean extends GenericBean<Adiantamento, ServiceAdiantame
 	
 	@Override
 	public void filtrar() {
-		try {
-			service.filtrarTabela(filtro, valorFiltro);
-		} catch (Exception e) {
+		try {			
+			if(filtro == TipoFiltroAdiantamento.LOCAL_RECEBIMENTO){
+				this.entidades = service.filtrarTabela(filtro, banco);
+			}
+			
+			else if(filtro == TipoFiltroAdiantamento.DATA_EMISSAO){
+				if(this.dataFiltro != null && this.dataFiltroFinal == null){
+					this.entidades = service.filtrarTabela(filtro, dataFiltro);
+				}
+				else if(this.dataFiltro != null && this.dataFiltroFinal != null){
+					this.entidades = service.filtrarTabela(filtro, dataFiltro, dataFiltroFinal);
+				}
+			}
+			
+			else if(filtro != null){
+				this.entidades = service.filtrarTabela(filtro, valorFiltro);
+			}
+			
+			dataFiltro =null;
+			dataFiltroFinal =null;
+			banco=null;
+			
+		}catch(NegocioException e){
+			UtilMensagens.mensagemAtencao(e.getMessage());
+		}catch (Exception e) {
 			UtilMensagens.mensagemErro(e.getMessage());
 		}
 	}
@@ -92,8 +120,16 @@ public class AdiantamentoBean extends GenericBean<Adiantamento, ServiceAdiantame
 	public TipoFiltroAdiantamento[] tipoFiltros(){return TipoFiltroAdiantamento.values();}
 	
 	public TipoFiltroAdiantamento getFiltro() {return filtro;}
-	
 	public void setFiltro(TipoFiltroAdiantamento filtro) {this.filtro = filtro;}
+	
+	public Date getDataFiltro() {return dataFiltro;}
+	public void setDataFiltro(Date dataFiltro) {this.dataFiltro = dataFiltro;}
+	
+	public Date getDataFiltroFinal() {return dataFiltroFinal;}
+	public void setDataFiltroFinal(Date dataFiltroFinal) {this.dataFiltroFinal = dataFiltroFinal;}
+	
+	public Banco getBanco() {return banco;}
+	public void setBanco(Banco banco) {this.banco = banco;}
 	
 	
 	public List<Banco> getLocaisRecebimento(){

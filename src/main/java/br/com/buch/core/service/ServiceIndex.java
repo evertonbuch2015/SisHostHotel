@@ -10,7 +10,6 @@ import org.apache.commons.collections4.map.HashedMap;
 
 import br.com.buch.core.dao.ReservaDao;
 import br.com.buch.core.entity.Apartamento;
-import br.com.buch.core.util.PersistenciaException;
 
 public class ServiceIndex {
 	
@@ -42,7 +41,7 @@ public class ServiceIndex {
 			
 			try {
 				lista = new ServiceApartamento().buscarTodos();
-			} catch (PersistenciaException e) {
+			} catch (Exception e) {
 				e.printStackTrace();
 				lista = new ArrayList<Apartamento>(); 				
 			}

@@ -15,7 +15,7 @@ public interface GenericService<T extends Serializable>{
 	
 	public T carregarEntidade(T entidade)throws PersistenciaException;
 	
-	public List<T> buscarTodos()throws PersistenciaException;
+	public List<T> buscarTodos()throws Exception;
 	
 	public void consisteAntesEditar(T entidade)throws NegocioException;
 }

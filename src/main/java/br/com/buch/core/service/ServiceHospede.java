@@ -2,6 +2,8 @@ package br.com.buch.core.service;
 
 import java.util.List;
 
+import javax.persistence.PersistenceException;
+
 import br.com.buch.core.dao.HospedeDao;
 import br.com.buch.core.entity.Empresa;
 import br.com.buch.core.entity.Endereco;
@@ -103,19 +105,25 @@ public class ServiceHospede implements GenericService<Hospede> {
 		try {
 			
 			if(tipoFiltro.equals(TipoFiltroHospede.CODIGO)){
-				String jpql = "Select h From Hospede h where h.codigo in (" + valorFiltro + ")";
-				lista = hospedeDao.find(jpql);
+				try {
+					Integer.parseInt((String) valorFiltro);
+					lista = hospedeDao.find("Select h From Hospede h where h.codigo = ?");
+				} catch (NumberFormatException e) {
+					throw new NegocioException("Informe um valor numérico para o filtro por Número de Recebimento!");
+				}
 			}
 			else if(tipoFiltro.equals(TipoFiltroHospede.NOME)){
 				lista = hospedeDao.find("Select h From Hospede h where h.nome like ?",valorFiltro);
 			}	
 			else if(tipoFiltro.equals(TipoFiltroHospede.CPF)){
-				lista = hospedeDao.find("Select h From Hospede h where h.cpf like ?",valorFiltro);
+				if(valorFiltro == null || valorFiltro.equals("")){
+					throw new NegocioException("Informe um CPF valido!");
+				}
+				lista = hospedeDao.find("Select h From Hospede h where h.cpf like ?",valorFiltro.replace("-","").replace(".", ""));
 			}
 			
 			return lista;			
-		} catch (Exception e) {
-			e.printStackTrace();
+		} catch (PersistenceException e) {
 			throw new PersistenciaException("Ocorreu uma exceção ao Filtrar os dados do Hóspede!" + 
             		" \nErro: " + UtilErros.getMensagemErro(e));
 		}					

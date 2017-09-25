@@ -6,7 +6,6 @@ public enum TipoFiltroReserva {
 		NOME_HOSPEDE("Nome"),
 		CPF_HOSPEDE("CPF"),
 		DATA_ENTRADA("Data Entrada"),
-		NUMERO_APARTAMENTO("Nº Apartamento"),
 		SITUACAO("Situação");
 		
 		private String label;

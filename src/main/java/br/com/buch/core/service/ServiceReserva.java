@@ -4,9 +4,12 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.PersistenceException;
+
 import br.com.buch.core.dao.ReservaDao;
 import br.com.buch.core.entity.Reserva;
 import br.com.buch.core.enumerated.SituacaoHospedagem;
+import br.com.buch.core.enumerated.TipoFiltroReserva;
 import br.com.buch.core.util.NegocioException;
 import br.com.buch.core.util.PersistenciaException;
 import br.com.buch.core.util.UtilErros;
@@ -16,10 +19,25 @@ public class ServiceReserva implements GenericService<Reserva> {
 	private static final String BUSCAR_RESERVAS_VENCIDAS = 
 			"Select r From Reserva r LEFT JOIN FETCH r.hospede LEFT JOIN FETCH r.apartamento"
 			+ " where r.dataEntrada <= ?1 and r.situacao in (?2,?3) order by r.dataEntrada";
-	private ReservaDao reservaDao;
+
+	private static final String FILTRO_POR_CODIGO = "From Reserva r LEFT JOIN FETCH r.hospede LEFT JOIN FETCH r.apartamento where r.codigo = ?";
+
+	private static final String FILTRO_POR_SITUACAO = "From Reserva r LEFT JOIN FETCH r.hospede LEFT JOIN FETCH r.apartamento where r.situacao = ?";
+
+	private static final String FILTRO_POR_NOME_HOSPEDE = "From Reserva r LEFT JOIN FETCH r.hospede LEFT JOIN FETCH r.apartamento where lower(r.hospede.nome) like ?";
+
+	private static final String FILTRO_POR_CPF_HOSPEDE = "From Reserva r LEFT JOIN FETCH r.hospede LEFT JOIN FETCH r.apartamento where r.hospede.cpf = ?";
+	
+	private static final String FILTRO_POR_DATA_ENTRADA = "From Reserva r LEFT JOIN FETCH r.hospede LEFT JOIN FETCH r.apartamento where r.dataEntrada = ?";
+			
+	private static final String FILTRO_POR_DATA_ENTRADA_BEETWEN = "From Reserva r LEFT JOIN FETCH r.hospede LEFT JOIN FETCH r.apartamento where r.dataEntrada Between ? and ?";
+	
+	private ReservaDao dao;
+	
+	
 	
 	public ServiceReserva() {
-		reservaDao = new ReservaDao();
+		dao = new ReservaDao();
 	}
 
 	
@@ -28,7 +46,7 @@ public class ServiceReserva implements GenericService<Reserva> {
 		if(entidade.getIdReserva() == null){
 			
 			try {
-				reservaDao.save(entidade);
+				dao.save(entidade);
 				return "Reserva inserida com Sucesso!";
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -38,7 +56,7 @@ public class ServiceReserva implements GenericService<Reserva> {
 		}else{
 			
 			try {
-				reservaDao.update(entidade);
+				dao.update(entidade);
 				return "Reserva Alterada com Sucesso!";
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -60,7 +78,7 @@ public class ServiceReserva implements GenericService<Reserva> {
 		}
 		
 		try {
-			reservaDao.delete(entidade);	
+			dao.delete(entidade);	
 			return "Reserva Excluida com Sucesso!";
 		}		
 		catch (Exception ex) {
@@ -80,7 +98,7 @@ public class ServiceReserva implements GenericService<Reserva> {
 		try{
 			String jpql = "Select r From Reserva r LEFT JOIN FETCH r.hospede"
 						+ " LEFT JOIN FETCH r.apartamento where r.idReserva = ?1";
-			return reservaDao.findOne(jpql, entidade.getIdReserva());
+			return dao.findOne(jpql, entidade.getIdReserva());
 			
 		}catch (Exception e) {
 			e.printStackTrace();
@@ -94,7 +112,7 @@ public class ServiceReserva implements GenericService<Reserva> {
 		try{
 			String jpql = "Select r From Reserva r LEFT JOIN FETCH r.hospede"
 						+ " LEFT JOIN FETCH r.apartamento where r.idReserva = ?1";
-			return reservaDao.findOne(jpql, id);
+			return dao.findOne(jpql, id);
 			
 		}catch (Exception e) {
 			e.printStackTrace();
@@ -121,7 +139,7 @@ public class ServiceReserva implements GenericService<Reserva> {
         Date d2 = c2.getTime();
         
 		try {
-			return reservaDao.find("From Reserva r where r.dataEntrada Between ?1 and ?2 order by r.dataEntrada",d1,d2);
+			return dao.find("From Reserva r where r.dataEntrada Between ?1 and ?2 order by r.dataEntrada",d1,d2);
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw new PersistenciaException("Ocorreu uma exceção ao buscar os dados da Reserva!" + 
@@ -140,7 +158,7 @@ public class ServiceReserva implements GenericService<Reserva> {
 	
 	public Reserva buscarPorId(Integer id)throws Exception{
 		try {
-			return reservaDao.findById(id);
+			return dao.findById(id);
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw e;
@@ -161,7 +179,7 @@ public class ServiceReserva implements GenericService<Reserva> {
 		reserva.setSituacao(SituacaoHospedagem.CANCELADA);
 		reserva.setDataCancelamento(new Date());
 		
-		reservaDao.update(reserva);
+		dao.update(reserva);
 	}
 	
 	
@@ -186,17 +204,53 @@ public class ServiceReserva implements GenericService<Reserva> {
 		reserva.setSituacao(SituacaoHospedagem.CONFIRMADA);
 		reserva.setDataConfirmacao(new Date());
 		
-		reservaDao.update(reserva);
+		dao.update(reserva);
 	}
 
 	
 	public List<Reserva> buscarReservasVencidas()throws Exception{        
 		try {
-			return reservaDao.find(BUSCAR_RESERVAS_VENCIDAS,new Date(),SituacaoHospedagem.CONFIRMADA,SituacaoHospedagem.NAO_CONFIRMADA);
+			return dao.find(BUSCAR_RESERVAS_VENCIDAS,new Date(),SituacaoHospedagem.CONFIRMADA,SituacaoHospedagem.NAO_CONFIRMADA);
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw new PersistenciaException("Ocorreu uma exceção ao buscar os dados da Reserva!" + 
             		" \nErro: " + UtilErros.getMensagemErro(e));
 		}
+	}
+
+	
+	public List<Reserva> filtrarTabela(TipoFiltroReserva tipoFiltro , Object...valorFiltro)throws Exception{
+		List<Reserva> lista = null;
+		
+		try {
+			
+			if(tipoFiltro.equals(TipoFiltroReserva.CODIGO)){	
+				if(valorFiltro[0] == null || valorFiltro[0].equals("")){ throw new NegocioException("Informe um código para Filtrar!");}
+				lista = dao.find(FILTRO_POR_CODIGO, valorFiltro);
+			}
+			
+			else if(tipoFiltro.equals(TipoFiltroReserva.CPF_HOSPEDE)){
+				lista = dao.find(FILTRO_POR_CPF_HOSPEDE,String.valueOf(valorFiltro[0]).replace("-","").replace(".", ""));
+			}
+			
+			else if(tipoFiltro.equals(TipoFiltroReserva.NOME_HOSPEDE)){
+				lista = dao.find(FILTRO_POR_NOME_HOSPEDE,
+						valorFiltro[0].equals("") ? valorFiltro[0] : String.valueOf(valorFiltro[0]).toLowerCase());
+			}
+			
+			else if(tipoFiltro.equals(TipoFiltroReserva.SITUACAO)){
+				if(valorFiltro[0] == null){throw new NegocioException("Informe uma situação para Filtrar!");}
+				lista = dao.find(FILTRO_POR_SITUACAO,valorFiltro);
+			}
+			
+			else if(tipoFiltro.equals(TipoFiltroReserva.DATA_ENTRADA)){
+				lista = dao.find(valorFiltro.length == 1 ? FILTRO_POR_DATA_ENTRADA : FILTRO_POR_DATA_ENTRADA_BEETWEN, valorFiltro);
+			}
+			
+			return lista;			
+		} catch (PersistenceException e) {
+			throw new PersistenciaException("Ocorreu uma exceção ao Filtrar os dados da Reserva!" + 
+            		" \nErro: " + UtilErros.getMensagemErro(e));
+		}					
 	}
 }

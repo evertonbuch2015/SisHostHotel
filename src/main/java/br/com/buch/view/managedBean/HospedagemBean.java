@@ -34,7 +34,6 @@ import br.com.buch.view.util.UtilMensagens;
 @ViewScoped
 public class HospedagemBean extends GenericBean<Hospedagem, ServiceHospedagem> implements Serializable{
 
-
 	private static final long serialVersionUID = -2119605666827486172L;
 
 	private TipoFiltroHospedagem filtro;	
@@ -43,7 +42,7 @@ public class HospedagemBean extends GenericBean<Hospedagem, ServiceHospedagem> i
 	private ServiceTarifario serviceTarifario;
 	private TipoTarifa tipoTarifa;
 	private boolean tarifaManual;	
-	
+	//Filtros
 	private SituacaoHospedagem situacaoFiltro;
 	private Date dataFiltro;
 	private Date dataFiltroFinal;
@@ -90,7 +89,9 @@ public class HospedagemBean extends GenericBean<Hospedagem, ServiceHospedagem> i
 			dataFiltroFinal =null;
 			situacaoFiltro=null;
 			
-		} catch (Exception e) {
+		}catch(NegocioException e){
+			UtilMensagens.mensagemAtencao(e.getMessage());
+		}catch (Exception e) {
 			UtilMensagens.mensagemErro(e.getMessage());
 		}
 	}
@@ -227,7 +228,7 @@ public class HospedagemBean extends GenericBean<Hospedagem, ServiceHospedagem> i
 		}catch (NumberFormatException e) {
 			UtilMensagens.mensagemErro("Informe um Número Válido");
 			return null;			
-		} catch (PersistenciaException e) {
+		} catch (Exception e) {
 			UtilMensagens.mensagemErro(e.getMessage());
 			return null;
 		}
@@ -265,7 +266,6 @@ public class HospedagemBean extends GenericBean<Hospedagem, ServiceHospedagem> i
 
 	
 	public TipoFiltroHospedagem getFiltro() {return filtro;}
-	
 	public void setFiltro(TipoFiltroHospedagem filtro) {this.filtro = filtro;}
 	
 	public TipoFiltroHospedagem[] tipoFiltros(){return TipoFiltroHospedagem.values();}
@@ -274,17 +274,14 @@ public class HospedagemBean extends GenericBean<Hospedagem, ServiceHospedagem> i
 	public List<TipoTarifa> tiposTarifa(){return new ServiceTipoTarifa().buscarTodos();}
 	
 	
-	public TipoTarifa getTipoTarifa() {return tipoTarifa;}
-	
+	public TipoTarifa getTipoTarifa() {return tipoTarifa;}	
 	public void setTipoTarifa(TipoTarifa tipoTarifa) {this.tipoTarifa = tipoTarifa;}	
 	
 	
 	public boolean isTarifaManual() {return tarifaManual;}
 	
 
-	public SituacaoHospedagem[] getSituacoesHospedagem(){
-		return SituacaoHospedagem.values();
-	}
+	public SituacaoHospedagem[] getSituacoesHospedagem(){return SituacaoHospedagem.values();}
 	
 	
 	@Override
@@ -299,7 +296,7 @@ public class HospedagemBean extends GenericBean<Hospedagem, ServiceHospedagem> i
 	public List<Apartamento> apartamentos(){
 		try {
 			return serviceApartamento.buscarTodos();
-		} catch (PersistenciaException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 			return new ArrayList<Apartamento>();
 		}
@@ -314,31 +311,15 @@ public class HospedagemBean extends GenericBean<Hospedagem, ServiceHospedagem> i
 	}
 	
 	
-	public SituacaoHospedagem getSituacaoFiltro() {return situacaoFiltro;}
-
-	
+	public SituacaoHospedagem getSituacaoFiltro() {return situacaoFiltro;}	
 	public void setSituacaoFiltro(SituacaoHospedagem situacaoFiltro) {this.situacaoFiltro = situacaoFiltro;}
-
 	
 	public Date getDataFiltro() {return dataFiltro;}
-
 	public void setDataFiltro(Date dataFiltro) {this.dataFiltro = dataFiltro;}
 	
+	public Date getDataFiltroFinal() {return dataFiltroFinal;}
+	public void setDataFiltroFinal(Date dataFiltroFinal) {this.dataFiltroFinal = dataFiltroFinal;}
 	
-	public Date getDataFiltroFinal() {
-		return dataFiltroFinal;
-	}
-	
-	public void setDataFiltroFinal(Date dataFiltroFinal) {
-		this.dataFiltroFinal = dataFiltroFinal;
-	}
-	
-	
-	public Integer getIdReservaParametro() {
-		return idReservaParametro;
-	}
-	
-	public void setIdReservaParametro(Integer idReservaParametro) {
-		this.idReservaParametro = idReservaParametro;
-	}
+	public Integer getIdReservaParametro() {return idReservaParametro;}	
+	public void setIdReservaParametro(Integer idReservaParametro) {this.idReservaParametro = idReservaParametro;}
 }

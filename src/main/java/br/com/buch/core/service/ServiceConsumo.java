@@ -4,6 +4,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.PersistenceException;
+
 import br.com.buch.core.dao.ConsumoDao;
 import br.com.buch.core.entity.Consumo;
 import br.com.buch.core.enumerated.SituacaoHospedagem;
@@ -119,8 +121,9 @@ public class ServiceConsumo implements GenericService<Consumo> {
 		try {			
 			if(tipoFiltro.equals(TipoFiltro.HOSPEDAGEM)){				
 				lista = dao.find(BUSCAR_POR_HOSPEDAGEM,valorFiltro);
-				
-			}else if(tipoFiltro.equals(TipoFiltro.DATA)){
+			}
+			
+			else if(tipoFiltro.equals(TipoFiltro.DATA)){
 				String jpql;
 				if (valorFiltro.length == 1){
 					jpql = "Select c From Consumo c LEFT JOIN FETCH c.produto LEFT JOIN FETCH c.hospedagem where c.dataConsumo = ?";
@@ -131,8 +134,7 @@ public class ServiceConsumo implements GenericService<Consumo> {
 			}
 			
 			return lista;			
-		} catch (Exception e) {
-			e.printStackTrace();
+		} catch (PersistenceException e) {
 			throw new PersistenciaException("Ocorreu uma exceção ao Filtrar os dados do Consumo!" + 
             		" \nErro: " + UtilErros.getMensagemErro(e));
 		}					

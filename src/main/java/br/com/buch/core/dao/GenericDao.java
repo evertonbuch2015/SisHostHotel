@@ -135,7 +135,7 @@ public abstract class GenericDao<T extends Serializable> {
      */
     @SuppressWarnings("unchecked")
     @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
-	public List<T> find(String jpql , Object...params)throws Exception{
+	public List<T> find(String jpql , Object...params)throws PersistenceException{
     	
     	EntityManager em = getEntityManager();
     	em.getTransaction().begin();

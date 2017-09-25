@@ -2,6 +2,8 @@ package br.com.buch.core.service;
 
 import java.util.List;
 
+import javax.persistence.PersistenceException;
+
 import br.com.buch.core.dao.ProdutoDao;
 import br.com.buch.core.entity.Produto;
 import br.com.buch.core.util.PersistenciaException;
@@ -99,8 +101,7 @@ public class ServiceProduto implements GenericService<Produto> {
 			}											
 			return lista;			
 			
-		} catch (Exception e) {
-			e.printStackTrace();
+		} catch (PersistenceException e) {
 			throw new PersistenciaException("Ocorreu algum exceção ao Filtrar os dados do Produto!" + 
             		" \nErro: " + UtilErros.getMensagemErro(e));
 		}					

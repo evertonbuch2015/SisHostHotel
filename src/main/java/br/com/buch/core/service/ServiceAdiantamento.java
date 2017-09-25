@@ -3,10 +3,13 @@ package br.com.buch.core.service;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.PersistenceException;
+
 import br.com.buch.core.dao.AdiantamentoDao;
 import br.com.buch.core.entity.Adiantamento;
 import br.com.buch.core.entity.Hospede;
 import br.com.buch.core.enumerated.TipoFiltroAdiantamento;
+import br.com.buch.core.enumerated.TipoFiltroRecebimento;
 import br.com.buch.core.util.NegocioException;
 import br.com.buch.core.util.PersistenciaException;
 import br.com.buch.core.util.UtilErros;
@@ -18,6 +21,17 @@ public class ServiceAdiantamento implements GenericService<Adiantamento> {
 	
 	private static final String BUSCAR_TODOS = 
 		"Select a From Adiantamento a LEFT JOIN FETCH a.hospede";
+
+	private static final String FILTRAR_POR_BANCO = "Select r From Recebimento r LEFT JOIN FETCH r.localRecebimento where r.localRecebimento = ?";
+
+	private static final String FILTRAR_POR_NOME_HOSPEDE = "Select a From Adiantamento a LEFT JOIN FETCH a.hospede where lower(a.hospede.nome) like ?";
+	
+	private static final String FILTRAR_POR_CPF_HOSPEDE = "Select a From Adiantamento a LEFT JOIN FETCH a.hospede where a.hospede.cpf = ?";
+	
+	private static final String FILTRO_POR_DATA_ENTRADA = "Select a From Adiantamento a LEFT JOIN FETCH a.hospede where a.dtEmissao = ?";
+	
+	private static final String FILTRO_POR_DATA_ENTRADA_BEETWEN = " Select a From Adiantamento a LEFT JOIN FETCH a.hospede where a.dtEmissao Between ? and ?";	
+	
 	
 	private AdiantamentoDao adiantamentoDao;
 	
@@ -94,46 +108,41 @@ public class ServiceAdiantamento implements GenericService<Adiantamento> {
 	}
 	
 	
-	public List<Adiantamento> filtrarTabela(TipoFiltroAdiantamento tipoFiltro , String valorFiltro)throws Exception{
+	public List<Adiantamento> filtrarTabela(TipoFiltroAdiantamento tipoFiltro , Object...valorFiltro)throws Exception{
 		List<Adiantamento> lista = null;
 		
 		try {
 			
 			if(tipoFiltro.equals(TipoFiltroAdiantamento.CODIGO)){
-				String jpql = "Select a From Adiantamento a LEFT JOIN FETCH a.hospede where a.codigo in (" + valorFiltro + ")";
-				lista = adiantamentoDao.find(jpql);
+				if(valorFiltro[0] == null || valorFiltro[0].equals("")){ throw new NegocioException("Informe um código para Filtrar!");}
+				lista = adiantamentoDao.find("Select a From Adiantamento a LEFT JOIN FETCH a.hospede where a.codigo = ?");
 			}
 			
-			else if(tipoFiltro.equals(TipoFiltroAdiantamento.HOSPEDE_CODIGO)){
-				String jpql = "Select a From Adiantamento a LEFT JOIN FETCH a.hospede where a.hospede.codigo = ?";
-				lista = adiantamentoDao.find(jpql, valorFiltro);
-			}	
-			
 			else if(tipoFiltro.equals(TipoFiltroAdiantamento.HOSPEDE_NOME)){
-				String jpql = "Select a From Adiantamento a LEFT JOIN FETCH a.hospede where a.hospede.nome like ?";
-				lista = adiantamentoDao.find(jpql,valorFiltro);
+				lista = adiantamentoDao.find(FILTRAR_POR_NOME_HOSPEDE, 
+						valorFiltro[0].equals("") ? valorFiltro[0] : String.valueOf(valorFiltro[0]).toLowerCase());
 			}
 			
 			else if(tipoFiltro.equals(TipoFiltroAdiantamento.HOSPEDE_CPF)){
-				String jpql = "Select a From Adiantamento a LEFT JOIN FETCH a.hospede where a.hospede.cpf = ?";
-				lista = adiantamentoDao.find(jpql,valorFiltro.replace(".", "").replace("-", ""));
+				lista = adiantamentoDao.find(FILTRAR_POR_CPF_HOSPEDE, 
+						String.valueOf(valorFiltro[0]).replace("-","").replace(".", ""));
 			}
 			
-			else if(tipoFiltro.equals(TipoFiltroAdiantamento.DATA_EMISSAO)){			
-				
-				try{
-					String jpql = " Select a From Adiantamento a LEFT JOIN FETCH a.hospede "
-								+ " where a.dtEmissao = ?1 ";
-					
-					lista = adiantamentoDao.find(jpql,valorFiltro);
-				}catch (Exception e) {
-					e.printStackTrace();
-				}								
+			else if(tipoFiltro.equals(TipoFiltroRecebimento.LOCAL_RECEBIMENTO)){
+				if(valorFiltro[0] == null){
+					throw new NegocioException("Informe um Local de Recebimento para Filtrar!");
+				}
+				lista = adiantamentoDao.find(FILTRAR_POR_BANCO,valorFiltro);
+			}
+			
+			else if(tipoFiltro.equals(TipoFiltroAdiantamento.DATA_EMISSAO)){				
+				lista = adiantamentoDao.find(valorFiltro.length == 1 ? FILTRO_POR_DATA_ENTRADA : FILTRO_POR_DATA_ENTRADA_BEETWEN, valorFiltro);
 			}
 			
 			return lista;			
-		} catch (Exception e) {
-			e.printStackTrace();
+		} 
+		
+		catch (PersistenceException e) {			
 			throw new PersistenciaException("Ocorreu uma exceção ao Filtrar os dados do Adiantamento de Cliente!" + 
             		" \nErro: " + UtilErros.getMensagemErro(e));
 		}					

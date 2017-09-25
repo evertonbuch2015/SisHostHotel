@@ -14,7 +14,6 @@ import javax.ws.rs.core.MediaType;
 
 import br.com.buch.core.entity.Apartamento;
 import br.com.buch.core.service.ServiceApartamento;
-import br.com.buch.core.util.PersistenciaException;
 
 @Path("/apartamento")
 public class ApartamentoRest {
@@ -36,7 +35,7 @@ public class ApartamentoRest {
 		
 		try {
 			return service.buscarTodos();
-		} catch (PersistenciaException e) {			
+		} catch (Exception e) {			
 			e.printStackTrace();
 			return null;
 		}

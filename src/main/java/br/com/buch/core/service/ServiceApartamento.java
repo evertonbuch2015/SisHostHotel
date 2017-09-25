@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.PersistenceException;
+
 import br.com.buch.core.dao.ApartamentoDao;
 import br.com.buch.core.entity.Apartamento;
 import br.com.buch.core.enumerated.SituacaoApartamento;
@@ -15,9 +17,6 @@ import br.com.buch.core.util.UtilErros;
 import br.com.buch.view.managedBean.ApartamentoBean.TipoFiltro;
 
 public class ServiceApartamento implements GenericService<Apartamento> {
-
-	private static final String BUSCAR_TODAS = 
-			"Select a From Apartamento a LEFT JOIN FETCH a.categoria ORDER by a.numero";
 
 	private static final String BUSCAR_POR_SITUACAO = 
 			"Select a From Apartamento a LEFT JOIN FETCH a.categoria where a.situacao like ?1";
@@ -94,14 +93,8 @@ public class ServiceApartamento implements GenericService<Apartamento> {
 
 	
 	@Override
-	public List<Apartamento> buscarTodos()throws PersistenciaException {
-		try {
-			return Constantes.getInstance().getListaApartamentos();
-			//return apartamentoDao.find(BUSCAR_TODAS);			
-		} catch (Exception e) {
-			e.printStackTrace();
-			return null;
-		}		
+	public List<Apartamento> buscarTodos()throws Exception{
+		return Constantes.getInstance().getListaApartamentos();
 	}
 
 	
@@ -120,8 +113,7 @@ public class ServiceApartamento implements GenericService<Apartamento> {
 			}
 			
 			return lista;			
-		} catch (Exception e) {
-			e.printStackTrace();
+		} catch (PersistenceException e) {
 			throw new PersistenciaException("Ocorreu uma exceção ao Filtrar os dados do Apartamento!" + 
             		" \nErro: " + UtilErros.getMensagemErro(e));
 		}					
@@ -174,9 +166,6 @@ public class ServiceApartamento implements GenericService<Apartamento> {
 		}
 	}
 
-
-	
-	
 	
 	public List<Apartamento> buscarPorNumero(Integer numero) {		
 		try{

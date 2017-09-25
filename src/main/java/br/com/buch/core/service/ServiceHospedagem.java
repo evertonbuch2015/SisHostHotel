@@ -4,6 +4,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.PersistenceException;
+
 import br.com.buch.core.dao.HospedagemDao;
 import br.com.buch.core.entity.Adiantamento;
 import br.com.buch.core.entity.Hospedagem;
@@ -28,6 +30,19 @@ public class ServiceHospedagem implements GenericService<Hospedagem> {
 
 	private static final String BUSCAR_TODOS_ATIVAS = 
 			"From Hospedagem h LEFT JOIN FETCH h.hospede LEFT JOIN FETCH h.apartamento where h.situacao = ? order by h.dataEntrada";
+	
+	private static final String FILTRO_POR_CODIGO = "From Hospedagem h LEFT JOIN FETCH h.hospede LEFT JOIN FETCH h.apartamento where h.codigo = ?";
+
+	private static final String FILTRO_POR_SITUACAO = "From Hospedagem h LEFT JOIN FETCH h.hospede LEFT JOIN FETCH h.apartamento where h.situacao = ?";
+
+	private static final String FILTRO_POR_NOME_HOSPEDE = "From Hospedagem h LEFT JOIN FETCH h.hospede LEFT JOIN FETCH h.apartamento where lower(h.hospede.nome) like ?";
+
+	private static final String FILTRO_POR_CPF_HOSPEDE = "From Hospedagem h LEFT JOIN FETCH h.hospede LEFT JOIN FETCH h.apartamento where h.hospede.cpf = ?";
+	
+	private static final String FILTRO_POR_DATA_ENTRADA = "From Hospedagem h LEFT JOIN FETCH h.hospede LEFT JOIN FETCH h.apartamento where h.dataEntrada = ?";
+			
+	private static final String FILTRO_POR_DATA_ENTRADA_BEETWEN = "From Hospedagem h LEFT JOIN FETCH h.hospede LEFT JOIN FETCH h.apartamento where h.dataEntrada Between ? and ?";
+	
 	
 	
 	private HospedagemDao dao;
@@ -151,45 +166,32 @@ public class ServiceHospedagem implements GenericService<Hospedagem> {
 		
 		try {
 			
-			if(tipoFiltro.equals(TipoFiltroHospedagem.CODIGO)){				
-				String jpql = "From Hospedagem h LEFT JOIN FETCH h.hospede LEFT JOIN FETCH h.apartamento where h.codigo = ?";
-				lista = dao.find(jpql, valorFiltro);
+			if(tipoFiltro.equals(TipoFiltroHospedagem.CODIGO)){	
+				if(valorFiltro[0] == null || valorFiltro[0].equals("")){ throw new NegocioException("Informe um código para Filtrar!");}
+				lista = dao.find(FILTRO_POR_CODIGO, valorFiltro);
 			}
 			
-			else if(tipoFiltro.equals(TipoFiltroHospedagem.CPF_HOSPEDE)){				
-				String jpql = "From Hospedagem h LEFT JOIN FETCH h.hospede LEFT JOIN FETCH h.apartamento where h.hospede.cpf = ?";
-				lista = dao.find(jpql,valorFiltro);
+			else if(tipoFiltro.equals(TipoFiltroHospedagem.CPF_HOSPEDE)){
+				lista = dao.find(FILTRO_POR_CPF_HOSPEDE,String.valueOf(valorFiltro[0]).replace("-","").replace(".", ""));
 			}
 			
 			else if(tipoFiltro.equals(TipoFiltroHospedagem.NOME_HOSPEDE)){				
-				String jpql = "From Hospedagem h LEFT JOIN FETCH h.hospede LEFT JOIN FETCH h.apartamento where h.hospede.nome like ?";
-				lista = dao.find(jpql,valorFiltro);
+				lista = dao.find(FILTRO_POR_NOME_HOSPEDE,
+						valorFiltro[0].equals("") ? valorFiltro[0] : String.valueOf(valorFiltro[0]).toLowerCase());
 			}
 			
 			else if(tipoFiltro.equals(TipoFiltroHospedagem.SITUACAO)){
-				String jpql = "From Hospedagem h LEFT JOIN FETCH h.hospede LEFT JOIN FETCH h.apartamento where h.situacao = ?";
-				lista = dao.find(jpql,valorFiltro);
+				if(valorFiltro[0] == null){throw new NegocioException("Informe uma situação para Filtrar!");}
+				lista = dao.find(FILTRO_POR_SITUACAO,valorFiltro);
 			}
 			
 			else if(tipoFiltro.equals(TipoFiltroHospedagem.DATA_ENTRADA)){
-				try{	
-					String jpql;
-					if (valorFiltro.length == 1){
-						jpql = " From Hospedagem h LEFT JOIN FETCH h.hospede LEFT JOIN FETCH h.apartamento where h.dataEntrada = ?";
-					}else{
-						jpql = " From Hospedagem h LEFT JOIN FETCH h.hospede LEFT JOIN FETCH h.apartamento where h.dataEntrada Between ? and ?";
-					}					
-										
-					lista = dao.find(jpql,valorFiltro);					
-				}catch (Exception e) {
-					e.printStackTrace();
-				}								
+				lista = dao.find(valorFiltro.length == 1 ? FILTRO_POR_DATA_ENTRADA : FILTRO_POR_DATA_ENTRADA_BEETWEN, valorFiltro);		
 			}
 			
 			return lista;			
-		} catch (Exception e) {
-			e.printStackTrace();
-			throw new PersistenciaException("Ocorreu uma exceção ao Filtrar os dados do Chamado!" + 
+		} catch (PersistenceException e) {
+			throw new PersistenciaException("Ocorreu uma exceção ao Filtrar os dados da Hospedagem!" + 
             		" \nErro: " + UtilErros.getMensagemErro(e));
 		}					
 	}
@@ -206,8 +208,6 @@ public class ServiceHospedagem implements GenericService<Hospedagem> {
 		dao.confirmarCheckOut(hospedagem, recebimento, adiantamentos);
 	}
 
-
-	
 	
 	public List<Hospedagem> getHospedagensAtivas()throws PersistenciaException{
 		try {
