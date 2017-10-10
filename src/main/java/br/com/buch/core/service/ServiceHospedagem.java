@@ -3,6 +3,7 @@ package br.com.buch.core.service;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Observable;
 
 import javax.persistence.PersistenceException;
 
@@ -15,12 +16,14 @@ import br.com.buch.core.entity.Reserva;
 import br.com.buch.core.enumerated.SituacaoHospedagem;
 import br.com.buch.core.enumerated.TipoFiltroHospedagem;
 import br.com.buch.core.util.CodeUtils;
+import br.com.buch.core.util.Constantes;
+import br.com.buch.core.util.Constantes.ConstantesLista;
 import br.com.buch.core.util.NegocioException;
 import br.com.buch.core.util.PersistenciaException;
 import br.com.buch.core.util.UtilErros;
 
 
-public class ServiceHospedagem implements GenericService<Hospedagem> {
+public class ServiceHospedagem extends Observable implements GenericService<Hospedagem> {
 
 	private static final String CARREGAR_ENTIDADE= "Select h From Hospedagem h LEFT JOIN FETCH h.hospede LEFT JOIN FETCH h.reserva"
 					+ " LEFT JOIN FETCH h.apartamento LEFT JOIN FETCH h.lancamentos where h.idHospedagem = ?";
@@ -30,6 +33,9 @@ public class ServiceHospedagem implements GenericService<Hospedagem> {
 
 	private static final String BUSCAR_TODOS_ATIVAS = 
 			"From Hospedagem h LEFT JOIN FETCH h.hospede LEFT JOIN FETCH h.apartamento where h.situacao = ? order by h.dataEntrada";
+	
+	private static final String BUSCAR_TODOS_PARA_CHECKOUT = 
+			"From Hospedagem h LEFT JOIN FETCH h.hospede LEFT JOIN FETCH h.apartamento where h.situacao = ? and h.dataSaida = ? order by h.dataEntrada";
 	
 	private static final String FILTRO_POR_CODIGO = "From Hospedagem h LEFT JOIN FETCH h.hospede LEFT JOIN FETCH h.apartamento where h.codigo = ?";
 
@@ -44,11 +50,12 @@ public class ServiceHospedagem implements GenericService<Hospedagem> {
 	private static final String FILTRO_POR_DATA_ENTRADA_BEETWEN = "From Hospedagem h LEFT JOIN FETCH h.hospede LEFT JOIN FETCH h.apartamento where h.dataEntrada Between ? and ?";
 	
 	
-	
 	private HospedagemDao dao;
 		
+	
 	public ServiceHospedagem() {
 		dao = new HospedagemDao();
+		addObserver(Constantes.getInstance());
 	}
 	
 	
@@ -70,6 +77,7 @@ public class ServiceHospedagem implements GenericService<Hospedagem> {
 					new ServiceReserva().salvar(reserva);
 				}
 				
+				notificarOuvintes();
 				return "Hospedagem inserida com Sucesso!";
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -79,6 +87,7 @@ public class ServiceHospedagem implements GenericService<Hospedagem> {
 		}else{			
 			try {
 				dao.update(entidade);
+				notificarOuvintes();
 				return "Hospedagem Alterada com Sucesso!";
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -93,6 +102,7 @@ public class ServiceHospedagem implements GenericService<Hospedagem> {
 	public String excluir(Hospedagem entidade) throws Exception {
 		try {
 			dao.delete(entidade);	
+			notificarOuvintes();
 			return "Hospedagem Excluida com Sucesso!";
 		}		
 		catch (Exception ex) {
@@ -206,9 +216,10 @@ public class ServiceHospedagem implements GenericService<Hospedagem> {
 		hospedagem.setSituacao(SituacaoHospedagem.CHECKOUT);
 		
 		dao.confirmarCheckOut(hospedagem, recebimento, adiantamentos);
+		notificarOuvintes();
 	}
 
-	
+			
 	public List<Hospedagem> getHospedagensAtivas()throws PersistenciaException{
 		try {
 			return dao.find(BUSCAR_TODOS_ATIVAS, SituacaoHospedagem.CHECKIN);
@@ -217,5 +228,24 @@ public class ServiceHospedagem implements GenericService<Hospedagem> {
 			throw new PersistenciaException("Ocorreu uma exceção ao buscar os dados da Hospedagem!" + 
             		" \nErro: " + UtilErros.getMensagemErro(e));
 		}
+	}
+	
+	
+	public List<Hospedagem> getHospedagensParaCheckOut() throws PersistenciaException{ 
+		try {
+			return dao.find(BUSCAR_TODOS_PARA_CHECKOUT, SituacaoHospedagem.CHECKIN, new Date());
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new PersistenciaException("Ocorreu uma exceção ao buscar os dados da Hospedagem!" + 
+            		" \nErro: " + UtilErros.getMensagemErro(e));
+		}
+		//List<Hospedagem> hospedagens = listaHospedagensAtivas.stream()
+			//    .filter(p -> p.getDataSaida() == d1).collect(Collectors.toList());
+	}
+
+	
+	private void notificarOuvintes(){
+		setChanged();
+		notifyObservers(ConstantesLista.APARTAMENTOS);
 	}
 }

@@ -32,14 +32,14 @@ public class Autorizador implements PhaseListener {
 			return;
 		}
 		
-		if(usuarioLogado == null) {
+		/*if(usuarioLogado == null) {
 			return;
-		}
+		}*/
 		
 		NavigationHandler handler = context.getApplication().getNavigationHandler();
 		handler.handleNavigation(context, null, "/login");
 		
-		FacesMessage message =  new FacesMessage(FacesMessage.SEVERITY_INFO,"Sessão Expirada. Faça Login novamente!","");
+		FacesMessage message =  new FacesMessage(FacesMessage.SEVERITY_INFO,"","Sessão Expirada ou inativa, faça Login novamente!");
 		context.addMessage(null, message);
 		
 		context.renderResponse();

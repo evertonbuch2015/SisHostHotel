@@ -31,8 +31,7 @@ public class SessionContext {
             return FacesContext.getCurrentInstance().getExternalContext();
         }
      }
-     
-     
+          
      
      private FacesContext currentFacesContext(){
          if (FacesContext.getCurrentInstance() == null){
@@ -74,6 +73,7 @@ public class SessionContext {
     	 
     	 return usuarioLogado;
      }
+     
      
      public Hotel getHotelUsuarioLogado(){
     	 Hotel hotel = 

@@ -3,6 +3,7 @@ package br.com.buch.core.service;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Observable;
 
 import javax.persistence.PersistenceException;
 
@@ -16,8 +17,9 @@ import br.com.buch.core.util.PersistenciaException;
 import br.com.buch.core.util.UtilErros;
 import br.com.buch.view.managedBean.ApartamentoBean.TipoFiltro;
 
-public class ServiceApartamento implements GenericService<Apartamento> {
+public class ServiceApartamento extends Observable implements GenericService<Apartamento> {
 
+	
 	private static final String BUSCAR_POR_SITUACAO = 
 			"Select a From Apartamento a LEFT JOIN FETCH a.categoria where a.situacao like ?1";
 
@@ -35,6 +37,7 @@ public class ServiceApartamento implements GenericService<Apartamento> {
 	
 	public ServiceApartamento() {
 		this.apartamentoDao = new ApartamentoDao();
+		addObserver(Constantes.getInstance());
 	}	
 	
 	
@@ -44,18 +47,17 @@ public class ServiceApartamento implements GenericService<Apartamento> {
 			
 			try {
 				apartamentoDao.save(entidate);
-				Constantes.getInstance().refresh(ConstantesLista.APARTAMENTOS);
+				notificarOuvintes();
 				return "Apartamento Cadastrado com Sucesso!";
 			} catch (Exception e) {
 				e.printStackTrace();
 				throw new PersistenciaException("Ocorreu uma exceção ao inserir o Apartamento!" + 
 	            		" \nErro: " + UtilErros.getMensagemErro(e));
 			}				
-		}else{
-			
+		}else{			
 			try {
 				apartamentoDao.update(entidate);
-				Constantes.getInstance().refresh(ConstantesLista.APARTAMENTOS);
+				notificarOuvintes();
 				return "Apartamento Alterado com Sucesso!";
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -70,7 +72,7 @@ public class ServiceApartamento implements GenericService<Apartamento> {
 	public String excluir(Apartamento entidade)throws Exception {
 		try {
 			apartamentoDao.delete(entidade);
-			Constantes.getInstance().refresh(ConstantesLista.APARTAMENTOS);
+			notificarOuvintes();
 			return "";
 		}catch (Exception ex) {
         	ex.printStackTrace();
@@ -177,4 +179,9 @@ public class ServiceApartamento implements GenericService<Apartamento> {
 		}	
 	}
 	
+	
+	private void notificarOuvintes(){
+		setChanged();
+		notifyObservers(ConstantesLista.APARTAMENTOS);
+	}
 }

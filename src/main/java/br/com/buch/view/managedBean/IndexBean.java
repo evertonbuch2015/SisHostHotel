@@ -21,7 +21,9 @@ import org.primefaces.model.chart.ChartSeries;
 import br.com.buch.core.entity.Hospedagem;
 import br.com.buch.core.entity.Reserva;
 import br.com.buch.core.entity.Usuario;
+import br.com.buch.core.service.ServiceHospedagem;
 import br.com.buch.core.service.ServiceIndex;
+import br.com.buch.core.service.ServiceReserva;
 import br.com.buch.core.util.Constantes;
 import br.com.buch.view.util.SessionContext;
 
@@ -67,10 +69,11 @@ public class IndexBean implements Serializable {
 	
 	
 	public String deslogar() {
+		Constantes.getInstance().removeUsuarioLogado(SessionContext.getInstance().getUsuarioLogado());
 		SessionContext.getInstance().deleteAttribute("usuarioLogado");
-		SessionContext.getInstance().deleteAttribute("hotel");
-	    SessionContext.getInstance().encerrarSessao();
-	    
+		SessionContext.getInstance().deleteAttribute("hotel");		
+		SessionContext.getInstance().encerrarSessao();
+	       
 	    return "/login?faces-redirect=true";
 	}
 		
@@ -93,7 +96,7 @@ public class IndexBean implements Serializable {
         barModel2.setShowPointLabels(true);
         
         Axis yAxis = barModel2.getAxis(AxisType.Y);
-        yAxis.setLabel("Qtd. de Apartamentos");
+        yAxis.setLabel("Quantidade");
         yAxis.setMin(0);
         yAxis.setTickInterval("3");
     }
@@ -126,16 +129,8 @@ public class IndexBean implements Serializable {
         Axis yAxis = barModel.getAxis(AxisType.Y);
         yAxis.setLabel("Qtd. de Reservas");
         yAxis.setMin(0);
-        yAxis.setTickInterval("1");
+        yAxis.setTickInterval("3");
     }
-	
-	
-	/**
-	 * Atualiza as listas de dados que estão na classe Constantes.
-	 */
-	public void atualizarListasDados(){
-		Constantes.getInstance().refreshAll();
-	}
 	
 	
 	public void atualizarGraficos(){
@@ -147,7 +142,7 @@ public class IndexBean implements Serializable {
 	
 	public List<Reserva> getReservasVencidas(){
 		try {
-			return Constantes.getInstance().getListaReservasVencidas();
+			return new ServiceReserva().buscarReservasVencidas();
 		} catch (Exception e) {
 			e.printStackTrace();
 			return null;
@@ -157,7 +152,7 @@ public class IndexBean implements Serializable {
 	
 	public List<Hospedagem> getHospedagensAVencer(){
 		try {
-			return Constantes.getInstance().getHospedagensParaCheckOut();
+			return new ServiceHospedagem().getHospedagensParaCheckOut();
 		} catch (Exception e) {
 			e.printStackTrace();
 			return null;

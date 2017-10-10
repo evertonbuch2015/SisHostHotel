@@ -1,6 +1,7 @@
 package br.com.buch.core.service;
 
 import java.util.List;
+import java.util.Observable;
 
 import br.com.buch.core.dao.CategoriaDao;
 import br.com.buch.core.entity.Categoria;
@@ -10,15 +11,16 @@ import br.com.buch.core.util.PersistenciaException;
 import br.com.buch.core.util.UtilErros;
 import br.com.buch.view.managedBean.CategoriaBean.TipoFiltro;
 
-public class ServiceCategoria implements GenericService<Categoria> {
+public class ServiceCategoria extends Observable implements GenericService<Categoria> {
 	
 	private CategoriaDao categoriaDao; 
 	
+	
 	public ServiceCategoria() {
 		this.categoriaDao = new CategoriaDao();
+		addObserver(Constantes.getInstance());
 	}
-	
-	
+		
 	
 	@Override
 	public String salvar(Categoria entidate)throws Exception {
@@ -26,7 +28,7 @@ public class ServiceCategoria implements GenericService<Categoria> {
 		if(entidate.getIdCategoria() == null){
 			try {
 				categoriaDao.save(entidate);
-				Constantes.getInstance().refresh(ConstantesLista.CATEGORIAS);
+				notificarOuvintes();
 				return "Categoria de Apartamento Cadastrada com Sucesso!";
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -37,7 +39,7 @@ public class ServiceCategoria implements GenericService<Categoria> {
 			
 			try {
 				categoriaDao.update(entidate);
-				Constantes.getInstance().refresh(ConstantesLista.CATEGORIAS);
+				notificarOuvintes();
 				return "Categoria de Apartamento Alterado com Sucesso!";
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -52,7 +54,7 @@ public class ServiceCategoria implements GenericService<Categoria> {
 	public String excluir(Categoria entidade) throws Exception{
 		try {
 			categoriaDao.delete(entidade);
-			Constantes.getInstance().refresh(ConstantesLista.CATEGORIAS);
+			notificarOuvintes();
 			return "";
 		}catch (Exception ex) {
         	ex.printStackTrace();
@@ -119,5 +121,11 @@ public class ServiceCategoria implements GenericService<Categoria> {
 			e.printStackTrace();
 			throw e;
 		}
+	}
+
+	
+	private void notificarOuvintes(){
+		setChanged();
+		notifyObservers(ConstantesLista.CATEGORIAS);
 	}
 }

@@ -35,12 +35,11 @@ public class ServiceReserva implements GenericService<Reserva> {
 	private ReservaDao dao;
 	
 	
-	
 	public ServiceReserva() {
 		dao = new ReservaDao();
 	}
 
-	
+			
 	@Override
 	public String salvar(Reserva entidade) throws Exception {
 		if(entidade.getIdReserva() == null){

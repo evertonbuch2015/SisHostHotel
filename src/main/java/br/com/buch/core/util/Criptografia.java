@@ -7,6 +7,7 @@ public class Criptografia {
 	
 	private static final String CHAVE_HASH = "\"#)G1�G@BOG R2�x@PAF S1�s@AVD S3�wXPAF_-\"";
 	
+	
 	public static String criptografarSha1(String texto) {
 		String textoCriptografado = "";
 		texto = texto.concat(CHAVE_HASH);

@@ -13,8 +13,8 @@ import br.com.buch.core.entity.Consumo;
 import br.com.buch.core.entity.Hospedagem;
 import br.com.buch.core.entity.Produto;
 import br.com.buch.core.service.ServiceConsumo;
+import br.com.buch.core.service.ServiceHospedagem;
 import br.com.buch.core.service.ServiceProduto;
-import br.com.buch.core.util.Constantes;
 import br.com.buch.view.util.UtilMensagens;
 
 @ManagedBean
@@ -79,7 +79,7 @@ public class ConsumoBean extends GenericBean<Consumo, ServiceConsumo> implements
 	
 	public List<Hospedagem> buscarHospedagens(String query){				
 		try{
-			return Constantes.getInstance().getHospedagensAtivas();
+			return new ServiceHospedagem().getHospedagensAtivas();
 		}catch (Exception e) {
 			UtilMensagens.mensagemErro(e.getMessage());
 			return null;

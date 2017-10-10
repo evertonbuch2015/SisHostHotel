@@ -107,9 +107,9 @@ public class ServiceHospede implements GenericService<Hospede> {
 			if(tipoFiltro.equals(TipoFiltroHospede.CODIGO)){
 				try {
 					Integer.parseInt((String) valorFiltro);
-					lista = hospedeDao.find("Select h From Hospede h where h.codigo = ?");
+					lista = hospedeDao.find("Select h From Hospede h where h.codigo = ?", Integer.parseInt(valorFiltro));
 				} catch (NumberFormatException e) {
-					throw new NegocioException("Informe um valor numérico para o filtro por Número de Recebimento!");
+					throw new NegocioException("Informe um valor numérico para o filtro por Código!");
 				}
 			}
 			else if(tipoFiltro.equals(TipoFiltroHospede.NOME)){
@@ -119,7 +119,7 @@ public class ServiceHospede implements GenericService<Hospede> {
 				if(valorFiltro == null || valorFiltro.equals("")){
 					throw new NegocioException("Informe um CPF valido!");
 				}
-				lista = hospedeDao.find("Select h From Hospede h where h.cpf like ?",valorFiltro.replace("-","").replace(".", ""));
+				lista = hospedeDao.find("Select h From Hospede h where h.cpf = ?",valorFiltro.replace("-","").replace(".", ""));
 			}
 			
 			return lista;			
@@ -157,9 +157,6 @@ public class ServiceHospede implements GenericService<Hospede> {
 		return hospedeDao.find("Select h From Hospede h where lower(h.nome) like lower(?)", nome);
 	}
 
-
-
-	
 	
 	public List<Hospede> buscarPorEmpresa(Empresa entidade)throws Exception{
 		return hospedeDao.find("Select h From Hospede h where h.empresa = ?", entidade);

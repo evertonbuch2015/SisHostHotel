@@ -1,17 +1,17 @@
 package br.com.buch.core.service;
 
 import java.util.List;
+import java.util.Observable;
 
 import br.com.buch.core.dao.TipoTarifaDao;
 import br.com.buch.core.entity.TipoTarifa;
-import br.com.buch.core.util.Constantes;
 import br.com.buch.core.util.Constantes.ConstantesLista;
 import br.com.buch.core.util.NegocioException;
 import br.com.buch.core.util.PersistenciaException;
 import br.com.buch.core.util.UtilErros;
 import br.com.buch.view.managedBean.TipoTarifaBean.TipoFiltro;
 
-public class ServiceTipoTarifa implements GenericService<TipoTarifa> {
+public class ServiceTipoTarifa extends Observable implements GenericService<TipoTarifa> {
 
 	
 	private TipoTarifaDao tipoTarifaDao;
@@ -28,7 +28,7 @@ public class ServiceTipoTarifa implements GenericService<TipoTarifa> {
 			
 			try {
 				tipoTarifaDao.save(entidate);
-				Constantes.getInstance().refresh(ConstantesLista.FORMAS_PAGAMENTO);
+				notificarOuvintes();
 				return "Tipo de Tarifa Cadastrada com Sucesso!";
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -39,7 +39,7 @@ public class ServiceTipoTarifa implements GenericService<TipoTarifa> {
 			
 			try {				
 				tipoTarifaDao.update(entidate);
-				Constantes.getInstance().refresh(ConstantesLista.FORMAS_PAGAMENTO);
+				notificarOuvintes();
 				return "Tipo de Tarifa Alterada com Sucesso!";
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -54,7 +54,7 @@ public class ServiceTipoTarifa implements GenericService<TipoTarifa> {
 	public String excluir(TipoTarifa entidade)throws Exception {
 		try {
 			tipoTarifaDao.delete(entidade);
-			Constantes.getInstance().refresh(ConstantesLista.FORMAS_PAGAMENTO);
+			notificarOuvintes();
 			return "";
 		}catch (Exception ex) {
         	ex.printStackTrace();
@@ -116,4 +116,8 @@ public class ServiceTipoTarifa implements GenericService<TipoTarifa> {
 	public void consisteAntesEditar(TipoTarifa entidade)throws NegocioException {}
 
 	
+	private void notificarOuvintes(){
+		setChanged();
+		notifyObservers(ConstantesLista.TIPOS_TARIFA);
+	}
 }

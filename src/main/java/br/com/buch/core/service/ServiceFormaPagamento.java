@@ -1,16 +1,16 @@
 package br.com.buch.core.service;
 
 import java.util.List;
+import java.util.Observable;
 
 import br.com.buch.core.dao.FormaPagamentoDao;
 import br.com.buch.core.entity.FormaPagamento;
-import br.com.buch.core.util.Constantes;
 import br.com.buch.core.util.Constantes.ConstantesLista;
 import br.com.buch.core.util.PersistenciaException;
 import br.com.buch.core.util.UtilErros;
 import br.com.buch.view.managedBean.FormaPagamentoBean.TipoFiltro;
 
-public class ServiceFormaPagamento implements GenericService<FormaPagamento> {
+public class ServiceFormaPagamento extends Observable implements GenericService<FormaPagamento> {
 
 	private FormaPagamentoDao formaPagamentoDao;
 
@@ -26,7 +26,7 @@ public class ServiceFormaPagamento implements GenericService<FormaPagamento> {
 
 			try {
 				formaPagamentoDao.save(entidate);
-				Constantes.getInstance().refresh(ConstantesLista.FORMAS_PAGAMENTO);
+				notificarOuvintes();
 				return "Forma de Pagamento Cadastrada com Sucesso!";
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -37,7 +37,7 @@ public class ServiceFormaPagamento implements GenericService<FormaPagamento> {
 
 			try {
 				formaPagamentoDao.update(entidate);
-				Constantes.getInstance().refresh(ConstantesLista.FORMAS_PAGAMENTO);
+				notificarOuvintes();
 				return "Forma de Pagamento Alterado com Sucesso!";
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -52,7 +52,7 @@ public class ServiceFormaPagamento implements GenericService<FormaPagamento> {
 	public String excluir(FormaPagamento entidade) throws Exception{
 		try {
 			formaPagamentoDao.delete(entidade);
-			Constantes.getInstance().refresh(ConstantesLista.FORMAS_PAGAMENTO);
+			notificarOuvintes();
 			return "";
 		}catch (Exception ex) {
         	ex.printStackTrace();
@@ -107,11 +107,15 @@ public class ServiceFormaPagamento implements GenericService<FormaPagamento> {
 		}					
 	}
 
-
-	
 	
 	@Override
 	public void consisteAntesEditar(FormaPagamento entidade) {
 
+	}
+
+	
+	private void notificarOuvintes(){
+		setChanged();
+		notifyObservers(ConstantesLista.FORMAS_PAGAMENTO);
 	}
 }

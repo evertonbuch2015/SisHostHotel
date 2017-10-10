@@ -4,6 +4,7 @@ public enum GrupoUsuario {
 	ADMINISTRADOR,
 	CAIXA,
 	RECEPCAO,
+	ADMINISTRATIVO,
 	GERENTE,
 	PRESIDENTE;
 }
