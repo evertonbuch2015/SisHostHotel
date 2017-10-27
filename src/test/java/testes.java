@@ -1,11 +1,74 @@
+import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 public class testes {
 	public static void main(String[] args) {
-		testeEmail();
+		//testeEmail();
+		//testeFile(new File("F:\\"));
+		//testeFile(new File("F:\\Programação em Java\\1. Videos Diversos"));
+		//metodos("F:\\Programação em Java\\1. Videos Diversos");
 	}
 	
+	public static void metodos(String caminho)
+    {
+        File arquivo = new File(caminho);
+     
+        if( arquivo.exists() )
+        {
+            System.out.println("O caminho especificado existe !\nVamos aos testes:\n");
+         
+            if(arquivo.isAbsolute())
+                System.out.println("É um caminho absoluto");
+            else
+                System.out.println("Não é um caminho absoluto");
+         
+            if(arquivo.isFile())
+                System.out.printf("É um arquivo de tamanho %s bytes\n"
+                        + "Útima vez modificado %s\n"
+                        + "Cujo caminho é %s\n"
+                        + "De caminho absoluto %s\n"
+                        + "E está no diretório pai %s\n",
+                        arquivo.length(), arquivo.lastModified(), arquivo.getPath(), arquivo.getAbsolutePath(), arquivo.getParent() );
+         
+            else
+            {
+                 System.out.println("É um diretório cujo conteúdo tem os seguintes arquivos: ");
+                 String[] arquivos = arquivo.list();
+             
+                 for( String file : arquivos)
+                   System.out.println( file );
+            }
+         
+        }
+        else
+                 System.out.println("Endereço errado");
+    }
+	
+	private static void testeFile(File directory) {		
+		if(directory.isDirectory()) {
+            System.out.println(directory.getPath());
+            String[] subDirectory = directory.list();
+            if(subDirectory != null) {
+                for(String dir : subDirectory){
+                	testeFile(new File(directory + File.separator  + dir));
+                }
+            }
+        }else{
+        	System.out.println("Name :"+directory.getName());
+        	//System.out.println("Absolute Path" +directory.getAbsolutePath());
+        	System.out.printf("É um arquivo de tamanho %s bytes\n"
+                    + "Útima vez modificado %s\n"
+                    + "Cujo caminho é %s\n"
+                    + "De caminho absoluto %s\n"
+                    + "E está no diretório pai %s\n",
+                    directory.length(), directory.lastModified(), directory.getPath(), directory.getAbsolutePath(), directory.getParent() );
+        	
+        	System.out.println("___________________________________________"); 
+        	
+        }
+	}
+
 	private static void testeEmail() {
 		
 		Calendar c1a = Calendar.getInstance();

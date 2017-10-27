@@ -23,6 +23,11 @@ public class Categoria implements Serializable{
     @Column(name = "COD_CADCATEGORIA")
     private Integer idCategoria;
     
+	
+	@Column(name = "CEMP" ,nullable = false , length = 2)
+	private String cemp;
+	
+	
     @Column(name="NOME",nullable = true, length = 20)
     private String nome;
     
@@ -35,6 +40,10 @@ public class Categoria implements Serializable{
     
     public Integer getIdCategoria() {return idCategoria;}
     public void setIdCategoria(Integer idCategoria) {this.idCategoria = idCategoria;}
+    
+    
+    public String getCemp() {return cemp;}
+    public void setCemp(String cemp) {this.cemp = cemp;}
     
     
 	public String getNome() {return nome;}

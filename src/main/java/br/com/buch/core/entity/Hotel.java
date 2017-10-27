@@ -107,55 +107,27 @@ public class Hotel implements Serializable {
     
 	//--------------------------------	GETs and SETs------------------------------//
     
-	public Integer getIdHotel() {
-		return idHotel;
-	}
-	
-	public void setIdHotel(Integer idHotel) {
-		this.idHotel = idHotel;
-	}
+	public Integer getIdHotel() {return idHotel;}	
+	public void setIdHotel(Integer idHotel) {this.idHotel = idHotel;}
 	
 	
-	public String getCodigo() {
-		return codigo;
-	}
-
-	public void setCodigo(String codigo) {
-		this.codigo = codigo;
-	}
+	public String getCodigo() {return codigo;}
+	public void setCodigo(String codigo) {this.codigo = codigo;}
 
 	
-	public String getFilial() {
-		return filial;
-	}
+	public String getFilial() {return filial;}	
+	public void setFilial(String filial) {this.filial = filial;}	
 	
-	public void setFilial(String filial) {
-		this.filial = filial;
-	}
+	public String getNomeRazao() {return nomeRazao;}	
+	public void setNomeRazao(String nomeRazao) {this.nomeRazao = nomeRazao;}
 	
 	
-	public String getNomeRazao() {
-		return nomeRazao;
-	}
+	public String getNomeFantasia() {return nomeFantasia;}
+	public void setNomeFantasia(String nomeFantasia){this.nomeFantasia = nomeFantasia;}
 
-	public void setNomeRazao(String nomeRazao) {
-		this.nomeRazao = nomeRazao;
-	}
-
-
-	public String getNomeFantasia() {
-		return nomeFantasia;
-	}
-
-	public void setNomeFantasia(String nomeFantasia) {
-		this.nomeFantasia = nomeFantasia;
-	}
-
-
-	public String getDocumento() {
-		return documento;
-	}
-
+	
+	public String getDocumento() {return documento;}
+	
 	public String getDocumentoFormatado(){
 		if(this.documento != null){
 			return 	documento.substring(0, 2) + "." + documento.substring(2, 5) + "." + documento.substring(5, 8)
@@ -172,32 +144,16 @@ public class Hotel implements Serializable {
 		}
 	}
 
-
-	public String getInscEstadual() {
-		return inscEstadual;
-	}
-
-	public void setInscEstadual(String inscEstadual) {
-		this.inscEstadual = inscEstadual;
-	}
+	public String getInscEstadual() {return inscEstadual;}
+	public void setInscEstadual(String inscEstadual) {this.inscEstadual = inscEstadual;}
 
 
-	public String getInscMunicipal() {
-		return inscMunicipal;
-	}
+	public String getInscMunicipal() {return inscMunicipal;}
+	public void setInscMunicipal(String inscMunicipal) {this.inscMunicipal = inscMunicipal;}
 
-	public void setInscMunicipal(String inscMunicipal) {
-		this.inscMunicipal = inscMunicipal;
-	}
-
-
-	public RegimeTributario getRegimeTributario() {
-		return regimeTributario;
-	}
 	
-	public void setRegimeTributario(RegimeTributario regimeTributario) {
-		this.regimeTributario = regimeTributario;
-	}
+	public RegimeTributario getRegimeTributario() {return regimeTributario;}
+	public void setRegimeTributario(RegimeTributario regimeTributario) {this.regimeTributario = regimeTributario;}
 
 	
 	public String getDataCadastroFormatada() {
@@ -208,70 +164,32 @@ public class Hotel implements Serializable {
 		}
 	}
 
-	public Date getDataCadastro() {
-		return dataCadastro;
-	}
-
-	public void setDataCadastro(Date dataCadastro) {
-		this.dataCadastro = dataCadastro;
-	}	
+	public Date getDataCadastro() {return dataCadastro;}
+	public void setDataCadastro(Date dataCadastro) {this.dataCadastro = dataCadastro;}	
 
 	
-	public String getSite() {
-		return site;
-	}
-
-	public void setSite(String site) {
-		this.site = site;
-	}
-
-	
-	public String getTelefone1() {
-		return telefone1;
-	}
-	
-	public void setTelefone1(String telefone1) {
-		this.telefone1 = telefone1;
-	}
+	public String getSite() {return site;}
+	public void setSite(String site) {this.site = site;}
 	
 	
-	public String getTelefone2() {
-		return telefone2;
-	}
+	public String getTelefone1() {return telefone1;}
+	public void setTelefone1(String telefone1) {this.telefone1 = telefone1;}
 	
-	public void setTelefone2(String telefone2) {
-		this.telefone2 = telefone2;
-	}
 	
+	public String getTelefone2() {return telefone2;}
+	public void setTelefone2(String telefone2) {this.telefone2 = telefone2;}
 
-	public String getObs() {
-		return obs;
-	}
+	
+	public String getObs() {return obs;}
+	public void setObs(String obs) {this.obs = obs;}
 
+	
+	public String getEmail() {return email;}
+	public void setEmail(String email) {this.email = email;}
 
-	public void setObs(String obs) {
-		this.obs = obs;
-	}
-
-
-	public String getEmail() {
-		return email;
-	}
-
-
-	public void setEmail(String email) {
-		this.email = email;
-	}
-
-
-	public Byte[] getLogo() {
-		return logo;
-	}
-
-
-	public void setLogo(Byte[] logo) {
-		this.logo = logo;
-	}
+	
+	public Byte[] getLogo() {return logo;}
+	public void setLogo(Byte[] logo) {this.logo = logo;}
 	
 	
 	public Endereco getEndereco() {
@@ -281,11 +199,12 @@ public class Hotel implements Serializable {
 		return endereco;
 	}
 	
-	public void setEndereco(Endereco endereco) {
-		this.endereco = endereco;
-	}
+	
+	public void setEndereco(Endereco endereco) {this.endereco = endereco;}
 	
 	//--------------------------------	Métodos Auxiliares------------------------------//
+	
+	
 	
 	
 	@Override

@@ -38,6 +38,10 @@ public class Apartamento implements Serializable {
     private Integer numero;
     
 	
+	@Column(name = "CEMP" ,nullable = false , length = 2)
+	private String cemp;
+	
+	
     @Column(name="SITUACAO")
     @Enumerated(EnumType.STRING)
     private SituacaoApartamento situacao;
@@ -72,24 +76,35 @@ public class Apartamento implements Serializable {
 	public Integer getIdApartamento() {	return idApartamento;}
 	public void setIdApartamento(Integer idApartamento) {this.idApartamento = idApartamento;}
 
+	
 	public Integer getNumero() {return numero;}
 	public void setNumero(Integer numero) {this.numero = numero;}
+	
+	
+	public String getCemp() {return cemp;}
+	public void setCemp(String cemp) {this.cemp = cemp;}
+	
 	
 	public SituacaoApartamento getSituacao() {return situacao;}
 	public void setSituacao(SituacaoApartamento situacao) {this.situacao = situacao;}
 	
+	
 	public String getRamal() {return ramal;}
 	public void setRamal(String ramal) {this.ramal = ramal;}
 
+	
 	public Integer getCamasCasal() {return camasCasal;}
 	public void setCamasCasal(Integer camasCasal) {this.camasCasal = camasCasal;}
 
+	
 	public Integer getCamasSolteiro() {return camasSolteiro;}
 	public void setCamasSolteiro(Integer camasSolteiro) {this.camasSolteiro = camasSolteiro;}
 
+	
 	public String getDescricao() {return descricao;}
 	public void setDescricao(String descricao) {this.descricao = descricao;}
 
+	
 	public Categoria getCategoria() {return categoria;}
 	public void setCategoria(Categoria categoria) {this.categoria = categoria;}
 	

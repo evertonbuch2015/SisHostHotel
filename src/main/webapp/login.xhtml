@@ -19,7 +19,8 @@
 </h:head>
 
 <h:body>
-
+	<div class="imagem">
+	a
 	<h:form prependId="false">
 		
 	<div class="conteudo">	
@@ -50,12 +51,13 @@
 				<p:selectOneMenu value="#{loginBean.hotel}"  id="hotel"
 					required="true" 
 					requiredMessage="Informe a Empresa!"
-					rendered="#{loginBean.selecionandoHotel}"
+					rendered="#{loginBean.selecionandoHotel}"					
 					style="margin-bottom: 15px !important; width: 80%"  
 					autoWidth="false">
 								
+					<f:selectItem itemLabel="Selecione um Hotel" itemValue="" />
 					<f:selectItems value="#{loginBean.hoteis}" var="hotel"
-						 itemValue="#{hotel}" itemLabel="#{hotel.nomeFantasia}"/>
+						 itemValue="#{hotel}" itemLabel="#{hotel.nomeFantasia}"/>					
 				</p:selectOneMenu>	
 				
 				<p:commandButton value="#{label.txt_proseguir}"
@@ -114,6 +116,7 @@
 		
 	</div>	
 	</h:form>
+	</div>
 </h:body>
 
 </html>

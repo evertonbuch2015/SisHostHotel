@@ -48,7 +48,7 @@ public class LoginBean implements Serializable{
 			Constantes.getInstance().addUsuarioLogado(usuario);
 			SessionContext.getInstance().setAttribute("usuarioLogado", usuario);
 
-			UtilMensagens.mensagemInformacao("Selecione um Hotel");
+			//UtilMensagens.mensagemInformacao("Selecione um Hotel");
 		} else {
 			this.usuario = new Usuario();
 			UtilMensagens.mensagemAtencao("Usuário não encontrado");

@@ -21,10 +21,10 @@ public class ServiceApartamento extends Observable implements GenericService<Apa
 
 	
 	private static final String BUSCAR_POR_SITUACAO = 
-			"Select a From Apartamento a LEFT JOIN FETCH a.categoria where a.situacao like ?1";
+			"Select a From Apartamento a LEFT JOIN FETCH a.categoria where a.situacao = ?1";
 
 	private static final String BUSCAR_POR_CATEGORIA = 
-			"Select a From Apartamento a LEFT JOIN FETCH a.categoria where a.categoria.nome like ?1";
+			"Select a From Apartamento a LEFT JOIN FETCH a.categoria where a.categoria = ?1";
 
 	private static final String BUSCAR_LIVRES = 
 			"Select a From Apartamento a where a.situacao = ?1";
@@ -100,7 +100,7 @@ public class ServiceApartamento extends Observable implements GenericService<Apa
 	}
 
 	
-	public List<Apartamento> filtrarTabela(TipoFiltro tipoFiltro , String valorFiltro)throws Exception{
+	public List<Apartamento> filtrarTabela(TipoFiltro tipoFiltro , Object valorFiltro)throws Exception{
 		List<Apartamento> lista = null;
 		
 		try {			
@@ -138,9 +138,9 @@ public class ServiceApartamento extends Observable implements GenericService<Apa
 	}
 	
 	
-	public List<Apartamento> buscarTodosLivres() {
+	public List<Apartamento> buscarTodosLivres(String cemp) {
 		try {
-			return apartamentoDao.find(BUSCAR_LIVRES, SituacaoApartamento.LIVRE);
+			return apartamentoDao.find(BUSCAR_LIVRES, SituacaoApartamento.LIVRE, cemp);
 		} catch (Exception e) {
 			e.printStackTrace();
 			return null;

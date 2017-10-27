@@ -33,7 +33,10 @@ public class ApartamentoBean extends GenericBean<Apartamento, ServiceApartamento
 	
 	private static final long serialVersionUID = 6409242364742848848L;	
 	private TipoFiltro filtro;	
-		
+	private SituacaoApartamento situacaoFiltro;
+	private Categoria categoriaFiltro;
+	
+	
 	public ApartamentoBean() {
 		super(new ServiceApartamento());
 	}
@@ -45,7 +48,13 @@ public class ApartamentoBean extends GenericBean<Apartamento, ServiceApartamento
 	@Override
 	public void filtrar() {
 		try {
-			service.filtrarTabela(filtro, valorFiltro);
+			if(filtro == TipoFiltro.SITUACAO){
+				this.entidades = service.filtrarTabela(filtro, situacaoFiltro);
+			}else if(filtro == TipoFiltro.CATEGORIA){
+				this.entidades = service.filtrarTabela(filtro, categoriaFiltro);
+			}else if(filtro != null){
+				this.entidades = service.filtrarTabela(filtro, valorFiltro);
+			}			
 		} catch (Exception e) {
 			UtilMensagens.mensagemErro(e.getMessage());
 		}
@@ -62,10 +71,15 @@ public class ApartamentoBean extends GenericBean<Apartamento, ServiceApartamento
 
 	
 	public TipoFiltro getFiltro() {return filtro;}
-
 	public void setFiltro(TipoFiltro filtro) {this.filtro = filtro;}
 
 	public TipoFiltro[] tipoFiltros(){return TipoFiltro.values();}
+	
+	public Categoria getCategoriaFiltro() {return categoriaFiltro;}
+	public void setCategoriaFiltro(Categoria categoriaFiltro) {this.categoriaFiltro = categoriaFiltro;}
+	
+	public SituacaoApartamento getSituacaoFiltro() {return situacaoFiltro;}
+	public void setSituacaoFiltro(SituacaoApartamento situacaoFiltro) {this.situacaoFiltro = situacaoFiltro;}
 	
 	
 	public SituacaoApartamento[] situacaoApartamentos(){return SituacaoApartamento.values();}

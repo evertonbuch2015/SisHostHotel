@@ -189,37 +189,67 @@
 		
 		
 		<p:dialog 
-			width="320" height="200"
+			width="400" height="270"
 			header="#{label.filtrar_registros}"			
 			widgetVar="dialogFiltro" modal="true" draggable="true" 
 			closable="true" resizable="false" position="center center"
 			showEffect="explode" hideEffect="explode">
 		
-			<p:panelGrid columns="2" cellpadding="3" 
-				styleClass="ui-panelgrid-blank">
-				
-									
-				<p:outputLabel value="#{label.tipo_filtro}"/>
+			<p:panelGrid columns="2" 
+				styleClass="ui-panelgrid-blank"
+				cellpadding="10" layout="grid"
+				columnClasses="ui-grid-col-3,ui-grid-col-9">
+														
+				<p:outputLabel value="#{label.tipo_filtro}"/>														
 				<p:selectOneMenu id="tipoFiltro"
-					value="#{apartamentoBean.filtro}" style="width:80%">						
+					value="#{apartamentoBean.filtro}"
+					style="width:75% !important">	
+										
 					<f:selectItem itemLabel="Selecione" />
 					<f:selectItems value="#{apartamentoBean.tipoFiltros()}" var="a"
-						itemValue="#{a}" itemLabel="#{a.label}"/>						
+						itemValue="#{a}" itemLabel="#{a.label}"/>
+						
+					<p:ajax event="change" update="situacaoFiltro categoriaFiltro valorfiltro"/>  						
 				</p:selectOneMenu>
-					
 				
-				<p:outputLabel value="#{label.valor_filtro}"/>	
-				<p:inputText id="valorfiltro" 
-						value="#{apartamentoBean.valorFiltro}"
-						size="38"/>
+				<p:outputLabel value="#{label.txt_situacao}"/>														
+				<p:selectOneMenu id="situacaoFiltro"
+					value="#{apartamentoBean.situacaoFiltro}" 
+					style="width:75% !important"
+					disabled="#{apartamentoBean.filtro.ordinal() ne 1}">
+					
+					<f:selectItem itemLabel="Selecione" />								
+					<f:selectItems value="#{apartamentoBean.situacaoApartamentos()}" var="a"
+						itemValue="#{a}" itemLabel="#{a.label}"/>  						
+				</p:selectOneMenu>
+				
+				
+				<p:outputLabel value="#{label.txt_categoria}"/>														
+				<p:selectOneMenu id="categoriaFiltro"
+					value="#{apartamentoBean.categoriaFiltro}" 
+					style="width:75% !important"
+					disabled="#{apartamentoBean.filtro.ordinal() ne 2}">
+					
+					<f:selectItem itemLabel="Selecione" />								
+					<f:selectItems value="#{apartamentoBean.categorias}" var="a"
+						itemValue="#{a}" itemLabel="#{a.nome}"/>  						
+				</p:selectOneMenu>
+				
+				
+				<p:outputLabel value="#{label.outros_filtros}"/>	
+				<p:inputText id="valorfiltro"
+					value="#{apartamentoBean.valorFiltro}"
+					size="34"
+					disabled="#{apartamentoBean.filtro.ordinal() ne 0}"/>
+				
 								
-				<p:commandButton value="#{label.aplicar_filtro}"
+				<p:commandButton value="Filtrar" icon="ui-icon-folder-collapsed"
 					styleClass="bu-botao-azul" update="tabela"
 					style="margin-top:20px;"
-					actionListener="#{apartamentoBean.filtrar()}"
+					actionListener="#{apartamentoBean.filtrar}"
 					onclick="PF('dialogFiltro').hide();" />	
 					
-			</p:panelGrid>	
+			</p:panelGrid>
 		</p:dialog>
 		
 	</ui:define>

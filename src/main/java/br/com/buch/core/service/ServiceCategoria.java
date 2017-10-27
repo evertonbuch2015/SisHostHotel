@@ -83,7 +83,6 @@ public class ServiceCategoria extends Observable implements GenericService<Categ
 	public List<Categoria> buscarTodos()throws PersistenciaException {
 		try {
 			return Constantes.getInstance().getListaCategorias();
-			//return categoriaDao.findAll();
 		} catch (Exception e) {
 			e.printStackTrace();
 			return null;
