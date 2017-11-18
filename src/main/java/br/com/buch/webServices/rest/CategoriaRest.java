@@ -1,4 +1,4 @@
-package br.com.buch.core.rest;
+package br.com.buch.webServices.rest;
 
 import java.util.List;
 
@@ -12,30 +12,31 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
-import br.com.buch.core.entity.Apartamento;
-import br.com.buch.core.service.ServiceApartamento;
+import br.com.buch.core.entity.Categoria;
+import br.com.buch.core.service.ServiceCategoria;
+import br.com.buch.core.util.PersistenciaException;
 
-@Path("/apartamento")
-public class ApartamentoRest {
+@Path("/categoria")
+public class CategoriaRest {
 
 	private static final String CHARSET_UTF8 = ";charset=utf-8";
 	
-	private ServiceApartamento service;
+	private ServiceCategoria service;
 	
 	@PostConstruct
 	private void init(){
-		this.service = new ServiceApartamento();
+		this.service = new ServiceCategoria();
 	}	
 	
 
 	@GET
 	@Path("/buscarTodos")
 	@Produces(MediaType.APPLICATION_JSON + CHARSET_UTF8)
-	public List<Apartamento> buscarTodos(){
+	public List<Categoria> buscarTodos(){
 		
 		try {
 			return service.buscarTodos();
-		} catch (Exception e) {			
+		} catch (PersistenciaException e) {			
 			e.printStackTrace();
 			return null;
 		}
@@ -46,7 +47,7 @@ public class ApartamentoRest {
 	@Path("/buscarPorId/{id}")	
 	@Consumes(MediaType.TEXT_PLAIN)
 	@Produces(MediaType.APPLICATION_JSON + CHARSET_UTF8)
-	public Apartamento buscarPorId(@PathParam("id") Integer id){
+	public Categoria buscarPorId(@PathParam("id") Integer id){
 		
 		try {
 			return service.buscarPorId(id);			
@@ -61,7 +62,7 @@ public class ApartamentoRest {
 	@Path("/salvar")
 	@Consumes(MediaType.APPLICATION_JSON + CHARSET_UTF8)
 	@Produces(MediaType.APPLICATION_JSON + CHARSET_UTF8)
-	public Apartamento salvar(Apartamento entidade){
+	public Categoria salvar(Categoria entidade){
 		
 		try {
 			service.salvar(entidade);
@@ -79,8 +80,8 @@ public class ApartamentoRest {
 	@Produces(MediaType.TEXT_PLAIN)
 	public String excluir(@PathParam("id") Integer id){		
 		try {
-			Apartamento entidade = new Apartamento();
-			entidade.setIdApartamento(id);
+			Categoria entidade = new Categoria();
+			entidade.setIdCategoria(id);
 			return service.excluir(entidade);
 		} catch (Exception e) {
 			e.printStackTrace();

@@ -1,4 +1,4 @@
-package br.com.buch.core.rest;
+package br.com.buch.webServices.rest;
 
 import java.util.List;
 
@@ -12,27 +12,27 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
-import br.com.buch.core.entity.Categoria;
-import br.com.buch.core.service.ServiceCategoria;
+import br.com.buch.core.entity.Reserva;
+import br.com.buch.core.service.ServiceReserva;
 import br.com.buch.core.util.PersistenciaException;
 
-@Path("/categoria")
-public class CategoriaRest {
+@Path("/reserva")
+public class ReservaRest {
 
 	private static final String CHARSET_UTF8 = ";charset=utf-8";
 	
-	private ServiceCategoria service;
+	private ServiceReserva service;
 	
 	@PostConstruct
 	private void init(){
-		this.service = new ServiceCategoria();
-	}	
+		service = new ServiceReserva();
+	}
 	
-
+	
 	@GET
 	@Path("/buscarTodos")
 	@Produces(MediaType.APPLICATION_JSON + CHARSET_UTF8)
-	public List<Categoria> buscarTodos(){
+	public List<Reserva> buscarTodos(){
 		
 		try {
 			return service.buscarTodos();
@@ -47,7 +47,7 @@ public class CategoriaRest {
 	@Path("/buscarPorId/{id}")	
 	@Consumes(MediaType.TEXT_PLAIN)
 	@Produces(MediaType.APPLICATION_JSON + CHARSET_UTF8)
-	public Categoria buscarPorId(@PathParam("id") Integer id){
+	public Reserva buscarPorId(@PathParam("id") Integer id){
 		
 		try {
 			return service.buscarPorId(id);			
@@ -62,7 +62,7 @@ public class CategoriaRest {
 	@Path("/salvar")
 	@Consumes(MediaType.APPLICATION_JSON + CHARSET_UTF8)
 	@Produces(MediaType.APPLICATION_JSON + CHARSET_UTF8)
-	public Categoria salvar(Categoria entidade){
+	public Reserva salvar(Reserva entidade){
 		
 		try {
 			service.salvar(entidade);
@@ -80,8 +80,8 @@ public class CategoriaRest {
 	@Produces(MediaType.TEXT_PLAIN)
 	public String excluir(@PathParam("id") Integer id){		
 		try {
-			Categoria entidade = new Categoria();
-			entidade.setIdCategoria(id);
+			Reserva entidade = new Reserva();
+			entidade.setIdReserva(id);
 			return service.excluir(entidade);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -89,5 +89,4 @@ public class CategoriaRest {
 		}
 		
 	}
-
 }
