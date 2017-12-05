@@ -19,12 +19,13 @@
 			<p:menuitem value="Home" url="/index.xhtml" />
 			<p:menuitem value="#{label.menu_hospedagem}"/>
     		<p:menuitem value="#{label.txt_mapa_estadias}" url="#" />
-		</p:breadCrumb>
+		</p:breadCrumb>		
 		
 		
-		<p:messages autoUpdate="true" showDetail="true" closable="true" showSummary="false">
-			<p:effect type="bounce" event="load"/>
-			<p:effect type="explode" event="load" delay="12000"/>
+		<p:messages id="msgErros" autoUpdate="true" 
+			showDetail="true" closable="true" showSummary="false">
+			<p:effect type="pulsate" event="load" delay="500" />
+			<p:effect type="explode" event="load" delay="20000"/>
 		</p:messages>
 	
 			        

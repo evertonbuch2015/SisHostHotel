@@ -1,7 +1,6 @@
 package br.com.buch.view.managedBean;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -176,11 +175,11 @@ public class HospedagemBean extends GenericBean<Hospedagem, ServiceHospedagem> i
 					entidade.getApartamento() == null){
 			return;
 		}
-		
+				
 		
 		try {
 			serviceApartamento.verificaDisponibilidade(
-									entidade.getApartamento().getIdApartamento(),
+									entidade.getApartamento(),
 									entidade.getDataEntrada(),
 									entidade.getDataSaida());
 			
@@ -258,8 +257,22 @@ public class HospedagemBean extends GenericBean<Hospedagem, ServiceHospedagem> i
 		}			
 	}
 	
+	
 	public void retornoCheckOut(){
 		UtilMensagens.mensagemInformacao("Check-Out Realizado com Sucesso!");
+	}
+	
+	
+	@Override
+	public void cancelar() {	
+		this.tipoTarifa = null;
+		super.cancelar();
+	}
+	
+	@Override
+	public void gravar() {	
+		this.tipoTarifa = null;
+		super.gravar();
 	}
 	
 	// =============================GET AND SET=====================================
@@ -290,16 +303,6 @@ public class HospedagemBean extends GenericBean<Hospedagem, ServiceHospedagem> i
 			refresh();
 		}	
 		return entidades;
-	}
-	
-	
-	public List<Apartamento> apartamentos(){
-		try {
-			return serviceApartamento.buscarTodos();
-		} catch (Exception e) {
-			e.printStackTrace();
-			return new ArrayList<Apartamento>();
-		}
 	}
 	
 	

@@ -20,11 +20,12 @@
     		<p:menuitem value="#{label.tit_apartamento}" url="#" />			
 		</p:breadCrumb>
 		
-		<p:messages autoUpdate="true" showDetail="true" closable="true" showSummary="false">
-			<p:effect type="bounce" event="load"/>
-			<p:effect type="explode" event="load" delay="12000"/>
+		<p:messages id="msgErros" autoUpdate="true" 
+			showDetail="true" closable="true" showSummary="false">
+			<p:effect type="pulsate" event="load" delay="500" />
+			<p:effect type="explode" event="load" delay="20000"/>
 		</p:messages>
-		
+				
 		
 		<p:tabView rendered="#{apartamentoBean.buscando}" prependId="false">						
 			<p:tab title="Consulta"> 	
@@ -156,7 +157,7 @@
 							disabled="#{apartamentoBean.visualizando}">
 															
 							<f:selectItem itemLabel="Selecione uma Categoria"/>
-							<f:selectItems value="#{apartamentoBean.categorias}" var="categoria"
+							<f:selectItems value="#{constantesBean.categorias}" var="categoria"
 								 itemValue="#{categoria}"	itemLabel="#{categoria.nome}" />
 						</p:selectOneMenu>
 					</p:panelGrid>
@@ -231,7 +232,7 @@
 					disabled="#{apartamentoBean.filtro.ordinal() ne 2}">
 					
 					<f:selectItem itemLabel="Selecione" />								
-					<f:selectItems value="#{apartamentoBean.categorias}" var="a"
+					<f:selectItems value="#{constantesBean.categorias}" var="a"
 						itemValue="#{a}" itemLabel="#{a.nome}"/>  						
 				</p:selectOneMenu>
 				

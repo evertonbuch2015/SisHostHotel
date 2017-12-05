@@ -24,9 +24,18 @@
     		<p:menuitem value="#{label.tit_recebimento}" url="#" />
 		</p:breadCrumb>
 		
-		<p:messages autoUpdate="true" showDetail="true" closable="true" showSummary="false">
-			<p:effect type="bounce" event="load"/>
-			<p:effect type="explode" event="load" delay="12000"/>
+		
+		<p:messages id="msgErros" autoUpdate="true" 
+			showDetail="true" closable="true" showSummary="false">
+			<p:effect type="pulsate" event="load" delay="500" />
+			<p:effect type="explode" event="load" delay="20000"/>
+		</p:messages>
+		
+		
+		<p:messages for="actMensagemGlobal" showDetail="true" rendered="#{recebimentoBean.buscando}" 
+			closable="true" showSummary="false">
+			<p:effect type="pulsate" event="load" delay="500" />
+			<p:effect type="explode" event="load" delay="8000"/>
 		</p:messages>
 		
 		
@@ -176,7 +185,7 @@
 							autoWidth="false" disabled="#{recebimentoBean.visualizando}">
 															
 							<f:selectItem itemLabel="Selecione um Local Receb."/>
-							<f:selectItems value="#{recebimentoBean.bancos}" var="banco"
+							<f:selectItems value="#{constantesBean.bancos}" var="banco"
 								 itemValue="#{banco}" itemLabel="#{banco.toString()}" />
 						</p:selectOneMenu>
 						
@@ -189,7 +198,7 @@
 							autoWidth="false" disabled="#{recebimentoBean.visualizando}">
 															
 							<f:selectItem itemLabel="Selecione um Forma Pagam."/>
-							<f:selectItems value="#{recebimentoBean.formasPagamento}" var="forma"
+							<f:selectItems value="#{constantesBean.formasPagamento}" var="forma"
 								 itemValue="#{forma}" itemLabel="#{forma.toString()}" />
 						</p:selectOneMenu>
 					</p:panelGrid>
@@ -253,7 +262,7 @@
 					disabled="#{not(recebimentoBean.filtro.ordinal() eq 1)}">
 					
 					<f:selectItem itemLabel="Forma Pag. não Informada" />											
-					<f:selectItems value="#{recebimentoBean.formasPagamento}" var="a"
+					<f:selectItems value="#{constantesBean.formasPagamento}" var="a"
 						itemValue="#{a}" itemLabel="#{a.descricao}"/>  						
 				</p:selectOneMenu>
 				
@@ -265,7 +274,7 @@
 					disabled="#{not(recebimentoBean.filtro.ordinal() eq 2)}">
 					
 					<f:selectItem itemLabel="Selecione" />											
-					<f:selectItems value="#{recebimentoBean.bancos}" var="a"
+					<f:selectItems value="#{constantesBean.bancos}" var="a"
 						itemValue="#{a}" itemLabel="#{a.toString()}"/>  						
 				</p:selectOneMenu>
 				

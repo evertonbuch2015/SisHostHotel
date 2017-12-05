@@ -71,8 +71,8 @@
     		responsive="true" style="width:100%;height:170px !important"/>
     	
     	<p:separator/>
-    	<p:chart type="bar" model="#{indexBean.barModel}" id="barRes"
-    		responsive="true" style="width:100%;height:250px !important"/>		
+    	<p:chart type="bar" model="#{indexBean.barModel}" id="barRes" rendered="#{indexBean.barModel.getSeries().size() > 0}"
+    		responsive="true" style="width:100%;height:250px !important"/>
 	</ui:define>
 
 </ui:composition>

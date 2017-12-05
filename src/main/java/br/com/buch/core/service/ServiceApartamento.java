@@ -3,7 +3,6 @@ package br.com.buch.core.service;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Observable;
 
 import javax.persistence.PersistenceException;
 
@@ -17,27 +16,13 @@ import br.com.buch.core.util.PersistenciaException;
 import br.com.buch.core.util.UtilErros;
 import br.com.buch.view.managedBean.ApartamentoBean.TipoFiltro;
 
-public class ServiceApartamento extends Observable implements GenericService<Apartamento> {
-
-	
-	private static final String BUSCAR_POR_SITUACAO = 
-			"Select a From Apartamento a LEFT JOIN FETCH a.categoria where a.situacao = ?1";
-
-	private static final String BUSCAR_POR_CATEGORIA = 
-			"Select a From Apartamento a LEFT JOIN FETCH a.categoria where a.categoria = ?1";
-
-	private static final String BUSCAR_LIVRES = 
-			"Select a From Apartamento a where a.situacao = ?1";
-
-	private static final String CARREGAR_ENTIDADE = 
-			"Select a From Apartamento a LEFT JOIN FETCH a.categoria where a.idApartamento = ?1";
+public class ServiceApartamento implements GenericService<Apartamento> {
 	
 	private ApartamentoDao apartamentoDao;
 	
 	
 	public ServiceApartamento() {
 		this.apartamentoDao = new ApartamentoDao();
-		addObserver(Constantes.getInstance());
 	}	
 	
 	
@@ -47,7 +32,7 @@ public class ServiceApartamento extends Observable implements GenericService<Apa
 			
 			try {
 				apartamentoDao.save(entidate);
-				notificarOuvintes();
+				Constantes.getInstance().refresh(ConstantesLista.APARTAMENTOS);
 				return "Apartamento Cadastrado com Sucesso!";
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -57,7 +42,7 @@ public class ServiceApartamento extends Observable implements GenericService<Apa
 		}else{			
 			try {
 				apartamentoDao.update(entidate);
-				notificarOuvintes();
+				Constantes.getInstance().refresh(ConstantesLista.APARTAMENTOS);
 				return "Apartamento Alterado com Sucesso!";
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -72,7 +57,7 @@ public class ServiceApartamento extends Observable implements GenericService<Apa
 	public String excluir(Apartamento entidade)throws Exception {
 		try {
 			apartamentoDao.delete(entidade);
-			notificarOuvintes();
+			Constantes.getInstance().refresh(ConstantesLista.APARTAMENTOS);
 			return "";
 		}catch (Exception ex) {
         	ex.printStackTrace();
@@ -85,7 +70,7 @@ public class ServiceApartamento extends Observable implements GenericService<Apa
 	@Override
 	public Apartamento carregarEntidade(Apartamento entidade)throws PersistenciaException {
 		try{
-			return apartamentoDao.findOne(CARREGAR_ENTIDADE, entidade.getIdApartamento());			
+			return apartamentoDao.findOne(ApartamentoDao.CARREGAR_ENTIDADE, entidade.getIdApartamento());			
 		}catch (Exception e) {
 			e.printStackTrace();
 			throw new PersistenciaException("Ocorreu uma exceção ao buscar os dados do Apartamento!" + 
@@ -108,10 +93,10 @@ public class ServiceApartamento extends Observable implements GenericService<Apa
 				String jpql = "Select a From Apartamento a LEFT JOIN FETCH a.categoria where a.numero in (" + valorFiltro + ")";
 				lista = apartamentoDao.find(jpql);				
 			}else if(tipoFiltro.equals(TipoFiltro.SITUACAO)){
-				lista = apartamentoDao.find(BUSCAR_POR_SITUACAO, valorFiltro);
+				lista = apartamentoDao.find(ApartamentoDao.BUSCAR_POR_SITUACAO, valorFiltro);
 				
 			}else if(tipoFiltro.equals(TipoFiltro.CATEGORIA)){
-				lista = apartamentoDao.find(BUSCAR_POR_CATEGORIA, valorFiltro);				
+				lista = apartamentoDao.find(ApartamentoDao.BUSCAR_POR_CATEGORIA, valorFiltro);				
 			}
 			
 			return lista;			
@@ -140,7 +125,7 @@ public class ServiceApartamento extends Observable implements GenericService<Apa
 	
 	public List<Apartamento> buscarTodosLivres(String cemp) {
 		try {
-			return apartamentoDao.find(BUSCAR_LIVRES, SituacaoApartamento.LIVRE, cemp);
+			return apartamentoDao.find(ApartamentoDao.BUSCAR_LIVRES, SituacaoApartamento.LIVRE, cemp);
 		} catch (Exception e) {
 			e.printStackTrace();
 			return null;
@@ -150,19 +135,18 @@ public class ServiceApartamento extends Observable implements GenericService<Apa
 		
 	/**
 	 * Verifica a Disponibilidade do Apartamento no intervalo de Data Fornecida.
-	 * @param Id do Apartamento
+	 * @param Apartamento apartamento
 	 * @param Data Entrada
 	 * @param Data Saida
 	 * 
 	 */
-	public void verificaDisponibilidade(Integer id, Date dataEntrada, Date dataSaida)throws NegocioException{
-		
-		SituacaoApartamento situacaoApartamento = apartamentoDao.verificaDisponibilidade(id, dataEntrada, dataSaida);
+	public void verificaDisponibilidade(Apartamento apartamento, Date dataEntrada, Date dataSaida)throws NegocioException{		
+		SituacaoApartamento situacaoApartamento = 
+				apartamentoDao.verificaDisponibilidade(apartamento.getIdApartamento(), dataEntrada, dataSaida);
 		
 		switch (situacaoApartamento) {
 		case OCUPADO:
-			throw new NegocioException("Apartamento não está disponivel para esta Data!");
-			
+			throw new NegocioException("Apartamento não está disponivel para esta Data!");			
 		default:
 			break;
 		}
@@ -170,18 +154,11 @@ public class ServiceApartamento extends Observable implements GenericService<Apa
 
 	
 	public List<Apartamento> buscarPorNumero(Integer numero) {		
-		try{
-			String jpql = "Select a From Apartamento a LEFT JOIN FETCH a.categoria where a.numero >= ?";
-			return apartamentoDao.find(jpql, numero);
+		try{			
+			return apartamentoDao.find(ApartamentoDao.BUSCAR_POR_NUMERO, numero);
 		} catch (Exception e) {
 			e.printStackTrace();
 			return new ArrayList<>();
 		}	
-	}
-	
-	
-	private void notificarOuvintes(){
-		setChanged();
-		notifyObservers(ConstantesLista.APARTAMENTOS);
 	}
 }

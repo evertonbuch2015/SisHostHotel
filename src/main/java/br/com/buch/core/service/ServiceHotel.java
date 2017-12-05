@@ -13,7 +13,6 @@ public class ServiceHotel implements GenericService<Hotel> {
 
 	private HotelDao empresaDao;
 	
-	private static final String BUSCAR_TODAS = "Select e From Hotel e order by e.nomeFantasia";
 	
 	public ServiceHotel() {
 		empresaDao = new HotelDao();
@@ -64,9 +63,8 @@ public class ServiceHotel implements GenericService<Hotel> {
 	
 	@Override
 	public Hotel carregarEntidade(Hotel hotel) throws PersistenciaException{
-		String jpql = "Select e From Hotel e left JOIN FETCH e.endereco where e.id = ?1";
 		try {
-			return empresaDao.findOne(jpql, hotel.getIdHotel());
+			return empresaDao.findOne(HotelDao.CARREGAR_ENTIDADE, hotel.getIdHotel());
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw new PersistenciaException("Ocorreu uma exceção ao buscar os dados do Hotel!" + 
@@ -78,7 +76,7 @@ public class ServiceHotel implements GenericService<Hotel> {
 	@Override
 	public List<Hotel> buscarTodos() {
 		try {
-			return empresaDao.find(BUSCAR_TODAS);
+			return empresaDao.find(HotelDao.BUSCAR_TODAS);
 		} catch (Exception e) {
 			e.printStackTrace();
 			return null;
@@ -90,14 +88,9 @@ public class ServiceHotel implements GenericService<Hotel> {
 		List<Hotel> lista = null;
 		
 		try {
-
-			if(tipoFiltro.equals(TipoFiltro.CODIGO)){						
-				String jpql = "Select e From Hotel e where e.codigo in (" + valorFiltro + ")";
-				lista = empresaDao.find(jpql);					
-			}
-			else if(tipoFiltro.equals(TipoFiltro.NOME)){					
-				lista = empresaDao.find("Select e From Hotel e where e.nomeRazao like ?",valorFiltro);				
-			}
+			lista = tipoFiltro.equals(TipoFiltro.CODIGO) ?
+						empresaDao.find(HotelDao.FILTRAR_POR_CODIGO, valorFiltro):
+						empresaDao.find(HotelDao.FILTRAR_POR_NOME,valorFiltro);			
 			
 			return lista;
 		} catch (Exception e) {
@@ -106,13 +99,10 @@ public class ServiceHotel implements GenericService<Hotel> {
             		" \nErro: " + UtilErros.getMensagemErro(e));
 		}
 	}
-
-
 	
 	
 	@Override
 	public void consisteAntesEditar(Hotel entidade) throws NegocioException{
 
 	}
-
 }

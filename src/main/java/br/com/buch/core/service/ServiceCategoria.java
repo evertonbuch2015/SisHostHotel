@@ -1,7 +1,6 @@
 package br.com.buch.core.service;
 
 import java.util.List;
-import java.util.Observable;
 
 import br.com.buch.core.dao.CategoriaDao;
 import br.com.buch.core.entity.Categoria;
@@ -11,14 +10,13 @@ import br.com.buch.core.util.PersistenciaException;
 import br.com.buch.core.util.UtilErros;
 import br.com.buch.view.managedBean.CategoriaBean.TipoFiltro;
 
-public class ServiceCategoria extends Observable implements GenericService<Categoria> {
+public class ServiceCategoria implements GenericService<Categoria> {
 	
 	private CategoriaDao categoriaDao; 
 	
 	
 	public ServiceCategoria() {
 		this.categoriaDao = new CategoriaDao();
-		addObserver(Constantes.getInstance());
 	}
 		
 	
@@ -28,7 +26,7 @@ public class ServiceCategoria extends Observable implements GenericService<Categ
 		if(entidate.getIdCategoria() == null){
 			try {
 				categoriaDao.save(entidate);
-				notificarOuvintes();
+				Constantes.getInstance().refresh(ConstantesLista.CATEGORIAS);
 				return "Categoria de Apartamento Cadastrada com Sucesso!";
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -39,7 +37,7 @@ public class ServiceCategoria extends Observable implements GenericService<Categ
 			
 			try {
 				categoriaDao.update(entidate);
-				notificarOuvintes();
+				Constantes.getInstance().refresh(ConstantesLista.CATEGORIAS);
 				return "Categoria de Apartamento Alterado com Sucesso!";
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -54,12 +52,11 @@ public class ServiceCategoria extends Observable implements GenericService<Categ
 	public String excluir(Categoria entidade) throws Exception{
 		try {
 			categoriaDao.delete(entidade);
-			notificarOuvintes();
+			Constantes.getInstance().refresh(ConstantesLista.CATEGORIAS);
 			return "";
 		}catch (Exception ex) {
-        	ex.printStackTrace();
-        	throw new PersistenciaException("Ocorreu uma exceção ao Excluir a Categoria!" + 
-            		" \nErro: " + UtilErros.getMensagemErro(ex));
+        	throw new PersistenciaException("Ocorreu uma exceção ao Excluir a Categoria." + 
+            		" \n Erro: " + UtilErros.getMensagemErro(ex));
 		}
 		
 	}
@@ -68,9 +65,7 @@ public class ServiceCategoria extends Observable implements GenericService<Categ
 	@Override
 	public Categoria carregarEntidade(Categoria entidade)throws PersistenciaException {
 		try{
-			String jpql = "Select c From Categoria c where c.idCategoria = ?1";
-			return categoriaDao.findOne(jpql, entidade.getIdCategoria());
-			
+			return categoriaDao.findOne(CategoriaDao.CARREGAR_ENTIDADE, entidade.getIdCategoria());
 		}catch (Exception e) {
 			e.printStackTrace();
 			throw new PersistenciaException("Ocorreu uma exceção ao buscar os dados da Categoria!" + 
@@ -95,7 +90,7 @@ public class ServiceCategoria extends Observable implements GenericService<Categ
 		
 		try {			
 			if(tipoFiltro.equals(TipoFiltro.NOME)){
-				lista = categoriaDao.find("Select c From Categoria c where c.nome like ?",valorFiltro);
+				lista = categoriaDao.find(CategoriaDao.BUSCAR_POR_NOME, valorFiltro);
 			}											
 			return lista;			
 			
@@ -122,9 +117,4 @@ public class ServiceCategoria extends Observable implements GenericService<Categ
 		}
 	}
 
-	
-	private void notificarOuvintes(){
-		setChanged();
-		notifyObservers(ConstantesLista.CATEGORIAS);
-	}
 }

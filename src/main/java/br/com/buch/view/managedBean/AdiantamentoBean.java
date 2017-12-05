@@ -1,7 +1,6 @@
 package br.com.buch.view.managedBean;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -12,11 +11,11 @@ import org.primefaces.event.SelectEvent;
 
 import br.com.buch.core.entity.Adiantamento;
 import br.com.buch.core.entity.Banco;
+import br.com.buch.core.entity.FormaPagamento;
 import br.com.buch.core.entity.Hospede;
 import br.com.buch.core.enumerated.TipoFiltroAdiantamento;
 import br.com.buch.core.service.ServiceAdiantamento;
 import br.com.buch.core.service.ServiceHospede;
-import br.com.buch.core.util.Constantes;
 import br.com.buch.core.util.NegocioException;
 import br.com.buch.view.util.UtilMensagens;
 
@@ -29,9 +28,12 @@ public class AdiantamentoBean extends GenericBean<Adiantamento, ServiceAdiantame
 	private ServiceHospede serviceHospede;
 	
 	//Filtros
-	private Banco banco;
+	private Banco bancoFiltro;
 	private Date dataFiltro;
 	private Date dataFiltroFinal;
+	
+	private Banco bancoBaixa;
+	private FormaPagamento formaPagamentoBaixa; 
 	
 	public AdiantamentoBean() {
 		super(new ServiceAdiantamento());
@@ -46,7 +48,7 @@ public class AdiantamentoBean extends GenericBean<Adiantamento, ServiceAdiantame
 	public void filtrar() {
 		try {			
 			if(filtro == TipoFiltroAdiantamento.LOCAL_RECEBIMENTO){
-				this.entidades = service.filtrarTabela(filtro, banco);
+				this.entidades = service.filtrarTabela(filtro, bancoFiltro);
 			}
 			
 			else if(filtro == TipoFiltroAdiantamento.DATA_EMISSAO){
@@ -60,16 +62,13 @@ public class AdiantamentoBean extends GenericBean<Adiantamento, ServiceAdiantame
 			
 			else if(filtro != null){
 				this.entidades = service.filtrarTabela(filtro, valorFiltro);
-			}
-			
-			dataFiltro =null;
-			dataFiltroFinal =null;
-			banco=null;
-			
+			}				
 		}catch(NegocioException e){
 			UtilMensagens.mensagemAtencao(e.getMessage());
 		}catch (Exception e) {
 			UtilMensagens.mensagemErro(e.getMessage());
+		}finally {
+			dataFiltro =null;  dataFiltroFinal =null;  bancoFiltro=null;
 		}
 	}
 
@@ -87,10 +86,16 @@ public class AdiantamentoBean extends GenericBean<Adiantamento, ServiceAdiantame
 		
 	
 	public void realizarBaixa(){
+		if (this.entidade == null || this.entidade.getIdAdiantamento() == null){
+			UtilMensagens.mensagemAtencao("Escolha um Adiantamento de Cliente na Lista!");
+			return;
+		}
+		
 		try {
+			entidade.setLocalRecebimento(bancoBaixa);
 			service.realizarBaixa(entidade);
 			this.entidade = service.carregarEntidade(entidade);
-			UtilMensagens.mensagemAtencao("Baixa de Adiantamento de Cliente realizada com sucesso!");
+			UtilMensagens.mensagemInformacao("Baixa de Adiantamento de Cliente realizada com sucesso!");
 		}
 		catch (NegocioException e) {
 			UtilMensagens.mensagemAtencao(e.getMessage());
@@ -128,19 +133,15 @@ public class AdiantamentoBean extends GenericBean<Adiantamento, ServiceAdiantame
 	public Date getDataFiltroFinal() {return dataFiltroFinal;}
 	public void setDataFiltroFinal(Date dataFiltroFinal) {this.dataFiltroFinal = dataFiltroFinal;}
 	
-	public Banco getBanco() {return banco;}
-	public void setBanco(Banco banco) {this.banco = banco;}
+	public Banco getBancoFiltro() {return bancoFiltro;}
+	public void setBancoFiltro(Banco bancoFiltro) {this.bancoFiltro = bancoFiltro;}
+
 	
-	
-	public List<Banco> getLocaisRecebimento(){
-		try {
-			return Constantes.getInstance().getListaBancos();
-		} catch (Exception e) {
-			UtilMensagens.mensagemErro(UtilMensagens.MSM_ERRO_INTERNO);
-			return new ArrayList<>();
-		}
-	}
-	
+	public Banco getBancoBaixa() {return bancoBaixa;}	
+	public void setBancoBaixa(Banco bancoBaixa) {this.bancoBaixa = bancoBaixa;}
+
+	public FormaPagamento getFormaPagamentoBaixa() {return formaPagamentoBaixa;}
+	public void setFormaPagamentoBaixa(FormaPagamento formaPagamentoBaixa) {this.formaPagamentoBaixa = formaPagamentoBaixa;}
 	
 	@Override
 	public List<Adiantamento> getEntidades() {

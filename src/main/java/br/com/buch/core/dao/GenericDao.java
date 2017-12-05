@@ -324,12 +324,10 @@ public abstract class GenericDao<T extends Serializable> {
     	try {
             em.getTransaction().begin();
             em.remove(em.find(aClass, id));
-            em.getTransaction().commit();
-                                    
-        } catch (Exception e) {            
-        	e.printStackTrace();
-        	doRollback(em);
-        	throw e;
+            em.getTransaction().commit();                                    
+        }catch (Exception e) {            
+        	doRollback(em);     		
+    		throw e;     	
         }finally{
 			em.close();
 		}
@@ -348,12 +346,10 @@ public abstract class GenericDao<T extends Serializable> {
             em.getTransaction().begin();
             T c = em.merge(entity);
             em.remove(c);
-            em.getTransaction().commit();
-            
-        } catch (Exception ex) {        	            
-        	ex.printStackTrace();
-        	doRollback(em);
-        	throw ex;
+            em.getTransaction().commit();            
+        }catch (Exception e) {            
+        	doRollback(em);     		
+        	throw e;  
         }finally{
 			em.close();
 		}

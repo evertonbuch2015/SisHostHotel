@@ -1,7 +1,6 @@
 package br.com.buch.view.managedBean;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -14,7 +13,6 @@ import br.com.buch.core.entity.Recebimento;
 import br.com.buch.core.entity.Recebimento.OrigemRecebimento;
 import br.com.buch.core.enumerated.TipoFiltroRecebimento;
 import br.com.buch.core.service.ServiceRecebimento;
-import br.com.buch.core.util.Constantes;
 import br.com.buch.core.util.NegocioException;
 import br.com.buch.view.util.UtilMensagens;
 
@@ -81,23 +79,6 @@ public class RecebimentoBean extends GenericBean<Recebimento, ServiceRecebimento
 	
 		
 	// =============================GET AND SET=====================================
-	
-    
-	public List<Banco> getBancos() {
-		try {
-			return Constantes.getInstance().getListaBancos();
-		} catch (Exception e) {
-			return new ArrayList<>();
-		}
-	}
-	
-	public List<FormaPagamento> getFormasPagamento() {
-		try {
-			return Constantes.getInstance().getListaFormasPagamento();
-		} catch (Exception e) {
-			return new ArrayList<>();
-		}
-	}
 	
 	@Override
 	public List<Recebimento> getEntidades() {

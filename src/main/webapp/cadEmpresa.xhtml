@@ -20,9 +20,11 @@
     		<p:menuitem value="#{label.empresas}" url="#" />			
 		</p:breadCrumb>
 		
-		<p:messages autoUpdate="true" showDetail="true" closable="true" showSummary="false">
-			<p:effect type="bounce" event="load"/>
-			<p:effect type="explode" event="load" delay="12000"/>
+		
+		<p:messages id="msgErros" autoUpdate="true" 
+			showDetail="true" closable="true" showSummary="false">
+			<p:effect type="pulsate" event="load" delay="500" />
+			<p:effect type="explode" event="load" delay="20000"/>
 		</p:messages>
 		
 		
@@ -45,7 +47,7 @@
 
 
 					<p:column headerText="#{label.txt_codigo}" style="text-align: center !important;"  
-						sortBy="#{empresa.codigo}">
+						sortBy="#{empresa.codigo}" width="90">
 						<h:outputText value="#{empresa.codigo}" />
 					</p:column>
 										
@@ -56,7 +58,7 @@
 
 
 					<p:column headerText="#{label.txt_documento}" sortBy="#{empresa.documento}">
-						<h:outputText value="#{empresa.documentoFormatado}" />
+						<h:outputText value="#{empresa.documentoFormatado}"/>
 					</p:column>
 					
 					
@@ -65,7 +67,8 @@
 					</p:column>
 					
 					
-					<p:column headerText="#{label.txt_acoes}" style="text-align: center !important;"  exportable="false">
+					<p:column headerText="#{label.txt_acoes}" style="text-align: center !important;"  
+						exportable="false" width="110">
 						<p:commandButton actionListener="#{empresaBean.editar(empresa)}" 
 							icon="ui-icon-pencil" update="@form"/>
 							
@@ -81,7 +84,8 @@
 		</p:tabView>
 		
 						
-		<p:tabView rendered="#{!empresaBean.buscando}" effect="fade" effectDuration="fast">	
+		<p:tabView rendered="#{!empresaBean.buscando}" binding="#{empresaBean.tabView}" id="tabview2"
+			effect="fade" effectDuration="fast" activeIndex="0">	
 		
 			<p:ajax event="tabChange" listener="#{empresaBean.onTabChange}" update="tabelaHospedes"/>
 								
@@ -112,7 +116,8 @@
 						<p:inputText id="nome_razao" 
 							value="#{empresaBean.entidade.nomeRazao}" placeholder="máximo 60 caracteres"
 							required="true" 
-							requiredMessage="Informe o nome razão do empresa!"/>
+							requiredMessage="Informe o nome razão do empresa!"
+							readonly="#{empresaBean.visualizando}"/>
 						
 						
 						<p:outputLabel value="#{label.txt_nome_fantasia}:" for="nome_fantasia" />
@@ -120,7 +125,8 @@
 							value="#{empresaBean.entidade.nomeFantasia}" 
 							placeholder="máximo 60 caracteres"
 							required="true" 
-							requiredMessage="Informe o nome fantasia do empresa!"/>
+							requiredMessage="Informe o nome fantasia do empresa!"
+							readonly="#{empresaBean.visualizando}"/>
 						
 						
 					</p:panelGrid>
@@ -136,7 +142,8 @@
 						<p:inputText id="email"
 							value="#{empresaBean.entidade.email}" placeholder="Ex: email@dominio.com.br"
 							required="true" 
-							requiredMessage="Informe um e-mail de contato!"/>
+							requiredMessage="Informe um e-mail de contato!"
+							readonly="#{empresaBean.visualizando}"/>
 						
 						
 						<p:outputLabel value="#{label.txt_site}:" for="site" />

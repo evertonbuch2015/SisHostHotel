@@ -33,9 +33,11 @@
     		<p:menuitem value="#{label.txt_hospedagens}" url="#" />
 		</p:breadCrumb>
 		
-		<p:messages autoUpdate="true" showDetail="true" closable="true" showSummary="false">
-			<p:effect type="bounce" event="load"/>
-			<p:effect type="explode" event="load" delay="12000"/>
+		
+		<p:messages id="msgErros" autoUpdate="true" 
+			showDetail="true" closable="true" showSummary="false">
+			<p:effect type="pulsate" event="load" delay="500" />
+			<p:effect type="explode" event="load" delay="20000"/>
 		</p:messages>
 		
 		
@@ -112,7 +114,7 @@
 							action="#{hospedagemBean.fazerCheckOut(entidade)}">
 							
 							<p:confirm header="#{label.txt_confirmacao}" 
-								message="Deseja Realmente fazer o Check-Out desta Hospedagem?"/>	
+								message="Deseja fazer o Check-Out da Hospedagem?"/>	
 						</p:commandButton>
 					</p:column>					
 
@@ -246,7 +248,7 @@
 							<p:autoComplete id="hospede" 
 								value="#{hospedagemBean.entidade.hospede}"
 		 						var="hospede" itemLabel="#{hospede.nome}" itemValue="#{hospede}"
-		 						minQueryLength="4" maxResults="20" 
+		 						minQueryLength="3" maxResults="20" 
 		 						dropdown="true" queryDelay="1000" size="40"
 								forceSelection="true" readonly="#{hospedagemBean.visualizando}"
 								completeMethod="#{hospedagemBean.buscarHospedes}"

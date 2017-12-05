@@ -70,49 +70,7 @@
 				<p:spacer style="margin-top:10px;"/>
 				
 	        </p:tab>
-	 
-	 
 	        
-	        <p:tab id="adiantamento" title="Adiantamento">
-                 <p:panel style="margin-top:5px;min-height: 300px">
-					
-					<p:dataTable id="tabelaAdiantamento"
-						value="#{checkoutBean.adiantamentos}" var="adiantamento"
-						style="width: 100%;">				
-	
-						
-						<p:column headerText="#{label.txt_data_emissao}" width="130" style="text-align: left;">
-							<h:outputText value="#{adiantamento.dataEmissaoFormatada}" />
-						</p:column>
-												
-						
-						<p:column headerText="#{label.txt_valor}" width="80" style="text-align: left;">
-							<h:outputText value="R$ #{adiantamento.valor}">
-								<f:convertNumber pattern="#,##0.00"/>
-							</h:outputText>							
-						</p:column>
-						
-						
-						<p:column headerText="#{label.txt_saldo}" width="80" style="text-align: left;">
-							<h:outputText value="R$ #{adiantamento.saldo}">						
-								<f:convertNumber pattern="#,##0.00"/>
-							</h:outputText>
-						</p:column>
-						
-						<p:column headerText="#{label.txt_selecione}" width="110">						
-							<p:commandButton actionListener="#{checkoutBean.adiantamentoSelecionado(adiantamento)}" 
-								icon="ui-icon-pencil" update="tabelaAdiantamento"/>
-						</p:column>			
-						
-					</p:dataTable>
-	 			</p:panel>
-	 			
-	 			<p:spacer style="margin-top:20px;"/>
-	 			
-	        </p:tab>
-	 
-	 
-	 
 	 
 	        <p:tab id="lancmentos" title="Lançamentos Financeiros">
 	            <p:panel style="margin-top:5px;min-height: 300px">

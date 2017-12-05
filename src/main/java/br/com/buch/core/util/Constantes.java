@@ -2,8 +2,6 @@ package br.com.buch.core.util;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Observable;
-import java.util.Observer;
 
 import br.com.buch.core.dao.ApartamentoDao;
 import br.com.buch.core.dao.BancoDao;
@@ -20,7 +18,7 @@ import br.com.buch.core.entity.TipoTarifa;
 import br.com.buch.core.entity.Usuario;
 
 
-public class Constantes implements Observer{
+public class Constantes{
 
 	public enum ConstantesLista{
 		APARTAMENTOS, CATEGORIAS, BANCOS, TIPOS_TARIFA,	FORMAS_PAGAMENTO
@@ -36,6 +34,7 @@ public class Constantes implements Observer{
 	private List<FormaPagamento> listaFormasPagamento;
 	private List<Hotel> listaHoteis;
 	
+	
 	private Constantes() {
 		usuariosLogados = new ArrayList<Usuario>();
 	}
@@ -48,7 +47,7 @@ public class Constantes implements Observer{
 	}
 	
 	
-	private void refresh(ConstantesLista tipo){
+	public void refresh(ConstantesLista tipo){
 		try {
 			switch (tipo) {
 			case APARTAMENTOS:
@@ -65,6 +64,8 @@ public class Constantes implements Observer{
 				break;
 			case TIPOS_TARIFA:
 				listaTiposTarifa       = new TipoTarifaDao().findAll();	
+				break;
+			default:
 				break;
 			}
 		}catch (Exception e) {
@@ -134,12 +135,5 @@ public class Constantes implements Observer{
 	public void removeUsuarioLogado(Usuario usuario){
 		if(this.usuariosLogados.contains(usuario))
 			this.usuariosLogados.remove(usuario);
-	}
-
-	
-	//
-	@Override
-	public void update(Observable o, Object arg) {		
-		refresh((ConstantesLista) arg);		
-	}
+	}	
 }

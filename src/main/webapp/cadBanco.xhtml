@@ -20,9 +20,11 @@
     		<p:menuitem value="#{label.tit_banco}" url="#" />
 		</p:breadCrumb>
 		
-		<p:messages autoUpdate="true" showDetail="true" closable="true" showSummary="false">
-			<p:effect type="bounce" event="load"/>
-			<p:effect type="explode" event="load" delay="12000"/>
+		
+		<p:messages id="msgErros" autoUpdate="true" 
+			showDetail="true" closable="true" showSummary="false">
+			<p:effect type="pulsate" event="load" delay="500" />
+			<p:effect type="explode" event="load" delay="20000"/>
 		</p:messages>
 		
 		
@@ -85,12 +87,15 @@
 						<p:inputText id="codigo"
 							value="#{bancoBean.entidade.codigo}" 
 							readonly="#{bancoBean.visualizando}"
-							requiredMessage="Informe O Código do Banco!"/>
+							required="true"
+							requiredMessage="Informe o Código do Banco!"/>
 						
 						<p:outputLabel value="#{label.txt_nome}" for="nome" />
 						<p:inputText id="nome"
 							value="#{bancoBean.entidade.nome}"
-							placeholder="Informe o nome"/>
+							placeholder="Informe o nome"
+							required="true"
+							requiredMessage="Informe o Nome do Banco!"/>
 						
 					</p:panelGrid>					
 				</div>

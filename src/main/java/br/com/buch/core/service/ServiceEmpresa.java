@@ -17,12 +17,6 @@ public class ServiceEmpresa implements GenericService<Empresa> {
 
 	private EmpresaDao dao;
 	
-	private static final String BUSCAR_TODAS = "Select e From Empresa e order by e.nomeFantasia";
-	
-	private static final String BUSCAR_POR_NOME_FANTASIA = 
-			"Select e From Empresa e where e.nomeFantasia Like ? order by e.nomeFantasia";
-	
-	
 	public ServiceEmpresa() {
 		dao = new EmpresaDao();
 	}
@@ -73,10 +67,9 @@ public class ServiceEmpresa implements GenericService<Empresa> {
 
 	
 	@Override
-	public Empresa carregarEntidade(Empresa Empresa) throws PersistenciaException{
-		String jpql = "Select e From Empresa e left JOIN FETCH e.endereco where e.idEmpresa = ?1";
+	public Empresa carregarEntidade(Empresa Empresa) throws PersistenciaException{ 
 		try {
-			return dao.findOne(jpql, Empresa.getIdEmpresa());
+			return dao.findOne(EmpresaDao.CARREGAR_ENTIDADE, Empresa.getIdEmpresa());
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw new PersistenciaException("Ocorreu uma exceção ao buscar os dados da Empresa!" + 
@@ -88,7 +81,7 @@ public class ServiceEmpresa implements GenericService<Empresa> {
 	@Override
 	public List<Empresa> buscarTodos() {
 		try {
-			return dao.find(BUSCAR_TODAS);
+			return dao.find(EmpresaDao.BUSCAR_TODAS);
 		} catch (Exception e) {
 			e.printStackTrace();
 			return null;
@@ -101,12 +94,11 @@ public class ServiceEmpresa implements GenericService<Empresa> {
 		
 		try {
 
-			if(tipoFiltro.equals(TipoFiltro.CODIGO)){						
-				String jpql = "Select e From Empresa e where e.codigo in (" + valorFiltro + ")";
-				lista = dao.find(jpql);					
+			if(tipoFiltro.equals(TipoFiltro.CODIGO)){
+				lista = dao.find(EmpresaDao.FILTRAR_POR_CODIGO, valorFiltro);					
 			}
-			else if(tipoFiltro.equals(TipoFiltro.NOME)){					
-				lista = dao.find("Select e From Empresa e where e.nomeRazao like ?",valorFiltro);				
+			else if(tipoFiltro.equals(TipoFiltro.NOME)){			
+				lista = dao.find(EmpresaDao.FILTRAR_POR_NOME, valorFiltro);				
 			}
 			
 			return lista;
@@ -116,6 +108,11 @@ public class ServiceEmpresa implements GenericService<Empresa> {
 		}
 	}
 
+	
+	public List<Empresa> buscarPorNome(String nome) throws Exception{
+		return dao.find(EmpresaDao.BUSCAR_POR_NOME, nome);
+	}
+	
 	
 	@Override
 	public void consisteAntesEditar(Empresa entidade) throws NegocioException{
@@ -143,7 +140,7 @@ public class ServiceEmpresa implements GenericService<Empresa> {
 	
 	public List<Empresa> buscarPorNomeFantasia(String nome){
 		try {
-			return dao.find(BUSCAR_POR_NOME_FANTASIA, nome);
+			return dao.find(EmpresaDao.BUSCAR_POR_NOME_FANTASIA, nome);
 		} catch (Exception e) {
 			e.printStackTrace();
 			return null;

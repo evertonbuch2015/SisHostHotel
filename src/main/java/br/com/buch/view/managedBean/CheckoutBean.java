@@ -1,9 +1,7 @@
 package br.com.buch.view.managedBean;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -13,14 +11,10 @@ import javax.faces.bean.ViewScoped;
 import org.primefaces.event.FlowEvent;
 import org.primefaces.event.SelectEvent;
 
-import br.com.buch.core.entity.Adiantamento;
 import br.com.buch.core.entity.Banco;
 import br.com.buch.core.entity.FormaPagamento;
 import br.com.buch.core.entity.Hospedagem;
-import br.com.buch.core.entity.HospedagemLancamento;
-import br.com.buch.core.entity.HospedagemLancamento.OrigemLancamento;
 import br.com.buch.core.entity.Recebimento;
-import br.com.buch.core.service.ServiceAdiantamento;
 import br.com.buch.core.service.ServiceHospedagem;
 import br.com.buch.core.util.Constantes;
 import br.com.buch.core.util.PersistenciaException;
@@ -35,30 +29,23 @@ public class CheckoutBean implements Serializable{
 	private Hospedagem hospedagem;
 	private ServiceHospedagem service;
 	private Integer idHospedagem;
-	private List<Adiantamento> adiantamentos;
 	private Recebimento recebimento;
 	private boolean skip;
 	
 	
 	@PostConstruct
 	public void init(){
-		service = new ServiceHospedagem();
-		try {
-			this.hospedagem = service.carregarEntidade(5);			
-			adiantamentos = new ServiceAdiantamento().buscarPorHospede(hospedagem.getHospede());	
-			recebimento = new Recebimento();
-		} catch (PersistenciaException e) {
-			e.printStackTrace();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		service = new ServiceHospedagem();		
 	}
 	
 	
 	public void buscarHospedagem(){
 		try {
-			this.hospedagem = service.carregarEntidade(idHospedagem);
+			this.hospedagem = service.carregarEntidade(idHospedagem);	
+			recebimento = new Recebimento();
 		} catch (PersistenciaException e) {
+			e.printStackTrace();
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
@@ -74,30 +61,7 @@ public class CheckoutBean implements Serializable{
 		Banco banco = (Banco) event.getObject();	
 		this.recebimento.setLocalRecebimento(banco);
 	}
-	
-	
-	public void adiantamentoSelecionado(Adiantamento adiantamento){
-		if(adiantamento.getSaldo() > 0){
-			HospedagemLancamento hospedagemLancamento = new HospedagemLancamento();
-			hospedagemLancamento.setDataCadastro(new Date());
-			hospedagemLancamento.setDescricao("Adiantamento de Cliente Nº " + adiantamento.getCodigo());
-			hospedagemLancamento.setHospedagem(hospedagem);
-			hospedagemLancamento.setOrigemLancamento(OrigemLancamento.ADIANTAMENTO);
-			hospedagemLancamento.setQuantidade(1);
-			hospedagemLancamento.setVlUnitario(BigDecimal.valueOf(adiantamento.getValor()));
-			
-			hospedagem.getLancamentos().add(hospedagemLancamento);
-			
-			adiantamento.setDtBaixa(new Date());
-			adiantamento.setSaldo(0.00);
-			
-			UtilMensagens.mensagemInformacao("Adiantamento Inserido com sucesso!");
-		}else{
-			UtilMensagens.mensagemAtencao("Adiantamento sem Saldo Disponivel!");
-		}
 		
-	}
-	
 	
 	public String onFlowProcess(FlowEvent event) {
         if(skip) {
@@ -112,7 +76,7 @@ public class CheckoutBean implements Serializable{
 	
 	public String confirmarCheckOut(){
 		try {
-			service.confirmarCheckOut(hospedagem, recebimento, adiantamentos);
+			service.confirmarCheckOut(hospedagem, recebimento);
 			return "hospedagem?faces-redirect=true&retornoCheckOut=true";
 		} catch (Exception e) {			
 			UtilMensagens.mensagemErro("Ocorreu uma exceção ao gravar o Check-Out!" + 
@@ -121,6 +85,23 @@ public class CheckoutBean implements Serializable{
 		}		
 	}
 	
+	
+	public List<Banco> getBancos(String string) {
+		try {
+			return Constantes.getInstance().getListaBancos();
+		} catch (Exception e) {
+			return new ArrayList<>();
+		}
+	}
+	
+	
+	public List<FormaPagamento> getFormasPagamento(String string) {
+		try {
+			return Constantes.getInstance().getListaFormasPagamento();
+		} catch (Exception e) {
+			return new ArrayList<>();
+		}
+	}
 	
 	// =============================GET AND SET=====================================
 	
@@ -142,27 +123,4 @@ public class CheckoutBean implements Serializable{
 	 
     public void setSkip(boolean skip) {this.skip = skip;}   
     
-    
-	public List<Banco> getBancos(String string) {
-		try {
-			return Constantes.getInstance().getListaBancos();
-		} catch (Exception e) {
-			return new ArrayList<>();
-		}
-	}
-	
-	public List<FormaPagamento> getFormasPagamento(String string) {
-		try {
-			return Constantes.getInstance().getListaFormasPagamento();
-		} catch (Exception e) {
-			return new ArrayList<>();
-		}
-	}
-	
-	public List<Adiantamento> getAdiantamentos() {		
-		if (adiantamentos == null){
-			adiantamentos = new ArrayList<>();
-		}
-		return adiantamentos;
-	} 
 }

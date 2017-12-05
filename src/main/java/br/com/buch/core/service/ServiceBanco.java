@@ -2,7 +2,6 @@ package br.com.buch.core.service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Observable;
 
 import br.com.buch.core.dao.BancoDao;
 import br.com.buch.core.entity.Banco;
@@ -11,14 +10,13 @@ import br.com.buch.core.util.Constantes.ConstantesLista;
 import br.com.buch.core.util.PersistenciaException;
 import br.com.buch.core.util.UtilErros;
 
-public class ServiceBanco extends Observable implements GenericService<Banco> {
+public class ServiceBanco implements GenericService<Banco> {
 
 	private BancoDao dao;
 
 	
 	public ServiceBanco() {
 		dao = new BancoDao();
-		addObserver(Constantes.getInstance());
 	}
 
 	
@@ -28,7 +26,7 @@ public class ServiceBanco extends Observable implements GenericService<Banco> {
 
 			try {
 				dao.save(entidate);
-				notificarOuvintes();
+				Constantes.getInstance().refresh(ConstantesLista.BANCOS);
 				return "Banco Cadastrado com Sucesso!";
 			} catch (Exception e) {
 				throw new PersistenciaException("Ocorreu uma exceção ao inserir o Banco!" + 
@@ -38,7 +36,7 @@ public class ServiceBanco extends Observable implements GenericService<Banco> {
 
 			try {
 				dao.update(entidate);
-				notificarOuvintes();
+				Constantes.getInstance().refresh(ConstantesLista.BANCOS);
 				return "Banco Alterado com Sucesso!";
 			} catch (Exception e) {
 				throw new PersistenciaException("Ocorreu uma exceção ao Alterar o Banco!" + 
@@ -52,7 +50,7 @@ public class ServiceBanco extends Observable implements GenericService<Banco> {
 	public String excluir(Banco entidade)throws Exception{
 		try {
 			dao.delete(entidade);
-			notificarOuvintes();
+			Constantes.getInstance().refresh(ConstantesLista.BANCOS);
 			return "Banco Excluido com Sucesso!";
 		}catch (Exception ex) {
         	throw new PersistenciaException("Ocorreu uma exceção ao Excluir o Banco!" + 
@@ -87,9 +85,4 @@ public class ServiceBanco extends Observable implements GenericService<Banco> {
 
 	}
 
-	
-	private void notificarOuvintes(){
-		setChanged();
-		notifyObservers(ConstantesLista.BANCOS);
-	}
 }

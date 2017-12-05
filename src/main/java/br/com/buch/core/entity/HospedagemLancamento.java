@@ -180,7 +180,7 @@ public class HospedagemLancamento implements Serializable {
 
 	@Transient
     public String getDataCadastroFormatada(){
-        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:MM");
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
         return sdf.format(this.dataCadastro.getTime());                
     }
     

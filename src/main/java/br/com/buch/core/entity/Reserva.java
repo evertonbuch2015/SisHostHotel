@@ -105,6 +105,11 @@ public class Reserva implements Serializable {
     
     
     @OneToOne
+    @JoinColumn(name ="COD_CADEMPRESA")
+    private Empresa empresa;
+    
+    
+    @OneToOne
     @JoinColumn(name ="COD_CADAPARTAMENTO")
     private Apartamento apartamento;
 
@@ -221,6 +226,11 @@ public class Reserva implements Serializable {
 
 	public void setHospede(Hospede hospede) {this.hospede = hospede;}
 
+	
+	public Empresa getEmpresa() {return empresa;}
+	
+	public void setEmpresa(Empresa empresa) {this.empresa = empresa;}
+	
 
 	public Apartamento getApartamento() {return apartamento;}
 

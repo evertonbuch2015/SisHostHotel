@@ -128,11 +128,16 @@
 			<version>4.3.0.Final</version>
 		</dependency>
 
-		<!-- Hibernate c3p0 connection pool -->
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-c3p0</artifactId>
-			<version>3.6.3.Final</version>
+			<version>4.3.6.Final</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>c3p0</groupId>
+			<artifactId>c3p0</artifactId>
+			<version>0.9.1.2</version>
 		</dependency>
 
 
@@ -210,5 +215,7 @@
 			<artifactId>genson</artifactId>
 			<version>LATEST</version>
 		</dependency>
+
+
 	</dependencies>
 </project>

@@ -16,31 +16,12 @@ import br.com.buch.core.util.UtilErros;
 
 public class ServiceRecebimento implements GenericService<Recebimento> {
 	
-	private static final String CARREGAR_ENTIDADE = 
-			"From Recebimento r LEFT JOIN FETCH r.formaPagamento LEFT JOIN FETCH r.localRecebimento where r.idRecebimento = ?";
-	
-	private static final String BUSCAR_TODOS = 
-			"From Recebimento r LEFT JOIN FETCH r.formaPagamento LEFT JOIN FETCH r.localRecebimento where r.dtEmissao Between ? and ? order by r.dtEmissao";
-
-	private static final String FILTRAR_POR_CODIGO = "Select r From Recebimento r LEFT JOIN FETCH r.localRecebimento where r.numero = ?";
-	
-	private static final String FILTRAR_POR_FORMA_PAGAMENTO = "Select r From Recebimento r LEFT JOIN FETCH r.localRecebimento where r.formaPagamento = ?";
-	
-	private static final String FILTRAR_POR_FORMA_PAGAMENTO_NULL = "Select r From Recebimento r LEFT JOIN FETCH r.localRecebimento where r.formaPagamento is null";
-	
-	private static final String FILTRAR_POR_BANCO = "Select r From Recebimento r LEFT JOIN FETCH r.localRecebimento where r.localRecebimento = ?";
-	
-	private static final String FILTRO_POR_DATA_ENTRADA = "Select r From Recebimento r LEFT JOIN FETCH r.localRecebimento where r.dtEmissao = ?";
-	
-	private static final String FILTRO_POR_DATA_ENTRADA_BEETWEN = "Select r From Recebimento r LEFT JOIN FETCH r.localRecebimento where r.dtEmissao Between ? and ?";
-	
 	private RecebimentoDao dao; 
 	
 	
 	public ServiceRecebimento() {
 		this.dao = new RecebimentoDao();
 	}
-	
 	
 	
 	@Override
@@ -87,7 +68,7 @@ public class ServiceRecebimento implements GenericService<Recebimento> {
 	@Override
 	public Recebimento carregarEntidade(Recebimento entidade)throws PersistenciaException {
 		try{			
-			return dao.findOne(CARREGAR_ENTIDADE, entidade.getIdRecebimento());			
+			return dao.findOne(RecebimentoDao.CARREGAR_ENTIDADE, entidade.getIdRecebimento());			
 		}catch (Exception e) {
 			e.printStackTrace();
 			throw new PersistenciaException(
@@ -113,7 +94,7 @@ public class ServiceRecebimento implements GenericService<Recebimento> {
         Date d2 = c2.getTime();
         
 		try {
-			return dao.find(BUSCAR_TODOS, d1, d2);
+			return dao.find(RecebimentoDao.BUSCAR_TODOS, d1, d2);
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw new PersistenciaException(
@@ -133,7 +114,7 @@ public class ServiceRecebimento implements GenericService<Recebimento> {
 			if(tipoFiltro.equals(TipoFiltroRecebimento.CODIGO)){	
 				try {
 					Integer.parseInt((String) valorFiltro[0]);
-					lista = dao.find(FILTRAR_POR_CODIGO,valorFiltro);
+					lista = dao.find(RecebimentoDao.FILTRAR_POR_CODIGO, valorFiltro);
 				} catch (NumberFormatException e) {
 					throw new NegocioException("Informe um valor numérico para o filtro por Número de Recebimento!");
 				}				
@@ -141,9 +122,9 @@ public class ServiceRecebimento implements GenericService<Recebimento> {
 			
 			else if(tipoFiltro.equals(TipoFiltroRecebimento.FORMA_PAGAMENTO)){
 				if(valorFiltro[0] == null){
-					lista = dao.find(FILTRAR_POR_FORMA_PAGAMENTO_NULL);
+					lista = dao.find(RecebimentoDao.FILTRAR_POR_FORMA_PAGAMENTO_NULL);
 				}else{
-					lista = dao.find(FILTRAR_POR_FORMA_PAGAMENTO,valorFiltro);
+					lista = dao.find(RecebimentoDao.FILTRAR_POR_FORMA_PAGAMENTO,valorFiltro);
 				}				
 			}			
 			
@@ -151,11 +132,12 @@ public class ServiceRecebimento implements GenericService<Recebimento> {
 				if(valorFiltro[0] == null){
 					throw new NegocioException("Informe um Local de Recebimento para Filtrar!");
 				}
-				lista = dao.find(FILTRAR_POR_BANCO,valorFiltro);
+				lista = dao.find(RecebimentoDao.FILTRAR_POR_BANCO, valorFiltro);
 			}
 			
 			else if(tipoFiltro.equals(TipoFiltroRecebimento.DATA_EMISSAO)){
-				lista = dao.find(valorFiltro.length == 1 ? FILTRO_POR_DATA_ENTRADA : FILTRO_POR_DATA_ENTRADA_BEETWEN, valorFiltro);							
+				lista = dao.find(valorFiltro.length == 1 ? 
+							RecebimentoDao.FILTRO_POR_DATA_ENTRADA : RecebimentoDao.FILTRO_POR_DATA_ENTRADA_BEETWEN, valorFiltro);							
 			}
 			
 			return lista;			

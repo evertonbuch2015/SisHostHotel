@@ -24,12 +24,14 @@
     		<p:menuitem value="#{label.tit_produtos}" url="#" />			
 		</p:breadCrumb>
 		
-		<p:messages autoUpdate="true" showDetail="true" closable="true" showSummary="false">
-			<p:effect type="bounce" event="load"/>
-			<p:effect type="explode" event="load" delay="12000"/>
+		
+		<p:messages id="msgErros" autoUpdate="true" 
+			showDetail="true" closable="true" showSummary="false">
+			<p:effect type="pulsate" event="load" delay="500" />
+			<p:effect type="explode" event="load" delay="20000"/>
 		</p:messages>
 		
-		
+				
 		<p:tabView rendered="#{produtoBean.buscando}" prependId="false">						
 			<p:tab title="#{label.consulta_produtos}"> 	
 				<p:dataTable id="tabela"

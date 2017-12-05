@@ -20,9 +20,11 @@
     		<p:menuitem value="#{label.menu_hospedes}" url="#" />			
 		</p:breadCrumb>
 		
-		<p:messages autoUpdate="true" showDetail="true" closable="true" showSummary="false">
-			<p:effect type="bounce" event="load"/>
-			<p:effect type="explode" event="load" delay="12000"/>
+		
+		<p:messages id="msgErros" autoUpdate="true" 
+			showDetail="true" closable="true" showSummary="false">
+			<p:effect type="pulsate" event="load" delay="500" />
+			<p:effect type="explode" event="load" delay="20000"/>
 		</p:messages>
 		
 		
@@ -369,15 +371,13 @@
 			
 			
 			<p:tab title="#{label.txt_obs}">
-				<p:panelGrid columns="1"
-					styleClass="ui-panelgrid-blank"
-					layout="grid">
+				<p:panelGrid columns="1" styleClass="ui-panelgrid-blank" layout="grid">
 						
 					<p:outputLabel value="#{label.txt_obs}" for="obs" />
 					<p:inputTextarea value="#{hospedeBean.entidade.obs}" id="obs"
 						style="width: 80%" rows="15" cols="30" counter="display"
 						maxlength="255" counterTemplate="{0} Caracteres Restantes"
-						autoResize="false" readonly="#{empresaBean.visualizando}" />
+						autoResize="false" readonly="#{hospedeBean.visualizando}" />
 					<h:outputText id="display" />
 				</p:panelGrid>
 			</p:tab>

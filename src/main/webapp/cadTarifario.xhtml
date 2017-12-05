@@ -24,9 +24,11 @@
     		<p:menuitem value="#{label.txt_cadastro_tarifario}" url="#" />
 		</p:breadCrumb>
 		
-		<p:messages autoUpdate="true" showDetail="true" closable="true" showSummary="false">
-			<p:effect type="bounce" event="load"/>
-			<p:effect type="explode" event="load" delay="12000"/>
+		
+		<p:messages id="msgErros" autoUpdate="true" 
+			showDetail="true" closable="true" showSummary="false">
+			<p:effect type="pulsate" event="load" delay="500" />
+			<p:effect type="explode" event="load" delay="20000"/>
 		</p:messages>
 		
 		
@@ -114,10 +116,11 @@
 						<p:outputLabel value="#{label.txt_categoria}" for="categoria"/>
 						<p:selectOneMenu id="categoria"
 							value="#{tarifarioBean.entidade.categoria}"
-							required="true" autoWidth="false" disabled="#{tarifarioBean.visualizando}">
+							required="true" autoWidth="false" disabled="#{tarifarioBean.visualizando}"
+							requiredMessage="Informe a Categoria do Apartamento!">
 															
 							<f:selectItem itemLabel="Selecione uma Categoria"/>
-							<f:selectItems value="#{tarifarioBean.categorias}" var="categoria"
+							<f:selectItems value="#{constantesBean.categorias}" var="categoria"
 								 itemValue="#{categoria}"	itemLabel="#{categoria.nome}" />
 						</p:selectOneMenu>
 						
@@ -126,10 +129,11 @@
 						<p:outputLabel value="#{label.txt_tipo_tarifa}" for="tipoTarifa"/>
 						<p:selectOneMenu id="tipoTarifa"
 							value="#{tarifarioBean.entidade.tipoTarifa}"
-							required="true" autoWidth="false" disabled="#{tarifarioBean.visualizando}">
+							required="true" autoWidth="false" disabled="#{tarifarioBean.visualizando}"
+							requiredMessage="Informe o Tipo de Tarifa desejado!">
 															
 							<f:selectItem itemLabel="Selecione um Tipo de tarifa"/>
-							<f:selectItems value="#{tarifarioBean.tipoTarifas}" var="tipoTarifa"
+							<f:selectItems value="#{constantesBean.tiposTarifa}" var="tipoTarifa"
 								 itemValue="#{tipoTarifa}"	itemLabel="#{tipoTarifa.nome}" />
 						</p:selectOneMenu>
 									
@@ -164,7 +168,7 @@
 							value="#{tarifarioBean.entidade.valor}"
 							onblur="mascara(this,moeda)"
 							required="true" maxlength="15"
-							requiredMessage="Preencha este campo com o valor da parcela"
+							requiredMessage="Preencha o campo valor da tarifa"
 							readonly="#{tarifarioBean.visualizando}">
 							
 							<f:convertNumber pattern="#,##0.00" type="currency" currencySymbol="R$"/>
@@ -180,24 +184,72 @@
 		
 		
 		<p:dialog 
-			width="300" height="140"
-			header="Filtrar Tabela!"			
+			width="400" height="270"
+			header="#{label.filtrar_registros}"			
 			widgetVar="dialogFiltro" modal="true" draggable="true" 
-			closable="true" resizable="true" position="center center"
+			closable="true" resizable="false" position="center center"
 			showEffect="explode" hideEffect="explode">
 		
-			<p:panelGrid columns="1" cellpadding="3" 
-				styleClass="ui-panelgrid-blank">
-														
+			<p:panelGrid columns="2" 
+				styleClass="ui-panelgrid-blank"
+				cellpadding="10" layout="grid"
+				columnClasses="ui-grid-col-3,ui-grid-col-9">
+						
+						
+				<p:outputLabel value="#{label.tipo_filtro}"/>										
 				<p:selectOneMenu id="tipoFiltro"
 					value="#{tarifarioBean.filtro}" style="width:75%">						
 					<f:selectItem itemLabel="Selecione" />
 					<f:selectItems value="#{tarifarioBean.tipoFiltros()}" var="a"
-						itemValue="#{a}" itemLabel="#{a.label}"/>						
+						itemValue="#{a}" itemLabel="#{a.label}"/>	
+						
+					<p:ajax event="change" update="dtInicioFiltro2 dtInicioFiltro TipoTarifaFiltro categoriaFiltro"/>					
 				</p:selectOneMenu>
 					
-				<p:inputText id="valorfiltro" placeholder="Valor do Filtro!" 
-						value="#{tarifarioBean.valorFiltro}" size="30"/>
+					
+					
+				<p:outputLabel value="#{label.txt_categoria}"/>														
+				<p:selectOneMenu id="categoriaFiltro"
+					value="#{tarifarioBean.categoriaFiltro}" 
+					style="width:75% !important"
+					disabled="#{tarifarioBean.filtro.ordinal() ne 0}">
+					
+					<f:selectItem itemLabel="Selecione" />								
+					<f:selectItems value="#{constantesBean.categorias}" var="a"
+						itemValue="#{a}" itemLabel="#{a.nome}"/>  						
+				</p:selectOneMenu>
+				
+				
+				<p:outputLabel value="#{label.txt_tipo_tarifa}"/>														
+				<p:selectOneMenu id="TipoTarifaFiltro"
+					value="#{tarifarioBean.tipoTarifaFiltro}" 
+					style="width:75% !important"
+					disabled="#{tarifarioBean.filtro.ordinal() ne 1}">
+					
+					<f:selectItem itemLabel="Selecione" />								
+					<f:selectItems value="#{constantesBean.tiposTarifa}" var="a"
+						itemValue="#{a}" itemLabel="#{a.nome}"/>  						
+				</p:selectOneMenu>
+				
+				
+				<p:outputLabel value="#{label.txt_data_inicial}"/>						
+				<p:calendar id="dtInicioFiltro"
+							value="#{tarifarioBean.dataFiltro}"
+							pattern="dd/MM/yyyy" mask="true"
+							showOn="button" locale="pt_BR"
+							size="28"
+							disabled="#{tarifarioBean.filtro.ordinal() ne 2}">
+				</p:calendar>
+				
+				<p:outputLabel value="#{label.txt_data_inicial}"/>						
+				<p:calendar id="dtInicioFiltro2"
+							value="#{tarifarioBean.dataFiltroFinal}"
+							pattern="dd/MM/yyyy" mask="true"
+							showOn="button" locale="pt_BR"
+							size="28"
+							disabled="#{tarifarioBean.filtro.ordinal() ne 2}">							
+				</p:calendar>
+
 								
 				<p:commandButton value="Filtrar" icon="ui-icon-folder-collapsed"
 					styleClass="bu-botao-azul" update="tabela"

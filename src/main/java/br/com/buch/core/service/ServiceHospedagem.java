@@ -3,12 +3,10 @@ package br.com.buch.core.service;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-import java.util.Observable;
 
 import javax.persistence.PersistenceException;
 
 import br.com.buch.core.dao.HospedagemDao;
-import br.com.buch.core.entity.Adiantamento;
 import br.com.buch.core.entity.Hospedagem;
 import br.com.buch.core.entity.Recebimento;
 import br.com.buch.core.entity.Recebimento.OrigemRecebimento;
@@ -23,39 +21,13 @@ import br.com.buch.core.util.PersistenciaException;
 import br.com.buch.core.util.UtilErros;
 
 
-public class ServiceHospedagem extends Observable implements GenericService<Hospedagem> {
+public class ServiceHospedagem implements GenericService<Hospedagem> {
 
-	private static final String CARREGAR_ENTIDADE= "Select h From Hospedagem h LEFT JOIN FETCH h.hospede LEFT JOIN FETCH h.reserva"
-					+ " LEFT JOIN FETCH h.apartamento LEFT JOIN FETCH h.lancamentos where h.idHospedagem = ?";
-	
-	private static final String BUSCAR_TODOS = 
-			"From Hospedagem h LEFT JOIN FETCH h.hospede LEFT JOIN FETCH h.apartamento where h.dataEntrada Between ? and ? order by h.dataEntrada";
-
-	private static final String BUSCAR_TODOS_ATIVAS = 
-			"From Hospedagem h LEFT JOIN FETCH h.hospede LEFT JOIN FETCH h.apartamento where h.situacao = ? order by h.dataEntrada";
-	
-	private static final String BUSCAR_TODOS_PARA_CHECKOUT = 
-			"From Hospedagem h LEFT JOIN FETCH h.hospede LEFT JOIN FETCH h.apartamento where h.situacao = ? and h.dataSaida = ? order by h.dataEntrada";
-	
-	private static final String FILTRO_POR_CODIGO = "From Hospedagem h LEFT JOIN FETCH h.hospede LEFT JOIN FETCH h.apartamento where h.codigo = ?";
-
-	private static final String FILTRO_POR_SITUACAO = "From Hospedagem h LEFT JOIN FETCH h.hospede LEFT JOIN FETCH h.apartamento where h.situacao = ?";
-
-	private static final String FILTRO_POR_NOME_HOSPEDE = "From Hospedagem h LEFT JOIN FETCH h.hospede LEFT JOIN FETCH h.apartamento where lower(h.hospede.nome) like ?";
-
-	private static final String FILTRO_POR_CPF_HOSPEDE = "From Hospedagem h LEFT JOIN FETCH h.hospede LEFT JOIN FETCH h.apartamento where h.hospede.cpf = ?";
-	
-	private static final String FILTRO_POR_DATA_ENTRADA = "From Hospedagem h LEFT JOIN FETCH h.hospede LEFT JOIN FETCH h.apartamento where h.dataEntrada = ?";
-			
-	private static final String FILTRO_POR_DATA_ENTRADA_BEETWEN = "From Hospedagem h LEFT JOIN FETCH h.hospede LEFT JOIN FETCH h.apartamento where h.dataEntrada Between ? and ?";
-	
-	
 	private HospedagemDao dao;
 		
 	
 	public ServiceHospedagem() {
 		dao = new HospedagemDao();
-		addObserver(Constantes.getInstance());
 	}
 	
 	
@@ -76,23 +48,24 @@ public class ServiceHospedagem extends Observable implements GenericService<Hosp
 					reserva.setSituacao(SituacaoHospedagem.UTILIZADA);
 					new ServiceReserva().salvar(reserva);
 				}
-				
-				notificarOuvintes();
 				return "Hospedagem inserida com Sucesso!";
 			} catch (Exception e) {
 				e.printStackTrace();
 				throw new PersistenciaException("Ocorreu uma exceção ao inserir a Hospedagem!" + 
 	            		" \nErro: " + UtilErros.getMensagemErro(e));
+			}finally {
+				Constantes.getInstance().refresh(ConstantesLista.APARTAMENTOS);
 			}				
 		}else{			
 			try {
 				dao.update(entidade);
-				notificarOuvintes();
 				return "Hospedagem Alterada com Sucesso!";
 			} catch (Exception e) {
 				e.printStackTrace();
 				throw new PersistenciaException("Ocorreu uma exceção ao alterar a Hospedagem!" + 
 	            		" \nErro: " + UtilErros.getMensagemErro(e));
+			}finally {
+				Constantes.getInstance().refresh(ConstantesLista.APARTAMENTOS);
 			}
 		}	
 	}
@@ -101,8 +74,7 @@ public class ServiceHospedagem extends Observable implements GenericService<Hosp
 	@Override
 	public String excluir(Hospedagem entidade) throws Exception {
 		try {
-			dao.delete(entidade);	
-			notificarOuvintes();
+			dao.delete(entidade);			
 			return "Hospedagem Excluida com Sucesso!";
 		}		
 		catch (Exception ex) {
@@ -120,7 +92,7 @@ public class ServiceHospedagem extends Observable implements GenericService<Hosp
 	@Override
 	public Hospedagem carregarEntidade(Hospedagem entidade) throws PersistenciaException {
 		try{
-			return dao.findOne(CARREGAR_ENTIDADE, entidade.getIdHospedagem());			
+			return dao.findOne(HospedagemDao.CARREGAR_ENTIDADE, entidade.getIdHospedagem());			
 		}catch (Exception e) {
 			e.printStackTrace();
 			throw new PersistenciaException("Ocorreu uma exceção ao buscar os dados da Hospedagem!" + 
@@ -131,7 +103,7 @@ public class ServiceHospedagem extends Observable implements GenericService<Hosp
 	
 	public Hospedagem carregarEntidade(Integer idHospedagem) throws PersistenciaException {
 		try{
-			return dao.findOne(CARREGAR_ENTIDADE, idHospedagem);			
+			return dao.findOne(HospedagemDao.CARREGAR_ENTIDADE, idHospedagem);			
 		}catch (Exception e) {
 			e.printStackTrace();
 			throw new PersistenciaException("Ocorreu uma exceção ao buscar os dados da Hospedagem!" + 
@@ -157,7 +129,7 @@ public class ServiceHospedagem extends Observable implements GenericService<Hosp
         Date d2 = c2.getTime();
         
 		try {
-			return dao.find(BUSCAR_TODOS, d1, d2);
+			return dao.find(HospedagemDao.BUSCAR_TODOS, d1, d2);
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw new PersistenciaException("Ocorreu uma exceção ao buscar os dados da Hospedagem!" + 
@@ -177,26 +149,29 @@ public class ServiceHospedagem extends Observable implements GenericService<Hosp
 		try {
 			
 			if(tipoFiltro.equals(TipoFiltroHospedagem.CODIGO)){	
-				if(valorFiltro[0] == null || valorFiltro[0].equals("")){ throw new NegocioException("Informe um código para Filtrar!");}
-				lista = dao.find(FILTRO_POR_CODIGO, valorFiltro);
+				if(valorFiltro[0] == null || valorFiltro[0].equals("")){ 
+					throw new NegocioException("Informe um código para Filtrar!");}
+				lista = dao.find(HospedagemDao.FILTRO_POR_CODIGO, valorFiltro);
 			}
 			
 			else if(tipoFiltro.equals(TipoFiltroHospedagem.CPF_HOSPEDE)){
-				lista = dao.find(FILTRO_POR_CPF_HOSPEDE,String.valueOf(valorFiltro[0]).replace("-","").replace(".", ""));
+				lista = dao.find(HospedagemDao.FILTRO_POR_CPF_HOSPEDE,String.valueOf(valorFiltro[0]).replace("-","").replace(".", ""));
 			}
 			
 			else if(tipoFiltro.equals(TipoFiltroHospedagem.NOME_HOSPEDE)){				
-				lista = dao.find(FILTRO_POR_NOME_HOSPEDE,
+				lista = dao.find(HospedagemDao.FILTRO_POR_NOME_HOSPEDE,
 						valorFiltro[0].equals("") ? valorFiltro[0] : String.valueOf(valorFiltro[0]).toLowerCase());
 			}
 			
 			else if(tipoFiltro.equals(TipoFiltroHospedagem.SITUACAO)){
-				if(valorFiltro[0] == null){throw new NegocioException("Informe uma situação para Filtrar!");}
-				lista = dao.find(FILTRO_POR_SITUACAO,valorFiltro);
+				if(valorFiltro[0] == null){
+					throw new NegocioException("Informe uma situação para Filtrar!");}
+				lista = dao.find(HospedagemDao.FILTRO_POR_SITUACAO,valorFiltro);
 			}
 			
 			else if(tipoFiltro.equals(TipoFiltroHospedagem.DATA_ENTRADA)){
-				lista = dao.find(valorFiltro.length == 1 ? FILTRO_POR_DATA_ENTRADA : FILTRO_POR_DATA_ENTRADA_BEETWEN, valorFiltro);		
+				lista = dao.find(valorFiltro.length == 1 ? 
+						HospedagemDao.FILTRO_POR_DATA_ENTRADA : HospedagemDao.FILTRO_POR_DATA_ENTRADA_BEETWEN, valorFiltro);		
 			}
 			
 			return lista;			
@@ -207,7 +182,7 @@ public class ServiceHospedagem extends Observable implements GenericService<Hosp
 	}
 
 	
-	public void confirmarCheckOut(Hospedagem hospedagem, Recebimento recebimento, List<Adiantamento> adiantamentos)throws Exception{
+	public void confirmarCheckOut(Hospedagem hospedagem, Recebimento recebimento)throws Exception{
 		recebimento.setDescricao("Hospedagem Nº "+hospedagem.getCodigo()+" / " + hospedagem.getHospede().getNome());
 		recebimento.setDtEmissao(new Date());
 		recebimento.setOrigemRecebimento(OrigemRecebimento.HOSPEDAGEM);
@@ -215,14 +190,15 @@ public class ServiceHospedagem extends Observable implements GenericService<Hosp
 		
 		hospedagem.setSituacao(SituacaoHospedagem.CHECKOUT);
 		
-		dao.confirmarCheckOut(hospedagem, recebimento, adiantamentos);
-		notificarOuvintes();
+		dao.confirmarCheckOut(hospedagem, recebimento);
+				
+		Constantes.getInstance().refresh(ConstantesLista.APARTAMENTOS);		
 	}
 
 			
 	public List<Hospedagem> getHospedagensAtivas()throws PersistenciaException{
 		try {
-			return dao.find(BUSCAR_TODOS_ATIVAS, SituacaoHospedagem.CHECKIN);
+			return dao.find(HospedagemDao.BUSCAR_TODOS_ATIVAS, SituacaoHospedagem.CHECKIN);
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw new PersistenciaException("Ocorreu uma exceção ao buscar os dados da Hospedagem!" + 
@@ -233,7 +209,7 @@ public class ServiceHospedagem extends Observable implements GenericService<Hosp
 	
 	public List<Hospedagem> getHospedagensParaCheckOut() throws PersistenciaException{ 
 		try {
-			return dao.find(BUSCAR_TODOS_PARA_CHECKOUT, SituacaoHospedagem.CHECKIN, new Date());
+			return dao.find(HospedagemDao.BUSCAR_TODOS_PARA_CHECKOUT, SituacaoHospedagem.CHECKIN, new Date());
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw new PersistenciaException("Ocorreu uma exceção ao buscar os dados da Hospedagem!" + 
@@ -243,9 +219,4 @@ public class ServiceHospedagem extends Observable implements GenericService<Hosp
 			//    .filter(p -> p.getDataSaida() == d1).collect(Collectors.toList());
 	}
 
-	
-	private void notificarOuvintes(){
-		setChanged();
-		notifyObservers(ConstantesLista.APARTAMENTOS);
-	}
 }

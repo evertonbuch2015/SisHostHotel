@@ -12,16 +12,12 @@ import br.com.buch.view.managedBean.ProdutoBean.TipoFiltro;
 
 public class ServiceProduto implements GenericService<Produto> {
 	
-	private static final String CARREGAR_ENTIDADE = "Select p From Produto p where p.idProduto = ?1";
-	private static final String BUSCAR_POR_NOME = "Select p From Produto p where lower(p.nome) like ?";
-	private static final String BUSCAR_POR_CODIGO = "Select p From Produto p where p.codigo like ?";;
-	
 	private ProdutoDao dao; 
+	
 	
 	public ServiceProduto() {
 		this.dao = new ProdutoDao();
 	}
-	
 	
 	
 	@Override
@@ -67,7 +63,7 @@ public class ServiceProduto implements GenericService<Produto> {
 	@Override
 	public Produto carregarEntidade(Produto entidade)throws PersistenciaException {
 		try{			
-			return dao.findOne(CARREGAR_ENTIDADE, entidade.getIdProduto());
+			return dao.findOne(ProdutoDao.CARREGAR_ENTIDADE, entidade.getIdProduto());
 			
 		}catch (Exception e) {
 			e.printStackTrace();
@@ -90,17 +86,13 @@ public class ServiceProduto implements GenericService<Produto> {
 		
 	public List<Produto> filtrarTabela(TipoFiltro tipoFiltro , String valorFiltro)throws Exception{
 		List<Produto> lista = null;		
+		
 		try {			
-			switch (tipoFiltro) {
-			case CODIGO:
-				lista = dao.find(BUSCAR_POR_CODIGO,valorFiltro);
-				break;
-			case NOME:
-				lista = dao.find(BUSCAR_POR_NOME,valorFiltro);
-				break;
-			}											
-			return lista;			
-			
+			lista = tipoFiltro.equals(TipoFiltro.CODIGO)?
+						dao.find(ProdutoDao.BUSCAR_POR_CODIGO,valorFiltro):
+						dao.find(ProdutoDao.BUSCAR_POR_NOME,valorFiltro);
+						
+			return lista;
 		} catch (PersistenceException e) {
 			throw new PersistenciaException("Ocorreu algum exceção ao Filtrar os dados do Produto!" + 
             		" \nErro: " + UtilErros.getMensagemErro(e));
@@ -127,9 +119,8 @@ public class ServiceProduto implements GenericService<Produto> {
 	public List<Produto> buscarPorNome(String string)throws PersistenciaException{
 		List<Produto> lista = null;		
 		try {
-			lista = dao.find(BUSCAR_POR_NOME, string != null?string.toLowerCase():string);
-			return lista;
-			
+			lista = dao.find(ProdutoDao.BUSCAR_POR_NOME, string != null?string.toLowerCase():string);
+			return lista;			
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw new PersistenciaException("Ocorreu algum exceção ao Filtrar os dados do Produto!" + 

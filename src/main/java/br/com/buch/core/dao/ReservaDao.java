@@ -9,6 +9,37 @@ import br.com.buch.core.entity.Reserva;
 
 public class ReservaDao extends GenericDao<Reserva> {
 
+
+	public static final String BUSCAR_RESERVAS_VENCIDAS = 
+			"Select r From Reserva r LEFT JOIN FETCH r.hospede LEFT JOIN FETCH r.apartamento"
+			+ " where r.dataEntrada <= ?1 and r.situacao in (?2,?3) order by r.dataEntrada";
+
+	public static final String FILTRO_POR_CODIGO = 
+			"From Reserva r LEFT JOIN FETCH r.hospede LEFT JOIN FETCH r.apartamento where r.codigo = ?";
+
+	public static final String FILTRO_POR_SITUACAO = 
+			"From Reserva r LEFT JOIN FETCH r.hospede LEFT JOIN FETCH r.apartamento where r.situacao = ?";
+
+	public static final String FILTRO_POR_NOME_HOSPEDE = 
+			"From Reserva r LEFT JOIN FETCH r.hospede LEFT JOIN FETCH r.apartamento where lower(r.hospede.nome) like ?";
+
+	public static final String FILTRO_POR_CPF_HOSPEDE = 
+			"From Reserva r LEFT JOIN FETCH r.hospede LEFT JOIN FETCH r.apartamento where r.hospede.cpf = ?";
+	
+	public static final String FILTRO_POR_DATA_ENTRADA = 
+			"From Reserva r LEFT JOIN FETCH r.hospede LEFT JOIN FETCH r.apartamento where r.dataEntrada = ?";
+			
+	public static final String FILTRO_POR_DATA_ENTRADA_BEETWEN = 
+			"From Reserva r LEFT JOIN FETCH r.hospede LEFT JOIN FETCH r.apartamento where r.dataEntrada Between ? and ?";
+	
+	public static final String BUSCAR_TODOS = 
+			"From Reserva r where r.dataEntrada Between ?1 and ?2 order by r.dataEntrada";
+	
+	public static final String CARREGAR_ENTIDADE = 
+			"Select r From Reserva r LEFT JOIN FETCH r.hospede LEFT JOIN FETCH r.empresa "+
+			" LEFT JOIN FETCH r.apartamento where r.idReserva = ?1";
+	
+	
 	public ReservaDao() {
 		super(Reserva.class);
 	}

@@ -1,7 +1,6 @@
 package br.com.buch.view.managedBean;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.faces.bean.ManagedBean;
@@ -11,7 +10,6 @@ import br.com.buch.core.entity.Apartamento;
 import br.com.buch.core.entity.Categoria;
 import br.com.buch.core.enumerated.SituacaoApartamento;
 import br.com.buch.core.service.ServiceApartamento;
-import br.com.buch.core.util.Constantes;
 import br.com.buch.view.util.UtilMensagens;
 
 @ManagedBean
@@ -36,9 +34,8 @@ public class ApartamentoBean extends GenericBean<Apartamento, ServiceApartamento
 	private SituacaoApartamento situacaoFiltro;
 	private Categoria categoriaFiltro;
 	
-	
 	public ApartamentoBean() {
-		super(new ServiceApartamento());
+		super(new ServiceApartamento());		
 	}
 		
 	
@@ -84,16 +81,6 @@ public class ApartamentoBean extends GenericBean<Apartamento, ServiceApartamento
 	
 	public SituacaoApartamento[] situacaoApartamentos(){return SituacaoApartamento.values();}
 	
-	
-	public List<Categoria> getCategorias(){
-		try {
-			return Constantes.getInstance().getListaCategorias();
-		} catch (Exception e) {
-			UtilMensagens.mensagemErro(UtilMensagens.MSM_ERRO_INTERNO);
-			return new ArrayList<>();
-		}
-	}
-
 	
 	@Override
 	public List<Apartamento> getEntidades() {

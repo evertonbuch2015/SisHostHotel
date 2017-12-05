@@ -1,6 +1,5 @@
 package br.com.buch.core.dao;
 
-import java.io.Serializable;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -10,10 +9,21 @@ import javax.persistence.TypedQuery;
 import br.com.buch.core.entity.Usuario;
 import br.com.buch.core.util.Criptografia;
 
-public class UsuarioDao extends GenericDao<Usuario> implements Serializable {
+public class UsuarioDao extends GenericDao<Usuario>{
 
-	private static final long serialVersionUID = 1L;
-
+	public static final String BUSCAR_PELO_NOME = "select u from Usuario u left JOIN FETCH u.hoteis where u.nomeUsuario = ?1";
+	
+	public static final String BUSCAR_SETORES = "Select distinct u.setor From Usuario u";
+	
+	public static final String CARREGAR_USUARIO = "Select u From Usuario u left JOIN FETCH u.hoteis where u.idUsusario = ?1";
+	
+	public static final String BUSCAR_TODOS = "Select u From Usuario u order by u.ativo, u.nomeUsuario";
+	
+	public static final String FILTRAR_POR_CODIGO = "Select u From Usuario u where u.idUsusario = ?1";
+	
+	public static final String FILTRAR_POR_NOME_USER = "Select u From Usuario u where u.nomeUsuario like ?";
+	
+	
 	public UsuarioDao() {
 		super(Usuario.class);
 	}

@@ -13,12 +13,6 @@ import br.com.buch.core.util.UtilErros;
 import br.com.buch.view.managedBean.UsuarioBean.TipoFiltro;
 
 public class ServiceUsuario implements GenericService<Usuario> {
-
-	private static final String BUSCAR_PELO_NOME = "select u from Usuario u left JOIN FETCH u.hoteis where u.nomeUsuario = ?1";
-	private static final String BUSCAR_SETORES = "Select distinct u.setor From Usuario u";
-	private static final String CARREGAR_USUARIO = "Select u From Usuario u left JOIN FETCH u.hoteis where u.idUsusario = ?1";
-	private static final String BUSCAR_TODOS = "Select u From Usuario u order by u.ativo, u.nomeUsuario";
-	
 	
 	private UsuarioDao usuarioDao;
 	
@@ -75,7 +69,7 @@ public class ServiceUsuario implements GenericService<Usuario> {
 	
 	public Usuario carregarEntidade(Usuario usuario) throws PersistenciaException{		
 		try{
-			return usuarioDao.findOne(CARREGAR_USUARIO, usuario.getIdUsusario());
+			return usuarioDao.findOne(UsuarioDao.CARREGAR_USUARIO, usuario.getIdUsusario());
 			
 		}catch (Exception e) {
 			e.printStackTrace();
@@ -88,7 +82,7 @@ public class ServiceUsuario implements GenericService<Usuario> {
 	public List<Usuario> buscarTodos()throws PersistenciaException{
 		try {
 			
-			return usuarioDao.find(BUSCAR_TODOS);
+			return usuarioDao.find(UsuarioDao.BUSCAR_TODOS);
 			/*Collections.sort(lista, new Comparator<Usuario>() {
 
 				public int compare(Usuario o1, Usuario o2) {				
@@ -106,15 +100,10 @@ public class ServiceUsuario implements GenericService<Usuario> {
 	public List<Usuario> filtrarTabela(TipoFiltro tipoFiltro , String valorFiltro)throws Exception{
 		List<Usuario> lista = null;
 		
-		try {
-		
-			if(tipoFiltro.equals(TipoFiltro.CODIGO)){			
-				String jpql = "Select u From Usuario u where u.idUsusario in (" + valorFiltro + ")";
-				lista = usuarioDao.find(jpql);				
-			}
-			else if(tipoFiltro.equals(TipoFiltro.NOME)){							
-				lista = usuarioDao.find("Select u From Usuario u where u.nomeUsuario like ?",valorFiltro);						
-			}		
+		try {		
+			lista = tipoFiltro.equals(TipoFiltro.CODIGO)?
+					usuarioDao.find(UsuarioDao.FILTRAR_POR_CODIGO, valorFiltro):
+					usuarioDao.find(UsuarioDao.FILTRAR_POR_NOME_USER,valorFiltro);
 			return lista;
 			
 		}catch (Exception e) {
@@ -187,7 +176,7 @@ public class ServiceUsuario implements GenericService<Usuario> {
 	
 	public Usuario buscarPeloNome(Usuario usuario) {		
 		try {
-			return usuarioDao.findOne(BUSCAR_PELO_NOME, usuario.getNomeUsuario().toUpperCase());
+			return usuarioDao.findOne(UsuarioDao.BUSCAR_PELO_NOME, usuario.getNomeUsuario().toUpperCase());
 		} catch (Exception e) {
 			e.printStackTrace();
 			return null;
@@ -196,7 +185,7 @@ public class ServiceUsuario implements GenericService<Usuario> {
 
 	
 	public List<String> buscarSetores(){		
-		return usuarioDao.findSectors(BUSCAR_SETORES);
+		return usuarioDao.findSectors(UsuarioDao.BUSCAR_SETORES);
 	}
 
 

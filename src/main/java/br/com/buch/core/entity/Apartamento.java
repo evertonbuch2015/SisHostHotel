@@ -22,7 +22,7 @@ import br.com.buch.core.enumerated.SituacaoApartamento;
 @Entity
 @Table(name="CAD_APARTAMENTO")
 public class Apartamento implements Serializable {
-
+	
 	private static final long serialVersionUID = 971479148955247553L;
 
 	

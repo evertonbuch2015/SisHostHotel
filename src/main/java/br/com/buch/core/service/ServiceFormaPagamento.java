@@ -1,16 +1,16 @@
 package br.com.buch.core.service;
 
 import java.util.List;
-import java.util.Observable;
 
 import br.com.buch.core.dao.FormaPagamentoDao;
 import br.com.buch.core.entity.FormaPagamento;
+import br.com.buch.core.util.Constantes;
 import br.com.buch.core.util.Constantes.ConstantesLista;
 import br.com.buch.core.util.PersistenciaException;
 import br.com.buch.core.util.UtilErros;
 import br.com.buch.view.managedBean.FormaPagamentoBean.TipoFiltro;
 
-public class ServiceFormaPagamento extends Observable implements GenericService<FormaPagamento> {
+public class ServiceFormaPagamento implements GenericService<FormaPagamento> {
 
 	private FormaPagamentoDao formaPagamentoDao;
 
@@ -26,7 +26,7 @@ public class ServiceFormaPagamento extends Observable implements GenericService<
 
 			try {
 				formaPagamentoDao.save(entidate);
-				notificarOuvintes();
+				Constantes.getInstance().refresh(ConstantesLista.FORMAS_PAGAMENTO);
 				return "Forma de Pagamento Cadastrada com Sucesso!";
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -37,7 +37,7 @@ public class ServiceFormaPagamento extends Observable implements GenericService<
 
 			try {
 				formaPagamentoDao.update(entidate);
-				notificarOuvintes();
+				Constantes.getInstance().refresh(ConstantesLista.FORMAS_PAGAMENTO);
 				return "Forma de Pagamento Alterado com Sucesso!";
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -52,7 +52,7 @@ public class ServiceFormaPagamento extends Observable implements GenericService<
 	public String excluir(FormaPagamento entidade) throws Exception{
 		try {
 			formaPagamentoDao.delete(entidade);
-			notificarOuvintes();
+			Constantes.getInstance().refresh(ConstantesLista.FORMAS_PAGAMENTO);
 			return "";
 		}catch (Exception ex) {
         	ex.printStackTrace();
@@ -64,10 +64,8 @@ public class ServiceFormaPagamento extends Observable implements GenericService<
 	
 	@Override
 	public FormaPagamento carregarEntidade(FormaPagamento entidade) throws PersistenciaException {
-		try{
-			String jpql = "Select f From FormaPagamento f where f.idFormaPag = ?1";
-			return formaPagamentoDao.findOne(jpql, entidade.getIdFormaPag());
-			
+		try{ 
+			return formaPagamentoDao.findOne(FormaPagamentoDao.CARREGAR_ENTIDADE, entidade.getIdFormaPag());			
 		}catch (Exception e) {
 			e.printStackTrace();
 			throw new PersistenciaException("Ocorreu uma exceção ao buscar os dados da Forma de Pagamento!" + 
@@ -91,14 +89,10 @@ public class ServiceFormaPagamento extends Observable implements GenericService<
 		List<FormaPagamento> lista = null;
 		
 		try {			
-			if(tipoFiltro.equals(TipoFiltro.NOME)){
-				lista = formaPagamentoDao.find("Select f From FormaPagamento f where f.descricao like ?",valorFiltro);
-			}
-			else if(tipoFiltro.equals(TipoFiltro.CODIGO)){
-				String jpql = "Select f From FormaPagamento f where f.codigo in (" + valorFiltro + ")";
-				lista = formaPagamentoDao.find(jpql);			
-			}											
-			return lista;			
+			lista = tipoFiltro.equals(TipoFiltro.NOME) ?
+					formaPagamentoDao.find(FormaPagamentoDao.FILTRAR_POR_NOME,valorFiltro) :
+					formaPagamentoDao.find(FormaPagamentoDao.FILTRAR_POR_CODIGO, valorFiltro);									
+			return lista;
 			
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -111,11 +105,5 @@ public class ServiceFormaPagamento extends Observable implements GenericService<
 	@Override
 	public void consisteAntesEditar(FormaPagamento entidade) {
 
-	}
-
-	
-	private void notificarOuvintes(){
-		setChanged();
-		notifyObservers(ConstantesLista.FORMAS_PAGAMENTO);
 	}
 }

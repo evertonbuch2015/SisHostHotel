@@ -9,6 +9,22 @@ import br.com.buch.core.enumerated.SituacaoApartamento;
 
 public class ApartamentoDao extends GenericDao<Apartamento> {
 
+	public static final String BUSCAR_POR_SITUACAO = 
+			"Select a From Apartamento a LEFT JOIN FETCH a.categoria where a.situacao = ?1";
+
+	public static final String BUSCAR_POR_CATEGORIA = 
+			"Select a From Apartamento a LEFT JOIN FETCH a.categoria where a.categoria = ?1";
+
+	public static final String BUSCAR_LIVRES = 
+			"Select a From Apartamento a where a.situacao = ?1";
+
+	public static final String CARREGAR_ENTIDADE = 
+			"Select a From Apartamento a LEFT JOIN FETCH a.categoria where a.idApartamento = ?1";
+	
+	public static final String BUSCAR_POR_NUMERO = 
+			"Select a From Apartamento a LEFT JOIN FETCH a.categoria where a.numero >= ?";
+	
+	
 	public ApartamentoDao() {
 		super(Apartamento.class);
 	}

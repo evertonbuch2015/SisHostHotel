@@ -21,10 +21,11 @@
 		</p:breadCrumb>
 		
 		
-		<p:messages autoUpdate="true" showDetail="true" closable="true" showSummary="false">
-			<p:effect type="bounce" event="load"/>
-			<p:effect type="explode" event="load" delay="12000"/>
-		</p:messages>	
+		<p:messages id="msgErros" autoUpdate="true" 
+			showDetail="true" closable="true" showSummary="false">
+			<p:effect type="pulsate" event="load" delay="500" />
+			<p:effect type="explode" event="load" delay="20000"/>
+		</p:messages>
 		
 		
 		<p:panelGrid 
@@ -117,140 +118,166 @@
 						
 			<p:column headerText="06" width="8" style="padding: 0px 0px !important;text-align: center !important;">
 				<p:graphicImage value="/resources/images/check-in.jpg" rendered="#{mapa._6 eq 'I'}"/>
-				<p:graphicImage value="/resources/images/check-out.jpg" rendered="#{mapa._6 eq 'O'}"/>							
+				<p:graphicImage value="/resources/images/check-out.jpg" rendered="#{mapa._6 eq 'O'}"/>	
+				<p:graphicImage value="/resources/images/check-in-out.jpg" rendered="#{mapa._6 eq 'A'}"/>						
 			</p:column>
 			
 			<p:column headerText="07" width="8" style="padding: 0px 0px !important;text-align: center !important;">
 				<p:graphicImage value="/resources/images/check-in.jpg" rendered="#{mapa._7 eq 'I'}"/>
-				<p:graphicImage value="/resources/images/check-out.jpg" rendered="#{mapa._7 eq 'O'}"/>							
+				<p:graphicImage value="/resources/images/check-out.jpg" rendered="#{mapa._7 eq 'O'}"/>	
+				<p:graphicImage value="/resources/images/check-in-out.jpg" rendered="#{mapa._7 eq 'A'}"/>						
 			</p:column>
 			
 			<p:column headerText="08" width="8" style="padding: 0px 0px !important;text-align: center !important;">
 				<p:graphicImage value="/resources/images/check-in.jpg" rendered="#{mapa._8 eq 'I'}"/>
-				<p:graphicImage value="/resources/images/check-out.jpg" rendered="#{mapa._8 eq 'O'}"/>							
+				<p:graphicImage value="/resources/images/check-out.jpg" rendered="#{mapa._8 eq 'O'}"/>
+				<p:graphicImage value="/resources/images/check-in-out.jpg" rendered="#{mapa._8 eq 'A'}"/>							
 			</p:column>	
 			
 			<p:column headerText="09" width="8" style="padding: 0px 0px !important;text-align: center !important;">
 				<p:graphicImage value="/resources/images/check-in.jpg" rendered="#{mapa._9 eq 'I'}"/>
-				<p:graphicImage value="/resources/images/check-out.jpg" rendered="#{mapa._9 eq 'O'}"/>							
+				<p:graphicImage value="/resources/images/check-out.jpg" rendered="#{mapa._9 eq 'O'}"/>
+				<p:graphicImage value="/resources/images/check-in-out.jpg" rendered="#{mapa._9 eq 'A'}"/>							
 			</p:column>
 						
 			<p:column headerText="10" width="8" style="padding: 0px 0px !important;text-align: center !important;">
 				<p:graphicImage value="/resources/images/check-in.jpg" rendered="#{mapa._10 eq 'I'}"/>
-				<p:graphicImage value="/resources/images/check-out.jpg" rendered="#{mapa._10 eq 'O'}"/>							
+				<p:graphicImage value="/resources/images/check-out.jpg" rendered="#{mapa._10 eq 'O'}"/>
+				<p:graphicImage value="/resources/images/check-in-out.jpg" rendered="#{mapa._10 eq 'A'}"/>							
 			</p:column>
 			
 			
 			
 			<p:column headerText="11" width="8" style="padding: 0px 0px !important;text-align: center !important;">
 				<p:graphicImage value="/resources/images/check-in.jpg" rendered="#{mapa._11 eq 'I'}"/>
-				<p:graphicImage value="/resources/images/check-out.jpg" rendered="#{mapa._11 eq 'O'}"/>								
+				<p:graphicImage value="/resources/images/check-out.jpg" rendered="#{mapa._11 eq 'O'}"/>
+				<p:graphicImage value="/resources/images/check-in-out.jpg" rendered="#{mapa._11 eq 'A'}"/>								
 			</p:column>
 			
 			<p:column headerText="12" width="8" style="padding: 0px 0px !important;text-align: center !important;">
 				<p:graphicImage value="/resources/images/check-in.jpg" rendered="#{mapa._12 eq 'I'}"/>
-				<p:graphicImage value="/resources/images/check-out.jpg" rendered="#{mapa._12 eq 'O'}"/>						
+				<p:graphicImage value="/resources/images/check-out.jpg" rendered="#{mapa._12 eq 'O'}"/>
+				<p:graphicImage value="/resources/images/check-in-out.jpg" rendered="#{mapa._12 eq 'A'}"/>						
 			</p:column>	
 			
 			<p:column headerText="13" width="8" style="padding: 0px 0px !important;text-align: center !important;">
 				<p:graphicImage value="/resources/images/check-in.jpg" rendered="#{mapa._13 eq 'I'}"/>
 				<p:graphicImage value="/resources/images/check-out.jpg" rendered="#{mapa._13 eq 'O'}"/>
+				<p:graphicImage value="/resources/images/check-in-out.jpg" rendered="#{mapa._13 eq 'A'}"/>
 			</p:column>
 						
 			<p:column headerText="14" width="8" style="padding: 0px 0px !important;text-align: center !important;">
 				<p:graphicImage value="/resources/images/check-in.jpg" rendered="#{mapa._14 eq 'I'}"/>
 				<p:graphicImage value="/resources/images/check-out.jpg" rendered="#{mapa._14 eq 'O'}"/>
+				<p:graphicImage value="/resources/images/check-in-out.jpg" rendered="#{mapa._14 eq 'A'}"/>
 			</p:column>
 			
 			<p:column headerText="15" width="8" style="padding: 0px 0px !important;text-align: center !important;">
 				<p:graphicImage value="/resources/images/check-in.jpg" rendered="#{mapa._15 eq 'I'}"/>
-				<p:graphicImage value="/resources/images/check-out.jpg" rendered="#{mapa._15 eq 'O'}"/>						
+				<p:graphicImage value="/resources/images/check-out.jpg" rendered="#{mapa._15 eq 'O'}"/>
+				<p:graphicImage value="/resources/images/check-in-out.jpg" rendered="#{mapa._15 eq 'A'}"/>						
 			</p:column>
 			
 			
 			
 			<p:column headerText="16" width="8" style="padding: 0px 0px !important;text-align: center !important;">
 				<p:graphicImage value="/resources/images/check-in.jpg" rendered="#{mapa._16 eq 'I'}"/>
-				<p:graphicImage value="/resources/images/check-out.jpg" rendered="#{mapa._16 eq 'O'}"/>							
+				<p:graphicImage value="/resources/images/check-out.jpg" rendered="#{mapa._16 eq 'O'}"/>
+				<p:graphicImage value="/resources/images/check-in-out.jpg" rendered="#{mapa._16 eq 'A'}"/>							
 			</p:column>	
 			
 			<p:column headerText="17" width="8" style="padding: 0px 0px !important;text-align: center !important;">
 				<p:graphicImage value="/resources/images/check-in.jpg" rendered="#{mapa._17 eq 'I'}"/>
-				<p:graphicImage value="/resources/images/check-out.jpg" rendered="#{mapa._17 eq 'O'}"/>						
+				<p:graphicImage value="/resources/images/check-out.jpg" rendered="#{mapa._17 eq 'O'}"/>		
+				<p:graphicImage value="/resources/images/check-in-out.jpg" rendered="#{mapa._17 eq 'A'}"/>				
 			</p:column>
 						
 			<p:column headerText="18" width="8" style="padding: 0px 0px !important;text-align: center !important;">
 				<p:graphicImage value="/resources/images/check-in.jpg" rendered="#{mapa._18 eq 'I'}"/>
-				<p:graphicImage value="/resources/images/check-out.jpg" rendered="#{mapa._18 eq 'O'}"/>						
+				<p:graphicImage value="/resources/images/check-out.jpg" rendered="#{mapa._18 eq 'O'}"/>
+				<p:graphicImage value="/resources/images/check-in-out.jpg" rendered="#{mapa._18 eq 'A'}"/>						
 			</p:column>
 			
 			<p:column headerText="19" width="8" style="padding: 0px 0px !important;text-align: center !important;">
 				<p:graphicImage value="/resources/images/check-in.jpg" rendered="#{mapa._19 eq 'I'}"/>
-				<p:graphicImage value="/resources/images/check-out.jpg" rendered="#{mapa._19 eq 'O'}"/>						
+				<p:graphicImage value="/resources/images/check-out.jpg" rendered="#{mapa._19 eq 'O'}"/>
+				<p:graphicImage value="/resources/images/check-in-out.jpg" rendered="#{mapa._19 eq 'A'}"/>						
 			</p:column>
 			
 			<p:column headerText="20" width="8" style="padding: 0px 0px !important;text-align: center !important;">
 				<p:graphicImage value="/resources/images/check-in.jpg" rendered="#{mapa._20 eq 'I'}"/>
-				<p:graphicImage value="/resources/images/check-out.jpg" rendered="#{mapa._20 eq 'O'}"/>						
+				<p:graphicImage value="/resources/images/check-out.jpg" rendered="#{mapa._20 eq 'O'}"/>
+				<p:graphicImage value="/resources/images/check-in-out.jpg" rendered="#{mapa._20 eq 'A'}"/>						
 			</p:column>	
 			
 			
 			
 			<p:column headerText="21" width="8" style="padding: 0px 0px !important;text-align: center !important;">
 				<p:graphicImage value="/resources/images/check-in.jpg" rendered="#{mapa._21 eq 'I'}"/>
-				<p:graphicImage value="/resources/images/check-out.jpg" rendered="#{mapa._21 eq 'O'}"/>						
+				<p:graphicImage value="/resources/images/check-out.jpg" rendered="#{mapa._21 eq 'O'}"/>
+				<p:graphicImage value="/resources/images/check-in-out.jpg" rendered="#{mapa._21 eq 'A'}"/>						
 			</p:column>
 			
 			<p:column headerText="22" width="8" style="padding: 0px 0px !important;text-align: center !important;">
 				<p:graphicImage value="/resources/images/check-in.jpg" rendered="#{mapa._22 eq 'I'}"/>
-				<p:graphicImage value="/resources/images/check-out.jpg" rendered="#{mapa._22 eq 'O'}"/>						
+				<p:graphicImage value="/resources/images/check-out.jpg" rendered="#{mapa._22 eq 'O'}"/>		
+				<p:graphicImage value="/resources/images/check-in-out.jpg" rendered="#{mapa._22 eq 'A'}"/>				
 			</p:column>
 			
 			<p:column headerText="23" width="8" style="padding: 0px 0px !important;text-align: center !important;">
 				<p:graphicImage value="/resources/images/check-in.jpg" rendered="#{mapa._23 eq 'I'}"/>
-				<p:graphicImage value="/resources/images/check-out.jpg" rendered="#{mapa._23 eq 'O'}"/>						
+				<p:graphicImage value="/resources/images/check-out.jpg" rendered="#{mapa._23 eq 'O'}"/>
+				<p:graphicImage value="/resources/images/check-in-out.jpg" rendered="#{mapa._23 eq 'A'}"/>						
 			</p:column>					
 			
 			<p:column headerText="24" width="8" style="padding: 0px 0px !important;text-align: center !important;">
 				<p:graphicImage value="/resources/images/check-in.jpg" rendered="#{mapa._24 eq 'I'}"/>
-				<p:graphicImage value="/resources/images/check-out.jpg" rendered="#{mapa._24 eq 'O'}"/>						
+				<p:graphicImage value="/resources/images/check-out.jpg" rendered="#{mapa._24 eq 'O'}"/>	
+				<p:graphicImage value="/resources/images/check-in-out.jpg" rendered="#{mapa._24 eq 'A'}"/>					
 			</p:column>
 						
 			<p:column headerText="25" width="8" style="padding: 0px 0px !important;text-align: center !important;">
 				<p:graphicImage value="/resources/images/check-in.jpg" rendered="#{mapa._25 eq 'I'}"/>
-				<p:graphicImage value="/resources/images/check-out.jpg" rendered="#{mapa._25 eq 'O'}"/>						
+				<p:graphicImage value="/resources/images/check-out.jpg" rendered="#{mapa._25 eq 'O'}"/>
+				<p:graphicImage value="/resources/images/check-in-out.jpg" rendered="#{mapa._25 eq 'A'}"/>						
 			</p:column>
 			
 			
 			
 			<p:column headerText="26" width="8" style="padding: 0px 0px !important;text-align: center !important;">
 				<p:graphicImage value="/resources/images/check-in.jpg" rendered="#{mapa._26 eq 'I'}"/>
-				<p:graphicImage value="/resources/images/check-out.jpg" rendered="#{mapa._26 eq 'O'}"/>						
+				<p:graphicImage value="/resources/images/check-out.jpg" rendered="#{mapa._26 eq 'O'}"/>
+				<p:graphicImage value="/resources/images/check-in-out.jpg" rendered="#{mapa._26 eq 'A'}"/>						
 			</p:column>
 			
 			<p:column headerText="27" width="8" style="padding: 0px 0px !important;text-align: center !important;">
 				<p:graphicImage value="/resources/images/check-in.jpg" rendered="#{mapa._27 eq 'I'}"/>
 				<p:graphicImage value="/resources/images/check-out.jpg" rendered="#{mapa._27 eq 'O'}"/>
+				<p:graphicImage value="/resources/images/check-in-out.jpg" rendered="#{mapa._27 eq 'A'}"/>
 			</p:column>	
 			
 			<p:column headerText="28" width="8" style="padding: 0px 0px !important;text-align: center !important;">
 				<p:graphicImage value="/resources/images/check-in.jpg" rendered="#{mapa._28 eq 'I'}"/>
 				<p:graphicImage value="/resources/images/check-out.jpg" rendered="#{mapa._28 eq 'O'}"/>
+				<p:graphicImage value="/resources/images/check-in-out.jpg" rendered="#{mapa._28 eq 'A'}"/>
 			</p:column>
 						
 			<p:column headerText="29" width="8" style="padding: 0px 0px !important;text-align: center !important;">
 				<p:graphicImage value="/resources/images/check-in.jpg" rendered="#{mapa._29 eq 'I'}"/>
-				<p:graphicImage value="/resources/images/check-out.jpg" rendered="#{mapa._29 eq 'O'}"/>						
+				<p:graphicImage value="/resources/images/check-out.jpg" rendered="#{mapa._29 eq 'O'}"/>
+				<p:graphicImage value="/resources/images/check-in-out.jpg" rendered="#{mapa._29 eq 'A'}"/>						
 			</p:column>
 			
 			<p:column headerText="30" width="8" style="padding: 0px 0px !important;text-align: center !important;">
 				<p:graphicImage value="/resources/images/check-in.jpg" rendered="#{mapa._30 eq 'I'}"/>
-				<p:graphicImage value="/resources/images/check-out.jpg" rendered="#{mapa._30 eq 'O'}"/>						
+				<p:graphicImage value="/resources/images/check-out.jpg" rendered="#{mapa._30 eq 'O'}"/>
+				<p:graphicImage value="/resources/images/check-in-out.jpg" rendered="#{mapa._30 eq 'A'}"/>						
 			</p:column>
 								
 			<p:column headerText="31" width="8" style="padding: 0px 0px !important;text-align: center !important;">
 				<p:graphicImage value="/resources/images/check-in.jpg" rendered="#{mapa._31 eq 'I'}"/>
-				<p:graphicImage value="/resources/images/check-out.jpg" rendered="#{mapa._31 eq 'O'}"/>						
+				<p:graphicImage value="/resources/images/check-out.jpg" rendered="#{mapa._31 eq 'O'}"/>
+				<p:graphicImage value="/resources/images/check-in-out.jpg" rendered="#{mapa._31 eq 'A'}"/>						
 			</p:column>		
 		
 		</p:dataTable>

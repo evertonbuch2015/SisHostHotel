@@ -69,6 +69,11 @@ public class Adiantamento implements Serializable {
     private Banco localRecebimento;
     
     
+    @OneToOne(fetch=FetchType.LAZY)
+    @JoinColumn(name="COD_RESERVA")
+    private Reserva reserva;
+    
+    
     //--------------------------------	GETs and SETs------------------------------//
     
     
@@ -114,6 +119,10 @@ public class Adiantamento implements Serializable {
 	public Banco getLocalRecebimento() {return (localRecebimento == null)? new Banco(): localRecebimento;}	
 	public void setLocalRecebimento(Banco localRecebimento) {this.localRecebimento = localRecebimento;	}
     
+	
+	public Reserva getReserva() {return reserva;}
+	public void setReserva(Reserva reserva) {this.reserva = reserva;}
+	
     //--------------------------------	Métodos Auxiliares------------------------------//
 	
     

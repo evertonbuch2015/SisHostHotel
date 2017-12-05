@@ -20,9 +20,11 @@
     		<p:menuitem value="#{label.tit_categoria_ap}" url="#" />
 		</p:breadCrumb>
 		
-		<p:messages autoUpdate="true" showDetail="true" closable="true" showSummary="false">
-			<p:effect type="bounce" event="load"/>
-			<p:effect type="explode" event="load" delay="12000"/>
+		
+		<p:messages id="msgErros" autoUpdate="true" 
+			showDetail="true" closable="true" showSummary="false">
+			<p:effect type="pulsate" event="load" delay="500" />
+			<p:effect type="explode" event="load" delay="20000"/>
 		</p:messages>
 		
 		
@@ -94,7 +96,9 @@
 						<p:outputLabel value="#{label.txt_nome}" for="nome" />
 						<p:inputText id="nome"
 							value="#{categoriaBean.entidade.nome}"
-							placeholder="Ex: Single" />
+							placeholder="Ex: Single" 
+							required="true"
+							requiredMessage="Informe o nome!"/>
 						
 						<p:outputLabel value="#{label.txt_descricao}" for="descricao" />
 						<p:inputTextarea id="descricao"
@@ -102,6 +106,7 @@
 							style="width: 100%" rows="8" cols="40" counter="display"
 							maxlength="255" counterTemplate="{0} Caracteres Restantes"
 							autoResize="false" readonly="!#{categoriaBean.visualizando}" />
+						<h:outputText value="" />
 						<h:outputText id="display" />
 					</p:panelGrid>					
 				</div>

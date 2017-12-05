@@ -15,12 +15,6 @@ import br.com.buch.view.managedBean.TarifarioBean.TipoFiltro;
 
 public class ServiceTarifario implements GenericService<Tarifario> {
 
-	private static final String BUSCAR_TODOS = 
-			"Select t From Tarifario t left Join FETCH t.categoria left Join FETCH t.tipoTarifa order by t.categoria, t.tipoTarifa, t.dataInicial";
-	
-	private static final String CARREGAR_ENTIDADE = "Select t From Tarifario t left Join FETCH t.categoria left Join FETCH t.tipoTarifa "
-			+ " where t.idTarifario = ?1 order by t.categoria, t.tipoTarifa, t.dataInicial";
-	
 	private TarifarioDao tarifarioDao;
 
 	
@@ -28,7 +22,6 @@ public class ServiceTarifario implements GenericService<Tarifario> {
 		this.tarifarioDao = new TarifarioDao();
 	}
 
-	
 	
 	@Override
 	public String salvar(Tarifario entidate) throws Exception{		
@@ -76,7 +69,7 @@ public class ServiceTarifario implements GenericService<Tarifario> {
 	@Override
 	public Tarifario carregarEntidade(Tarifario entidade)throws PersistenciaException {
 		try{
-			return tarifarioDao.findOne(CARREGAR_ENTIDADE, entidade.getIdTarifario());			
+			return tarifarioDao.findOne(TarifarioDao.CARREGAR_ENTIDADE, entidade.getIdTarifario());			
 		}catch (Exception e) {
 			throw new PersistenciaException("Ocorreu uma exceção ao buscar os dados do Tarifário!" + 
             		" \nErro: " + UtilErros.getMensagemErro(e));
@@ -87,40 +80,29 @@ public class ServiceTarifario implements GenericService<Tarifario> {
 	@Override
 	public List<Tarifario> buscarTodos() {
 		try {
-			return tarifarioDao.find(BUSCAR_TODOS);								
+			return tarifarioDao.find(TarifarioDao.BUSCAR_TODOS);								
 		} catch (Exception e) {
 			return new ArrayList<>();
 		}
 	}
 
 		
-	public List<Tarifario> filtrarTabela(TipoFiltro tipoFiltro , String valorFiltro)throws Exception{
+	public List<Tarifario> filtrarTabela(TipoFiltro tipoFiltro , Object...valorFiltro)throws Exception{
 		List<Tarifario> lista = null;
 		
 		try{			
-			if(tipoFiltro.equals(TipoFiltro.CATEGORIA)){			
-
-				String jpql = "Select t From Tarifario t LEFT JOIN FETCH t.categoria "
-						+ "	LEFT JOIN FETCH t.tipoTarifa where t.categoria.nome  like ?";
-				lista = tarifarioDao.find(jpql,valorFiltro);
+			if(tipoFiltro.equals(TipoFiltro.CATEGORIA)){
+				lista = tarifarioDao.find(TarifarioDao.FILTRAR_POR_CATEGORIA, valorFiltro);
 	
 			}
-			else if(tipoFiltro.equals(TipoFiltro.TIPO_TARIFA)){			
-				
-				String jpql = "Select t From Tarifario t LEFT JOIN FETCH t.categoria "
-						+ "	LEFT JOIN FETCH t.tipoTarifa where t.tipoTarifa.nome  like ?";
-				lista = tarifarioDao.find(jpql,valorFiltro);
+			
+			else if(tipoFiltro.equals(TipoFiltro.TIPO_TARIFA)){			 
+				lista = tarifarioDao.find(TarifarioDao.FILTRAR_POR_TIPO_TARIFA, valorFiltro);
 		
 			}
-			else if(tipoFiltro.equals(TipoFiltro.DATA)){			
-				
-				
-				String jpql = " Select t From Tarifario t LEFT JOIN FETCH t.categoria "
-							+ "	LEFT JOIN FETCH t.tipoTarifa "
-							+ " where t.dataInicial <= ?1 and t.dataFinal >= ?2";
-				
-				lista = tarifarioDao.find(jpql,valorFiltro, valorFiltro);
-											
+			else if(tipoFiltro.equals(TipoFiltro.DATA)){		
+				lista = tarifarioDao.find(valorFiltro.length == 1 ? 
+						TarifarioDao.FILTRAR_POR_DATA : TarifarioDao.FILTRO_POR_DATA_BEETWEN, valorFiltro);											
 			}
 			
 			return lista;
@@ -140,17 +122,13 @@ public class ServiceTarifario implements GenericService<Tarifario> {
 	private boolean validaAntesSalvar(Tarifario entidate) {
 		List<Tarifario> lista = null;
 		
-		try {
-			
+		try {			
 			if(entidate.getIdTarifario() == null){
-				String jpql = " Select t From Tarifario t where t.categoria = ?1 and t.tipoTarifa = ?2"
-						+ " and ((t.dataInicial >= ?3 and t.dataInicial <= ?4) or (t.dataFinal >= ?3 and t.dataFinal <= ?4))";
-				lista = tarifarioDao.find(jpql, entidate.getCategoria(),entidate.getTipoTarifa(),entidate.getDataInicial(),entidate.getDataFinal());
+				lista = tarifarioDao.find(TarifarioDao.VALIDA_ANTES_SALVAR_01, 
+							entidate.getCategoria(),entidate.getTipoTarifa(),entidate.getDataInicial(),entidate.getDataFinal());
 			}else{
-				String jpql = " Select t From Tarifario t where t.categoria = ?1 and t.tipoTarifa = ?2 and t.idTarifario != ?3"
-						+ " and ((t.dataInicial >= ?4 and t.dataInicial <= ?5) or (t.dataFinal >= ?4 and t.dataFinal <= ?5))";
-				lista = tarifarioDao.find(jpql, entidate.getCategoria(),entidate.getTipoTarifa(),
-										  entidate.getIdTarifario(),entidate.getDataInicial(),entidate.getDataFinal());
+				lista = tarifarioDao.find(TarifarioDao.VALIDA_ANTES_SALVAR_02, entidate.getCategoria(),entidate.getTipoTarifa(),
+							entidate.getIdTarifario(),entidate.getDataInicial(),entidate.getDataFinal());
 			}
 						
 		} catch (Exception e) {

@@ -1,19 +1,18 @@
 package br.com.buch.core.service;
 
 import java.util.List;
-import java.util.Observable;
 
 import br.com.buch.core.dao.TipoTarifaDao;
 import br.com.buch.core.entity.TipoTarifa;
+import br.com.buch.core.util.Constantes;
 import br.com.buch.core.util.Constantes.ConstantesLista;
 import br.com.buch.core.util.NegocioException;
 import br.com.buch.core.util.PersistenciaException;
 import br.com.buch.core.util.UtilErros;
 import br.com.buch.view.managedBean.TipoTarifaBean.TipoFiltro;
 
-public class ServiceTipoTarifa extends Observable implements GenericService<TipoTarifa> {
+public class ServiceTipoTarifa implements GenericService<TipoTarifa> {
 
-	
 	private TipoTarifaDao tipoTarifaDao;
 	
 	
@@ -28,7 +27,7 @@ public class ServiceTipoTarifa extends Observable implements GenericService<Tipo
 			
 			try {
 				tipoTarifaDao.save(entidate);
-				notificarOuvintes();
+				Constantes.getInstance().refresh(ConstantesLista.TIPOS_TARIFA);
 				return "Tipo de Tarifa Cadastrada com Sucesso!";
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -39,7 +38,7 @@ public class ServiceTipoTarifa extends Observable implements GenericService<Tipo
 			
 			try {				
 				tipoTarifaDao.update(entidate);
-				notificarOuvintes();
+				Constantes.getInstance().refresh(ConstantesLista.TIPOS_TARIFA);
 				return "Tipo de Tarifa Alterada com Sucesso!";
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -54,7 +53,7 @@ public class ServiceTipoTarifa extends Observable implements GenericService<Tipo
 	public String excluir(TipoTarifa entidade)throws Exception {
 		try {
 			tipoTarifaDao.delete(entidade);
-			notificarOuvintes();
+			Constantes.getInstance().refresh(ConstantesLista.TIPOS_TARIFA);
 			return "";
 		}catch (Exception ex) {
         	ex.printStackTrace();
@@ -67,9 +66,7 @@ public class ServiceTipoTarifa extends Observable implements GenericService<Tipo
 	@Override
 	public TipoTarifa carregarEntidade(TipoTarifa entidade)throws PersistenciaException {
 		try{
-			String jpql = "Select t From TipoTarifa t where t.idTipoTarifa = ?1";
-			return tipoTarifaDao.findOne(jpql, entidade.getIdTipoTarifa());
-			
+			return tipoTarifaDao.findOne(TipoTarifaDao.CARREGAR_ENTIDADE, entidade.getIdTipoTarifa());			
 		}catch (Exception e) {
 			e.printStackTrace();
 			throw new PersistenciaException("Ocorreu uma exceção ao buscar os dados do Tipo de Tarifa!" + 
@@ -93,15 +90,9 @@ public class ServiceTipoTarifa extends Observable implements GenericService<Tipo
 		List<TipoTarifa> lista = null;
 		
 		try{
-			
-			if(tipoFiltro.equals(TipoFiltro.CODIGO)){							
-				String jpql = "Select t From TipoTarifa t where t.idTipoTarifa in (" + valorFiltro + ")";
-				lista = tipoTarifaDao.find(jpql);							
-			}
-			else if(tipoFiltro.equals(TipoFiltro.NOME)){							
-				lista = tipoTarifaDao.find("Select t From TipoTarifa t where t.nome like ?",valorFiltro);						
-			}		
-			
+			lista = tipoFiltro.equals(TipoFiltro.CODIGO) ?
+						tipoTarifaDao.find(TipoTarifaDao.FILTRAR_POR_CODIGO, valorFiltro):
+						tipoTarifaDao.find(TipoTarifaDao.FILTRAR_POR_NOME, valorFiltro);
 			return lista;
 			
 		}catch (Exception e) {
@@ -115,9 +106,4 @@ public class ServiceTipoTarifa extends Observable implements GenericService<Tipo
 	@Override
 	public void consisteAntesEditar(TipoTarifa entidade)throws NegocioException {}
 
-	
-	private void notificarOuvintes(){
-		setChanged();
-		notifyObservers(ConstantesLista.TIPOS_TARIFA);
-	}
 }

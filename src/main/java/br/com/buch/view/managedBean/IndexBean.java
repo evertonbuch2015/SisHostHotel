@@ -1,6 +1,7 @@
 package br.com.buch.view.managedBean;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
@@ -21,6 +22,7 @@ import org.primefaces.model.chart.ChartSeries;
 import br.com.buch.core.entity.Hospedagem;
 import br.com.buch.core.entity.Reserva;
 import br.com.buch.core.entity.Usuario;
+import br.com.buch.core.enumerated.GrupoUsuario;
 import br.com.buch.core.service.ServiceHospedagem;
 import br.com.buch.core.service.ServiceIndex;
 import br.com.buch.core.service.ServiceReserva;
@@ -42,6 +44,7 @@ public class IndexBean implements Serializable {
 	private ServiceIndex serviceIndex;
 
 	
+	
 	static {
 		countries = new LinkedHashMap<String, Locale>();
 		countries.put("English", new Locale("en"));
@@ -51,8 +54,7 @@ public class IndexBean implements Serializable {
 
 	@PostConstruct
 	public void init(){
-		usuarioLogado = SessionContext.getInstance().getUsuarioLogado();
-		
+		usuarioLogado = SessionContext.getInstance().getUsuarioLogado();		
 		serviceIndex = new ServiceIndex();
 		atualizarGraficos();
 	}
@@ -80,17 +82,18 @@ public class IndexBean implements Serializable {
 	
 	private void createBarModel2() {
         barModel2 = new BarChartModel();        
-        ChartSeries boys = new ChartSeries();
-        boys.setLabel("Apartamentos");
-        
+                
         Map<Object,Number> data = serviceIndex.getGraficoApartamentos();
-        boys.setData(data);
-       
-        barModel2.setBarWidth(35);
-        
-        barModel2.setAnimate(true);
-        barModel2.addSeries(boys);
-        
+        if ((data != null) && (data.size() > 0)){
+        	ChartSeries boys = new ChartSeries();
+            boys.setLabel("Apartamentos");
+            
+        	boys.setData(data);
+        	barModel2.addSeries(boys);
+        }
+               
+        barModel2.setBarWidth(35);        
+        barModel2.setAnimate(true);               
         barModel2.setTitle("Resumo dos Apartamentos");
         barModel2.setLegendPosition("ne");
         barModel2.setShowPointLabels(true);
@@ -104,24 +107,27 @@ public class IndexBean implements Serializable {
 	
 	private void createBarModel() {
         barModel = new BarChartModel();        
-        ChartSeries boys = new ChartSeries();
-        boys.setLabel("Reservas");
-        
+                        
         Map<Object,Number> data = serviceIndex.getGraficoReservas();
-        boys.setData(data);
         
-        if (data.size() <= 10) {
-        	barModel.setBarWidth(40);
-		}else if(data.size() <= 35){
-			barModel.setBarWidth(15);
-		}else{
-			barModel.setBarWidth(20);
-		}
-        
-        
-        barModel.setAnimate(true);
-        barModel.addSeries(boys);
-        
+        if ((data != null) && (data.size() > 0)){
+        	ChartSeries boys = new ChartSeries();
+            boys.setLabel("Reservas");
+        	
+        	boys.setData(data);
+            
+            if (data.size() <= 10) {
+            	barModel.setBarWidth(40);
+    		}else if(data.size() <= 35){
+    			barModel.setBarWidth(15);
+    		}else{
+    			barModel.setBarWidth(20);
+    		}
+            
+            barModel.addSeries(boys);
+        }
+                
+        barModel.setAnimate(true);        
         barModel.setTitle("Reservas Agendadas no Mês");
         barModel.setLegendPosition("ne");
         barModel.setShowPointLabels(true);
@@ -145,7 +151,7 @@ public class IndexBean implements Serializable {
 			return new ServiceReserva().buscarReservasVencidas();
 		} catch (Exception e) {
 			e.printStackTrace();
-			return null;
+			return new ArrayList<>();
 		}
 	}
 	
@@ -155,7 +161,7 @@ public class IndexBean implements Serializable {
 			return new ServiceHospedagem().getHospedagensParaCheckOut();
 		} catch (Exception e) {
 			e.printStackTrace();
-			return null;
+			return new ArrayList<>();
 		}
 	}
 	
@@ -183,4 +189,18 @@ public class IndexBean implements Serializable {
 	
 	public Usuario getUsuarioLogado() {return usuarioLogado;}
 
+	
+	public Boolean isAdministrador(){
+		return GrupoUsuario.isAdministrador(usuarioLogado.getGrupoUsuario());
+	}
+	
+	
+	public Boolean isGerente(){
+		return true;//GrupoUsuario.isGerente(usuarioLogado.getGrupoUsuario());
+	}
+	
+	
+	public Boolean isRecepcionista(){
+		return GrupoUsuario.isRecepcionista(usuarioLogado.getGrupoUsuario());
+	}
 }

@@ -24,10 +24,15 @@
     		<p:menuitem value="#{label.txt_reservas}" url="#" />
 		</p:breadCrumb>
 		
-		<p:messages autoUpdate="true" showDetail="true" closable="true" showSummary="false">
-			<p:effect type="bounce" event="load"/>
-			<p:effect type="explode" event="load" delay="12000"/>
+				
+		<p:messages id="msgErros" autoUpdate="true" 
+			showDetail="true" closable="true" showSummary="false">
+			<p:effect type="pulsate" event="load" delay="500" />
+			<p:effect type="explode" event="load" delay="20000"/>
 		</p:messages>
+		
+		
+		<p:growl id="msghospede" for="actSelectHospede" showDetail="true" showSummary="false" life="6000"/>	
 		
 		
 		<p:tabView rendered="#{reservaBean.buscando}" prependId="false">						
@@ -164,7 +169,7 @@
 							pattern="dd/MM/yyyy" mask="true"
 							showOn="button" locale="pt_BR"
 							required="true"
-							requiredMessage="Informe a Data de Emissão!"
+							requiredMessage="Informe a Data de Entrada!"
 							disabled="#{!reservaBean.inserindo}" style="width:80%">
 					
 							<p:ajax event="dateSelect"
@@ -220,7 +225,9 @@
 								required="true"
 								requiredMessage="Informe o Apartamento!">
 								
-								<p:ajax event="itemSelect" listener="#{reservaBean.apartamentoSelecionado}"/>
+								<p:ajax event="itemSelect" 
+									update="apartamento valorDiaria valorTotal"
+									listener="#{reservaBean.apartamentoSelecionado}"/>
 							</p:autoComplete>
 								
 							<p:commandButton 
@@ -229,11 +236,49 @@
 								action="#{dialogApartamentoBean.abrirDialog()}"
 								disabled="#{!reservaBean.inserindo}">
 								
-								<p:ajax event="dialogReturn" 
+								<p:ajax event="dialogReturn" process="@this" 
 									listener="#{reservaBean.apartamentoSelecionado}" 
-									process="@this" update="apartamento valorDiaria valorTotal" />
+									update="apartamento valorDiaria valorTotal" />
 							</p:commandButton>
 						</h:panelGrid>
+						
+						
+						
+						<p:outputLabel value="#{label.txt_empresa}" for="empresa" />
+						<h:panelGrid columns="2">
+   															
+							<p:autoComplete id="empresa" 
+								value="#{reservaBean.entidade.empresa}"
+		 						var="empresa" itemLabel="#{empresa.nomeFantasia}" itemValue="#{empresa}"
+		 						minQueryLength="3" maxResults="20" 
+		 						dropdown="true" queryDelay="1000" size="40"
+								readonly="#{reservaBean.visualizando}"
+								completeMethod="#{reservaBean.buscarEmpresas}" >
+								
+								<p:ajax event="itemSelect" listener="#{reservaBean.empresaSelecionada}" update="hospede msghospede"/>
+								
+								<p:ajax event="change" listener="#{reservaBean.empresaChange}" update="hospede msghospede"/>
+								
+								<p:column headerText="Código">
+					               <h:outputText value="#{empresa.codigo}"/>
+					        	</p:column>
+					
+					           	<p:column headerText="Nome">
+					               <h:outputText value="#{empresa.nomeFantasia}" />
+					           	</p:column>
+							</p:autoComplete>
+								
+							<p:commandButton 
+								icon="fa fa-search" process="@this" update="@none"
+								styleClass="botaoAzul" 
+								action="#{dialogHospedeBean.abrirDialog()}"
+								disabled="#{!reservaBean.inserindo}">
+								
+								<p:ajax event="dialogReturn" 
+									listener="#{reservaBean.hospedeSelecionado}" 
+									process="@this" update="hospede" />
+							</p:commandButton>
+						</h:panelGrid>	
 						
 						
 						
@@ -244,7 +289,7 @@
 							<p:autoComplete id="hospede" 
 								value="#{reservaBean.entidade.hospede}"
 		 						var="hospede" itemLabel="#{hospede.nome}" itemValue="#{hospede}"
-		 						minQueryLength="4" maxResults="20" 
+		 						minQueryLength="3" maxResults="20" 
 		 						dropdown="true" queryDelay="1000" size="40"
 								forceSelection="true" readonly="#{reservaBean.visualizando}"
 								completeMethod="#{reservaBean.buscarHospedes}"
@@ -297,7 +342,7 @@
 								listener="#{reservaBean.onTipoTarifaChange}" />  
 							
 							<f:selectItem itemLabel="Selecione um Registro"/>
-							<f:selectItems value="#{reservaBean.tiposTarifa()}"
+							<f:selectItems value="#{constantesBean.tiposTarifa}"
 								var="a" itemValue="#{a}" itemLabel="#{a.nome}"/>
 						</p:selectOneMenu>
 						
@@ -373,6 +418,19 @@
 					</p:panelGrid>
 				</div>				
 			</p:tab>
+			
+			<p:tab title="#{label.txt_obs}">
+				<p:panelGrid columns="1" styleClass="ui-panelgrid-blank" layout="grid">
+						
+					<p:outputLabel value="#{label.txt_obs}" for="obs" />
+					<p:inputTextarea value="#{reservaBean.entidade.obs}" id="obs"
+						style="width: 80%" rows="15" cols="30" counter="display"
+						maxlength="255" counterTemplate="{0} Caracteres Restantes"
+						autoResize="false" readonly="#{reservaBean.visualizando}" />
+					<h:outputText id="display" />
+				</p:panelGrid>
+			</p:tab>
+			
 		</p:tabView>		
 		
 		<app:barraBotoes bean="#{reservaBean}">

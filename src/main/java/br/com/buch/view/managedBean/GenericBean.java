@@ -111,9 +111,7 @@ public abstract class GenericBean<E extends Serializable,T extends GenericServic
 	
 	public void excluir(E entity){
 		try {
-			service.excluir(entity);
-			refresh();
-			mudarBuscar();
+			service.excluir(entity);			
 			
 			UtilMensagens.mensagemInformacao("Exclusão Realizada com Sucesso");
 		}
@@ -122,6 +120,9 @@ public abstract class GenericBean<E extends Serializable,T extends GenericServic
 		}
 		catch (Exception e) {
 			UtilMensagens.mensagemErro(e.getMessage());
+		}finally {
+			refresh();
+			mudarBuscar();
 		}
 	}
 		

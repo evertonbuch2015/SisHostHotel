@@ -25,8 +25,8 @@
 		</p:breadCrumb>
 		
 		<p:messages autoUpdate="true" showDetail="true" closable="true" showSummary="false">
-			<p:effect type="bounce" event="load"/>
-			<p:effect type="explode" event="load" delay="12000"/>
+			<p:effect type="pulsate" event="load" delay="500" />
+			<p:effect type="explode" event="load" delay="20000"/>
 		</p:messages>
 		
 		
@@ -88,6 +88,11 @@
 							<p:confirm header="#{label.txt_confirmacao}" 
 								message="Deseja Excluir este Registro" icon="ui-icon-alert"/>
 						</p:commandButton>
+						
+						
+						<p:commandButton icon="fa fa-dollar" title="Confirmar Recebimento"		
+							rendered="#{entidade.saldo > 0}"					
+							onclick="PF('dialogRealizarBaixa').initPosition(); PF('dialogRealizarBaixa').show(); return false;"/>
 					</p:column>					
 
 				</p:dataTable>
@@ -202,14 +207,13 @@
 						</h:panelGrid>
 						
 						
-						<p:outputLabel value="#{label.txt_local_recebimento}" for="localRecebimento"/>
+						<p:outputLabel value="#{label.txt_local_recebimento}"/>
 						<p:selectOneMenu id="localRecebimento"
 							value="#{adiantamentoBean.entidade.localRecebimento}"
-							required="true" autoWidth="false"
-							disabled="#{adiantamentoBean.visualizando}">
+							autoWidth="false" disabled="true">
 															
-							<f:selectItem itemLabel="Selecione um Registro"/>
-							<f:selectItems value="#{adiantamentoBean.locaisRecebimento}" var="localRecebimento"
+							<f:selectItem itemLabel="Selecione um Registro" itemValue="null"/>
+							<f:selectItems value="#{constantesBean.bancos}" var="localRecebimento"
 								 itemValue="#{localRecebimento}" itemLabel="#{localRecebimento}" />
 						</p:selectOneMenu>								
 						
@@ -223,15 +227,49 @@
 		
 		
 		<app:barraBotoes bean="#{adiantamentoBean}">
-			<p:commandButton id="baixa" 
-				value="Realizar Baixa"
-				styleClass="bu-botao-azul"
-				update="@form"
-				actionListener="#{adiantamentoBean.realizarBaixa()}"
-				rendered="#{adiantamentoBean.visualizando}">
-			
-			</p:commandButton>
+								
+			<p:commandButton value="#{label.txt_confirmar_receb}" style="width:180px !important"
+				styleClass="bu-botao-verde" rendered="#{cc.attrs.bean.visualizando and adiantamentoBean.entidade.saldo > 0}"
+				onclick="PF('dialogRealizarBaixa').initPosition(); PF('dialogRealizarBaixa').show(); return false;"/>
 		</app:barraBotoes>
+		
+		
+		<p:dialog 
+			width="400" height="170"
+			header="#{label.txt_confirmar_receb}" resizable="false"	
+			widgetVar="dialogRealizarBaixa" modal="true" draggable="true" 
+			closable="true" position="center center"
+			showEffect="explode" hideEffect="explode">
+		
+			<p:panelGrid columns="2" 
+				styleClass="ui-panelgrid-blank"
+				cellpadding="10" layout="grid"
+				columnClasses="ui-grid-col-3,ui-grid-col-9">
+														
+							
+				
+				<p:outputLabel value="#{label.txt_local_recebimento}"/>														
+				<p:selectOneMenu 
+					value="#{adiantamentoBean.bancoBaixa}"
+					style="width:75% !important">
+					
+					<f:selectItem itemLabel="Selecione" />											
+					<f:selectItems value="#{constantesBean.bancos}" var="a"
+						itemValue="#{a}" itemLabel="#{a.toString()}"/>  						
+				</p:selectOneMenu>
+				
+				<p:outputLabel value=" "/>				
+				<p:commandButton id="baixa" 
+					value="#{label.txt_confirmar}"
+					styleClass="bu-botao-azul"
+					update="@form" style="width:150px"
+					actionListener="#{adiantamentoBean.realizarBaixa()}"
+					onclick="PF('dialogRealizarBaixa').hide();">
+			
+				</p:commandButton>
+					
+			</p:panelGrid>	
+		</p:dialog>
 		
 		
 		<p:dialog 
@@ -280,12 +318,12 @@
 				
 				<p:outputLabel value="#{label.txt_local_recebimento}"/>														
 				<p:selectOneMenu id="filtroBanco"
-					value="#{adiantamentoBean.banco}"
+					value="#{adiantamentoBean.bancoFiltro}"
 					style="width:75% !important"
 					disabled="#{adiantamentoBean.filtro.ordinal() ne 4}">
 					
 					<f:selectItem itemLabel="Selecione" />											
-					<f:selectItems value="#{adiantamentoBean.locaisRecebimento}" var="a"
+					<f:selectItems value="#{constantesBean.bancos}" var="a"
 						itemValue="#{a}" itemLabel="#{a.toString()}"/>  						
 				</p:selectOneMenu>
 				
@@ -297,8 +335,8 @@
 					disabled="#{(adiantamentoBean.filtro.ordinal() eq 3) 
 									or (adiantamentoBean.filtro.ordinal() eq 4)}"/>
 				
-								
-				<p:commandButton value="Filtrar" icon="ui-icon-folder-collapsed"
+				<p:outputLabel value=" "/>				
+				<p:commandButton value="#{label.filtrar_registros}" icon="ui-icon-folder-collapsed"
 					styleClass="bu-botao-azul" update="tabela"
 					style="margin-top:20px;"
 					actionListener="#{adiantamentoBean.filtrar}"
@@ -307,5 +345,6 @@
 			</p:panelGrid>	
 		</p:dialog>
 		
+				
 	</ui:define>
 </ui:composition>

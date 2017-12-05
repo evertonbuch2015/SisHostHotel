@@ -39,7 +39,7 @@ public class Consumo implements Serializable{
 	private Integer quantidade;
 
 	
-	@Temporal(TemporalType.DATE)
+	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name="DATA_CONSUMO")
 	private Date dataConsumo;
 	
@@ -65,10 +65,10 @@ public class Consumo implements Serializable{
 	public Integer getQuantidade() {return quantidade;}
 	public void setQuantidade(Integer quantidade) {this.quantidade = quantidade;}
 
-	
+	@Transient
 	public String getDataConsumoFormatada(){
-		return (this.dataConsumo != null) ? new SimpleDateFormat("dd/MM/yyyy").format(this.dataConsumo): "";
-	}
+		return (this.dataConsumo != null) ? new SimpleDateFormat("dd/MM/yyyy HH:mm").format(this.dataConsumo): "";
+	}    
 	public Date getDataConsumo() {return dataConsumo;}
 	public void setDataConsumo(Date dataConsumo) {this.dataConsumo = dataConsumo;}
 

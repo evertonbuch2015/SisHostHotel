@@ -7,6 +7,7 @@ import java.util.List;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 
+import org.primefaces.component.tabview.TabView;
 import org.primefaces.event.TabChangeEvent;
 
 import br.com.buch.core.entity.Empresa;
@@ -35,6 +36,8 @@ public class EmpresaBean extends GenericBean<Empresa, ServiceEmpresa> implements
 	private TipoFiltro filtro;
 	private List<Hospede> hospedes;
 	private ServiceHospede serviceHospede;
+	
+	private TabView tabView;
 	
 	public EmpresaBean() {
 		super(new ServiceEmpresa());
@@ -81,9 +84,19 @@ public class EmpresaBean extends GenericBean<Empresa, ServiceEmpresa> implements
 				this.hospedes = serviceHospede.buscarPorEmpresa(entidade);
 			} catch (Exception e) {
 				e.printStackTrace();
-			}
+			}        	
         }        
     }
+	
+	
+	@Override
+	public void cancelar() {	
+		super.cancelar();
+		tabView.setActiveIndex(0);
+		this.hospedes = null;
+	}
+	
+		
 	// =============================GET AND SET=====================================
 		
 	
@@ -104,4 +117,9 @@ public class EmpresaBean extends GenericBean<Empresa, ServiceEmpresa> implements
 			refresh();
 		return entidades;
 	}
+
+	
+	public TabView getTabView() {return tabView;}
+
+	public void setTabView(TabView tabView) {this.tabView = tabView;}
 }

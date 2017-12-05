@@ -17,17 +17,7 @@ import br.com.buch.view.managedBean.ConsumoBean.TipoFiltro;
 
 public class ServiceConsumo implements GenericService<Consumo> {
 
-	private static final String BUSCAR_TODAS = 
-			"Select c From Consumo c LEFT JOIN FETCH c.produto LEFT JOIN FETCH c.hospedagem where c.dataConsumo Between ? and ? order by c.dataConsumo";
-
-	private static final String BUSCAR_POR_HOSPEDAGEM = 
-			"Select c From Consumo c LEFT JOIN FETCH c.produto LEFT JOIN FETCH c.hospedagem where c.hospedagem.codigo = ?";
-
-	private static final String CARREGAR_ENTIDADE = 
-			"Select c From Consumo c LEFT JOIN FETCH c.produto LEFT JOIN FETCH c.hospedagem where c.idConsumo = ?1";
-	
 	private ConsumoDao dao;
-	
 	
 	public ServiceConsumo() {
 		this.dao = new ConsumoDao();
@@ -81,7 +71,7 @@ public class ServiceConsumo implements GenericService<Consumo> {
 	@Override
 	public Consumo carregarEntidade(Consumo entidade)throws PersistenciaException {
 		try{
-			return dao.findOne(CARREGAR_ENTIDADE, entidade.getIdConsumo());			
+			return dao.findOne(ConsumoDao.CARREGAR_ENTIDADE, entidade.getIdConsumo());			
 		}catch (Exception e) {
 			e.printStackTrace();
 			throw new PersistenciaException("Ocorreu uma exceção ao buscar os dados do Apartamento!" + 
@@ -107,7 +97,7 @@ public class ServiceConsumo implements GenericService<Consumo> {
         Date d2 = c2.getTime();
         
 		try {
-			return dao.find(BUSCAR_TODAS, d1, d2);			
+			return dao.find(ConsumoDao.BUSCAR_TODAS, d1, d2);			
 		} catch (Exception e) {
 			e.printStackTrace();
 			return null;
@@ -120,17 +110,11 @@ public class ServiceConsumo implements GenericService<Consumo> {
 		
 		try {			
 			if(tipoFiltro.equals(TipoFiltro.HOSPEDAGEM)){				
-				lista = dao.find(BUSCAR_POR_HOSPEDAGEM,valorFiltro);
+				lista = dao.find(ConsumoDao.BUSCAR_POR_HOSPEDAGEM,valorFiltro);
 			}
 			
-			else if(tipoFiltro.equals(TipoFiltro.DATA)){
-				String jpql;
-				if (valorFiltro.length == 1){
-					jpql = "Select c From Consumo c LEFT JOIN FETCH c.produto LEFT JOIN FETCH c.hospedagem where c.dataConsumo = ?";
-				}else{
-					jpql = "Select c From Consumo c LEFT JOIN FETCH c.produto LEFT JOIN FETCH c.hospedagem where c.dataConsumo Between ? and ?";
-				}	
-				lista = dao.find(jpql, valorFiltro);
+			else if(tipoFiltro.equals(TipoFiltro.DATA)){	
+				lista = dao.find(valorFiltro.length == 1 ? ConsumoDao.FILTRO_POR_DATA : ConsumoDao.FILTRO_POR_DATA_BEETWEN , valorFiltro);
 			}
 			
 			return lista;			

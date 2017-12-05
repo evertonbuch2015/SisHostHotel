@@ -7,7 +7,6 @@ import javax.persistence.PersistenceException;
 
 import br.com.buch.core.dao.AdiantamentoDao;
 import br.com.buch.core.entity.Adiantamento;
-import br.com.buch.core.entity.Hospede;
 import br.com.buch.core.enumerated.TipoFiltroAdiantamento;
 import br.com.buch.core.enumerated.TipoFiltroRecebimento;
 import br.com.buch.core.util.NegocioException;
@@ -16,21 +15,6 @@ import br.com.buch.core.util.UtilErros;
 
 public class ServiceAdiantamento implements GenericService<Adiantamento> {
 
-	private static final String CARREGAR_ENTIDADE = 
-		"Select a From Adiantamento a LEFT JOIN FETCH a.hospede LEFT JOIN FETCH a.localRecebimento where a.idAdiantamento = ?";
-	
-	private static final String BUSCAR_TODOS = 
-		"Select a From Adiantamento a LEFT JOIN FETCH a.hospede";
-
-	private static final String FILTRAR_POR_BANCO = "Select r From Recebimento r LEFT JOIN FETCH r.localRecebimento where r.localRecebimento = ?";
-
-	private static final String FILTRAR_POR_NOME_HOSPEDE = "Select a From Adiantamento a LEFT JOIN FETCH a.hospede where lower(a.hospede.nome) like ?";
-	
-	private static final String FILTRAR_POR_CPF_HOSPEDE = "Select a From Adiantamento a LEFT JOIN FETCH a.hospede where a.hospede.cpf = ?";
-	
-	private static final String FILTRO_POR_DATA_ENTRADA = "Select a From Adiantamento a LEFT JOIN FETCH a.hospede where a.dtEmissao = ?";
-	
-	private static final String FILTRO_POR_DATA_ENTRADA_BEETWEN = " Select a From Adiantamento a LEFT JOIN FETCH a.hospede where a.dtEmissao Between ? and ?";	
 	
 	
 	private AdiantamentoDao adiantamentoDao;
@@ -88,7 +72,7 @@ public class ServiceAdiantamento implements GenericService<Adiantamento> {
 	@Override
 	public Adiantamento carregarEntidade(Adiantamento entidade)throws PersistenciaException {
 		try{
-			return adiantamentoDao.findOne(CARREGAR_ENTIDADE, entidade.getIdAdiantamento());			
+			return adiantamentoDao.findOne(AdiantamentoDao.CARREGAR_ENTIDADE, entidade.getIdAdiantamento());			
 		}catch (Exception e) {
 			e.printStackTrace();
 			throw new PersistenciaException("Ocorreu uma exceção ao buscar os dados do Adiantamento a Cliente!" + 
@@ -100,7 +84,7 @@ public class ServiceAdiantamento implements GenericService<Adiantamento> {
 	@Override
 	public List<Adiantamento> buscarTodos() {
 		try {
-			return adiantamentoDao.find(BUSCAR_TODOS);
+			return adiantamentoDao.find(AdiantamentoDao.BUSCAR_TODOS);
 		} catch (Exception e) {
 			e.printStackTrace();
 			return null;
@@ -114,17 +98,19 @@ public class ServiceAdiantamento implements GenericService<Adiantamento> {
 		try {
 			
 			if(tipoFiltro.equals(TipoFiltroAdiantamento.CODIGO)){
-				if(valorFiltro[0] == null || valorFiltro[0].equals("")){ throw new NegocioException("Informe um código para Filtrar!");}
-				lista = adiantamentoDao.find("Select a From Adiantamento a LEFT JOIN FETCH a.hospede where a.codigo = ?");
+				if(valorFiltro[0] == null || valorFiltro[0].equals("")){ 
+					throw new NegocioException("Informe um código para Filtrar!");
+				}
+				lista = adiantamentoDao.find(AdiantamentoDao.FILTRAR_POR_CODIGO, valorFiltro);
 			}
 			
 			else if(tipoFiltro.equals(TipoFiltroAdiantamento.HOSPEDE_NOME)){
-				lista = adiantamentoDao.find(FILTRAR_POR_NOME_HOSPEDE, 
+				lista = adiantamentoDao.find(AdiantamentoDao.FILTRAR_POR_NOME_HOSPEDE, 
 						valorFiltro[0].equals("") ? valorFiltro[0] : String.valueOf(valorFiltro[0]).toLowerCase());
 			}
 			
 			else if(tipoFiltro.equals(TipoFiltroAdiantamento.HOSPEDE_CPF)){
-				lista = adiantamentoDao.find(FILTRAR_POR_CPF_HOSPEDE, 
+				lista = adiantamentoDao.find(AdiantamentoDao.FILTRAR_POR_CPF_HOSPEDE, 
 						String.valueOf(valorFiltro[0]).replace("-","").replace(".", ""));
 			}
 			
@@ -132,11 +118,11 @@ public class ServiceAdiantamento implements GenericService<Adiantamento> {
 				if(valorFiltro[0] == null){
 					throw new NegocioException("Informe um Local de Recebimento para Filtrar!");
 				}
-				lista = adiantamentoDao.find(FILTRAR_POR_BANCO,valorFiltro);
+				lista = adiantamentoDao.find(AdiantamentoDao.FILTRAR_POR_BANCO,valorFiltro);
 			}
 			
 			else if(tipoFiltro.equals(TipoFiltroAdiantamento.DATA_EMISSAO)){				
-				lista = adiantamentoDao.find(valorFiltro.length == 1 ? FILTRO_POR_DATA_ENTRADA : FILTRO_POR_DATA_ENTRADA_BEETWEN, valorFiltro);
+				lista = adiantamentoDao.find(valorFiltro.length == 1 ? AdiantamentoDao.FILTRO_POR_DATA_ENTRADA : AdiantamentoDao.FILTRO_POR_DATA_ENTRADA_BEETWEN, valorFiltro);
 			}
 			
 			return lista;			
@@ -163,7 +149,7 @@ public class ServiceAdiantamento implements GenericService<Adiantamento> {
 	@Override
 	public void consisteAntesEditar(Adiantamento entidade)throws NegocioException{
 		if(entidade.getSaldo() == 0.0){
-			throw new NegocioException("Adiantamento não pode ser Alterado pois não possui saldo disponivel!");
+			throw new NegocioException("Adiantamento não pode ser alterado pois não possui saldo disponivel!");
 		}		
 	}
 	
@@ -177,8 +163,4 @@ public class ServiceAdiantamento implements GenericService<Adiantamento> {
 		}
 	}
 
-	
-	public List<Adiantamento> buscarPorHospede(Hospede hospede) throws Exception{
-		return adiantamentoDao.find("Select a From Adiantamento a LEFT JOIN FETCH a.hospede LEFT JOIN FETCH a.localRecebimento where a.hospede = ? and a.saldo > 0", hospede);
-	}
 }
